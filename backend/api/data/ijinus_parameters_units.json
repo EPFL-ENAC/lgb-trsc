@@ -1,0 +1,12 @@
+{
+    "parameters": {
+        "15[0]": "Height",
+        "12[0]": "Temperature",
+        "22[0]": "Counter",
+        "35[0]": "Precipitation"
+    },
+    "units": {
+        "dC" : "°C",
+        "mm" : "mm"
+    }
+}

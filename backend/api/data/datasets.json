@@ -1,0 +1,590 @@
+{
+  "files": [
+    {
+      "file": "B.csv",
+      "skip": 0,
+      "separator": ","
+    }
+  ],
+  "sensors": [
+    {
+      "name": "A1",
+      "db_spec": {
+        "measurement": "hydrovu",
+        "aggregate": "1h",
+        "location": {
+          "field": "locationId",
+          "value": "5590260778401792"
+        },
+        "filters": {
+          "field": "parameterId",
+          "measures": [
+            {
+              "measure": "water_temperature",
+              "value": "1"
+            },
+            {
+              "measure": "depth",
+              "value": "3"
+            },
+            {
+              "measure": "electro_conductivity",
+              "value": "10"
+            },
+            {
+              "measure": "turbidity",
+              "value": "25"
+            },
+            {
+              "measure": "dissolved_oxygen",
+              "value": "20"
+            },
+            {
+              "measure": "ph",
+              "value": "17"
+            },
+            {
+              "measure": "oxidation_reduction_potential",
+              "value": "19"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "A2",
+      "db_spec": {
+        "measurement": "hydrovu",
+        "aggregate": "1h",
+        "location": {
+          "field": "locationId",
+          "value": "5982192636657664"
+        },
+        "filters": {
+          "field": "parameterId",
+          "measures": [
+            {
+              "measure": "water_temperature",
+              "value": "1"
+            },
+            {
+              "measure": "depth",
+              "value": "3"
+            },
+            {
+              "measure": "electro_conductivity",
+              "value": "10"
+            },
+            {
+              "measure": "turbidity",
+              "value": "25"
+            },
+            {
+              "measure": "dissolved_oxygen",
+              "value": "20"
+            },
+            {
+              "measure": "ph",
+              "value": "17"
+            },
+            {
+              "measure": "oxidation_reduction_potential",
+              "value": "19"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "A3",
+      "db_spec": {
+        "measurement": "hydrovu",
+        "aggregate": "1h",
+        "location": {
+          "field": "locationId",
+          "value": "5685460447133696"
+        },
+        "filters": {
+          "field": "parameterId",
+          "measures": [
+            {
+              "measure": "water_temperature",
+              "value": "1"
+            },
+            {
+              "measure": "depth",
+              "value": "3"
+            },
+            {
+              "measure": "electro_conductivity",
+              "value": "10"
+            },
+            {
+              "measure": "turbidity",
+              "value": "25"
+            },
+            {
+              "measure": "dissolved_oxygen",
+              "value": "20"
+            },
+            {
+              "measure": "ph",
+              "value": "17"
+            },
+            {
+              "measure": "oxidation_reduction_potential",
+              "value": "19"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "A4",
+      "db_spec": {
+        "measurement": "hydrovu",
+        "aggregate": "1h",
+        "location": {
+          "field": "locationId",
+          "value": "5377631823724544"
+        },
+        "filters": {
+          "field": "parameterId",
+          "measures": [
+            {
+              "measure": "water_temperature",
+              "value": "1"
+            },
+            {
+              "measure": "depth",
+              "value": "3"
+            },
+            {
+              "measure": "electro_conductivity",
+              "value": "10"
+            },
+            {
+              "measure": "turbidity",
+              "value": "25"
+            },
+            {
+              "measure": "dissolved_oxygen",
+              "value": "20"
+            },
+            {
+              "measure": "ph",
+              "value": "17"
+            },
+            {
+              "measure": "oxidation_reduction_potential",
+              "value": "19"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "A5",
+      "db_spec": {
+        "measurement": "hydrovu",
+        "aggregate": "1h",
+        "location": {
+          "field": "locationId",
+          "value": "6278022736248832"
+        },
+        "filters": {
+          "field": "parameterId",
+          "measures": [
+            {
+              "measure": "water_temperature",
+              "value": "1"
+            },
+            {
+              "measure": "depth",
+              "value": "3"
+            },
+            {
+              "measure": "electro_conductivity",
+              "value": "10"
+            },
+            {
+              "measure": "turbidity",
+              "value": "25"
+            },
+            {
+              "measure": "dissolved_oxygen",
+              "value": "20"
+            },
+            {
+              "measure": "ph",
+              "value": "17"
+            },
+            {
+              "measure": "oxidation_reduction_potential",
+              "value": "19"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "A6",
+      "db_spec": {
+        "measurement": "hydrovu",
+        "aggregate": "1h",
+        "location": {
+          "field": "locationId",
+          "value": "6013299219365888"
+        },
+        "filters": {
+          "field": "parameterId",
+          "measures": [
+            {
+              "measure": "water_temperature",
+              "value": "1"
+            },
+            {
+              "measure": "depth",
+              "value": "3"
+            },
+            {
+              "measure": "electro_conductivity",
+              "value": "10"
+            },
+            {
+              "measure": "turbidity",
+              "value": "25"
+            },
+            {
+              "measure": "dissolved_oxygen",
+              "value": "20"
+            },
+            {
+              "measure": "ph",
+              "value": "17"
+            },
+            {
+              "measure": "oxidation_reduction_potential",
+              "value": "19"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "C1",
+      "db_spec": {
+        "measurement": "ijinus",
+        "aggregate": "1h",
+        "location": {
+          "field": "ID",
+          "value": "IJA0102-00006736"
+        },
+        "filters": {
+          "field": "_field",
+          "measures": [
+            {
+              "measure": "water_level",
+              "value": "15[0] mm"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "C2",
+      "db_spec": {
+        "measurement": "ijinus",
+        "aggregate": "1h",
+        "location": {
+          "field": "ID",
+          "value": "IJA0102-00006283"
+        },
+        "filters": {
+          "field": "_field",
+          "measures": [
+            {
+              "measure": "water_level",
+              "value": "15[0] mm"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "C3",
+      "db_spec": {
+        "measurement": "ijinus",
+        "aggregate": "1h",
+        "location": {
+          "field": "ID",
+          "value": "IJA0102-00009933"
+        },
+        "filters": {
+          "field": "_field",
+          "measures": [
+            {
+              "measure": "water_level",
+              "value": "22[0]"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "B1",
+      "file_spec": {
+        "file": "B.csv",
+        "columns": [
+          {
+            "name": "Time",
+            "measure": "timestamp",
+            "format": "%Y-%m-%d %H:%M:%S.%f"
+          },
+          {
+            "name": "B1",
+            "measure": "water_temperature"
+          }
+        ]
+      }
+    },
+    {
+      "name": "B2",
+      "file_spec": {
+        "file": "B.csv",
+        "columns": [
+          {
+            "name": "Time",
+            "measure": "timestamp",
+            "format": "%Y-%m-%d %H:%M:%S.%f"
+          },
+          {
+            "name": "B2",
+            "measure": "water_temperature"
+          }
+        ]
+      }
+    },
+    {
+      "name": "B3",
+      "file_spec": {
+        "file": "B.csv",
+        "columns": [
+          {
+            "name": "Time",
+            "measure": "timestamp",
+            "format": "%Y-%m-%d %H:%M:%S.%f"
+          },
+          {
+            "name": "B3",
+            "measure": "water_temperature"
+          }
+        ]
+      }
+    },
+    {
+      "name": "B4",
+      "file_spec": {
+        "file": "B.csv",
+        "columns": [
+          {
+            "name": "Time",
+            "measure": "timestamp",
+            "format": "%Y-%m-%d %H:%M:%S.%f"
+          },
+          {
+            "name": "B4",
+            "measure": "water_temperature"
+          }
+        ]
+      }
+    },
+    {
+      "name": "B5",
+      "file_spec": {
+        "file": "B.csv",
+        "columns": [
+          {
+            "name": "Time",
+            "measure": "timestamp",
+            "format": "%Y-%m-%d %H:%M:%S.%f"
+          },
+          {
+            "name": "B5",
+            "measure": "water_temperature"
+          }
+        ]
+      }
+    },
+    {
+      "name": "B6",
+      "file_spec": {
+        "file": "B.csv",
+        "columns": [
+          {
+            "name": "Time",
+            "measure": "timestamp",
+            "format": "%Y-%m-%d %H:%M:%S.%f"
+          },
+          {
+            "name": "B6",
+            "measure": "water_temperature"
+          }
+        ]
+      }
+    },
+    {
+      "name": "B7",
+      "file_spec": {
+        "file": "B.csv",
+        "columns": [
+          {
+            "name": "Time",
+            "measure": "timestamp",
+            "format": "%Y-%m-%d %H:%M:%S.%f"
+          },
+          {
+            "name": "B7",
+            "measure": "water_temperature"
+          }
+        ]
+      }
+    },
+    {
+      "name": "B8",
+      "file_spec": {
+        "file": "B.csv",
+        "columns": [
+          {
+            "name": "Time",
+            "measure": "timestamp",
+            "format": "%Y-%m-%d %H:%M:%S.%f"
+          },
+          {
+            "name": "B8",
+            "measure": "water_temperature"
+          }
+        ]
+      }
+    },
+    {
+      "name": "B9",
+      "file_spec": {
+        "file": "B.csv",
+        "columns": [
+          {
+            "name": "Time",
+            "measure": "timestamp",
+            "format": "%Y-%m-%d %H:%M:%S.%f"
+          },
+          {
+            "name": "B9",
+            "measure": "water_temperature"
+          }
+        ]
+      }
+    },
+    {
+      "name": "B10",
+      "file_spec": {
+        "file": "B.csv",
+        "columns": [
+          {
+            "name": "Time",
+            "measure": "timestamp",
+            "format": "%Y-%m-%d %H:%M:%S.%f"
+          },
+          {
+            "name": "B10",
+            "measure": "water_temperature"
+          }
+        ]
+      }
+    },
+    {
+      "name": "B11",
+      "file_spec": {
+        "file": "B.csv",
+        "columns": [
+          {
+            "name": "Time",
+            "measure": "timestamp",
+            "format": "%Y-%m-%d %H:%M:%S.%f"
+          },
+          {
+            "name": "B11",
+            "measure": "water_temperature"
+          }
+        ]
+      }
+    },
+    {
+      "name": "B12",
+      "file_spec": {
+        "file": "B.csv",
+        "columns": [
+          {
+            "name": "Time",
+            "measure": "timestamp",
+            "format": "%Y-%m-%d %H:%M:%S.%f"
+          },
+          {
+            "name": "B12",
+            "measure": "water_temperature"
+          }
+        ]
+      }
+    },
+    {
+      "name": "B13",
+      "file_spec": {
+        "file": "B.csv",
+        "columns": [
+          {
+            "name": "Time",
+            "measure": "timestamp",
+            "format": "%Y-%m-%d %H:%M:%S.%f"
+          },
+          {
+            "name": "B13",
+            "measure": "water_temperature"
+          }
+        ]
+      }
+    },
+    {
+      "name": "B14",
+      "file_spec": {
+        "file": "B.csv",
+        "columns": [
+          {
+            "name": "Time",
+            "measure": "timestamp",
+            "format": "%Y-%m-%d %H:%M:%S.%f"
+          },
+          {
+            "name": "B14",
+            "measure": "water_temperature"
+          }
+        ]
+      }
+    },
+    {
+      "name": "B15",
+      "file_spec": {
+        "file": "B.csv",
+        "columns": [
+          {
+            "name": "Time",
+            "measure": "timestamp",
+            "format": "%Y-%m-%d %H:%M:%S.%f"
+          },
+          {
+            "name": "B15",
+            "measure": "water_temperature"
+          }
+        ]
+      }
+    }
+  ]
+}
