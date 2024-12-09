@@ -19,5 +19,5 @@ jobs:
     with:
       # Optional inputs can be passed here
       ORG: epfl-lgb
-      REPO: trsc
+      REPO: lgb-trsc
       build_context: '["./backend", "./frontend"]'
