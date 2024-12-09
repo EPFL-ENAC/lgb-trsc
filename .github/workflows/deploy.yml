@@ -1,0 +1,23 @@
+# https://github.com/EPFL-ENAC/epfl-enac-build-push-deploy-action#readme
+name: deploy
+
+'on':
+  push:
+    branches:
+      - dev
+      - main
+    tags: ['v*.*.*']
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{github.repository}}
+jobs:
+  deploy:
+    uses: EPFL-ENAC/epfl-enac-build-push-deploy-action/.github/workflows/deploy.yml@main
+    secrets:
+      TOKEN: ${{ secrets.CD_TOKEN }}
+    with:
+      # Optional inputs can be passed here
+      ORG: epfl-lgb
+      REPO: trsc
+      build_context: '["./backend", "./frontend"]'
