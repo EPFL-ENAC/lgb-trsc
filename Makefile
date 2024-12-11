@@ -28,7 +28,8 @@ down-db:
 
 # setup and run when deploying on server
 setup:
-	echo "nothing to see here"
+  docker network create web
+  echo "network created"
 
 run:
 	docker compose -f docker-compose.yml pull
