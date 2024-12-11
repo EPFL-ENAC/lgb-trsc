@@ -1,1 +1,11 @@
 // app global css in SCSS form
+@font-face {
+  font-family: APax;
+  src: url(./assets/Apax-Thin.woff) format('woff');
+}
+
+// declare a class which applies it
+.APax {
+  font-family: Apax, Helvetica, Arial, sans-serif;
+}
+
