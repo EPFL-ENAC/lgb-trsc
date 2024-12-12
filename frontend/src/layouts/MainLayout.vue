@@ -1,11 +1,11 @@
 <template>
   <q-layout view="hhh lpR fFf">
 
-    <q-header elevated class="bg-white text-red APax text-weight-thin" height-hint="98">
+    <q-header  style="border-bottom: 1px solid red;" class="bg-white text-red APax text-weight-thin" height-hint="98">
       <q-toolbar>
-        <q-toolbar-title style="display: flex; flex-direction:row">
-          <q-avatar>
-            <img src="/trsc.svg">
+        <q-toolbar-title class="toolbar-title">
+          <q-avatar class="toolbar-avatar">
+            <!-- <img src="/trsc.svg"> -->
           </q-avatar>
           <div class="text-red">Transnational<br>Red Sea<br>Center</div>
 
@@ -31,13 +31,13 @@
       <router-view />
     </q-page-container>
 
-    <q-footer elevated class="bg-grey-8 text-white">
+    <q-footer  class="bg-white text-red q-row row" style="border-top: 1px solid red;">
       <q-toolbar>
-        <q-toolbar-title>
-          <q-avatar>
-            <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg">
+        <q-toolbar-title class="row">
+          <q-avatar style="border-radius: 0%">
+            <img src="/EPFL_logo.png">
           </q-avatar>
-          <div>Title</div>
+          <div>Sponsors</div>
         </q-toolbar-title>
       </q-toolbar>
     </q-footer>
@@ -50,9 +50,8 @@
 </script>
 
 <style lang="scss" scoped>
-.site-header {
-  -webkit-text-size-adjust: 100%;
-    --info: #46789a;
+:root {
+  --info: #46789a;
     --success: #8aa231;
     --warn: #e6ba1a;
     --error: #DC0F0E;
@@ -78,9 +77,27 @@
     --gold: #C5AE8F;
     --gold2: #a69176;
     --blue: #567888;
-    text-rendering: geometricPrecision;
     --column-gap: 1rem;
     --row-gap: 1rem;
+}
+:deep(.q-header) {
+  display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: var(--pad-x);
+    padding-right: var(--pad-x);
+    padding-top: var(--pad-y);
+    padding-bottom: var(--pad-y);
+    min-height: var(--header-height);
+}
+
+.toolbar-title {
+  -webkit-text-size-adjust: 100%;
+
+    text-rendering: geometricPrecision;
+
+    display: flex; flex-direction:row; align-items: center; justify-content: flex-start;
     box-sizing: border-box;
     background-origin: padding-box;
     background-repeat: no-repeat;
@@ -91,9 +108,10 @@
     vertical-align: top;
     overflow: visible;
     break-inside: avoid;
-    justify-content: center;
     font-family: Apax,Helvetica,Arial,sans-serif;
     text-transform: none;
+    // font-size 25.5219px
+    font-style: normal;
     font-weight: 200;
     font-size: calc(1.14691235rem + .39840637vw);
     line-height: 1em;
@@ -102,9 +120,29 @@
     display: grid;
     align-content: stretch;
     grid-template-columns: min-content min-content max-content;
-    margin-bottom: -.19230769em;
+    // margin-bottom: -.19230769em;
     color: #ff432c;
     stroke: rgb(255,67,44);
-    text-decoration: none;
+    text-decoration-color: rgb(255, 67, 44);
+    text-decoration-line: none;
+    text-decoration-style: solid;
+    text-decoration-thickness: auto;
+    text-rendering: geometricprecision;
+    text-size-adjust: 100%;
+    text-transform: none;
+    .toolbar-avatar {
+      border-radius:0%;
+      width: 3.76923077em;
+      height: 2.80769231em;
+      margin-left: 0;
+      margin-right: .85em;
+      background-image: url('/trsc.svg');
+      background-size: contain;
+      background-repeat: no-repeat;
+      max-height: 76px;
+      :deep(.q-avatar-content) {
+
+      }
+    }
 }
 </style>

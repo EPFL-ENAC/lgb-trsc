@@ -1,11 +1,20 @@
 // app global css in SCSS form
 @font-face {
-  font-family: APax;
-  src: url(./assets/Apax-Thin.woff) format('woff');
+  font-family: Apax;
+  src: url('./fonts/Apax-Thin.woff2') format('woff');
 }
 
 // declare a class which applies it
-.APax {
+.Apax {
   font-family: Apax, Helvetica, Arial, sans-serif;
 }
 
+:root {
+  --header-height: calc(4.9501992rem + 2.124834vw);
+  // scroll-padding-top: calc(var(--header-height) - 1px)
+}
+body {
+  font-family: Apax, Helvetica, Arial, sans-serif;
+  text-rendering: geometricPrecision;
+  // padding-top: calc(var(--header-height) - 1px)
+}
