@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h1>Resources</h1>
-    <p>This is the Resources page.</p>
+    <p>Links to publications, reports, documentaries
+    </p>
   </div>
 </template>
 

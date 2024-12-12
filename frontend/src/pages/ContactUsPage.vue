@@ -1,7 +1,6 @@
 <template>
   <div>
-    <h1>Contact Us</h1>
-    <p>This is the Contact Us page.</p>
+    <p>Contact us at: <a href="mailto:">Transnational Red Sea Center</a></p>
   </div>
 </template>
 

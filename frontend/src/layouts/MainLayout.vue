@@ -2,24 +2,31 @@
   <q-layout view="hhh lpR fFf">
 
     <q-header  style="border-bottom: 1px solid red;" class="bg-white text-red APax text-weight-thin" height-hint="98">
-      <q-toolbar>
+      <q-toolbar @click="navigateToHome" class="clickable">
         <q-toolbar-title class="toolbar-title">
-          <q-avatar class="toolbar-avatar">
+          <q-avatar class="toolbar-avatar" >
             <!-- <img src="/trsc.svg"> -->
           </q-avatar>
+          <!-- <q-route-tab to="/" label="Transnational Red Sea Center" /> -->
           <div class="text-red">Transnational<br>Red Sea<br>Center</div>
 
         </q-toolbar-title>
       </q-toolbar>
 
-      <q-tabs align="left">
+      <q-tabs align="left" class="q-pr-md">
         <q-route-tab to="/about" label="About" />
         <q-route-tab to="/the-red-sea" label="The Red Sea" />
         <q-route-tab to="/community" label="Community" />
         <q-route-tab to="/research-projects" label="Research Projects" />
         <q-route-tab to="/resources" label="Resources" />
         <q-route-tab to="/contact-us" label="Contact us" />
+        <q-btn-toggle v-model="lang" flat :options="[
+          {label: 'En', value: 'en-US'},
+          {label: 'Fr', value: 'fr'},
+          {label: 'العربية', value: 'ar'}
+        ]" />
       </q-tabs>
+
     </q-header>
 
     <!-- <header class="site-header header">
@@ -46,7 +53,21 @@
 </template>
 
 <script setup lang="ts">
+import { ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useRouter } from 'vue-router';
 
+const { locale } = useI18n();
+const lang = ref(locale.value);
+const router = useRouter();
+
+watch(lang, (newLang) => {
+  locale.value = newLang;
+});
+
+function navigateToHome() {
+  router.push('/');
+}
 </script>
 
 <style lang="scss" scoped>
@@ -144,5 +165,8 @@
 
       }
     }
+}
+.clickable {
+  cursor: pointer;
 }
 </style>
