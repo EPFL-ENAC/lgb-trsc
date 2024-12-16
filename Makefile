@@ -1,8 +1,6 @@
 .PHONY: backup-dump
 
 install:
-	pnpm install
-	npx husky install
 	$(MAKE) -C frontend install
 
 run-frontend:

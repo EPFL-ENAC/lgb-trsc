@@ -23,7 +23,7 @@ services:
       dockerfile: Dockerfile
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.frontend.rule=Host(`frontend.localhost`)"
+      - "traefik.http.routers.frontend.rule=Host(`lgb-trsc.localhost`)"
       - "traefik.http.routers.frontend.priority=100"
       - "traefik.http.routers.frontend.tls=true"
       - "traefik.http.routers.frontend.rule=PathPrefix(`/`)"
@@ -39,8 +39,13 @@ services:
       dockerfile: Dockerfile
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.backend.rule=Host(`backend.localhost`)"
-      - "traefik.http.services.backend.loadbalancer.server.port=8000"
+      - "traefik.http.routers.backend.rule=Host(`lgb-trsc.localhost`)"
+      - "traefik.http.routers.backend.tls=true"
+      - "traefik.http.routers.backend.rule=PathPrefix(`/api`)"
+      - "traefik.http.routers.backend.priority=101"
+      - "traefik.http.middlewares.strip-api-prefix.stripPrefix.prefixes=/api"
+      - "traefik.http.routers.backend.middlewares=strip-api-prefix"
+      - "traefik.http.services.backend.loadbalancer.server.port=80"
     networks:
       - web
 
