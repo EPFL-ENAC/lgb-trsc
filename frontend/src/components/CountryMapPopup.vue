@@ -25,7 +25,7 @@
         <p>Seascape Genomics</p>
       </div>
     </div>
-    <button @click="goToCountry" v-if="country.enabled">Go to {{ country.name }}</button>
+    <button @click="handleGoToCountry" v-if="country.enabled">Go to {{ country.name }}</button>
   </div>
 </template>
 
@@ -40,11 +40,15 @@ const props = defineProps({
   closeDrawer: {
     type: Function,
     required: true
+  },
+  zoomToCountry: {
+    type: Function,
+    required: true
   }
 });
 
-const goToCountry = () => {
-  // Implement navigation logic here
+const handleGoToCountry = () => {
+  props.zoomToCountry();
 };
 </script>
 

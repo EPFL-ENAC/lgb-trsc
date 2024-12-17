@@ -8,7 +8,7 @@
     overlay
     :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'"
   >
-    <CountryMapPopup v-if="selectedCountry" :country="selectedCountry" :closeDrawer="closeDrawer" />
+    <CountryMapPopup v-if="selectedCountry" :country="selectedCountry" :closeDrawer="closeDrawer" :zoomToCountry="zoomToCountry" />
   </q-drawer>
 </template>
 
@@ -25,19 +25,31 @@ import { onMounted, ref } from 'vue';
 import { QDrawer } from 'quasar';
 import CountryMapPopup from 'components/CountryMapPopup.vue';
 import { countries } from 'assets/data/countries';
+import { on } from 'events';
 
 const selectedCountry = ref(null);
 const coastlineLayer = ref<VectorLayer<VectorSource>|null>(null);
 const drawer = ref(false);
+let map: Map;
 
 const closeDrawer = () => {
   drawer.value = false;
 };
 
-const geojsonObject = countries;
+const zoomToCountry = () => {
+  if (selectedCountry.value && selectedCountry.value.coastline) {
+    const coastlineFeature = new GeoJSON().readFeature(selectedCountry.value.coastline, {
+      featureProjection: 'EPSG:4326'
+    });
+    const extent = coastlineFeature.getGeometry().getExtent();
+    map.getView().fit(extent, { duration: 1000 });
+  }
+};
 
+const geojsonObject = countries;
 onMounted(() => {
-  const map = new Map({
+
+  map = new Map({
     target: 'map',
     pixelRatio: 2, // Enable HiDPI support
     layers: [
@@ -76,8 +88,8 @@ onMounted(() => {
         color: 'red',
         width: 2
       })
-    })})
-    map.addLayer(coastlineLayer.value);
+    })});
+  map.addLayer(coastlineLayer.value);
 
     // coastlineLayer.value = new VectorLayer({
     //     source: new VectorSource(),
@@ -102,7 +114,6 @@ onMounted(() => {
       coastlineLayer.value.getSource().addFeature(coastlineFeature);
     });
   });
-
 
 });
 </script>
