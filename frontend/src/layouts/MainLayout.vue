@@ -38,13 +38,13 @@
       <router-view />
     </q-page-container>
 
-    <q-footer  class="bg-white text-red q-row row" style="border-top: 1px solid red;">
+    <q-footer  class="bg-white text-red q-row row align-right" style="border-top: 1px solid red;">
       <q-toolbar>
-        <q-toolbar-title class="row">
-          <q-avatar style="border-radius: 0%">
-            <img src="/EPFL_logo.png">
+        <q-toolbar-title class="row pd-x text-red justify-end">
+          <q-avatar style="border-radius: 0%; width: auto; height: auto;">
+            <img style="width:auto" src="/EPFL_logo.png">
           </q-avatar>
-          <div>Sponsors</div>
+          <!-- <div>Sponsors</div> -->
         </q-toolbar-title>
       </q-toolbar>
     </q-footer>
