@@ -38,6 +38,10 @@ let map: Map;
 
 const closeDrawer = () => {
   drawer.value = false;
+  selectedCountry.value = null;
+  coastlineLayer.value.getSource().clear();
+  expeditionsLayer.value.getSource().clear();
+  zoomOutOfCountry();
 };
 
 const zoomToCountry = () => {
@@ -46,8 +50,12 @@ const zoomToCountry = () => {
       featureProjection: 'EPSG:4326'
     });
     const extent = coastlineFeature.getGeometry().getExtent();
-    map.getView().fit(extent, { duration: 1000 });
+    map.getView().fit(extent, { duration: 300 });
   }
+};
+
+const zoomOutOfCountry = () => {
+  map.getView().animate({ zoom: 3, duration: 300 });
 };
 
 const geojsonObject = countries;
