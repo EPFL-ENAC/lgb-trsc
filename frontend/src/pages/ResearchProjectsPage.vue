@@ -32,6 +32,7 @@ import { expeditions }  from 'assets/data/expeditions';
 const selectedCountry = ref(null);
 const coastlineLayer = ref<VectorLayer<VectorSource>|null>(null);
 const expeditionsLayer = ref<VectorLayer<VectorSource>|null>(null);
+const countryLayer = ref<VectorLayer<VectorSource>|null>(null); // Define countryLayer
 
 const drawer = ref(false);
 let map: Map;
@@ -41,6 +42,7 @@ const closeDrawer = () => {
   selectedCountry.value = null;
   coastlineLayer.value.getSource().clear();
   expeditionsLayer.value.getSource().clear();
+  countryLayer.value.setStyle(countryStyle); // Reset style to show yellow circles
   zoomOutOfCountry();
 };
 
@@ -59,8 +61,35 @@ const zoomOutOfCountry = () => {
 };
 
 const geojsonObject = countries;
-onMounted(() => {
 
+const countryStyle = new Style({
+  image: new CircleStyle({
+    radius: 10,
+    fill: new Fill({
+      color: 'yellow'
+    })
+  })
+});
+
+const selectedCountryStyle = new Style({
+  image: new CircleStyle({
+    radius: 0, // Hide yellow circle
+    fill: new Fill({
+      color: 'transparent'
+    })
+  })
+});
+
+countryLayer.value = new VectorLayer({
+  source: new VectorSource({
+    features: new GeoJSON().readFeatures(geojsonObject, {
+      featureProjection: 'EPSG:4326'
+    })
+  }),
+  style: countryStyle
+});
+
+onMounted(() => {
   map = new Map({
     target: 'map',
     pixelRatio: 2, // Enable HiDPI support
@@ -70,21 +99,7 @@ onMounted(() => {
           url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
         }),
       }),
-      new VectorLayer({
-        source: new VectorSource({
-          features: new GeoJSON().readFeatures(geojsonObject, {
-            featureProjection: 'EPSG:4326'
-          })
-        }),
-        style: new Style({
-          image: new CircleStyle({
-            radius: 10,
-            fill: new Fill({
-              color: 'yellow'
-            })
-          })
-        })
-      })
+      countryLayer.value // Add countryLayer to the map
     ],
     view: new View({
       center: [39.0, 21.5], // Coordinates for the Red Sea
@@ -111,31 +126,24 @@ onMounted(() => {
 
   expeditionsLayer.value = new VectorLayer({
     source: new VectorSource({}),
-    // style: new Style({
-    //   stroke: new Stroke({
-    //     color:'blue',
-    //     width: 2
-    //    })
-    //  }),
-     style: new Style({
-        stroke: new Stroke({
-          color:'blue',
-          width: 4
+    style: new Style({
+      stroke: new Stroke({
+        color:'blue',
+        width: 4
+      }),
+      image: new CircleStyle({
+        radius: 5,
+        fill: new Fill({
+          color: 'blue'
         }),
-        image: new CircleStyle({
-          radius: 5,
-          fill: new Fill({
-            color: 'blue'
-          }),
-          stroke: new Stroke({
-            color: 'white',
-            width: 1
-          })
+        stroke: new Stroke({
+          color: 'white',
+          width: 1
         })
       })
-   });
+    })
+  });
   map.addLayer(expeditionsLayer.value);
-
 
   map.on('pointermove', (event) => {
     const pixel = map.getEventPixel(event.originalEvent);
@@ -148,27 +156,25 @@ onMounted(() => {
       const properties = feature.getProperties();
       if (properties.type === 'country') { // Check if the feature is a country
         selectedCountry.value = properties;
+        zoomToCountry();
         drawer.value = true;
-
+        countryLayer.value.setStyle(selectedCountryStyle); // Hide yellow circles
 
         if (properties.name === 'Djibouti') {
-
           const expeditionsFeatures = new GeoJSON().readFeatures(expeditions, {
             featureProjection: 'EPSG:4326'
           });
           expeditionsLayer.value.getSource().clear();
           expeditionsLayer.value.getSource().addFeatures(expeditionsFeatures);
-          } else {
+        } else {
           expeditionsLayer.value.getSource().clear();
-          }
+        }
       }
       const coastlineFeature = new GeoJSON().readFeature(selectedCountry.value.coastline, {
         featureProjection: 'EPSG:4326'
       });
       coastlineLayer.value.getSource().clear();
       coastlineLayer.value.getSource().addFeature(coastlineFeature);
-
-
     });
   });
 
