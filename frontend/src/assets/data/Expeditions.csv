@@ -1,0 +1,52 @@
+﻿Event_ID,Date,Time,Reef,Site_Name,Project_Code,Project_Name,Team_Members,Latitude_Start,Longitude_Start,Latitude_End,Longitude_End,Comments
+EXP2023_DJ_001,11/12/23,17:21,Maskali / Moucha,Sunken Buoy,3D,3D Mapping,"Anders, Devis, Jonny, Gabi",11.695854,43.145544,11.695467,43.146025,-
+EXP2023_DJ_002,11/12/23,17:21,Maskali / Moucha,Sunken Buoy,MP,Marine Pollution,"Guilhem, Manon, Ibrahim",11.69921667,43.1435,,,-
+EXP2023_DJ_003,11/12/23,17:21,Maskali / Moucha,Sunken Buoy,Sym,Symbionts,"Osama, Mustafa",11.69921667,43.1435,,,-
+EXP2023_DJ_004,11/13/23,12:35,Kadda Dabali,Japanese Garden,3D,3D Mapping,"Anders, Devis, Jonny, Gabi",12.472562,43.432745,12.472107,43.433253,-
+EXP2023_DJ_005,11/13/23,12:35,Kadda Dabali,Japanese Garden,SG,Seascape Genomics,"Guilhem, Manon, Ibrahim",12.47263333,43.43271667,,,"80-100% hard coral cover at 3 - 6m depth; mostly Pocillopora damicornis/verrucosa, some Porites sp., some Acropora sp.; 10/20% bleached (Porites, P. damicornis, Acropora, Sinularia, Platygyra); 31°C; lots of waves and currents, very hard conditions to sample (we only managed to collect 15 SPIS and 10 Pver)."
+EXP2023_DJ_006,11/13/23,12:35,Kadda Dabali,Japanese Garden,MP,Marine Pollution,"Guilhem, Manon, Ibrahim",12.47263333,43.43271667,,,"80-100% hard coral cover at 3 - 6m depth; mostly Pocillopora damicornis/verrucosa, some Porites sp., some Acropora sp.; 10/20% bleached (Porites, P. damicornis, Acropora, Sinularia, Platygyra); 31°C; lots of waves and currents, very hard conditions to sample (we only managed to collect 15 SPIS and 10 Pver)."
+EXP2023_DJ_007,11/13/23,12:35,Kadda Dabali,Japanese Garden,Sym,Symbionts,"Osama, Mustafa",12.47263333,43.43271667,,,-
+EXP2023_DJ_008,11/13/23,16:30,Kadda Dabali,Kadda Dabali,3D,3D Mapping,"Anders, Devis, Jonny, Gabi",12.465301,43.43419,12.465226,43.434361,-
+EXP2023_DJ_009,11/13/23,16:30,Kadda Dabali,Kadda Dabali,SG,Seascape Genomics,"Guilhem, Manon, Ibrahim",12.47263333,43.43271667,,,"100% hard coral cover; 5/10% bleached; we finished the sampling for SPIS, Pver, and did Porites sp."
+EXP2023_DJ_010,11/13/23,16:30,Kadda Dabali,Kadda Dabali,MP,Marine Pollution,"Guilhem, Manon, Ibrahim",12.47263333,43.43271667,,,"100% hard coral cover; 5/10% bleached; we finished the sampling for SPIS, Pver, and did Porites sp."
+EXP2023_DJ_011,11/13/23,16:30,Kadda Dabali,Kadda Dabali,Sym,Symbionts,"Osama, Mustafa",12.47263333,43.43271667,,,-
+EXP2023_DJ_012,11/14/23,8:14,Hamra,Protected side,3D,3D Mapping,"Anders, Devis, Jonny, Gabi",12.46229,43.36494,12.461997,43.36407,-
+EXP2023_DJ_013,11/14/23,8:14,Hamra,Protected side,SG,Seascape Genomics,"Guilhem, Manon, Ibrahim",12.4624,43.36455,,,"We dove to the Red Sea facing side of the island; we collected Pver; no SPIS alive; 20/30% hard coral cover; 50% coral bleaching; mostly Pver, rare Pocillopora damicornis."
+EXP2023_DJ_014,11/14/23,8:14,Hamra,Protected side,MP,Marine Pollution,"Guilhem, Manon, Ibrahim",12.4624,43.36455,,,"We dove to the Red Sea facing side of the island; we collected Pver; no SPIS alive; 20/30% hard coral cover; 50% coral bleaching; mostly Pver, rare Pocillopora damicornis."
+EXP2023_DJ_015,11/14/23,8:14,Hamra,Protected side,Sym,Symbionts,"Osama, Mustafa",12.4624,43.36455,,,-
+EXP2023_DJ_016,11/14/23,11:46,Tolka,Protected side,3D,3D Mapping,"Anders, Devis, Jonny, Gabi",12.461124,43.412022,12.461213,43.411193,-
+EXP2023_DJ_017,11/14/23,11:46,Tolka,Protected side,eDNA,Environmental DNA,"Guilhem, Ibrahim",12.46131667,43.41235,,,"2 x 17 min on power 8; 2 cartridges; about 200 m long each way; water temperature 28°C; for the first filter, starts at 5.1 m, and ends at 6 m; for the second filter, starts at 6 m, and ends at 5 m; 50/60% hard coral cover; less than 10% bleaching."
+EXP2023_DJ_018,11/14/23,16:01,Tolka,Exposed side,3D,3D Mapping,"Anders, Devis, Jonny, Gabi",12.458933,43.413086,12.458409,43.412904,-
+EXP2023_DJ_019,11/14/23,16:01,Tolka,Exposed side,MP,Marine Pollution,"Gabi, Ibrahim, Djama",12.458933,43.413086,,,-
+EXP2023_DJ_020,11/14/23,19:00,Kadda Dabali,,eDNA,Environmental DNA,"Gabi, Jonny",12.4669,43.43145,,,-
+EXP2023_DJ_021,11/14/23,19:00,Kadda Dabali,,echi,Echinoderms,"Guilhem, Manon, Jean-Michel",12.4669,43.43145,,,-
+EXP2023_DJ_022,11/15/23,7:58,Horod le Rhale,Lagoon,3D,3D Mapping,"Anders, Devis, Jonny, Gabi",12.452566,43.443604,,,-
+EXP2023_DJ_023,11/15/23,7:58,Horod le Rhale,Lagoon,eDNA,Environmental DNA,"Guilhem, Ibrahim",12.45245,43.44318333,,,"2 filters, 17 min each; first filter starts at 3.5 m, ends at 5 m; second filter starts at 5 m, and ends at 4 m; water temperature 29°C."
+EXP2023_DJ_024,11/15/23,11:12,Horod le Rhale,Protected side,3D,3D Mapping,"Anders, Devis, Jonny, Gabi",12.45503,43.439232,12.455855,43.439621,-
+EXP2023_DJ_025,11/15/23,11:12,Horod le Rhale,Protected side,SG,Seascape Genomics,"Guilhem, Manon, Ibrahim",12.45311667,43.44305,,,Collection of SPIS and Pver (21 colonies from each).
+EXP2023_DJ_026,11/15/23,11:12,Horod le Rhale,Protected side,Sym,Symbionts,"Osama, Mustafa",12.45311667,43.44305,,,-
+EXP2023_DJ_027,11/15/23,15:30,Hamra,Exposed side,3D,3D Mapping,"Anders, Devis, Jonny, Gabi",12.45893,43.366106,12.458363,43.365411,-
+EXP2023_DJ_028,11/15/23,15:30,Hamra,Exposed side,eDNA,Environmental DNA,"Gabi, Ibrahim",12.4588,43.3665,,,-
+EXP2023_DJ_029,11/15/23,15:30,Hamra,Exposed side,SG,Seascape Genomics,"Guilhem, Manon",12.4588,43.3665,,,Sampled 21 Pver and 11 SPIS.
+EXP2023_DJ_030,11/15/23,15:30,Hamra,Exposed side,Sym,Symbionts,"Guilhem, Manon",12.4588,43.3665,,,Sampled 21 Pver and 11 SPIS.
+EXP2023_DJ_031,11/16/23,8:23,Ras Siyyan,Sand,3D,3D Mapping,"Anders, Devis, Jonny",12.482124,43.31663,12.482268,43.316203,-
+EXP2023_DJ_032,11/16/23,8:23,Ras Siyyan,Sand,SG,Seascape Genomics,"Guilhem, Manon, Ibrahim",12.48196667,43.31643333,,,"Low visibility; some Pver alive, very patchy; recent mortality of SPIS; 80% hard coral cover; 5% alive; water temperature 29°C."
+EXP2023_DJ_033,11/16/23,8:23,Ras Siyyan,Sand,MP,Marine Pollution,"Guilhem, Manon, Ibrahim",12.48196667,43.31643333,,,"Low visibility; some Pver alive, very patchy; recent mortality of SPIS; 80% hard coral cover; 5% alive; water temperature 29°C."
+EXP2023_DJ_034,11/16/23,8:23,Ras Siyyan,Sand,Sym,Symbionts,"Osama, Mustafa",12.48196667,43.31643333,,,-
+EXP2023_DJ_035,11/16/23,10:31,Ras Siyyan,Lagoon,3D,3D Mapping,"Anders, Devis, Jonny",12.485126,43.304618,12.485582,43.304032,-
+EXP2023_DJ_036,11/16/23,10:31,Ras Siyyan,Lagoon,eDNA,Environmental DNA,"Guilhem, Ibrahim",12.48513333,43.30451667,,,"Done around 3D mapping transect; water temperature 29°C; 2 filters of 15 min each; 100% hard coral cover, 60% alive, no SPIS alive."
+EXP2023_DJ_037,11/17/23,8:28,Obock,Ras Bir,3D,3D Mapping,"Anders, Devis, Jonny, Gabi",11.976672,43.361306,11.976924,43.362169,-
+EXP2023_DJ_038,11/17/23,8:28,Obock,Ras Bir,SG,Seascape Genomics,"Guilhem, Manon, Ibrahim",11.97688333,43.36078333,,,"All SPIS dead (recent); sampled Pver; high hard coral cover, low live coral cover."
+EXP2023_DJ_039,11/17/23,8:28,Obock,Ras Bir,MP,Marine Pollution,"Guilhem, Manon, Ibrahim",11.97688333,43.36078333,,,"All SPIS dead (recent); sampled Pver; high hard coral cover, low live coral cover."
+EXP2023_DJ_040,11/17/23,8:28,Obock,Ras Bir,Sym,Symbionts,"Osama, Mustafa",11.97688333,43.36078333,,,-
+EXP2023_DJ_041,11/17/23,11:06,Obock,Surcouffe,3D,3D Mapping,"Anders, Devis, Jonny",11.964247,43.321497,11.96412,43.322387,-
+EXP2023_DJ_042,11/17/23,11:06,Obock,Surcouffe,eDNA,Environmental DNA,Gabi,11.964247,43.321497,,,Done around 3D mapping transect; eDNA (2 filters for 15 min) and swabs.
+EXP2023_DJ_043,11/17/23,11:06,Obock,Surcouffe,echi,Echinoderms,Guilhem,11.96453333,43.32165,,,-
+EXP2023_DJ_044,11/17/23,16:00,Maskali / Moucha,Sunken Buoy,eDNA,Environmental DNA,"Gabi, Jonny",11.69921667,43.1435,,,-
+EXP2023_DJ_045,11/17/23,16:00,Maskali / Moucha,,eDNA,Environmental DNA,"Guilhem, Gabi",11.69603333,43.14428333,,,Surface collection.
+EXP2023_DJ_046,11/17/23,16:00,Maskali / Moucha,Sunken Buoy,MP,Marine Pollution,"Guilhem, Devis",11.69921667,43.1435,,,Collecting remaining samples from day 1 (5 x SPIS; 3 x Pver; 1 x sediment). eDNA underwater (2 x filters for 15 min); eDNA surface (2 x filters for 17 min).
+EXP2023_DJ_047,11/17/23,16:00,Maskali / Moucha,Sunken Buoy,Sym,Symbionts,"Guilhem, Devis",11.69921667,43.1435,,,Collecting remaining samples from day 1 (5 x SPIS; 3 x Pver; 1 x sediment). eDNA underwater (2 x filters for 15 min); eDNA surface (2 x filters for 17 min).
+EXP2023_DJ_048,11/20/23,7:49,Maskali / Moucha,North Wall,3D,3D Mapping,"Jonny, Gabi, Ibrahim",11.739134,43.196618,11.738827,43.197475,-
+EXP2023_DJ_049,11/20/23,9:47,Maskali / Moucha,Buoy Air France,3D,3D Mapping,"Jonny, Gabi, Ibrahim",11.735338,43.167548,11.736208,43.167631,-
+EXP2023_DJ_050,11/20/23,12:19,Maskali / Moucha,Aquarium,3D,3D Mapping,"Jonny, Gabi, Ibrahim",11.70308,43.162538,11.702758,43.163374,-
+EXP2023_DJ_051,11/20/23,13:42,Maskali / Moucha,Sunken Buoy,3D,3D Mapping,"Jonny, Gabi, Ibrahim",11.695606,43.144872,11.694692,43.144976,-

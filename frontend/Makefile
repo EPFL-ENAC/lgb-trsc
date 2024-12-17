@@ -9,6 +9,9 @@ dev:
 run: dev
 	@echo "Running frontend"
 
+convert:
+		npm run convert
+
 build:
 		npm run build
 

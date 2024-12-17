@@ -10,7 +10,10 @@
     "format": "prettier --write \"**/*.{js,ts,vue,scss,html,md,json}\" --ignore-path .gitignore",
     "test": "echo \"No test specified\" && exit 0",
     "dev": "quasar dev",
-    "build": "quasar build"
+    "build": "quasar build",
+    "predev": "npm run convert",
+    "prebuild": "npm run convert",
+    "convert": "node scripts/convert.mjs"
   },
   "dependencies": {
     "@quasar/extras": "^1.16.4",
@@ -28,6 +31,7 @@
     "@typescript-eslint/eslint-plugin": "^5.10.0",
     "@typescript-eslint/parser": "^5.10.0",
     "autoprefixer": "^10.4.2",
+    "csvtojson": "^2.0.10",
     "eslint": "^8.10.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-vue": "^9.0.0",

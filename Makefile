@@ -15,6 +15,9 @@ lint:
 lint-staged:
 	$(MAKE) -C frontend lint-staged
 
+convert:
+	$(MAKE) -C frontend convert
+
 run-db:
 	docker compose up -d --pull=always postgres
 
