@@ -1,5 +1,6 @@
 <template>
   <div class="popup">
+    <button class="close-btn" @click="closeDrawer">Close</button>
     <h3>{{ country.name }}</h3>
     <p>{{ country.description }}</p>
     <p>{{ country.visited }}</p>
@@ -24,7 +25,7 @@
         <p>Seascape Genomics</p>
       </div>
     </div>
-    <button @click="goToCountry">Go to {{ country.name }}</button>
+    <button @click="goToCountry" v-if="country.enabled">Go to {{ country.name }}</button>
   </div>
 </template>
 
@@ -34,6 +35,10 @@ import { defineProps } from 'vue';
 const props = defineProps({
   country: {
     type: Object,
+    required: true
+  },
+  closeDrawer: {
+    type: Function,
     required: true
   }
 });
@@ -45,13 +50,27 @@ const goToCountry = () => {
 
 <style scoped>
 .popup {
-  background: red;
+  /* background: red;
   padding: 10px;
   border: 1px solid red;
   border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   min-width: 400px;
-  max-width: 400px;
+  max-width: 400px; */
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.close-btn {
+  background-color: #ff0000;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 5px 10px;
+  margin-bottom: 10px;
 }
 
 .images {
