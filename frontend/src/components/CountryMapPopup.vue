@@ -78,18 +78,34 @@ const handleGoToCountry = () => {
 }
 
 .images {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+    gap: 1rem;
+    width: 100%;
 }
 
 .card {
-  width: 30%;
-  text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    /* width: 300px; or your desired width */
+    border: 1px solid #ccc; /* Optional styling */
+    overflow: hidden; /* To avoid overflow issues */
 }
 
 .card img {
-  width: 100%;
-  height: auto;
+    width: 100%;
+    height: auto; /* Maintains aspect ratio */
+    flex: 1; /* Allows the image to grow and fill space */
+}
+
+.card p {
+    margin: 0; /* Removes default margin */
+    height: 50px; /* Set the footer height */
+    line-height: 50px; /* Centers text vertically */
+    text-align: center; /* Centers text horizontally */
+    background-color: #f0f0f0; /* Optional background for distinction */
+    flex-shrink: 0; /* Prevents shrinking of the footer */
 }
 
 button {

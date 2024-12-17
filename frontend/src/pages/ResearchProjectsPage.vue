@@ -7,6 +7,7 @@
     :breakpoint="500"
     overlay
     :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'"
+    style="    height: -webkit-fill-available; height: -moz-available; height: fill-available; height: initial;"
   >
     <CountryMapPopup v-if="selectedCountry" :country="selectedCountry" :closeDrawer="closeDrawer" :zoomToCountry="zoomToCountry" />
   </q-drawer>
