@@ -65,6 +65,7 @@ const handleGoToCountry = () => {
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
 }
 
 .close-btn {
@@ -75,6 +76,9 @@ const handleGoToCountry = () => {
   cursor: pointer;
   padding: 5px 10px;
   margin-bottom: 10px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
 }
 
 .images {
@@ -88,7 +92,6 @@ const handleGoToCountry = () => {
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    /* width: 300px; or your desired width */
     border: 1px solid #ccc; /* Optional styling */
     overflow: hidden; /* To avoid overflow issues */
 }
