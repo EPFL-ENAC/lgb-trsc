@@ -95,24 +95,28 @@ onMounted(() => {
 
   expeditionsLayer.value = new VectorLayer({
     source: new VectorSource({}),
-    style: new Style({
-      stroke: new Stroke({
-        color:'blue',
-        width: 2
-       })
-     }),
-    //  style: new Style({
-    //     image: new CircleStyle({
-    //       radius: 5,
-    //       fill: new Fill({
-    //         color: 'blue'
-    //       }),
-    //       stroke: new Stroke({
-    //         color: 'white',
-    //         width: 1
-    //       })
-    //     })
-    //   })
+    // style: new Style({
+    //   stroke: new Stroke({
+    //     color:'blue',
+    //     width: 2
+    //    })
+    //  }),
+     style: new Style({
+        stroke: new Stroke({
+          color:'blue',
+          width: 4
+        }),
+        image: new CircleStyle({
+          radius: 5,
+          fill: new Fill({
+            color: 'blue'
+          }),
+          stroke: new Stroke({
+            color: 'white',
+            width: 1
+          })
+        })
+      })
    });
   map.addLayer(expeditionsLayer.value);
 
@@ -129,6 +133,18 @@ onMounted(() => {
       if (properties.type === 'country') { // Check if the feature is a country
         selectedCountry.value = properties;
         drawer.value = true;
+
+
+        if (properties.name === 'Djibouti') {
+
+          const expeditionsFeatures = new GeoJSON().readFeatures(expeditions, {
+            featureProjection: 'EPSG:4326'
+          });
+          expeditionsLayer.value.getSource().clear();
+          expeditionsLayer.value.getSource().addFeatures(expeditionsFeatures);
+          } else {
+          expeditionsLayer.value.getSource().clear();
+          }
       }
       const coastlineFeature = new GeoJSON().readFeature(selectedCountry.value.coastline, {
         featureProjection: 'EPSG:4326'
@@ -136,11 +152,7 @@ onMounted(() => {
       coastlineLayer.value.getSource().clear();
       coastlineLayer.value.getSource().addFeature(coastlineFeature);
 
-      const expeditionsFeatures = new GeoJSON().readFeatures(expeditions, {
-        featureProjection: 'EPSG:4326'
-      });
-      expeditionsLayer.value.getSource().clear();
-      expeditionsLayer.value.getSource().addFeatures(expeditionsFeatures);
+
     });
   });
 
