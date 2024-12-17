@@ -35,6 +35,7 @@ csv({ checkType: true, ignoreEmpty: true, trim: true })
         "id": obj.Event_ID,
         ...featureGeometry,
             "properties": {
+              "type": "Expedition",
               "Event_ID": obj.Event_ID,
               "Date": obj.Date,
               "Time": obj.Time,

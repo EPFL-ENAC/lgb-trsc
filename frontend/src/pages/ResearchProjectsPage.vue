@@ -10,6 +10,7 @@
     style="    height: -webkit-fill-available; height: -moz-available; height: fill-available; height: initial;"
   >
     <CountryMapPopup v-if="selectedCountry" :country="selectedCountry" :closeDrawer="closeDrawer" :zoomToCountry="zoomToCountry" />
+    <ExpeditionMapPopup v-if="selectedExpedition" :expedition="selectedExpedition" :closeDrawer="closeDrawer" :zoomToExpedition="zoomToExpedition" />
   </q-drawer>
 </template>
 
@@ -26,10 +27,12 @@ import { ScaleLine } from 'ol/control'; // Import ScaleLine control
 import { onActivated, onMounted, ref } from 'vue';
 import { QDrawer } from 'quasar';
 import CountryMapPopup from 'components/CountryMapPopup.vue';
+import ExpeditionMapPopup from 'components/ExpeditionMapPopup.vue';
 import { countries } from 'assets/data/countries';
 import { expeditions }  from 'assets/data/expeditions';
 
 const selectedCountry = ref(null);
+const selectedExpedition = ref(null);
 const coastlineLayer = ref<VectorLayer<VectorSource>|null>(null);
 const expeditionsLayer = ref<VectorLayer<VectorSource>|null>(null);
 const countryLayer = ref<VectorLayer<VectorSource>|null>(null); // Define countryLayer
@@ -40,6 +43,7 @@ let map: Map;
 const closeDrawer = () => {
   drawer.value = false;
   selectedCountry.value = null;
+  selectedExpedition.value = null;
   coastlineLayer.value.getSource().clear();
   expeditionsLayer.value.getSource().clear();
   countryLayer.value.setStyle(countryStyle); // Reset style to show yellow circles
@@ -52,6 +56,13 @@ const zoomToCountry = () => {
       featureProjection: 'EPSG:4326'
     });
     const extent = coastlineFeature.getGeometry().getExtent();
+    map.getView().fit(extent, { duration: 300 });
+  }
+};
+
+const zoomToExpedition = () => {
+  if (selectedExpedition.value) {
+    const extent = selectedExpedition.value.geometry.getExtent();
     map.getView().fit(extent, { duration: 300 });
   }
 };
@@ -154,6 +165,7 @@ onMounted(() => {
   map.on('click', (evt) => {
     map.forEachFeatureAtPixel(evt.pixel, function (feature) {
       const properties = feature.getProperties();
+      debugger;
       if (properties.type === 'country') { // Check if the feature is a country
         selectedCountry.value = properties;
         zoomToCountry();
@@ -169,6 +181,11 @@ onMounted(() => {
         } else {
           expeditionsLayer.value.getSource().clear();
         }
+      } else if (properties.type === 'Expedition') { // Check if the feature is an expedition
+
+        selectedExpedition.value = properties;
+        zoomToExpedition();
+        drawer.value = true;
       }
       const coastlineFeature = new GeoJSON().readFeature(selectedCountry.value.coastline, {
         featureProjection: 'EPSG:4326'
@@ -179,7 +196,6 @@ onMounted(() => {
   });
 
 });
-
 </script>
 
 <style scoped>

@@ -18,6 +18,7 @@ export const expeditions = {
         ]
       },
       "properties": {
+        "type": "Expedition",
         "Event_ID": "EXP2023_DJ_001",
         "Date": "11/12/23",
         "Time": "17:21",
@@ -43,6 +44,7 @@ export const expeditions = {
         ]
       },
       "properties": {
+        "type": "Expedition",
         "Event_ID": "EXP2023_DJ_002",
         "Date": "11/12/23",
         "Time": "17:21",
@@ -66,6 +68,7 @@ export const expeditions = {
         ]
       },
       "properties": {
+        "type": "Expedition",
         "Event_ID": "EXP2023_DJ_003",
         "Date": "11/12/23",
         "Time": "17:21",
@@ -95,6 +98,7 @@ export const expeditions = {
         ]
       },
       "properties": {
+        "type": "Expedition",
         "Event_ID": "EXP2023_DJ_004",
         "Date": "11/13/23",
         "Time": "12:35",
@@ -120,6 +124,7 @@ export const expeditions = {
         ]
       },
       "properties": {
+        "type": "Expedition",
         "Event_ID": "EXP2023_DJ_005",
         "Date": "11/13/23",
         "Time": "12:35",
@@ -143,6 +148,7 @@ export const expeditions = {
         ]
       },
       "properties": {
+        "type": "Expedition",
         "Event_ID": "EXP2023_DJ_006",
         "Date": "11/13/23",
         "Time": "12:35",
@@ -166,6 +172,7 @@ export const expeditions = {
         ]
       },
       "properties": {
+        "type": "Expedition",
         "Event_ID": "EXP2023_DJ_007",
         "Date": "11/13/23",
         "Time": "12:35",
@@ -195,6 +202,7 @@ export const expeditions = {
         ]
       },
       "properties": {
+        "type": "Expedition",
         "Event_ID": "EXP2023_DJ_008",
         "Date": "11/13/23",
         "Time": "16:30",
@@ -220,6 +228,7 @@ export const expeditions = {
         ]
       },
       "properties": {
+        "type": "Expedition",
         "Event_ID": "EXP2023_DJ_009",
         "Date": "11/13/23",
         "Time": "16:30",
@@ -243,6 +252,7 @@ export const expeditions = {
         ]
       },
       "properties": {
+        "type": "Expedition",
         "Event_ID": "EXP2023_DJ_010",
         "Date": "11/13/23",
         "Time": "16:30",
@@ -266,6 +276,7 @@ export const expeditions = {
         ]
       },
       "properties": {
+        "type": "Expedition",
         "Event_ID": "EXP2023_DJ_011",
         "Date": "11/13/23",
         "Time": "16:30",
@@ -295,6 +306,7 @@ export const expeditions = {
         ]
       },
       "properties": {
+        "type": "Expedition",
         "Event_ID": "EXP2023_DJ_012",
         "Date": "11/14/23",
         "Time": "8:14",
@@ -320,6 +332,7 @@ export const expeditions = {
         ]
       },
       "properties": {
+        "type": "Expedition",
         "Event_ID": "EXP2023_DJ_013",
         "Date": "11/14/23",
         "Time": "8:14",
@@ -343,6 +356,7 @@ export const expeditions = {
         ]
       },
       "properties": {
+        "type": "Expedition",
         "Event_ID": "EXP2023_DJ_014",
         "Date": "11/14/23",
         "Time": "8:14",
@@ -366,6 +380,7 @@ export const expeditions = {
         ]
       },
       "properties": {
+        "type": "Expedition",
         "Event_ID": "EXP2023_DJ_015",
         "Date": "11/14/23",
         "Time": "8:14",
@@ -395,6 +410,7 @@ export const expeditions = {
         ]
       },
       "properties": {
+        "type": "Expedition",
         "Event_ID": "EXP2023_DJ_016",
         "Date": "11/14/23",
         "Time": "11:46",
@@ -420,6 +436,7 @@ export const expeditions = {
         ]
       },
       "properties": {
+        "type": "Expedition",
         "Event_ID": "EXP2023_DJ_017",
         "Date": "11/14/23",
         "Time": "11:46",
@@ -449,6 +466,7 @@ export const expeditions = {
         ]
       },
       "properties": {
+        "type": "Expedition",
         "Event_ID": "EXP2023_DJ_018",
         "Date": "11/14/23",
         "Time": "16:01",
@@ -474,6 +492,7 @@ export const expeditions = {
         ]
       },
       "properties": {
+        "type": "Expedition",
         "Event_ID": "EXP2023_DJ_019",
         "Date": "11/14/23",
         "Time": "16:01",
@@ -497,6 +516,7 @@ export const expeditions = {
         ]
       },
       "properties": {
+        "type": "Expedition",
         "Event_ID": "EXP2023_DJ_020",
         "Date": "11/14/23",
         "Time": "19:00",
@@ -519,6 +539,7 @@ export const expeditions = {
         ]
       },
       "properties": {
+        "type": "Expedition",
         "Event_ID": "EXP2023_DJ_021",
         "Date": "11/14/23",
         "Time": "19:00",
@@ -541,6 +562,7 @@ export const expeditions = {
         ]
       },
       "properties": {
+        "type": "Expedition",
         "Event_ID": "EXP2023_DJ_022",
         "Date": "11/15/23",
         "Time": "7:58",
@@ -564,6 +586,7 @@ export const expeditions = {
         ]
       },
       "properties": {
+        "type": "Expedition",
         "Event_ID": "EXP2023_DJ_023",
         "Date": "11/15/23",
         "Time": "7:58",
@@ -593,6 +616,7 @@ export const expeditions = {
         ]
       },
       "properties": {
+        "type": "Expedition",
         "Event_ID": "EXP2023_DJ_024",
         "Date": "11/15/23",
         "Time": "11:12",
@@ -618,6 +642,7 @@ export const expeditions = {
         ]
       },
       "properties": {
+        "type": "Expedition",
         "Event_ID": "EXP2023_DJ_025",
         "Date": "11/15/23",
         "Time": "11:12",
@@ -641,6 +666,7 @@ export const expeditions = {
         ]
       },
       "properties": {
+        "type": "Expedition",
         "Event_ID": "EXP2023_DJ_026",
         "Date": "11/15/23",
         "Time": "11:12",
@@ -670,6 +696,7 @@ export const expeditions = {
         ]
       },
       "properties": {
+        "type": "Expedition",
         "Event_ID": "EXP2023_DJ_027",
         "Date": "11/15/23",
         "Time": "15:30",
@@ -695,6 +722,7 @@ export const expeditions = {
         ]
       },
       "properties": {
+        "type": "Expedition",
         "Event_ID": "EXP2023_DJ_028",
         "Date": "11/15/23",
         "Time": "15:30",
@@ -718,6 +746,7 @@ export const expeditions = {
         ]
       },
       "properties": {
+        "type": "Expedition",
         "Event_ID": "EXP2023_DJ_029",
         "Date": "11/15/23",
         "Time": "15:30",
@@ -741,6 +770,7 @@ export const expeditions = {
         ]
       },
       "properties": {
+        "type": "Expedition",
         "Event_ID": "EXP2023_DJ_030",
         "Date": "11/15/23",
         "Time": "15:30",
@@ -770,6 +800,7 @@ export const expeditions = {
         ]
       },
       "properties": {
+        "type": "Expedition",
         "Event_ID": "EXP2023_DJ_031",
         "Date": "11/16/23",
         "Time": "8:23",
@@ -795,6 +826,7 @@ export const expeditions = {
         ]
       },
       "properties": {
+        "type": "Expedition",
         "Event_ID": "EXP2023_DJ_032",
         "Date": "11/16/23",
         "Time": "8:23",
@@ -818,6 +850,7 @@ export const expeditions = {
         ]
       },
       "properties": {
+        "type": "Expedition",
         "Event_ID": "EXP2023_DJ_033",
         "Date": "11/16/23",
         "Time": "8:23",
@@ -841,6 +874,7 @@ export const expeditions = {
         ]
       },
       "properties": {
+        "type": "Expedition",
         "Event_ID": "EXP2023_DJ_034",
         "Date": "11/16/23",
         "Time": "8:23",
@@ -870,6 +904,7 @@ export const expeditions = {
         ]
       },
       "properties": {
+        "type": "Expedition",
         "Event_ID": "EXP2023_DJ_035",
         "Date": "11/16/23",
         "Time": "10:31",
@@ -895,6 +930,7 @@ export const expeditions = {
         ]
       },
       "properties": {
+        "type": "Expedition",
         "Event_ID": "EXP2023_DJ_036",
         "Date": "11/16/23",
         "Time": "10:31",
@@ -924,6 +960,7 @@ export const expeditions = {
         ]
       },
       "properties": {
+        "type": "Expedition",
         "Event_ID": "EXP2023_DJ_037",
         "Date": "11/17/23",
         "Time": "8:28",
@@ -949,6 +986,7 @@ export const expeditions = {
         ]
       },
       "properties": {
+        "type": "Expedition",
         "Event_ID": "EXP2023_DJ_038",
         "Date": "11/17/23",
         "Time": "8:28",
@@ -972,6 +1010,7 @@ export const expeditions = {
         ]
       },
       "properties": {
+        "type": "Expedition",
         "Event_ID": "EXP2023_DJ_039",
         "Date": "11/17/23",
         "Time": "8:28",
@@ -995,6 +1034,7 @@ export const expeditions = {
         ]
       },
       "properties": {
+        "type": "Expedition",
         "Event_ID": "EXP2023_DJ_040",
         "Date": "11/17/23",
         "Time": "8:28",
@@ -1024,6 +1064,7 @@ export const expeditions = {
         ]
       },
       "properties": {
+        "type": "Expedition",
         "Event_ID": "EXP2023_DJ_041",
         "Date": "11/17/23",
         "Time": "11:06",
@@ -1049,6 +1090,7 @@ export const expeditions = {
         ]
       },
       "properties": {
+        "type": "Expedition",
         "Event_ID": "EXP2023_DJ_042",
         "Date": "11/17/23",
         "Time": "11:06",
@@ -1072,6 +1114,7 @@ export const expeditions = {
         ]
       },
       "properties": {
+        "type": "Expedition",
         "Event_ID": "EXP2023_DJ_043",
         "Date": "11/17/23",
         "Time": "11:06",
@@ -1095,6 +1138,7 @@ export const expeditions = {
         ]
       },
       "properties": {
+        "type": "Expedition",
         "Event_ID": "EXP2023_DJ_044",
         "Date": "11/17/23",
         "Time": "16:00",
@@ -1118,6 +1162,7 @@ export const expeditions = {
         ]
       },
       "properties": {
+        "type": "Expedition",
         "Event_ID": "EXP2023_DJ_045",
         "Date": "11/17/23",
         "Time": "16:00",
@@ -1140,6 +1185,7 @@ export const expeditions = {
         ]
       },
       "properties": {
+        "type": "Expedition",
         "Event_ID": "EXP2023_DJ_046",
         "Date": "11/17/23",
         "Time": "16:00",
@@ -1163,6 +1209,7 @@ export const expeditions = {
         ]
       },
       "properties": {
+        "type": "Expedition",
         "Event_ID": "EXP2023_DJ_047",
         "Date": "11/17/23",
         "Time": "16:00",
@@ -1192,6 +1239,7 @@ export const expeditions = {
         ]
       },
       "properties": {
+        "type": "Expedition",
         "Event_ID": "EXP2023_DJ_048",
         "Date": "11/20/23",
         "Time": "7:49",
@@ -1223,6 +1271,7 @@ export const expeditions = {
         ]
       },
       "properties": {
+        "type": "Expedition",
         "Event_ID": "EXP2023_DJ_049",
         "Date": "11/20/23",
         "Time": "9:47",
@@ -1254,6 +1303,7 @@ export const expeditions = {
         ]
       },
       "properties": {
+        "type": "Expedition",
         "Event_ID": "EXP2023_DJ_050",
         "Date": "11/20/23",
         "Time": "12:19",
@@ -1285,6 +1335,7 @@ export const expeditions = {
         ]
       },
       "properties": {
+        "type": "Expedition",
         "Event_ID": "EXP2023_DJ_051",
         "Date": "11/20/23",
         "Time": "13:42",
