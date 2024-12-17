@@ -1,5 +1,6 @@
 export const countries = {
-  "type":"FeatureCollection","features":[
+  "type":"FeatureCollection",
+  "features":[
     {
       "type": "Feature",
       "geometry": {

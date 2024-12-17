@@ -7,21 +7,33 @@ const expeditions = "Expeditions";
 csv({ checkType: true, ignoreEmpty: true, trim: true })
   .fromFile(`./src/assets/data/${expeditions}.csv`)
   .then((jsonObj) => {
-    const path = `./src/assets/data/${expeditions}.json`;
-    const result = [];
+    const path = `./src/assets/data/${expeditions}.geojson`;
+    const result = {
+      "type": "FeatureCollection",
+      "features": []
+    };
+
+
     jsonObj.forEach((obj) => {
-      result.push({
-        "type": "FeatureCollection",
-        "features": [
-          {
-            "type": "Feature",
-            "geometry": {
-              "type": "LineString",
-              "coordinates": [
-                [obj.Longitude_Start, obj.Latitude_Start],  // Starting point: [longitude, latitude]
-                [obj.Longitude_End, obj.Latitude_End]   // Ending point: [longitude, latitude]
-              ]
-            },
+
+      const featureGeometry = {
+        "type": "Feature",
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [obj.Longitude_Start, obj.Latitude_Start],   // Starting point: [longitude, latitude]
+            [obj.Longitude_End, obj.Latitude_End]    // Ending point: [longitude, latitude]
+          ]
+        },
+      };
+      console.log(obj.Longitude_End, obj.Latitude_End);
+      if (obj.Longitude_End == null || obj.Latitude_End == null) {
+        featureGeometry.geometry.type = "Point";
+        featureGeometry.geometry.coordinates = [obj.Longitude_Start, obj.Latitude_Start];
+      }
+      result.features.push({
+        "id": obj.Event_ID,
+        ...featureGeometry,
             "properties": {
               "Event_ID": obj.Event_ID,
               "Date": obj.Date,
@@ -37,8 +49,6 @@ csv({ checkType: true, ignoreEmpty: true, trim: true })
               "Longitude_End": obj.Longitude_End,
               "Comments": obj.Comments,
             }
-          }
-        ]
       })
     });
     writeFileSync(path, JSON.stringify(result));

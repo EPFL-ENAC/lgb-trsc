@@ -21,14 +21,16 @@ import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import GeoJSON from 'ol/format/GeoJSON';
 import { Style, Circle as CircleStyle, Fill, Stroke } from 'ol/style';
-import { onMounted, ref } from 'vue';
+import { onActivated, onMounted, ref } from 'vue';
 import { QDrawer } from 'quasar';
 import CountryMapPopup from 'components/CountryMapPopup.vue';
 import { countries } from 'assets/data/countries';
-import { on } from 'events';
+import { expeditions }  from 'assets/data/expeditions';
 
 const selectedCountry = ref(null);
 const coastlineLayer = ref<VectorLayer<VectorSource>|null>(null);
+const expeditionsLayer = ref<VectorLayer<VectorSource>|null>(null);
+
 const drawer = ref(false);
 let map: Map;
 
@@ -91,9 +93,30 @@ onMounted(() => {
     })});
   map.addLayer(coastlineLayer.value);
 
-    // coastlineLayer.value = new VectorLayer({
-    //     source: new VectorSource(),
-    //   });
+  expeditionsLayer.value = new VectorLayer({
+    source: new VectorSource({}),
+    style: new Style({
+      stroke: new Stroke({
+        color:'blue',
+        width: 2
+       })
+     }),
+    //  style: new Style({
+    //     image: new CircleStyle({
+    //       radius: 5,
+    //       fill: new Fill({
+    //         color: 'blue'
+    //       }),
+    //       stroke: new Stroke({
+    //         color: 'white',
+    //         width: 1
+    //       })
+    //     })
+    //   })
+   });
+  map.addLayer(expeditionsLayer.value);
+
+
   map.on('pointermove', (event) => {
     const pixel = map.getEventPixel(event.originalEvent);
     const hit = map.hasFeatureAtPixel(pixel);
@@ -112,10 +135,17 @@ onMounted(() => {
       });
       coastlineLayer.value.getSource().clear();
       coastlineLayer.value.getSource().addFeature(coastlineFeature);
+
+      const expeditionsFeatures = new GeoJSON().readFeatures(expeditions, {
+        featureProjection: 'EPSG:4326'
+      });
+      expeditionsLayer.value.getSource().clear();
+      expeditionsLayer.value.getSource().addFeatures(expeditionsFeatures);
     });
   });
 
 });
+
 </script>
 
 <style scoped>
