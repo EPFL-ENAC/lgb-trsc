@@ -22,6 +22,7 @@ import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import GeoJSON from 'ol/format/GeoJSON';
 import { Style, Circle as CircleStyle, Fill, Stroke } from 'ol/style';
+import { ScaleLine } from 'ol/control'; // Import ScaleLine control
 import { onActivated, onMounted, ref } from 'vue';
 import { QDrawer } from 'quasar';
 import CountryMapPopup from 'components/CountryMapPopup.vue';
@@ -79,9 +80,15 @@ onMounted(() => {
     ],
     view: new View({
       center: [39.0, 21.5], // Coordinates for the Red Sea
-      zoom: 5,
+      zoom: 3,
+      minZoom: 3, // Set minimum zoom level
+      maxZoom: 18, // Set maximum zoom level
       projection: 'EPSG:4326',
+      extent: [12.426939205444683, 5.438693927840603, 68.05692344846989, 34.722854975836995] // Set extent to block navigation outside the specified coordinates
     }),
+    controls: [
+      new ScaleLine() // Add scale line control
+    ]
   });
 
   coastlineLayer.value = new VectorLayer({
