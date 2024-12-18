@@ -1,8 +1,11 @@
 <template>
   <div class="about-page">
-    <div class="top-element">
-      The Transnational Red Sea Center (link to www.trsc.org) was created...
-    </div>
+    <p class="top-element q-pa-md">
+     <a class="trsc-link" href="https://trsc.org" target="_blank">
+       The Transnational Red Sea
+      </a>
+      Center was created by the Swiss Federal Institute of Technology Lausanne (EPFL) and the King Abdullah University of Science and Technology (KAUST) in 2019. The TRSC is a research center that aims to study the Red Sea and its coral reefs. The center is located in Thuwal, Saudi Arabia.
+    </p>
     <div class="bottom-element">
       <div class="card" v-for="person in people" :key="person.id">
         <h3>{{ person.name }}</h3>
@@ -56,6 +59,19 @@ const people = ref([
 </script>
 
 <style scoped>
+.trsc-link {
+  color: red;
+  font-weight: bold;
+  &:hover {
+    text-decoration: underline;
+  }
+  &:visited {
+    color: red;
+  }
+  &:active {
+    color: red;
+  }
+}
 .about-page {
   display: grid;
   grid-auto-rows: 10% 90%;
@@ -63,7 +79,7 @@ const people = ref([
 }
 
 .top-element {
-  display:flex;
+  display:inline-block;
   justify-content: center;
   align-items: center;
 }

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p>Links to publications, reports, documentaries
+    <p class="q-pa-md">Links to publications, reports, documentaries
     </p>
   </div>
 </template>

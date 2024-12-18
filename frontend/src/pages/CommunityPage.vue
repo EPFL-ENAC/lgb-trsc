@@ -1,10 +1,16 @@
 <template>
   <q-page class="col items-center justify-center community-page">
     <!-- <h1 class="red-bold">Community</h1> -->
-    <p>The Transnational Red Sea Center (link to www.trsc.org) relies on many collaborators from the Red Sea region mainly, and beyond….</p>
+    <p class="q-pa-md"><a class="trsc-link" href="https://trsc.org" target="_blank">The Transnational Red Sea Center</a> relies on many collaborators from the Red Sea region mainly, and beyond….</p>
     <div class="logo-row">
       <a v-for="community in communities" :key="community.name" :href="community.url" target="_blank">
-        <img :src="community.logo" :alt="community.name" />
+        <q-img :src="community.logo" :alt="community.name" fit="contain">
+          <q-icon class="absolute all-pointer-events" size="8px" name="info" color="black" style="bottom: 4px; right: 4px">
+            <q-tooltip>
+              {{ community.name }}
+            </q-tooltip>
+          </q-icon>
+        </q-img>
       </a>
     </div>
   </q-page>
@@ -58,20 +64,39 @@ const communities = [
 </script>
 
 <style scoped>
+.trsc-link {
+  color: red;
+  font-weight: bold;
+  &:hover {
+    text-decoration: underline;
+  }
+  &:visited {
+    color: red;
+  }
+  &:active {
+    color: red;
+  }
+}
 .red-bold {
   color: red;
   font-weight: bold;
 }
 
 .logo-row {
-  display: flex;
+
+  display:grid;
+  grid-auto-flow: column;
+  height: 200px;
+  width: 100%;
   justify-content: space-around;
   align-items: center;
-  margin-top: 1rem;
+  margin-top: 3rem;
 }
 
-.logo-row img {
-  max-width: 100px;
-  height: auto;
+.logo-row a {
+  width: 150px;
+  height: 150px;
+  display: flex;
+  align-items: end;
 }
 </style>

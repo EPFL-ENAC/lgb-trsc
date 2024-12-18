@@ -19,7 +19,7 @@
       <p>Welcome to our Red Sea Reef data navigator</p>
       <p>On this online platform, you will be able to learn about our work and about the specific research projects we have in collaboration with our many Red Sea partners. You will also be able to learn about the new coral reef monitoring technologies that we are developing and implementing to support science-based conservation in the Red Sea.</p>
       <p>This tool will also allow you to visualise the various data associated with the work conducted by the TRSC in the Red Sea:</p>
-      <q-btn label="Dive into the data" @click="navigateToResearchProjects" />
+      <q-btn class="q-pa-md" label="Dive into the data" @click="navigateToResearchProjects" />
       <p>If you wish to collaborate with us, feel free to contact us and we will do our best to come back to you shortly!</p>
     </div>
   </q-page>
