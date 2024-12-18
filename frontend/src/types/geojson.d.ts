@@ -1,4 +1,6 @@
+import GeoJSON from "ol/format/GeoJSON";
+
 declare module '*.geojson' {
-  const value: any;
+  const value: GeoJSON;
   export default value;
 }

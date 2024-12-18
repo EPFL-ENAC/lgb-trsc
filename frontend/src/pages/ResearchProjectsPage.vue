@@ -24,12 +24,12 @@ import VectorSource from 'ol/source/Vector';
 import GeoJSON from 'ol/format/GeoJSON';
 import { Style, Circle as CircleStyle, Fill, Stroke } from 'ol/style';
 import { ScaleLine } from 'ol/control'; // Import ScaleLine control
-import { onActivated, onMounted, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { QDrawer } from 'quasar';
 import CountryMapPopup from 'components/CountryMapPopup.vue';
 import ExpeditionMapPopup from 'components/ExpeditionMapPopup.vue';
 import { countries } from 'assets/data/countries';
-import { expeditions }  from 'assets/data/expeditions';
+import { expeditions }  from 'src/assets/data/expeditions';
 
 const selectedCountry = ref(null);
 const selectedExpedition = ref(null);
@@ -165,7 +165,6 @@ onMounted(() => {
   map.on('click', (evt) => {
     map.forEachFeatureAtPixel(evt.pixel, function (feature) {
       const properties = feature.getProperties();
-      debugger;
       if (properties.type === 'country') { // Check if the feature is a country
         selectedCountry.value = properties;
         zoomToCountry();
