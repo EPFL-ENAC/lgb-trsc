@@ -29,7 +29,7 @@ import { QDrawer } from 'quasar';
 import CountryMapPopup from 'components/CountryMapPopup.vue';
 import ExpeditionMapPopup from 'components/ExpeditionMapPopup.vue';
 import { countries } from 'assets/data/countries';
-import { expeditions }  from 'src/assets/data/expeditions';
+import { expeditions }  from 'assets/data/expeditions';
 
 const selectedCountry = ref(null);
 const selectedExpedition = ref(null);
