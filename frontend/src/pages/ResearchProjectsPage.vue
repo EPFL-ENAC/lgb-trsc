@@ -9,8 +9,8 @@
     :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'"
     style="    height: -webkit-fill-available; height: -moz-available; height: fill-available; height: initial;"
   >
-    <CountryMapPopup v-if="selectedCountry" :country="selectedCountry" :closeDrawer="closeDrawer" :zoomToCountry="zoomToCountry" />
-    <ExpeditionMapPopup v-if="selectedExpedition" :expedition="selectedExpedition" :closeDrawer="closeDrawer" :zoomToExpedition="zoomToExpedition" />
+    <CountryMapPopup v-if="selectedCountry && !selectedExpedition" :country="selectedCountry" :closeDrawer="closeDrawer" :zoomToCountry="zoomToCountry" />
+    <ExpeditionMapPopup v-if="selectedExpedition" :expedition="selectedExpedition" :closeDrawer="closeExpedition" :zoomToExpedition="zoomToExpedition" />
   </q-drawer>
 </template>
 
@@ -48,6 +48,15 @@ const closeDrawer = () => {
   expeditionsLayer.value.getSource().clear();
   countryLayer.value.setStyle(countryStyle); // Reset style to show yellow circles
   zoomOutOfCountry();
+};
+
+
+const closeExpedition = () => {
+  drawer.value = false;
+  selectedExpedition.value = null;
+  // coastlineLayer.value.getSource().clear();
+  // expeditionsLayer.value.getSource().clear();
+  zoomToCountry();
 };
 
 const zoomToCountry = () => {
@@ -116,7 +125,7 @@ onMounted(() => {
       center: [39.0, 21.5], // Coordinates for the Red Sea
       zoom: 3,
       minZoom: 3, // Set minimum zoom level
-      maxZoom: 18, // Set maximum zoom level
+      maxZoom: 17, // Set maximum zoom level
       projection: 'EPSG:4326',
       extent: [12.426939205444683, 5.438693927840603, 68.05692344846989, 34.722854975836995] // Set extent to block navigation outside the specified coordinates
     }),
