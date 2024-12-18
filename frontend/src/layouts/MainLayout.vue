@@ -34,7 +34,7 @@
       <a class="burger-thumb thumb" href="#navigation">Navigation</a>
     </header> -->
 
-    <q-page-container style="display: initial;">
+    <q-page-container style="display: inherit;">
       <router-view />
     </q-page-container>
 
