@@ -52,10 +52,7 @@ const closeDrawer = () => {
 
 
 const closeExpedition = () => {
-  drawer.value = false;
   selectedExpedition.value = null;
-  // coastlineLayer.value.getSource().clear();
-  // expeditionsLayer.value.getSource().clear();
   zoomToCountry();
 };
 
