@@ -2,18 +2,22 @@
   <div id="map" class="map" :style="{'--drawer-width': drawer ? '532px' : '32px' }"></div>
   <div class="legend" v-if="selectedCountry || selectedExpedition">
     <ul>
-      <li>Legend:
+      <li>
+
+        Legend:
         <ol>
-          <li>Expedition 2023</li>
+          <li><span class="legend-color" style="background-color: blue;"></span>Expedition 2023</li>
         </ol>
       </li>
     </ul>
   </div>
   <div class="legend" v-else>
     <ul>
-      <li>Legend:
+      <li>
+
+        Legend:
         <ol>
-          <li>Countries</li>
+          <li> <span class="legend-color" style="background-color: yellow;"></span>Countries</li>
         </ol>
       </li>
     </ul>
@@ -278,5 +282,12 @@ onMounted(() => {
       margin: 0;
     }
   }
+}
+
+.legend-color {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 5px;
 }
 </style>
