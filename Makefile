@@ -1,8 +1,6 @@
 .PHONY: backup-dump
 
 install:
-	pnpm install
-	npx husky install
 	$(MAKE) -C frontend install
 
 run-frontend:
@@ -17,6 +15,9 @@ lint:
 lint-staged:
 	$(MAKE) -C frontend lint-staged
 
+convert:
+	$(MAKE) -C frontend convert
+
 run-db:
 	docker compose up -d --pull=always postgres
 
@@ -28,7 +29,8 @@ down-db:
 
 # setup and run when deploying on server
 setup:
-	echo "nothing to see here"
+	docker network create web
+	echo "network created"
 
 run:
 	docker compose -f docker-compose.yml pull

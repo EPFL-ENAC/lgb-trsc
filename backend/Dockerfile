@@ -1,17 +1,14 @@
-FROM python:3.11.7-bullseye
-ENV POETRY_VERSION=1.7.1
-RUN pip install "poetry==$POETRY_VERSION"
-ENV PYTHONPATH="$PYTHONPATH:/app"
+FROM python:3.12-slim
 
+# Install uv.
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+
+# Copy the application into the container.
+COPY . /app
+
+# Install the application dependencies.
 WORKDIR /app
+RUN uv sync --frozen --no-cache
 
-COPY poetry.lock pyproject.toml /app/
-RUN poetry config installer.max-workers 10
-RUN poetry config virtualenvs.create false
-RUN apt-get update && apt-get install -y g++ libpq-dev libgl1 gdal-bin libgdal-dev
-RUN poetry install --no-interaction --no-root
-
-COPY start.sh /app/
-COPY api /app/api
-
-ENTRYPOINT sh start.sh
+# Run the application.
+CMD ["/app/.venv/bin/fastapi", "run", "app/main.py", "--port", "80", "--host", "0.0.0.0"]

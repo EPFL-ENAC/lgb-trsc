@@ -1,40 +1,41 @@
-# EPFL Campus Water Portal (frontend)
+# lgb-trsc-frontend (frontend)
 
-### Install the dependencies
+This tool will also allow you to visualise the various data associated with the work conducted by the TRSC in the Red Sea
 
+## Install the dependencies
 ```bash
+yarn
+# or
 npm install
 ```
 
 ### Start the app in development mode (hot-code reloading, error reporting, etc.)
-
 ```bash
-npm run dev
+quasar dev
 ```
 
-### Lint the files
 
+### Lint the files
 ```bash
+yarn lint
+# or
 npm run lint
 ```
 
-### Format the files
 
+### Format the files
 ```bash
+yarn format
+# or
 npm run format
 ```
 
-### Build the app for production
 
+
+### Build the app for production
 ```bash
-nom run build
+quasar build
 ```
 
 ### Customize the configuration
-
-If this frontend application connects to a backend service, use the following environment variables:
-
-- `API_URL`, the base URL of the backend server: `https://some-app.epfl.ch`
-- `API_PATH`, the entry point of the backend's web services: `/api`
-
-See documentation about the [quasar.config.js](https://v2.quasar.dev/quasar-cli-vite/quasar-config-js) and how the API client is setup in the [src/boot/api.ts](https://github.com/EPFL-ENAC/it4r-webmap/blob/main/src/boot/api.ts) file.
+See [Configuring quasar.config.js](https://v2.quasar.dev/quasar-cli-vite/quasar-config-js).

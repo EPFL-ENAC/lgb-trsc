@@ -1,0 +1,14 @@
+﻿Field Name,Definition,Data Type,Format/Example,Notes
+Event_ID,Unique identifier for each event/activity,String,EXP2023_DJ_001,Format: EXP[Year]_[CountryAbbr]_[SequentialNumber]
+Date,Date of the event/activity,Date,YYYY-MM-DD,Corresponds to the sampling date
+Time,Start time of the event (24-hour format),Time,HH:MM,Local time (UTC+3)
+Site,General area or region of the event,String,Maskali / Moucha,
+Site_Name,Specific site name within the area,String,Sunken Buoy,
+Project_Code,Abbreviation of the project,String,"3D, MP, SG, etc.",See project codes table
+Project_Name,Full name of the project,String,3D Mapping,
+Team_Members,Names of team members involved,String,FirstName LastName,Separated by commas
+Latitude_Start,Starting latitude in decimal degrees,Decimal,11.695854,Positive for North
+Longitude_Start,Starting longitude in decimal degrees,Decimal,43.145544,Positive for East
+Latitude_End,Ending latitude in decimal degrees,Decimal,11.695467,
+Longitude_End,Ending longitude in decimal degrees,Decimal,43.146025,
+Comments,Additional observations or notes about the event,String,,
