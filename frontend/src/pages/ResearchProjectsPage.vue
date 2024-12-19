@@ -1,5 +1,23 @@
 <template>
-  <div id="map" class="map" :style="{'--drawer-width': drawer ? '545px' : '45px' }"></div>
+  <div id="map" class="map" :style="{'--drawer-width': drawer ? '532px' : '32px' }"></div>
+  <div class="legend" v-if="selectedCountry || selectedExpedition">
+    <ul>
+      <li>Legend:
+        <ol>
+          <li>Expedition 2023</li>
+        </ol>
+      </li>
+    </ul>
+  </div>
+  <div class="legend" v-else>
+    <ul>
+      <li>Legend:
+        <ol>
+          <li>Countries</li>
+        </ol>
+      </li>
+    </ul>
+  </div>
   <q-drawer
     side="right"
     v-model="drawer"
@@ -19,7 +37,7 @@ import 'ol/ol.css';
 import { Map, View } from 'ol';
 import TileLayer from 'ol/layer/Tile';
 import Rotate from 'ol/control/Rotate';
-import {defaults} from 'ol/control/defaults';
+import { defaults } from 'ol/control/defaults';
 
 import XYZ from 'ol/source/XYZ';
 import VectorLayer from 'ol/layer/Vector';
@@ -141,8 +159,19 @@ onMounted(() => {
   map.addInteraction(new DragRotateAndZoom());
   map.addInteraction(new PinchZoom());
 
+  // add legend
+  // const layer = new TileLayer({
+  //   source: new OSM({
+      attributions: [
+        '<img src="path/to/your/legend-image.png" alt="Legend">'
+      ]
+  //   })
+  // });
+  // map.addLayer(layer);
+
   const rotateControl = new Rotate({
-    autoHide: false
+    autoHide: false,
+    label: '⇧',
   });
   map.addControl(rotateControl);
   coastlineLayer.value = new VectorLayer({
@@ -230,5 +259,24 @@ onMounted(() => {
   top: .5em;
   right: .5em;
   transition: opacity .25s linear, visibility 0s linear;
+}
+.legend {
+  position: absolute;
+  top: 1.5em;
+  left: 1.5em;
+  background: white;
+  padding: 10px;
+  border: 1px solid black;
+  border-radius: 5px;
+  ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    ol:first-child {
+      list-style-type: decimal;
+      padding: 0;
+      margin: 0;
+    }
+  }
 }
 </style>
