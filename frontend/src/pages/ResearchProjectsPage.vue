@@ -119,12 +119,12 @@ onMounted(() => {
       countryLayer.value // Add countryLayer to the map
     ],
     view: new View({
-      center: [39.0, 21.5], // Coordinates for the Red Sea
+      center: [2.0, 18], // Coordinates for the Red Sea
       zoom: 3,
       minZoom: 3, // Set minimum zoom level
       maxZoom: 17, // Set maximum zoom level
       projection: 'EPSG:4326',
-      extent: [12.426939205444683, 5.438693927840603, 68.05692344846989, 34.722854975836995] // Set extent to block navigation outside the specified coordinates
+      extent: [15, 2, 60, 32] // Set extent to block navigation outside the specified coordinates
     }),
     controls: [
       new ScaleLine() // Add scale line control
