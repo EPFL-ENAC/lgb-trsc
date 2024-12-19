@@ -45,7 +45,8 @@ import 'ol/ol.css';
 import { Map, View } from 'ol';
 import TileLayer from 'ol/layer/Tile';
 import Rotate from 'ol/control/Rotate';
-import { defaults } from 'ol/control/defaults';
+// import defaults from 'ol/control/defaults';
+import Zoom from 'ol/control/Zoom';
 
 import XYZ from 'ol/source/XYZ';
 import VectorLayer from 'ol/layer/Vector';
@@ -184,6 +185,7 @@ onMounted(() => {
     label: '⇧',
   });
   map.addControl(rotateControl);
+  map.addControl(new Zoom());
   coastlineLayer.value = new VectorLayer({
     source: new VectorSource(),
     style: new Style({
@@ -287,7 +289,7 @@ onMounted(() => {
 .legend {
   position: absolute;
   top: 1.5em;
-  left: 1.5em;
+  left: 3.5em;
   background: white;
   padding: 10px;
   border: 1px solid black;
