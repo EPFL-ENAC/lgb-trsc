@@ -1,6 +1,6 @@
 <template>
   <div class="popup">
-    <button class="close-btn" @click="closeDrawer">Close</button>
+    <button class="close-btn" @click="closeDrawer">Back</button>
     <h3>{{ expedition.Event_ID }}</h3>
     <p>Date: {{ expedition.Date }}</p>
     <p>Time: {{ expedition.Time }}</p>

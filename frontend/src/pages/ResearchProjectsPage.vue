@@ -1,5 +1,5 @@
 <template>
-  <div id="map" class="map"></div>
+  <div id="map" class="map" :style="{'--drawer-width': drawer ? '545px' : '45px' }"></div>
   <q-drawer
     side="right"
     v-model="drawer"
@@ -18,6 +18,9 @@
 import 'ol/ol.css';
 import { Map, View } from 'ol';
 import TileLayer from 'ol/layer/Tile';
+import Rotate from 'ol/control/Rotate';
+import {defaults} from 'ol/control/defaults';
+
 import XYZ from 'ol/source/XYZ';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
@@ -30,6 +33,11 @@ import CountryMapPopup from 'components/CountryMapPopup.vue';
 import ExpeditionMapPopup from 'components/ExpeditionMapPopup.vue';
 import { countries } from 'assets/data/countries';
 import { expeditions }  from 'assets/data/expeditions';
+
+import DragRotateAndZoom from 'ol/interaction/DragRotateAndZoom';
+import PinchZoom from 'ol/interaction/PinchZoom';
+
+
 
 const selectedCountry = ref(null);
 const selectedExpedition = ref(null);
@@ -130,7 +138,13 @@ onMounted(() => {
       new ScaleLine() // Add scale line control
     ]
   });
+  map.addInteraction(new DragRotateAndZoom());
+  map.addInteraction(new PinchZoom());
 
+  const rotateControl = new Rotate({
+    autoHide: false
+  });
+  map.addControl(rotateControl);
   coastlineLayer.value = new VectorLayer({
     source: new VectorSource(),
     style: new Style({
@@ -203,9 +217,18 @@ onMounted(() => {
 });
 </script>
 
-<style scoped>
+<style>
 .map {
-  width: 100%;
-  height: 100vh;
+  /* width: 100%; */
+  width: calc(100vw - var(--drawer-width));
+  /* // height was 100vh; */
+  height: calc(100vh - 199px);
+}
+
+
+.ol-rotate {
+  top: .5em;
+  right: .5em;
+  transition: opacity .25s linear, visibility 0s linear;
 }
 </style>

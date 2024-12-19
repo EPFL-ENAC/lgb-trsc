@@ -1,7 +1,7 @@
 <template>
   <q-layout view="hhh lpR fFf">
 
-    <q-header  style="border-bottom: 1px solid red;" class="bg-white text-red APax text-weight-thin" height-hint="98">
+    <q-header  elevated style="border-bottom: 1px solid red;" class="bg-white text-red APax text-weight-thin" height-hint="98">
       <q-toolbar @click="navigateToHome" class="clickable">
         <q-toolbar-title class="toolbar-title">
           <q-avatar class="toolbar-avatar" >
@@ -35,7 +35,9 @@
     </header> -->
 
     <q-page-container style="display: inherit;">
-      <router-view />
+      <q-page class="q-pa-md">
+        <router-view />
+      </q-page>
     </q-page-container>
 
     <q-footer  class="bg-white text-red q-row row align-right" style="border-top: 1px solid red;">

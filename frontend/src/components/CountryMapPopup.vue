@@ -1,6 +1,6 @@
 <template>
   <div class="popup">
-    <button class="close-btn" @click="closeDrawer">Close</button>
+    <button class="close-btn" @click="closeDrawer">Back</button>
     <h3>{{ country.name }}</h3>
     <p>{{ country.description }}</p>
     <p>{{ country.visited }}</p>
