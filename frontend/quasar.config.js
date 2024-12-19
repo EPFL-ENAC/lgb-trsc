@@ -8,10 +8,11 @@
 // Configuration for your app
 // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js
 
+
 const { configure } = require('quasar/wrappers');
 const path = require('path');
 
-module.exports = configure(function (ctx) {
+module.exports = configure(function (/* ctx */) {
   return {
     eslint: {
       // fix: true,
@@ -19,7 +20,7 @@ module.exports = configure(function (ctx) {
       // exclude: [],
       // rawOptions: {},
       warnings: true,
-      errors: true,
+      errors: true
     },
 
     // https://v2.quasar.dev/quasar-cli-vite/prefetch-feature
@@ -28,10 +29,15 @@ module.exports = configure(function (ctx) {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://v2.quasar.dev/quasar-cli-vite/boot-files
-    boot: ['i18n', 'api', 'settings'],
+    boot: [
+      'i18n',
+      
+    ],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#css
-    css: ['app.scss'],
+    css: [
+      'app.scss'
+    ],
 
     // https://github.com/quasarframework/quasar/tree/dev/extras
     extras: [
@@ -50,11 +56,11 @@ module.exports = configure(function (ctx) {
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#build
     build: {
       target: {
-        browser: ['es2019', 'edge88', 'firefox78', 'chrome87', 'safari13.1'],
-        node: 'node16',
+        browser: [ 'es2019', 'edge88', 'firefox78', 'chrome87', 'safari13.1' ],
+        node: 'node16'
       },
 
-      vueRouterMode: 'history', // available values: 'hash', 'history'
+      vueRouterMode: 'hash', // available values: 'hash', 'history'
       // vueRouterBase,
       // vueDevtools,
       // vueOptionsAPI: false,
@@ -63,11 +69,7 @@ module.exports = configure(function (ctx) {
 
       // publicPath: '/',
       // analyze: true,
-      env: {
-        API_URL: ctx.dev ? 'http://localhost:8000' : process.env.API_URL,
-        API_PATH: ctx.dev ? '' : process.env.API_PATH,
-        CDN_FOLDER: ctx.dev ? 'dev' : process.env.CDN_FOLDER,
-      },
+      // env: {},
       // rawDefine: {}
       // ignorePublicFolder: true,
       // minify: false,
@@ -75,50 +77,27 @@ module.exports = configure(function (ctx) {
       // distDir
 
       // extendViteConf (viteConf) {},
-      // Needed to have relative assets in the index.html
-      // https://github.com/quasarframework/quasar/issues/8513#issuecomment-1127654470
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      extendViteConf(viteConf, { isServer, isClient }) {
-        viteConf.base = '';
-      },
       // viteVuePluginOptions: {},
 
       vitePlugins: [
-        [
-          'unplugin-auto-import/vite',
-          {
-            imports: ['vue', 'vue-router', 'vue-i18n', 'pinia', 'vue/macros'],
-            dts: 'src/auto-imports.d.ts',
-            dirs: ['src/composables', 'src/models', 'src/stores'],
-            vueTemplate: true,
-            eslintrc: {
-              enabled: true, // Default `false`
-              filepath: './.eslintrc-auto-import.json', // Default `./.eslintrc-auto-import.json`
-              globalsPropValue: true, // Default `true`, (true | false | 'readonly' | 'readable' | 'writable' | 'writeable')
-            },
-          },
-        ],
-        [
-          '@intlify/vite-plugin-vue-i18n',
-          {
-            // if you want to use Vue I18n Legacy API, you need to set `compositionOnly: false`
-            // compositionOnly: false,
+        ['@intlify/vite-plugin-vue-i18n', {
+          // if you want to use Vue I18n Legacy API, you need to set `compositionOnly: false`
+          // compositionOnly: false,
 
-            // if you want to use named tokens in your Vue I18n messages, such as 'Hello {name}',
-            // you need to set `runtimeOnly: false`
-            runtimeOnly: false,
+          // if you want to use named tokens in your Vue I18n messages, such as 'Hello {name}',
+          // you need to set `runtimeOnly: false`
+          // runtimeOnly: false,
 
-            // you need to set i18n resource including paths !
-            include: path.resolve(__dirname, './src/i18n/**'),
-          },
-        ],
-      ],
+          // you need to set i18n resource including paths !
+          include: path.resolve(__dirname, './src/i18n/**')
+        }]
+      ]
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#devServer
     devServer: {
       // https: true
-      open: false, // opens browser window automatically
+      open: true // opens browser window automatically
     },
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#framework
@@ -136,7 +115,7 @@ module.exports = configure(function (ctx) {
       // directives: [],
 
       // Quasar plugins
-      plugins: ['Notify', 'LocalStorage', 'LoadingBar', 'Cookies'],
+      plugins: []
     },
 
     // animations: 'all', // --- includes all animations
@@ -158,7 +137,7 @@ module.exports = configure(function (ctx) {
     // https://v2.quasar.dev/quasar-cli-vite/developing-ssr/configuring-ssr
     ssr: {
       // ssrPwaHtmlFilename: 'offline.html', // do NOT use index.html as name!
-      // will mess up SSR
+                                          // will mess up SSR
 
       // extendSSRWebserverConf (esbuildConf) {},
       // extendPackageJson (json) {},
@@ -169,11 +148,11 @@ module.exports = configure(function (ctx) {
       // manualPostHydrationTrigger: true,
 
       prodPort: 3000, // The default port that the production server should use
-      // (gets superseded if process.env.PORT is specified at runtime)
+                      // (gets superseded if process.env.PORT is specified at runtime)
 
       middlewares: [
-        'render', // keep this as last one
-      ],
+        'render' // keep this as last one
+      ]
     },
 
     // https://v2.quasar.dev/quasar-cli-vite/developing-pwa/configuring-pwa
@@ -197,7 +176,7 @@ module.exports = configure(function (ctx) {
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/developing-capacitor-apps/configuring-capacitor
     capacitor: {
-      hideSplashscreen: true,
+      hideSplashscreen: true
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/developing-electron-apps/configuring-electron
@@ -211,11 +190,13 @@ module.exports = configure(function (ctx) {
 
       packager: {
         // https://github.com/electron-userland/electron-packager/blob/master/docs/api.md#options
+
         // OS X / Mac App Store
         // appBundleId: '',
         // appCategoryType: '',
         // osxSign: '',
         // protocol: 'myapp://path',
+
         // Windows only
         // win32metadata: { ... }
       },
@@ -223,16 +204,18 @@ module.exports = configure(function (ctx) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: 'water-portal-webmap',
-      },
+        appId: 'frontend'
+      }
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/developing-browser-extensions/configuring-bex
     bex: {
-      contentScripts: ['my-content-script'],
+      contentScripts: [
+        'my-content-script'
+      ],
 
       // extendBexScriptsConf (esbuildConf) {}
       // extendBexManifestJson (json) {}
-    },
-  };
+    }
+  }
 });
