@@ -3,7 +3,6 @@
   <div class="legend" v-if="selectedCountry || selectedExpedition">
     <ul>
       <li>
-
         Legend:
         <ol>
           <li><span class="legend-color" style="background-color: blue;"></span>Expedition 2023</li>
@@ -22,6 +21,11 @@
       </li>
     </ul>
   </div>
+  <div class="custom-tooltip" :style="{'--display-tooltip': hoveredExpedition?.Event_ID ? 'inline-block' : 'none', '--left-tooltip': `${hoveredExpeditionPixel?.[0]}px` , '--top-tooltip': `${hoveredExpeditionPixel?.[1]}px` }">
+    {{ hoveredExpedition?.Event_ID }}
+
+  </div>
+
   <q-drawer
     side="right"
     v-model="drawer"
@@ -63,6 +67,8 @@ import PinchZoom from 'ol/interaction/PinchZoom';
 
 const selectedCountry = ref(null);
 const selectedExpedition = ref(null);
+const hoveredExpedition = ref(null);
+const hoveredExpeditionPixel = ref(null);
 const coastlineLayer = ref<VectorLayer<VectorSource>|null>(null);
 const expeditionsLayer = ref<VectorLayer<VectorSource>|null>(null);
 const countryLayer = ref<VectorLayer<VectorSource>|null>(null); // Define countryLayer
@@ -213,6 +219,20 @@ onMounted(() => {
     const pixel = map.getEventPixel(event.originalEvent);
     const hit = map.hasFeatureAtPixel(pixel);
     map.getTargetElement().style.cursor = hit ? 'pointer' : '';
+
+
+    if (hit) {
+      map.forEachFeatureAtPixel(pixel, function (feature) {
+        const properties = feature.getProperties();
+        if (properties.type === 'Expedition') {
+          hoveredExpedition.value = properties;
+          hoveredExpeditionPixel.value = pixel;
+        }
+      });
+    } else {
+      hoveredExpedition.value = null;
+      hoveredExpeditionPixel.value = null;
+    }
   });
 
   map.on('click', (evt) => {
@@ -289,5 +309,19 @@ onMounted(() => {
   width: 10px;
   height: 10px;
   margin-right: 5px;
+}
+.custom-tooltip {
+  position: absolute;
+  top: calc(var(--top-tooltip) - 10px);
+  left: calc(var(--left-tooltip) + 40px);
+  /* top: 100px;
+  left:100px; */
+  background: white;
+  padding: 10px;
+  border: 1px solid black;
+  border-radius: 5px;
+  z-index: 1000;
+  pointer-events: none;
+  display: var(--display-tooltip, inline-block);
 }
 </style>
