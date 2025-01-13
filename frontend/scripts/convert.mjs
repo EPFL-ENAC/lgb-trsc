@@ -1,7 +1,38 @@
 import csv from 'csvtojson';
 import { writeFileSync } from 'fs';
 
-const djibouti_2023 = "TRSC_Djibouti_Nov_2023_All_projects_timeline";
+// const djibouti_2023 = "TRSC_Djibouti_Nov_2023_All_projects_timeline";
+const djibouti_2023_3d = "DJI_3D_mapping_all_results";
+
+
+csv({ checkType: true, ignoreEmpty: true, trim: true })
+  .fromFile(`./src/assets/data/${djibouti_2023_3d}.csv`)
+  .then((jsonObj) => {
+    const path = `./src/assets/data/${djibouti_2023_3d}.geojson`;
+    const result = [];
+
+
+    jsonObj.forEach((obj) => {
+
+      result.push({
+        "id": obj.ID,
+        "Site": obj.Site,
+        latitude_begin: obj.Latitude_Begin,
+        longitude_begin: obj.Longitude_Begin,
+        latitude_end: obj.Latitude_End,
+        longitude_end: obj.Longitude_End,
+        length: obj.Length,
+        Substrate_1: obj.Substrate_1,
+        Substrate_2: obj.Substrate_2,
+        Substrate_3: obj.Substrate_3,
+        mean: obj.mean,
+      })
+    });
+    writeFileSync(path, JSON.stringify(result));
+    console.log(`data.csv converted successfully to JSON in ${path}`)
+  });
+
+
 const expeditions = "Expeditions";
 
 csv({ checkType: true, ignoreEmpty: true, trim: true })
