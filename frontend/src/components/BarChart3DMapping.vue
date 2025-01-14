@@ -39,6 +39,12 @@ export default {
       chart.setOption(option);
     },
     getChartOption(data) {
+      function getSiteNameFromSiteId(data, SiteId) {
+        if (data === undefined) {
+          return '';
+        }
+        return data.find((item) => item.id === parseInt(SiteId))?.Site || '';
+      }
       function processData(data) {
         const seriesData = {};
         const validSubstrates = [
@@ -106,6 +112,7 @@ export default {
           },
           formatter: function (params) {
             let result = `ID: ${params[0].axisValue}<br/>`;
+            result+= `Site Name: ${getSiteNameFromSiteId(data, params[0].axisValue)}<br/>`
             params.forEach((param) => {
               result += `<span style="margin-right:1rem;background-color:${param.color};display: inline-block;width: 10px;height: 10px;"></span>${param.seriesName}: ${(param.value * 100).toFixed(
                 2
@@ -121,21 +128,6 @@ export default {
         title: {
           text: 'Substrate Distribution by Location ID'
         },
-        // tooltip: tooltip ? {
-        //   trigger: 'axis',
-        //   axisPointer: {
-        //     type: 'shadow'
-        //   },
-        //   formatter: function (params) {
-        //     let result = `ID: ${params[0].axisValue}<br/>`;
-        //     params.forEach((param) => {
-        //       result += `<span style="margin-right:1rem;background-color:${param.color};display: inline-block;width: 10px;height: 10px;"></span>${param.seriesName}: ${(param.value * 100).toFixed(
-        //         2
-        //       )}%<br/>`;
-        //     });
-        //     return result;
-        //   }
-        // } : {},
         tooltip: localTooltip,
         legend: {
           data: [
