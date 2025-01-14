@@ -2,13 +2,13 @@ import csv from 'csvtojson';
 import { writeFileSync } from 'fs';
 
 // const djibouti_2023 = "TRSC_Djibouti_Nov_2023_All_projects_timeline";
-const djibouti_2023_3d = "DJI_3D_mapping_all_results";
+const djibouti_2023_3d = "dji_3d_mapping_all_results";
 
 
 csv({ checkType: true, ignoreEmpty: true, trim: true })
   .fromFile(`./src/assets/data/${djibouti_2023_3d}.csv`)
   .then((jsonObj) => {
-    const path = `./src/assets/data/${djibouti_2023_3d}.geojson`;
+    const path = `./src/assets/data/${djibouti_2023_3d}.json`;
     const result = [];
 
 
