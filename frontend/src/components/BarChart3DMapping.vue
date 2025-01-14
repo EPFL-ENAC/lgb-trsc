@@ -164,9 +164,11 @@ export default {
         yAxis: {
           type: 'value',
           name: 'Percentage',
-          axisLabel: {
-            formatter: '{value}%'
-          },
+            axisLabel: {
+            formatter: function(value) {
+              return (value * 100) + '%';
+            }
+            },
           max: 1,
           min: 0
         },
