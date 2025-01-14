@@ -11,11 +11,25 @@
     <p>{{ country.samples }}</p>
     <p>{{ country.divers }}</p>
     <p>{{ country.monitoring }}</p>
+    <q-dialog v-model="showZoomedChart" persistent :maximized="true" class="popup">
+      <q-card>
+        <q-card-section class="q-pa-md row items-center justify-between">
+          <h4>3D Mapping</h4>
+          <q-btn icon="close" class="close-btn" flat round dense v-close-popup />
+        </q-card-section>
+
+        <BarChart3DMapping :rawData="country.rawData" height="60vh" width="80vw" :tooltip="true" />
+      </q-card>
+
+    </q-dialog>
     <div class="images">
-      <div class="card">
-        <BarChart3DMapping :rawData="country.rawData" />
-        <p>3D Mapping</p>
+      <div class="card" @click="toggle3DZoomedChart">
+        <BarChart3DMapping :rawData="country.rawData" :tooltip="false"/>
+        <p>3D Mapping</p> {{  showZoomedChart }}
       </div>
+      <!-- <Teleport to="body"> -->
+
+      <!-- </Teleport> -->
       <div class="card">
         <img src="/eDNA.png" alt="eDNA">
         <p>eDNA</p>
@@ -30,7 +44,8 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue';
+import { defineProps, ref } from 'vue';
+import { Teleport, Transition } from 'vue'; // Import Teleport and Transition
 import BarChart3DMapping from './BarChart3DMapping.vue';
 
 const props = defineProps({
@@ -50,6 +65,12 @@ const props = defineProps({
 
 const handleGoToCountry = () => {
   props.zoomToCountry();
+};
+
+let showZoomedChart = ref(false);
+// toggle3DZoomedChart
+const toggle3DZoomedChart = () => {
+  showZoomedChart.value = !showZoomedChart.value;
 };
 </script>
 
@@ -122,3 +143,4 @@ button {
   cursor: pointer;
 }
 </style>
+

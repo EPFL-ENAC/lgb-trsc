@@ -1,5 +1,5 @@
 <template>
-  <div ref="chart" style="width: 100%; height: 250px;"></div>
+  <div ref="chart" :style="{ width: width, height: height }"></div>
 </template>
 
 <script>
@@ -15,6 +15,18 @@ export default {
     rawData: {
       type: Array,
       required: true
+    },
+    height: {
+      type: String,
+      default: '250px'
+    },
+    width: {
+      type: String,
+      default: '100%'
+    },
+    tooltip: {
+      type: Boolean,
+      default: true
     }
   },
   mounted() {
@@ -87,11 +99,7 @@ export default {
         '#000000'
       ];
 
-      return {
-        title: {
-          text: 'Substrate Distribution by Location ID'
-        },
-        tooltip: {
+      let localTooltip = {
           trigger: 'axis',
           axisPointer: {
             type: 'shadow'
@@ -105,7 +113,30 @@ export default {
             });
             return result;
           }
+        };
+      if (this.tooltip ===false) {
+        localTooltip = false;
+      }
+      return {
+        title: {
+          text: 'Substrate Distribution by Location ID'
         },
+        // tooltip: tooltip ? {
+        //   trigger: 'axis',
+        //   axisPointer: {
+        //     type: 'shadow'
+        //   },
+        //   formatter: function (params) {
+        //     let result = `ID: ${params[0].axisValue}<br/>`;
+        //     params.forEach((param) => {
+        //       result += `<span style="margin-right:1rem;background-color:${param.color};display: inline-block;width: 10px;height: 10px;"></span>${param.seriesName}: ${(param.value * 100).toFixed(
+        //         2
+        //       )}%<br/>`;
+        //     });
+        //     return result;
+        //   }
+        // } : {},
+        tooltip: localTooltip,
         legend: {
           data: [
             'sand',
