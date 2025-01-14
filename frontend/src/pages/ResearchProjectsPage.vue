@@ -30,6 +30,7 @@ import CountryMapPopup from 'components/CountryMapPopup.vue';
 import ExpeditionMapPopup from 'components/ExpeditionMapPopup.vue';
 import { countries } from 'assets/data/countries';
 import { expeditions }  from 'assets/data/expeditions';
+import rawData from '../assets/data/DJI_3D_Mapping_all_results.json';
 
 const selectedCountry = ref(null);
 const selectedExpedition = ref(null);
@@ -172,7 +173,11 @@ onMounted(() => {
     map.forEachFeatureAtPixel(evt.pixel, function (feature) {
       const properties = feature.getProperties();
       if (properties.type === 'country') { // Check if the feature is a country
+        properties.rawData = rawData;
+
         selectedCountry.value = properties;
+        // TEMPORARY CODE FOR DJIBOUTI
+
         zoomToCountry();
         drawer.value = true;
         countryLayer.value.setStyle(selectedCountryStyle); // Hide yellow circles

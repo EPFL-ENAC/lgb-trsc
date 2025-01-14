@@ -13,7 +13,7 @@
     <p>{{ country.monitoring }}</p>
     <div class="images">
       <div class="card">
-        <img src="/3d-mapping.png" alt="3D Mapping">
+        <BarChart3DMapping :rawData="country.rawData" />
         <p>3D Mapping</p>
       </div>
       <div class="card">
@@ -31,6 +31,7 @@
 
 <script setup lang="ts">
 import { defineProps } from 'vue';
+import BarChart3DMapping from './BarChart3DMapping.vue';
 
 const props = defineProps({
   country: {
