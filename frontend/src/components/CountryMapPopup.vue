@@ -45,7 +45,6 @@
 
 <script setup lang="ts">
 import { defineProps, ref } from 'vue';
-import { Teleport, Transition } from 'vue'; // Import Teleport and Transition
 import BarChart3DMapping from './BarChart3DMapping.vue';
 
 const props = defineProps({
