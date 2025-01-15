@@ -1,7 +1,6 @@
 <template>
-  <q-layout view="hhh lpR fFf">
-
-    <q-header  elevated style="border-bottom: 1px solid red;" class="bg-white text-red APax text-weight-thin" height-hint="98">
+  <q-layout view="hHh lpr fFf">
+    <q-header  style="height: var(--header-height); border-bottom: 1px solid red;" class="bg-white text-red APax text-weight-thin">
       <q-toolbar @click="navigateToHome" class="clickable">
         <q-toolbar-title class="toolbar-title">
           <q-avatar class="toolbar-avatar" >
@@ -29,18 +28,7 @@
 
     </q-header>
 
-    <!-- <header class="site-header header">
-      <a class="logo-block block icon-before before text-07 red-fg" href="/en/">Transnational<br>Red Sea<br>Center<span>Bridging Science<br>&amp; Diplomacy for<br>the Future of Corals</span></a>
-      <a class="burger-thumb thumb" href="#navigation">Navigation</a>
-    </header> -->
-
-    <q-page-container style="display: inherit;">
-      <q-page class="q-pa-md">
-        <router-view />
-      </q-page>
-    </q-page-container>
-
-    <q-footer  class="bg-white text-red q-row row align-right" style="border-top: 1px solid red;">
+    <q-footer class="bg-white text-red q-row row align-right" style="border-top: 1px solid red;">
       <q-toolbar>
         <q-toolbar-title class="row pd-x text-red justify-end">
           <q-avatar style="border-radius: 0%; width: auto; height: auto;">
@@ -50,6 +38,12 @@
         </q-toolbar-title>
       </q-toolbar>
     </q-footer>
+
+    <q-page-container >
+      <q-page>
+        <router-view />
+      </q-page>
+    </q-page-container>
 
   </q-layout>
 </template>
@@ -74,7 +68,7 @@ function navigateToHome() {
 
 <style lang="scss" scoped>
 :root {
-  --info: #46789a;
+    --info: #46789a;
     --success: #8aa231;
     --warn: #e6ba1a;
     --error: #DC0F0E;
@@ -91,9 +85,6 @@ function navigateToHome() {
     --line-height-06: calc(1.14285714 * var(--size-08));
     --pad-x: calc(.52664343rem + .86321381vw);
     --pad-y: calc(.7375498rem + .5312085vw);
-    --header-height: calc(4.9501992rem + 2.124834vw);
-    --nav-height: calc(2.12201195rem + 1.46082337vw);
-    --news-height: calc(6.31578947 * var(--size-10));
     --black: #2B2E34;
     --white: #ffffff;
     --red: rgb(255,67,44);
@@ -108,11 +99,6 @@ function navigateToHome() {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding-left: var(--pad-x);
-    padding-right: var(--pad-x);
-    padding-top: var(--pad-y);
-    padding-bottom: var(--pad-y);
-    min-height: var(--header-height);
 }
 
 .toolbar-title {
@@ -133,7 +119,6 @@ function navigateToHome() {
     break-inside: avoid;
     font-family: Apax,Helvetica,Arial,sans-serif;
     text-transform: none;
-    // font-size 25.5219px
     font-style: normal;
     font-weight: 200;
     font-size: calc(1.14691235rem + .39840637vw);
@@ -143,7 +128,6 @@ function navigateToHome() {
     display: grid;
     align-content: stretch;
     grid-template-columns: min-content min-content max-content;
-    // margin-bottom: -.19230769em;
     color: #ff432c;
     stroke: rgb(255,67,44);
     text-decoration-color: rgb(255, 67, 44);
@@ -163,9 +147,6 @@ function navigateToHome() {
       background-size: contain;
       background-repeat: no-repeat;
       max-height: 76px;
-      :deep(.q-avatar-content) {
-
-      }
     }
 }
 .clickable {

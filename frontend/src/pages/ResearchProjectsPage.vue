@@ -208,9 +208,13 @@ onMounted(() => {
 });
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+@import 'src/css/app.scss';
+@import 'src/css/quasar.variables.scss';
+
 .map {
   width: 100%;
-  height: 100vh;
+  /* height: 100vh minus header, minus footer, minus border footer*/
+  height: calc(100vh - var(--header-height) - var(--footer-height) - 1px);
 }
 </style>

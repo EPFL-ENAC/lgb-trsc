@@ -10,11 +10,10 @@
 }
 
 :root {
-  --header-height: calc(4.9501992rem + 2.124834vw);
-  // scroll-padding-top: calc(var(--header-height) - 1px)
+  --header-height: 112px;
+  --footer-height: 50px;
 }
 body {
   font-family: Apax, Helvetica, Arial, sans-serif;
   text-rendering: geometricPrecision;
-  // padding-top: calc(var(--header-height) - 1px)
 }
