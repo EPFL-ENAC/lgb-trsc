@@ -1,5 +1,32 @@
 <template>
-  <div id="map" class="map" ></div>
+  <div id="map" class="map" :style="{'--drawer-width': drawer ? '500px' : '0px' }"></div>
+  <div class="legend" v-if="selectedCountry || selectedExpedition">
+    <ul>
+      <li>
+        Legend:
+        <ol>
+          <li><span class="legend-color" style="background-color: blue;"></span>Expedition 2023</li>
+        </ol>
+      </li>
+    </ul>
+  </div>
+  <div class="legend" v-else>
+    <ul>
+      <li>
+
+        Legend:
+        <ol>
+          <li> <span class="legend-color" style="background-color: yellow;"></span>Countries</li>
+        </ol>
+      </li>
+    </ul>
+  </div>
+  <!-- // TODO: use popup layer instead of custom-tooltip below -->
+  <div class="custom-tooltip" :style="{'--display-tooltip': hoveredExpedition?.Event_ID ? 'inline-block' : 'none', '--left-tooltip': `${hoveredExpeditionPixel?.[0]}px` , '--top-tooltip': `${hoveredExpeditionPixel?.[1]}px` }">
+    {{ hoveredExpedition?.Event_ID }}
+
+  </div>
+
   <q-drawer
     side="right"
     v-model="drawer"
@@ -45,9 +72,13 @@ import ExpeditionMapPopup from 'components/ExpeditionMapPopup.vue';
 import { countries } from 'assets/data/countries';
 import { expeditions }  from 'assets/data/expeditions';
 import rawData from 'assets/data/dji_3d_mapping_all_results.json';
+import DragRotateAndZoom from 'ol/interaction/DragRotateAndZoom';
+import PinchZoom from 'ol/interaction/PinchZoom';
 
 const selectedCountry = ref(null);
 const selectedExpedition = ref(null);
+const hoveredExpedition = ref(null);
+const hoveredExpeditionPixel = ref(null);
 const coastlineLayer = ref<VectorLayer<VectorSource>|null>(null);
 const expeditionsLayer = ref<VectorLayer<VectorSource>|null>(null);
 const countryLayer = ref<VectorLayer<VectorSource>|null>(null); // Define countryLayer
@@ -55,10 +86,12 @@ const countryLayer = ref<VectorLayer<VectorSource>|null>(null); // Define countr
 const drawer = ref(false);
 let map: Map;
 // red sea extent
-const defaultExtent =  [12.426939205444683, 5.438693927840603, 68.05692344846989, 34.722854975836995];
+const defaultExtent =  [15, 2, 60, 32] // Set extent to block navigation outside the specified coordinates];
 const defaultMinZoom = 3;
+const defaultCenter = [39.0, 21.5];
 const defaultMinZoomCountry = 9;
 const defaultMinZoomExpedition = 12;
+
 const closeDrawer = () => {
   drawer.value = false;
   selectedCountry.value = null;
@@ -161,7 +194,7 @@ onMounted(() => {
       countryLayer.value // Add countryLayer to the map
     ],
     view: new View({
-      center: [39.0, 21.5], // Coordinates for the Red Sea
+      center: defaultCenter, // Coordinates for the Red Sea
       zoom: defaultMinZoom,
       minZoom: defaultMinZoom, // Set minimum zoom level
       maxZoom: 17, // Set maximum zoom level
@@ -172,15 +205,27 @@ onMounted(() => {
       new ScaleLine(), // Add scale line control
       new FullScreen(),
       new ZoomSlider(),
-      new Rotate(),
+      // new Rotate(),
       new Attribution(),
       // new MousePosition(),
       // new OverviewMap(),
       new Zoom(),
+      new Rotate({
+        autoHide: false,
+        // set proper label
+        className: 'ol-rotate',
+      }),
 
-    ]
+    ],
+    // interactions: defaultInteractions({
+    //   altShiftDragRotate: true,
+    //   pinchRotate: true
+    // })
   });
 
+
+  map.addInteraction(new DragRotateAndZoom());
+  map.addInteraction(new PinchZoom());
   coastlineLayer.value = new VectorLayer({
     source: new VectorSource(),
     style: new Style({
@@ -216,6 +261,18 @@ onMounted(() => {
     const pixel = map.getEventPixel(event.originalEvent);
     const hit = map.hasFeatureAtPixel(pixel);
     map.getTargetElement().style.cursor = hit ? 'pointer' : '';
+    if (hit) {
+      map.forEachFeatureAtPixel(pixel, function (feature) {
+        const properties = feature.getProperties();
+        if (properties.type === 'Expedition') {
+          hoveredExpedition.value = properties;
+          hoveredExpeditionPixel.value = pixel;
+        }
+      });
+    } else {
+      hoveredExpedition.value = null;
+      hoveredExpeditionPixel.value = null;
+    }
   });
 
   map.on('click', (evt) => {
@@ -262,8 +319,56 @@ onMounted(() => {
 @import 'src/css/quasar.variables.scss';
 
 .map {
-  width: 100%;
+  width: calc(100vw - var(--drawer-width));
   /* height: 100vh minus header, minus footer, minus border footer*/
   height: calc(100vh - var(--header-height) - var(--footer-height) - 1px);
+}
+
+
+
+:deep(.ol-rotate) {
+  top: 0.5em;
+  right: 2em;
+  transition: opacity .25s linear, visibility 0s linear;
+}
+.legend {
+  position: absolute;
+  top: 1.5em;
+  left: 3.5em;
+  background: white;
+  padding: 10px;
+  border: 1px solid black;
+  border-radius: 5px;
+  ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    ol:first-child {
+      list-style-type: decimal;
+      padding: 0;
+      margin: 0;
+    }
+  }
+}
+
+.legend-color {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 5px;
+}
+.custom-tooltip {
+  position: absolute;
+  top: calc(var(--top-tooltip) - 10px);
+  left: calc(var(--left-tooltip) + 40px);
+  /* top: 100px;
+  left:100px; */
+  background: white;
+  padding: 10px;
+  border: 1px solid black;
+  border-radius: 5px;
+  z-index: 1000;
+  pointer-events: none;
+  display: var(--display-tooltip, inline-block);
 }
 </style>
