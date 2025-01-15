@@ -43,18 +43,17 @@
 
 <script setup lang="ts">
 import 'ol/ol.css';
+import 'ol-layerswitcher/dist/ol-layerswitcher.css';
+
 import { Map, View } from 'ol';
 
 import {
         Attribution,
         FullScreen,
-        MousePosition,
-        OverviewMap,
         Rotate,
         ScaleLine,
         Zoom,
         ZoomSlider,
-        ZoomToExtent,
       } from 'ol/control';
 
   // import getCenter
@@ -62,6 +61,8 @@ import { getCenter } from 'ol/extent';
 import TileLayer from 'ol/layer/Tile';
 import XYZ from 'ol/source/XYZ';
 import VectorLayer from 'ol/layer/Vector';
+import LayerGroup from 'ol/layer/Group';
+
 import VectorSource from 'ol/source/Vector';
 import GeoJSON from 'ol/format/GeoJSON';
 import { Style, Circle as CircleStyle, Fill, Stroke } from 'ol/style';
@@ -74,6 +75,9 @@ import { expeditions }  from 'assets/data/expeditions';
 import rawData from 'assets/data/dji_3d_mapping_all_results.json';
 import DragRotateAndZoom from 'ol/interaction/DragRotateAndZoom';
 import PinchZoom from 'ol/interaction/PinchZoom';
+
+import LayerSwitcher from 'ol-layerswitcher';
+import { BaseLayerOptions, GroupLayerOptions } from 'ol-layerswitcher';
 
 const selectedCountry = ref(null);
 const selectedExpedition = ref(null);
@@ -152,7 +156,6 @@ const zoomToExpedition = () => {
 };
 
 
-const geojsonObject = countries;
 
 const countryStyle = new Style({
   image: new CircleStyle({
@@ -174,24 +177,56 @@ const selectedCountryStyle = new Style({
 
 countryLayer.value = new VectorLayer({
   source: new VectorSource({
-    features: new GeoJSON().readFeatures(geojsonObject, {
+    features: new GeoJSON().readFeatures(countries, {
       featureProjection: 'EPSG:4326'
     })
   }),
+  title: 'Countries',
+  visible: true,
+
   style: countryStyle
-});
+} as BaseLayerOptions);
+
+const arcgis =  new TileLayer({
+  base: true,
+  type: 'base',
+
+  title: 'arcgis',
+  visible: true,
+        source: new XYZ({
+          url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
+        }),
+      } as BaseLayerOptions);
+
+const osm = new TileLayer({
+  base: true,
+  type: 'base',
+  title: 'OSM',
+  visible: true,
+  source: new XYZ({
+    url: 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+  }),
+} as BaseLayerOptions);
+
+const baseMaps = new LayerGroup({
+  title: 'Base maps',
+  fold: 'close',
+  layers: [arcgis, osm]
+} as GroupLayerOptions);
+
+const overlayMaps = new LayerGroup({
+  title: 'Overlays',
+  fold: 'open',
+  layers: [countryLayer.value]
+} as GroupLayerOptions);
+
 
 onMounted(() => {
   map = new Map({
     target: 'map',
     pixelRatio: 2, // Enable HiDPI support
     layers: [
-      new TileLayer({
-        source: new XYZ({
-          url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
-        }),
-      }),
-      countryLayer.value // Add countryLayer to the map
+      baseMaps, overlayMaps
     ],
     view: new View({
       center: defaultCenter, // Coordinates for the Red Sea
@@ -210,6 +245,10 @@ onMounted(() => {
       // new MousePosition(),
       // new OverviewMap(),
       new Zoom(),
+      // new LayerSwitcher({
+      //   tipLabel: 'Legend', // Optional label for button
+      //   groupSelectStyle: 'group' // Optional, use 'children' or 'none' for different selection styles
+      // }),
       new Rotate({
         autoHide: false,
         // set proper label
@@ -217,17 +256,21 @@ onMounted(() => {
       }),
 
     ],
-    // interactions: defaultInteractions({
-    //   altShiftDragRotate: true,
-    //   pinchRotate: true
-    // })
   });
 
+  const layerSwitcher = new LayerSwitcher({
+    reverse: true,
+  groupSelectStyle: 'group',
+  startActive: true, // Make the control expanded by default
+  tipLabel: 'Layers'
+    });
 
+  map.addControl(layerSwitcher);
   map.addInteraction(new DragRotateAndZoom());
   map.addInteraction(new PinchZoom());
   coastlineLayer.value = new VectorLayer({
     source: new VectorSource(),
+    visible: true,
     style: new Style({
       stroke: new Stroke({
         color: 'red',
