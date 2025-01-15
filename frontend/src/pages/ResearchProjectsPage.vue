@@ -1,5 +1,5 @@
 <template>
-  <div id="map" class="map"></div>
+  <div id="map" class="map" ></div>
   <q-drawer
     side="right"
     v-model="drawer"
@@ -17,13 +17,27 @@
 <script setup lang="ts">
 import 'ol/ol.css';
 import { Map, View } from 'ol';
+
+import {
+        Attribution,
+        FullScreen,
+        MousePosition,
+        OverviewMap,
+        Rotate,
+        ScaleLine,
+        Zoom,
+        ZoomSlider,
+        ZoomToExtent,
+      } from 'ol/control';
+
+  // import getCenter
+import { getCenter } from 'ol/extent';
 import TileLayer from 'ol/layer/Tile';
 import XYZ from 'ol/source/XYZ';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import GeoJSON from 'ol/format/GeoJSON';
 import { Style, Circle as CircleStyle, Fill, Stroke } from 'ol/style';
-import { ScaleLine } from 'ol/control'; // Import ScaleLine control
 import { onMounted, ref } from 'vue';
 import { QDrawer } from 'quasar';
 import CountryMapPopup from 'components/CountryMapPopup.vue';
@@ -40,7 +54,11 @@ const countryLayer = ref<VectorLayer<VectorSource>|null>(null); // Define countr
 
 const drawer = ref(false);
 let map: Map;
-
+// red sea extent
+const defaultExtent =  [12.426939205444683, 5.438693927840603, 68.05692344846989, 34.722854975836995];
+const defaultMinZoom = 3;
+const defaultMinZoomCountry = 9;
+const defaultMinZoomExpedition = 12;
 const closeDrawer = () => {
   drawer.value = false;
   selectedCountry.value = null;
@@ -64,7 +82,33 @@ const zoomToCountry = () => {
     });
     const extent = coastlineFeature.getGeometry().getExtent();
     map.getView().fit(extent, { duration: 300 });
+    const currentView =  map.getView().getProperties();
+    currentView.zoom = defaultMinZoomCountry;
+    currentView.minZoom = defaultMinZoomCountry;
+    currentView.center = getCenter(extent);
+    console.log(extent);
+    // make the following extent bigger to show the whole country
+    // Add a buffer of 2 degrees around the extent
+    const buffer = 2;
+    currentView.extent = [
+      extent[0] - buffer,
+      extent[1] - buffer,
+      extent[2] + buffer,
+      extent[3] + buffer
+    ];
+    map.setView(new View(currentView));
   }
+};
+
+
+const zoomOutOfCountry = () => {
+  const currentView =  map.getView().getProperties();
+  currentView.zoom = defaultMinZoom;
+  currentView.minZoom = defaultMinZoom;
+  currentView.center = getCenter(defaultExtent);
+  currentView.extent = defaultExtent;
+  map.setView(new View(currentView));
+  map.getView().animate({ zoom: 3, duration: 300 });
 };
 
 const zoomToExpedition = () => {
@@ -74,9 +118,6 @@ const zoomToExpedition = () => {
   }
 };
 
-const zoomOutOfCountry = () => {
-  map.getView().animate({ zoom: 3, duration: 300 });
-};
 
 const geojsonObject = countries;
 
@@ -121,14 +162,22 @@ onMounted(() => {
     ],
     view: new View({
       center: [39.0, 21.5], // Coordinates for the Red Sea
-      zoom: 3,
-      minZoom: 3, // Set minimum zoom level
+      zoom: defaultMinZoom,
+      minZoom: defaultMinZoom, // Set minimum zoom level
       maxZoom: 17, // Set maximum zoom level
       projection: 'EPSG:4326',
-      extent: [12.426939205444683, 5.438693927840603, 68.05692344846989, 34.722854975836995] // Set extent to block navigation outside the specified coordinates
+      extent: defaultExtent // Set extent to block navigation outside the specified coordinates
     }),
     controls: [
-      new ScaleLine() // Add scale line control
+      new ScaleLine(), // Add scale line control
+      new FullScreen(),
+      new ZoomSlider(),
+      new Rotate(),
+      new Attribution(),
+      // new MousePosition(),
+      // new OverviewMap(),
+      new Zoom(),
+
     ]
   });
 
