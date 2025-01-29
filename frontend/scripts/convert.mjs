@@ -1,7 +1,7 @@
 import csv from 'csvtojson';
 import { writeFileSync } from 'fs';
 
-// const djibouti_2023 = "TRSC_Djibouti_Nov_2023_All_projects_timeline";
+//csv file name
 const djibouti_2023_3d = "dji_3d_mapping_all_results";
 
 
@@ -89,7 +89,7 @@ csv({ checkType: true, ignoreEmpty: true, trim: true })
 
 
 csv({ checkType: true, ignoreEmpty: true, trim: true })
-  .fromFile('./src/assets/data/internationalization.csv')
+  .fromFile('./src/assets/i18n/internationalization.csv')
   .then((jsonObj) => {
     const langs = ['en', 'fr', 'ar'];
     const result_lang = {
@@ -109,7 +109,7 @@ csv({ checkType: true, ignoreEmpty: true, trim: true })
     });
 
     langs.forEach((lang) => {
-      const path = `./src/assets/data/internationalization_${lang}.json`;
+      const path = `./src/assets/i18n/internationalization_${lang}.json`;
       writeFileSync(path, JSON.stringify(result_lang[lang]));
       console.log(`internationalization.csv converted successfully to JSON in ${path}`)
     });
