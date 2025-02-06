@@ -19,6 +19,13 @@ export const useMapStore = defineStore('map', () => {
 
   function closeDrawer() {
     drawer.value = false;
+    selectedCountry.value = null;
+    selectedExpedition.value = null;
+
+    coastlineLayer.value.getSource().clear();
+    expeditionsLayer.value.getSource().clear();
+    countryLayer.value.setStyle(countryStyle); // Reset style to show yellow circles
+    zoomOutOfCountry();
   }
 
   function closeExpedition() {

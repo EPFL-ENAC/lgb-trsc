@@ -28,6 +28,7 @@ import {
 } from '@/maps/utils/MapPointerMove';
 import { useMapStore } from '@/stores/mapStore';
 import { expeditions as DjiboutiExpeditions } from '@/assets/data/expeditions';
+import Djibouti3DMapping from '@/assets/data/dji_3d_mapping_all_results.json';
 
 export class MapController {
   private map: Map;
@@ -100,8 +101,9 @@ export class MapController {
       mapStore;
 
     // Define any extra parameters (raw data, expedition GeoJSON, and a new style)
-    const rawData = {
+    const threeDMappingByCountry = {
       /* your raw country data here */
+      Djibouti: Djibouti3DMapping,
     };
     const expeditionsByCountry = {
       /* your expedition GeoJSON data here */
@@ -115,7 +117,7 @@ export class MapController {
       coastlineLayer: this.coastlineLayer,
       selectCountry,
       selectExpedition,
-      rawData,
+      threeDMappingByCountry,
       expeditionsByCountry,
       selectedCountryStyle,
       zoomToCountry,
