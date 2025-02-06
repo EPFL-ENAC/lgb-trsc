@@ -13,7 +13,11 @@ import { createOSMLayer } from './layers/base/OSMLayer';
 import { createArcGISLayer } from './layers/base/ArcGISLayer';
 import { createCountryLayer } from './layers/overlay/CountryLayer';
 import { createExpeditionLayer } from './layers/overlay/ExpeditionLayer';
-import { createDjiboutiGeomorphicLayer } from './layers/overlay/DjiboutiGeomorphicLayer';
+import { createDjiboutiGeomorphicLayer,
+        createDjiboutiBenthicLayer,
+        createDjiboutiBoundaryLayer,
+        createDjiboutiReefExtentLayer
+ } from './layers/overlay/DjiboutiLayer';
 import { defaultCenter, defaultMinZoom, defaultExtent } from './config';
 import {
   addMapClickHandler,
@@ -21,7 +25,6 @@ import {
 } from '@/maps/utils/MapClickHandler';
 import {
   addMapPointerMoveHandler,
-  MapPointerMoveHandlerOptions,
 } from '@/maps/utils/MapPointerMove';
 import { useMapStore } from '@/stores/mapStore';
 import { expeditions as DjiboutiExpeditions } from '@/assets/data/expeditions';
@@ -64,14 +67,19 @@ export class MapController {
     // Create overlay layers
     this.countryLayer = createCountryLayer();
     this.expeditionLayer = createExpeditionLayer();
-    const djiboutiLayer = createDjiboutiGeomorphicLayer();
+    // const djiboutiLayer = createDjiboutiGeomorphicLayer();
     // For this example, assume coastlineLayer is a part of the country layer
     this.coastlineLayer = this.countryLayer;
 
     const overlayMaps = new LayerGroup({
       title: 'Overlays',
       fold: 'open',
-      layers: [this.countryLayer, this.expeditionLayer, djiboutiLayer],
+      layers: [this.countryLayer, this.expeditionLayer,
+        createDjiboutiGeomorphicLayer(),
+        createDjiboutiBenthicLayer(),
+        createDjiboutiBoundaryLayer(),
+        createDjiboutiReefExtentLayer()
+      ],
     } as BaseLayerOptions);
 
     this.map.addLayer(baseMaps);
