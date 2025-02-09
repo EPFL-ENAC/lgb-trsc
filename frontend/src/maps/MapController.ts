@@ -68,12 +68,15 @@ export class MapController {
 
     const layerController = useLayerController();
 
-
+    layerController.initDjibouti();
+    // const layers = layerController.getActiveLayers()
+    // const coralAllenLayers = Object.values(layerController.getLayers());
+    const djiboutiLayer = createDjiboutiGeomorphicLayer();
     // find a way to group Coral Allen's layers
     const overlayMaps = new LayerGroup({
       title: 'Overlays',
       fold: 'open',
-      layers: Object.values(layerController.getLayers()),
+      layers: [createCountryLayer(), layerController., djiboutiLayer],
     } as BaseLayerOptions);
 
     this.map.addLayer(baseMaps);

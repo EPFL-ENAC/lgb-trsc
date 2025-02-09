@@ -26,7 +26,7 @@ export const useMapStore = defineStore('map', () => {
 
     // does this mean that layers should be in the store?
     const layerController = useLayerController();
-    layerController.resetLayers();
+    // layerController.resetLayers();
     // coastlineLayer.value.getSource().clear();
     // expeditionsLayer.value.getSource().clear();
     // countryLayer.value.setStyle(countryStyle); // Reset style to show yellow circles

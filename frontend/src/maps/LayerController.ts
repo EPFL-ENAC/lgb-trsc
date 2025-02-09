@@ -9,17 +9,18 @@ import { Style, Circle as CircleStyle, Fill, Stroke } from 'ol/style';
 import GeoJSON from 'ol/format/GeoJSON';
 import VectorTileLayer from 'ol/layer/VectorTile';
 
-import { createDjiboutiGeomorphicLayer,
-        createDjiboutiBenthicLayer,
-        createDjiboutiBoundaryLayer,
-        createDjiboutiReefExtentLayer
- } from '@/maps/layers/overlay/DjiboutiLayer';
+import {
+  createDjiboutiGeomorphicLayer,
+  createDjiboutiBenthicLayer,
+  createDjiboutiBoundaryLayer,
+  createDjiboutiReefExtentLayer
+} from '@/maps/layers/overlay/DjiboutiLayer';
 
 
 
 export class LayerController {
-  private countryLayer: VectorLayer<VectorSource> ;
-  private expeditionLayer: VectorLayer<VectorSource> ;
+  private countryLayer: VectorLayer<VectorSource>;
+  private expeditionLayer: VectorLayer<VectorSource>;
   // private coastlineLayer: VectorLayer<VectorSource> ;
   private geomorphicLayer: VectorTileLayer<any>;
   private benthicLayer: VectorTileLayer<any>;
@@ -31,6 +32,13 @@ export class LayerController {
     this.countryLayer = createCountryLayer();
     this.expeditionLayer = createExpeditionLayer();
     // this.coastlineLayer = this.countryLayer;
+    this.geomorphicLayer = createDjiboutiGeomorphicLayer();
+    this.benthicLayer = createDjiboutiBenthicLayer();
+    this.boundaryLayer = createDjiboutiBoundaryLayer();
+    this.reefExtentLayer = createDjiboutiReefExtentLayer();
+  }
+
+  public initDjibouti() {
     this.geomorphicLayer = createDjiboutiGeomorphicLayer();
     this.benthicLayer = createDjiboutiBenthicLayer();
     this.boundaryLayer = createDjiboutiBoundaryLayer();
@@ -67,14 +75,26 @@ export class LayerController {
   }
 
   public getLayers() {
-    return {
-      countryLayer: this.countryLayer,
-      expeditionLayer: this.expeditionLayer,
-      // coastlineLayer: this.coastlineLayer,
-      geomorphicLayer: this.geomorphicLayer,
-      benthicLayer: this.benthicLayer,
-      boundaryLayer: this.boundaryLayer,
-      reefExtentLayer: this.reefExtentLayer,
-    };
+    return [
+      this.countryLayer,
+      this.expeditionLayer,
+      this.geomorphicLayer,
+      this.benthicLayer,
+      this.boundaryLayer,
+      this.reefExtentLayer];
+  }
+
+  public getExpeditonLayer() {
+    return this.expeditionLayer;
+  }
+  public setExpeditionLayer(expeditionLayer: VectorLayer<VectorSource>) {
+    this.expeditionLayer = expeditionLayer;
+  }
+  public getCorrenAllenLayers() {
+    return [this.geomorphicLayer, this.benthicLayer, this.boundaryLayer, this.reefExtentLayer];
+  }
+
+  public getActiveLayers() {
+    return this.getLayers().filter((layer) => layer.getVisible());
   }
 }
