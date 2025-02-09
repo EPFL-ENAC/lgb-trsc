@@ -1,6 +1,8 @@
-import type { Feature, Map } from 'ol';
+import type { Map } from 'ol';
 import type { MapBrowserEvent } from 'ol';
 import { FeatureLike } from 'ol/Feature';
+import { throttle, debounce } from 'lodash';
+import type { DebouncedFunc } from 'lodash';
 
 interface ExpeditionProperties {
   type: 'Expedition' | 'country';
@@ -11,48 +13,6 @@ interface MapPointerMoveHandlerOptions {
   onHover?: (expedition: ExpeditionProperties | null, pixel: number[]) => void;
   debounceTime?: number;
   throttleTime?: number;
-}
-
-function debounce<T extends (pixel: number[]) => void>(
-  func: T,
-  wait: number
-): (pixel: number[]) => void {
-  let timeoutId: ReturnType<typeof setTimeout> | undefined;
-
-  return (pixel: number[]) => {
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-    }
-
-    timeoutId = setTimeout(() => {
-      func(pixel);
-      timeoutId = undefined;
-    }, wait);
-  };
-}
-
-function throttle<T extends (pixel: number[]) => void>(
-  func: T,
-  limit: number
-): (pixel: number[]) => void {
-  let inThrottle = false;
-  let lastPixel: number[] | null = null;
-
-  return (pixel: number[]) => {
-    if (!inThrottle) {
-      func(pixel);
-      inThrottle = true;
-      setTimeout(() => {
-        inThrottle = false;
-        if (lastPixel) {
-          func(lastPixel);
-          lastPixel = null;
-        }
-      }, limit);
-    } else {
-      lastPixel = pixel;
-    }
-  };
 }
 
 export function addMapPointerMoveHandler(
@@ -91,7 +51,8 @@ export function addMapPointerMoveHandler(
 
   // Create throttled version that's then debounced
   const throttledProcess = throttle(processFeatures, options.throttleTime ?? 150);
-  const debouncedThrottledProcess = debounce(throttledProcess, options.debounceTime ?? 10);
+  const debouncedThrottledProcess: DebouncedFunc<typeof throttledProcess> = 
+    debounce(throttledProcess, options.debounceTime ?? 10);
 
   const pointerMoveHandler = (event: MapBrowserEvent<UIEvent>) => {
     if (!map) return;
@@ -103,5 +64,8 @@ export function addMapPointerMoveHandler(
 
   return () => {
     map.un('pointermove', pointerMoveHandler);
+    // Cancel any pending debounced/throttled calls
+    debouncedThrottledProcess.cancel();
+    throttledProcess.cancel();
   };
 }

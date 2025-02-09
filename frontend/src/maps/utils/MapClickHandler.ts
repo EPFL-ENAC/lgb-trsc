@@ -4,6 +4,8 @@ import { useLayerController } from '@/maps/composables/useLayerController';
 import { useMapController } from '@/maps/composables/useMapController';
 import { clear } from 'console';
 
+
+
 type CountryName = string;
 export interface MapClickHandlerOptions {
   // countryLayer: VectorLayer<VectorSource>;
