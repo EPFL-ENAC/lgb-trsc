@@ -76,7 +76,7 @@ export class MapController {
     const overlayMaps = new LayerGroup({
       title: 'Overlays',
       fold: 'open',
-      layers: [createCountryLayer(), layerController., djiboutiLayer],
+      layers: [createCountryLayer(), djiboutiLayer],
     } as BaseLayerOptions);
 
     this.map.addLayer(baseMaps);
