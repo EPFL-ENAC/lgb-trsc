@@ -1,6 +1,7 @@
 import { ref, computed } from 'vue';
 import { defineStore } from 'pinia';
 import { useLayerController } from '@/maps/composables/useLayerController';
+import { useMapController } from '@/maps/composables/useMapController';
 
 export const useMapStore = defineStore('map', () => {
   const selectedCountry = ref<any>(undefined);
@@ -32,6 +33,8 @@ export const useMapStore = defineStore('map', () => {
     // TODO find a way for zoomOutOFcountry to be called
     // zoomOutOfCountry();
     layerController.showCountryLayer();
+    const mapController = useMapController();
+    mapController.zoomOutOfCountry();
   }
 
   function closeExpedition() {

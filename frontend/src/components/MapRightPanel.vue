@@ -17,13 +17,11 @@
       v-if="selectedCountry && !selectedExpedition"
       :country="selectedCountry"
       :closeDrawer="closeDrawer"
-      :zoomToCountry="zoomToCountry"
     />
     <ExpeditionMapPopup
       v-if="selectedExpedition"
       :expedition="selectedExpedition"
       :closeDrawer="closeExpedition"
-      :zoomToExpedition="zoomToExpedition"
     />
   </q-drawer>
 </template>
@@ -40,7 +38,7 @@ import ExpeditionMapPopup from './ExpeditionMapPopup.vue';
 const $q = useQuasar();
 const mapStore = useMapStore();
 const { selectedCountry, selectedExpedition, drawer } = storeToRefs(mapStore);
-const { closeDrawer, closeExpedition, zoomToCountry, zoomToExpedition } =
+const { closeDrawer, closeExpedition } =
   mapStore;
 
 // Removed props interface and defineProps, now using mapStore directly.

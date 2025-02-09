@@ -191,6 +191,17 @@ export class MapController {
   }
   }
 
+  public zoomOutOfCountry = () => {
+    const currentView = this.map.getView().getProperties();
+    currentView.zoom = defaultMinZoom;
+    currentView.minZoom = defaultMinZoom;
+    currentView.center = getCenter(defaultExtent);
+    // currentView.extent = defaultExtent;
+    this.map.setView(new View(currentView));
+    this.map.getView().animate({ zoom: 3, duration: 300 });
+  };
+  
+
   public destroy(): void {
     this.cleanupCallbacks.forEach((cb) => cb());
     this.cleanupCallbacks = [];
