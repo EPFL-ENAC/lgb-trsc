@@ -1,5 +1,5 @@
 <template>
-  <div
+  <div v-if="content"
     class="map-tooltip"
     :style="{
       '--display-tooltip': content ? 'inline-block' : 'none',
@@ -7,7 +7,14 @@
       '--top-tooltip': `${position?.[1] || 0}px`,
     }"
   >
-    {{ content }}
+    <!-- We need to be smart -->
+    
+    <span v-if="content.type === 'country'">
+      {{ content.name }}
+    </span>
+    <span v-if="content?.type === 'Expedition'">
+      {{ content.name }}
+    </span>
   </div>
 </template>
 
@@ -18,7 +25,10 @@ interface Position {
 }
 
 defineProps<{
-  content?: string;
+  content?: {
+    type: 'country' | 'Expedition';
+    name: string;
+  };
   position?: Position;
 }>();
 </script>

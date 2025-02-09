@@ -7,11 +7,12 @@ import { createPMTilesSource as createReefExtentSource } from '@/maps/sources/Dj
 
 import VectorTileLayer from 'ol/layer/VectorTile';
 
-const LayerTitle = 'Djibouti Geomorphic';
+const LayerTitle = 'Geomorphic';
 
 export const createDjiboutiGeomorphicLayer = () =>
   new VectorTileLayer({
     declutter: true,
+    _pmtiles: true,
     source: createGeomorphicSource(),
     title: LayerTitle,
     visible: true,
@@ -22,9 +23,10 @@ export const createDjiboutiGeomorphicLayer = () =>
   export const createDjiboutiBenthicLayer = () =>
     new VectorTileLayer({
       declutter: true,
+      _pmtiles: true,
       source: createBenthicSource(),
-      title: 'Djibouti Benthic',
-      visible: true,
+      title: 'Benthic',
+      visible: false,
       base: false,
       style: geoMorphicStyle,
     } as BaseLayerOptions);
@@ -32,9 +34,10 @@ export const createDjiboutiGeomorphicLayer = () =>
   export const createDjiboutiBoundaryLayer = () =>
     new VectorTileLayer({
       declutter: true,
+      _pmtiles: true,
       source: createBoundarySource(),
-      title: 'Djibouti Boundary',
-      visible: true,
+      title: 'Boundary',
+      visible: false,
       base: false,
       style: geoMorphicStyle,
     } as BaseLayerOptions);
@@ -42,9 +45,10 @@ export const createDjiboutiGeomorphicLayer = () =>
   export const createDjiboutiReefExtentLayer = () =>
     new VectorTileLayer({
       declutter: true,
+      _pmtiles: true,
       source: createReefExtentSource(),
-      title: 'Djibouti Reef Extent',
-      visible: true,
+      title: 'Reef Extent',
+      visible: false,
       base: false,
       style: geoMorphicStyle,
     } as BaseLayerOptions);

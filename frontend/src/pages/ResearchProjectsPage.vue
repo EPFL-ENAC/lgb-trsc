@@ -5,7 +5,7 @@
     :style="{ '--drawer-width': drawer ? '500px' : '0px' }"
   ></div>
   <MapLegend />
-  <MapTooltip />
+  <MapTooltip :content="hoveredExpedition" :position="hoveredExpeditionPixel"/>
   <MapRightPanel />
 </template>
 
@@ -15,20 +15,21 @@ import 'ol-layerswitcher/dist/ol-layerswitcher.css';
 
 import { onMounted, onUnmounted, ref } from 'vue';
 import { MapController } from '@/maps/MapController';
+import { storeToRefs } from 'pinia';
 import { useMapStore } from '@/stores/mapStore';
 import MapLegend from '@/components/MapLegend.vue';
 import MapRightPanel from '@/components/MapRightPanel.vue';
 import MapTooltip from '@/components/MapTooltip.vue';
+import { useMapController } from '@/maps/composables/useMapController';
 
 const mapStore = useMapStore();
 
 const mapController = ref<MapController | null>(null);
 
-const drawer = mapStore.drawer;
+const { hoveredExpedition, hoveredExpeditionPixel, drawer } = storeToRefs(mapStore);
 
 onMounted(() => {
-  mapController.value = new MapController('map');
-  mapController.value.init();
+  mapController.value = useMapController();
 });
 
 onUnmounted(() => {

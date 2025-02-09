@@ -1,5 +1,6 @@
 import { ref, computed } from 'vue';
 import { defineStore } from 'pinia';
+import { useLayerController } from '@/maps/composables/useLayerController';
 
 export const useMapStore = defineStore('map', () => {
   const selectedCountry = ref<any>(undefined);
@@ -22,10 +23,15 @@ export const useMapStore = defineStore('map', () => {
     selectedCountry.value = null;
     selectedExpedition.value = null;
 
-    coastlineLayer.value.getSource().clear();
-    expeditionsLayer.value.getSource().clear();
-    countryLayer.value.setStyle(countryStyle); // Reset style to show yellow circles
-    zoomOutOfCountry();
+    // does this mean that layers should be in the store?
+    const layerController = useLayerController();
+    layerController.resetLayers();
+    // coastlineLayer.value.getSource().clear();
+    // expeditionsLayer.value.getSource().clear();
+    // countryLayer.value.setStyle(countryStyle); // Reset style to show yellow circles
+    // TODO find a way for zoomOutOFcountry to be called
+    // zoomOutOfCountry();
+    layerController.showCountryLayer();
   }
 
   function closeExpedition() {
@@ -54,6 +60,12 @@ export const useMapStore = defineStore('map', () => {
   }
 
   function onHover(properties: any, pixel: number[]) {
+    if (!properties) {
+      hoveredExpedition.value = null;
+      hoveredExpeditionPixel.value = null;
+      return;
+    }
+    console.log('Hovering over:', properties);
     hoveredExpedition.value = properties;
     hoveredExpeditionPixel.value = pixel;
   }
