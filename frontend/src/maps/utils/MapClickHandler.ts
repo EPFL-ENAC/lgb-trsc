@@ -70,11 +70,12 @@ function onCountryClick(properties: any, options: MapClickHandlerOptions) {
     const mapController = useMapController();
     mapController.zoomToCountry();
   } else {
-    layerController.resetLayers();
+    // layerController.resetLayers();
   }
 }
 
 function onExpeditionClick(properties: any, options: MapClickHandlerOptions) {
   options.selectExpedition(properties);
-  options.zoomToExpedition();
+  const mapController = useMapController();
+  mapController.zoomToExpedition();
 }

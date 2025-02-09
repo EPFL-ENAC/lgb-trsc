@@ -202,6 +202,15 @@ export class MapController {
   };
   
 
+  public zoomToExpedition = () => {
+    const mapStore = useMapStore();
+    const selectedExpedition = mapStore.selectedCountry;
+    if (selectedExpedition) {
+      const extent = selectedExpedition.geometry.getExtent();
+      this.map.getView().fit(extent, { duration: 300 });
+    }
+  };
+
   public destroy(): void {
     this.cleanupCallbacks.forEach((cb) => cb());
     this.cleanupCallbacks = [];
