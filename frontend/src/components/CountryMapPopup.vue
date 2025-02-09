@@ -65,6 +65,7 @@
 <script setup lang="ts">
 import { defineProps, ref } from 'vue';
 import BarChart3DMapping from './BarChart3DMapping.vue';
+import { useMapController } from '@/maps/composables/useMapController';
 
 const props = defineProps({
   country: {
@@ -75,14 +76,13 @@ const props = defineProps({
     type: Function,
     required: true,
   },
-  zoomToCountry: {
-    type: Function,
-    required: true,
-  },
 });
 
 const handleGoToCountry = () => {
-  props.zoomToCountry();
+  // props.zoomToCountry();
+  // closeDrawer();
+  const mapController = useMapController();
+  mapController.zoomToCountry();
 };
 
 let showZoomedChart = ref(false);

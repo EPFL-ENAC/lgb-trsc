@@ -9,5 +9,5 @@ export const defaultExtent = transformExtent(
 
 export const defaultMinZoom = 3;
 export const defaultCenter: [number, number] = [39.0, 21.5];
-export const defaultMinZoomCountry = 3;
-export const defaultMinZoomExpedition = 3;
+export const defaultMinZoomCountry = 9;
+export const defaultMinZoomExpedition = 12;

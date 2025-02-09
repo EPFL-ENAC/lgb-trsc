@@ -48,17 +48,6 @@ export const useMapStore = defineStore('map', () => {
     drawer.value = true;
   }
 
-  function zoomToCountry() {
-    // zoom to current SelectedCountry
-    console.log(`Zooming to country ${selectedCountry.value.name}`);
-    // Additional zoom logic can be added here.
-  }
-
-  function zoomToExpedition() {
-    console.log(`Zooming to expedition ${selectExpedition}`);
-    // Additional zoom logic can be added here.
-  }
-
   function onHover(properties: any, pixel: number[]) {
     if (!properties) {
       hoveredExpedition.value = null;
@@ -82,8 +71,6 @@ export const useMapStore = defineStore('map', () => {
     closeDrawer,
     closeExpedition,
     selectCountry,
-    selectExpedition,
-    zoomToCountry,
-    zoomToExpedition,
+    selectExpedition
   };
 });

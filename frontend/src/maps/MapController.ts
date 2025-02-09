@@ -18,7 +18,7 @@ import { createDjiboutiGeomorphicLayer,
         createDjiboutiBoundaryLayer,
         createDjiboutiReefExtentLayer
  } from './layers/overlay/DjiboutiLayer';
-import { defaultCenter, defaultMinZoom, defaultExtent } from './config';
+import { defaultCenter, defaultMinZoom, defaultExtent, defaultMinZoomCountry } from './config';
 import {
   addMapClickHandler,
   MapClickHandlerOptions,
@@ -30,6 +30,9 @@ import { useMapStore } from '@/stores/mapStore';
 import { expeditions as DjiboutiExpeditions } from '@/assets/data/expeditions';
 import Djibouti3DMapping from '@/assets/data/dji_3d_mapping_all_results.json';
 import { useLayerController } from '@/maps/composables/useLayerController';
+import GeoJSON from 'ol/format/GeoJSON';
+import { getCenter } from 'ol/extent';
+import { transformExtent } from 'ol/proj';
 
 export class MapController {
   private map: Map;
@@ -87,7 +90,7 @@ export class MapController {
     // Retrieve the store instance
     const mapStore = useMapStore();
 
-    const { selectCountry, selectExpedition, zoomToCountry, zoomToExpedition, onHover } =
+    const { selectCountry, selectExpedition, onHover } =
       mapStore;
 
     // Define any extra parameters (raw data, expedition GeoJSON, and a new style)
@@ -106,9 +109,7 @@ export class MapController {
       selectExpedition,
       threeDMappingByCountry,
       expeditionsByCountry,
-      selectedCountryStyle,
-      zoomToCountry,
-      zoomToExpedition,
+      selectedCountryStyle
     };
 
     addMapClickHandler(this.map, clickHandlerOptions);
@@ -123,8 +124,6 @@ export class MapController {
   }
 
   public zoomToCountry(): void {
-    const mapStore = useMapStore();
-    mapStore.zoomToCountry();
      /*
   This function zoomToCountry is a map navigation function that appears to be using OpenLayers (a JavaScript mapping library). Here's what it does step by step:
 
@@ -156,31 +155,39 @@ export class MapController {
 
     The function essentially zooms and centers the map to focus on a selected country's coastline with some predefined zoom constraints.
   */
+
+  const mapStore = useMapStore();
   const selectedCountry = mapStore.selectedCountry;
-  if (selectedCountry.value && selectedCountry.value.coastline) {
-    // const coastlineFeature = new GeoJSON().readFeature(
-    //   selectedCountry.value.coastline,
-    //   {
-    //     featureProjection: 'EPSG:4326',
-    //   }
-    // );
-    // const extent = coastlineFeature.getGeometry().getExtent();
-    // this.map.getView().fit(extent, { duration: 300 });
-    // const currentView = this.map.getView().getProperties();
-    // currentView.zoom = defaultMinZoomCountry;
-    // currentView.minZoom = defaultMinZoomCountry;
-    // currentView.center = getCenter(extent);
-    // console.log(extent);
+  if (selectedCountry && selectedCountry.coastline) {
+    const coastlineFeature = new GeoJSON().readFeature(
+      selectedCountry.coastline,
+      {
+        featureProjection: 'EPSG:4326',
+      }
+    );
+    const extent = coastlineFeature.getGeometry().getExtent();
+
+    const transformedExtent = transformExtent(
+      extent,
+      'EPSG:4326',
+      'EPSG:3857'
+    );
+    this.map.getView().fit(transformedExtent, { duration: 300 });
+    const currentView = this.map.getView().getProperties();
+    currentView.zoom = defaultMinZoomCountry;
+    currentView.minZoom = defaultMinZoomCountry;
+    currentView.center = getCenter(transformedExtent);
     // make the following extent bigger to show the whole country
     // Add a buffer of 2 degrees around the extent
     // const buffer = 2;
     // currentView.extent = [
-    //   extent[0] - buffer,
-    //   extent[1] - buffer,
-    //   extent[2] + buffer,
-    //   extent[3] + buffer
+    //   transformedExtent[0] - buffer,
+    //   transformedExtent[1] - buffer,
+    //   transformedExtent[2] + buffer,
+    //   transformedExtent[3] + buffer
     // ];
-    // this.map.setView(new View(currentView));
+
+    this.map.setView(new View(currentView));
   }
   }
 

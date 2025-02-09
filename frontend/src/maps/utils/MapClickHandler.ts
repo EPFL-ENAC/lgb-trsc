@@ -8,16 +8,11 @@ import { clear } from 'console';
 
 type CountryName = string;
 export interface MapClickHandlerOptions {
-  // countryLayer: VectorLayer<VectorSource>;
-  // expeditionLayer: VectorLayer<VectorSource>;
-  // coastlineLayer: VectorLayer<VectorSource>;
   selectCountry: (properties: any) => void;
   selectExpedition: (properties: any) => void;
   threeDMappingByCountry: Record<CountryName, any>;
   expeditionsByCountry: Record<CountryName, any>;
   selectedCountryStyle: any;
-  zoomToCountry: () => void;
-  zoomToExpedition: () => void;
 }
 
 export function addMapClickHandler(
@@ -63,17 +58,17 @@ function onCountryClick(properties: any, options: MapClickHandlerOptions) {
   // add any extra rawData if needed
 
   const layerController = useLayerController();
-  properties.rawData = options.threeDMappingByCountry['Djibouti'];
-  options.selectCountry(properties);
-  // Set a new style on the country layer if needed
-  // options.countryLayer.setStyle(options.selectedCountryStyle);
-  const mapController = useMapController();
-  mapController.zoomToCountry();
-
   if (properties.name === 'Djibouti') {
     // I guess expeditionsByCountry is a dictionary of GeoJSON data
     // and rawData is for 3D Mapping
+   
     layerController.updateExpeditions(options.expeditionsByCountry['Djibouti']);
+    properties.rawData = options.threeDMappingByCountry['Djibouti'];
+    options.selectCountry(properties);
+    // Set a new style on the country layer if needed
+    // options.countryLayer.setStyle(options.selectedCountryStyle);
+    const mapController = useMapController();
+    mapController.zoomToCountry();
   } else {
     layerController.resetLayers();
   }
