@@ -1,0 +1,17 @@
+﻿Field Name,Definition,Data Type,Format/Example,Notes
+country,Country where the event took place,String,Djibouti,
+country_abbr,Two-letter country code,String,DJ,
+date_iso,Date of the event in ISO format,Date,YYYY-MM-DD,
+time,Time of the event,Time,HH:MM:SS,UTC
+experiment,Experiment code,String,MP,See experiment codes table
+expe_name,Experiment Name,String,exp202208_DJ,
+region_name,Geographic region,String,Gulf of Tadjourah,
+reef_area,Specific reef area,String,Djibouti_city,
+sampling_site_name,Sampling site name,String,kempinski hotel,
+event_id,Unique event identifier,String,EXP202208_DJ_001,Format: EXP[Year][Month]_DJ_[SequentialNumber]
+latitude_start,Starting latitude,Decimal,11.6270966667,Positive for North
+longitude_start,Starting longitude,Decimal,43.1525666667,Positive for East
+latitude_end,Ending latitude,Decimal,11.625417,
+longitude_end,Ending longitude,Decimal,43.153800,
+team_members,Team members involved,String,FirstName LastName,Comma-separated
+comments,Additional comments,String,,

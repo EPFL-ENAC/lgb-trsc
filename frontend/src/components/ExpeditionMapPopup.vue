@@ -49,8 +49,8 @@ const handleGoToExpedition = () => {
 }
 
 .close-btn {
-  background-color: #ff0000;
-  color: white;
+  background-color: white;
+  color: black;
   border: none;
   border-radius: 5px;
   cursor: pointer;

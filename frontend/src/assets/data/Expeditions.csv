@@ -1,52 +1,98 @@
-﻿Event_ID,Date,Time,Reef,Site_Name,Project_Code,Project_Name,Team_Members,Latitude_Start,Longitude_Start,Latitude_End,Longitude_End,Comments
-EXP2023_DJ_001,11/12/23,17:21,Maskali / Moucha,Sunken Buoy,3D,3D Mapping,"Anders, Devis, Jonny, Gabi",11.695854,43.145544,11.695467,43.146025,-
-EXP2023_DJ_002,11/12/23,17:21,Maskali / Moucha,Sunken Buoy,MP,Marine Pollution,"Guilhem, Manon, Ibrahim",11.69921667,43.1435,,,-
-EXP2023_DJ_003,11/12/23,17:21,Maskali / Moucha,Sunken Buoy,Sym,Symbionts,"Osama, Mustafa",11.69921667,43.1435,,,-
-EXP2023_DJ_004,11/13/23,12:35,Kadda Dabali,Japanese Garden,3D,3D Mapping,"Anders, Devis, Jonny, Gabi",12.472562,43.432745,12.472107,43.433253,-
-EXP2023_DJ_005,11/13/23,12:35,Kadda Dabali,Japanese Garden,SG,Seascape Genomics,"Guilhem, Manon, Ibrahim",12.47263333,43.43271667,,,"80-100% hard coral cover at 3 - 6m depth; mostly Pocillopora damicornis/verrucosa, some Porites sp., some Acropora sp.; 10/20% bleached (Porites, P. damicornis, Acropora, Sinularia, Platygyra); 31°C; lots of waves and currents, very hard conditions to sample (we only managed to collect 15 SPIS and 10 Pver)."
-EXP2023_DJ_006,11/13/23,12:35,Kadda Dabali,Japanese Garden,MP,Marine Pollution,"Guilhem, Manon, Ibrahim",12.47263333,43.43271667,,,"80-100% hard coral cover at 3 - 6m depth; mostly Pocillopora damicornis/verrucosa, some Porites sp., some Acropora sp.; 10/20% bleached (Porites, P. damicornis, Acropora, Sinularia, Platygyra); 31°C; lots of waves and currents, very hard conditions to sample (we only managed to collect 15 SPIS and 10 Pver)."
-EXP2023_DJ_007,11/13/23,12:35,Kadda Dabali,Japanese Garden,Sym,Symbionts,"Osama, Mustafa",12.47263333,43.43271667,,,-
-EXP2023_DJ_008,11/13/23,16:30,Kadda Dabali,Kadda Dabali,3D,3D Mapping,"Anders, Devis, Jonny, Gabi",12.465301,43.43419,12.465226,43.434361,-
-EXP2023_DJ_009,11/13/23,16:30,Kadda Dabali,Kadda Dabali,SG,Seascape Genomics,"Guilhem, Manon, Ibrahim",12.47263333,43.43271667,,,"100% hard coral cover; 5/10% bleached; we finished the sampling for SPIS, Pver, and did Porites sp."
-EXP2023_DJ_010,11/13/23,16:30,Kadda Dabali,Kadda Dabali,MP,Marine Pollution,"Guilhem, Manon, Ibrahim",12.47263333,43.43271667,,,"100% hard coral cover; 5/10% bleached; we finished the sampling for SPIS, Pver, and did Porites sp."
-EXP2023_DJ_011,11/13/23,16:30,Kadda Dabali,Kadda Dabali,Sym,Symbionts,"Osama, Mustafa",12.47263333,43.43271667,,,-
-EXP2023_DJ_012,11/14/23,8:14,Hamra,Protected side,3D,3D Mapping,"Anders, Devis, Jonny, Gabi",12.46229,43.36494,12.461997,43.36407,-
-EXP2023_DJ_013,11/14/23,8:14,Hamra,Protected side,SG,Seascape Genomics,"Guilhem, Manon, Ibrahim",12.4624,43.36455,,,"We dove to the Red Sea facing side of the island; we collected Pver; no SPIS alive; 20/30% hard coral cover; 50% coral bleaching; mostly Pver, rare Pocillopora damicornis."
-EXP2023_DJ_014,11/14/23,8:14,Hamra,Protected side,MP,Marine Pollution,"Guilhem, Manon, Ibrahim",12.4624,43.36455,,,"We dove to the Red Sea facing side of the island; we collected Pver; no SPIS alive; 20/30% hard coral cover; 50% coral bleaching; mostly Pver, rare Pocillopora damicornis."
-EXP2023_DJ_015,11/14/23,8:14,Hamra,Protected side,Sym,Symbionts,"Osama, Mustafa",12.4624,43.36455,,,-
-EXP2023_DJ_016,11/14/23,11:46,Tolka,Protected side,3D,3D Mapping,"Anders, Devis, Jonny, Gabi",12.461124,43.412022,12.461213,43.411193,-
-EXP2023_DJ_017,11/14/23,11:46,Tolka,Protected side,eDNA,Environmental DNA,"Guilhem, Ibrahim",12.46131667,43.41235,,,"2 x 17 min on power 8; 2 cartridges; about 200 m long each way; water temperature 28°C; for the first filter, starts at 5.1 m, and ends at 6 m; for the second filter, starts at 6 m, and ends at 5 m; 50/60% hard coral cover; less than 10% bleaching."
-EXP2023_DJ_018,11/14/23,16:01,Tolka,Exposed side,3D,3D Mapping,"Anders, Devis, Jonny, Gabi",12.458933,43.413086,12.458409,43.412904,-
-EXP2023_DJ_019,11/14/23,16:01,Tolka,Exposed side,MP,Marine Pollution,"Gabi, Ibrahim, Djama",12.458933,43.413086,,,-
-EXP2023_DJ_020,11/14/23,19:00,Kadda Dabali,,eDNA,Environmental DNA,"Gabi, Jonny",12.4669,43.43145,,,-
-EXP2023_DJ_021,11/14/23,19:00,Kadda Dabali,,echi,Echinoderms,"Guilhem, Manon, Jean-Michel",12.4669,43.43145,,,-
-EXP2023_DJ_022,11/15/23,7:58,Horod le Rhale,Lagoon,3D,3D Mapping,"Anders, Devis, Jonny, Gabi",12.452566,43.443604,,,-
-EXP2023_DJ_023,11/15/23,7:58,Horod le Rhale,Lagoon,eDNA,Environmental DNA,"Guilhem, Ibrahim",12.45245,43.44318333,,,"2 filters, 17 min each; first filter starts at 3.5 m, ends at 5 m; second filter starts at 5 m, and ends at 4 m; water temperature 29°C."
-EXP2023_DJ_024,11/15/23,11:12,Horod le Rhale,Protected side,3D,3D Mapping,"Anders, Devis, Jonny, Gabi",12.45503,43.439232,12.455855,43.439621,-
-EXP2023_DJ_025,11/15/23,11:12,Horod le Rhale,Protected side,SG,Seascape Genomics,"Guilhem, Manon, Ibrahim",12.45311667,43.44305,,,Collection of SPIS and Pver (21 colonies from each).
-EXP2023_DJ_026,11/15/23,11:12,Horod le Rhale,Protected side,Sym,Symbionts,"Osama, Mustafa",12.45311667,43.44305,,,-
-EXP2023_DJ_027,11/15/23,15:30,Hamra,Exposed side,3D,3D Mapping,"Anders, Devis, Jonny, Gabi",12.45893,43.366106,12.458363,43.365411,-
-EXP2023_DJ_028,11/15/23,15:30,Hamra,Exposed side,eDNA,Environmental DNA,"Gabi, Ibrahim",12.4588,43.3665,,,-
-EXP2023_DJ_029,11/15/23,15:30,Hamra,Exposed side,SG,Seascape Genomics,"Guilhem, Manon",12.4588,43.3665,,,Sampled 21 Pver and 11 SPIS.
-EXP2023_DJ_030,11/15/23,15:30,Hamra,Exposed side,Sym,Symbionts,"Guilhem, Manon",12.4588,43.3665,,,Sampled 21 Pver and 11 SPIS.
-EXP2023_DJ_031,11/16/23,8:23,Ras Siyyan,Sand,3D,3D Mapping,"Anders, Devis, Jonny",12.482124,43.31663,12.482268,43.316203,-
-EXP2023_DJ_032,11/16/23,8:23,Ras Siyyan,Sand,SG,Seascape Genomics,"Guilhem, Manon, Ibrahim",12.48196667,43.31643333,,,"Low visibility; some Pver alive, very patchy; recent mortality of SPIS; 80% hard coral cover; 5% alive; water temperature 29°C."
-EXP2023_DJ_033,11/16/23,8:23,Ras Siyyan,Sand,MP,Marine Pollution,"Guilhem, Manon, Ibrahim",12.48196667,43.31643333,,,"Low visibility; some Pver alive, very patchy; recent mortality of SPIS; 80% hard coral cover; 5% alive; water temperature 29°C."
-EXP2023_DJ_034,11/16/23,8:23,Ras Siyyan,Sand,Sym,Symbionts,"Osama, Mustafa",12.48196667,43.31643333,,,-
-EXP2023_DJ_035,11/16/23,10:31,Ras Siyyan,Lagoon,3D,3D Mapping,"Anders, Devis, Jonny",12.485126,43.304618,12.485582,43.304032,-
-EXP2023_DJ_036,11/16/23,10:31,Ras Siyyan,Lagoon,eDNA,Environmental DNA,"Guilhem, Ibrahim",12.48513333,43.30451667,,,"Done around 3D mapping transect; water temperature 29°C; 2 filters of 15 min each; 100% hard coral cover, 60% alive, no SPIS alive."
-EXP2023_DJ_037,11/17/23,8:28,Obock,Ras Bir,3D,3D Mapping,"Anders, Devis, Jonny, Gabi",11.976672,43.361306,11.976924,43.362169,-
-EXP2023_DJ_038,11/17/23,8:28,Obock,Ras Bir,SG,Seascape Genomics,"Guilhem, Manon, Ibrahim",11.97688333,43.36078333,,,"All SPIS dead (recent); sampled Pver; high hard coral cover, low live coral cover."
-EXP2023_DJ_039,11/17/23,8:28,Obock,Ras Bir,MP,Marine Pollution,"Guilhem, Manon, Ibrahim",11.97688333,43.36078333,,,"All SPIS dead (recent); sampled Pver; high hard coral cover, low live coral cover."
-EXP2023_DJ_040,11/17/23,8:28,Obock,Ras Bir,Sym,Symbionts,"Osama, Mustafa",11.97688333,43.36078333,,,-
-EXP2023_DJ_041,11/17/23,11:06,Obock,Surcouffe,3D,3D Mapping,"Anders, Devis, Jonny",11.964247,43.321497,11.96412,43.322387,-
-EXP2023_DJ_042,11/17/23,11:06,Obock,Surcouffe,eDNA,Environmental DNA,Gabi,11.964247,43.321497,,,Done around 3D mapping transect; eDNA (2 filters for 15 min) and swabs.
-EXP2023_DJ_043,11/17/23,11:06,Obock,Surcouffe,echi,Echinoderms,Guilhem,11.96453333,43.32165,,,-
-EXP2023_DJ_044,11/17/23,16:00,Maskali / Moucha,Sunken Buoy,eDNA,Environmental DNA,"Gabi, Jonny",11.69921667,43.1435,,,-
-EXP2023_DJ_045,11/17/23,16:00,Maskali / Moucha,,eDNA,Environmental DNA,"Guilhem, Gabi",11.69603333,43.14428333,,,Surface collection.
-EXP2023_DJ_046,11/17/23,16:00,Maskali / Moucha,Sunken Buoy,MP,Marine Pollution,"Guilhem, Devis",11.69921667,43.1435,,,Collecting remaining samples from day 1 (5 x SPIS; 3 x Pver; 1 x sediment). eDNA underwater (2 x filters for 15 min); eDNA surface (2 x filters for 17 min).
-EXP2023_DJ_047,11/17/23,16:00,Maskali / Moucha,Sunken Buoy,Sym,Symbionts,"Guilhem, Devis",11.69921667,43.1435,,,Collecting remaining samples from day 1 (5 x SPIS; 3 x Pver; 1 x sediment). eDNA underwater (2 x filters for 15 min); eDNA surface (2 x filters for 17 min).
-EXP2023_DJ_048,11/20/23,7:49,Maskali / Moucha,North Wall,3D,3D Mapping,"Jonny, Gabi, Ibrahim",11.739134,43.196618,11.738827,43.197475,-
-EXP2023_DJ_049,11/20/23,9:47,Maskali / Moucha,Buoy Air France,3D,3D Mapping,"Jonny, Gabi, Ibrahim",11.735338,43.167548,11.736208,43.167631,-
-EXP2023_DJ_050,11/20/23,12:19,Maskali / Moucha,Aquarium,3D,3D Mapping,"Jonny, Gabi, Ibrahim",11.70308,43.162538,11.702758,43.163374,-
-EXP2023_DJ_051,11/20/23,13:42,Maskali / Moucha,Sunken Buoy,3D,3D Mapping,"Jonny, Gabi, Ibrahim",11.695606,43.144872,11.694692,43.144976,-
+country,country_abbr,date_iso,time,experiment,expe_name,region_name,reef_area,sampling_site_name,event_id,latitude_start,longitude_start,latitude_end,longitude_end,team_members,comments,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+Djibouti,DJ,2022-08-16,,MP,exp202208_DJ,Gulf of Tadjourah,Djibouti_city,kempinski hotel,EXP202208_DJ_001,11.6270966667,43.1525666667,,,,,,,,,,,,-,,
+Djibouti,DJ,2022-09-16,12:30:00 PM,3D,exp202209_DJ,Gulf of Tadjourah,Djibouti_city,kempinski hotel,EXP202209_DJ_002,11.625800,43.154000,11.625417,43.153800,,Chaotic first dive: missed one of the transect points (we only have three): as we couldn't find them without the buoys (2x 50m transect murky water: way too shallow),,,,,,,,,-,
+Djibouti,DJ,2022-09-16,,SG,exp202209_DJ,Gulf of Tadjourah,Djibouti_city,kempinski hotel,EXP202209_DJ_002,11.6258,43.154,,,,,,,,,,,,,,-
+Djibouti,DJ,2022-09-17,9:30:00 AM,3D,exp202209_DJ,Gulf of Tadjourah,Maskali / Moucha,Sunken Buoy,EXP202209_DJ_003,11.694733,43.144950,11.695633,43.145033,,2x 100m transect: perfect dive!,,,,,,,,,-,
+Djibouti,DJ,2022-09-17,,SG,exp202209_DJ,Gulf of Tadjourah,Maskali / Moucha,Sunken Buoy,EXP202209_DJ_003,11.6904671667,43.140866,,,,,,,,,,,,,,-
+Djibouti,DJ,2022-09-18,2:45:00 PM,3D,exp202209_DJ,Gulf of Tadjourah,Maskali / Moucha,Aquarium,EXP202209_DJ_004,11.702433,43.165600,11.702333,43.165167,,Try random mapping with GPS points any time we swap people doing the mapping. Initial starting point was a bit chaotic in terms of GPS.,,,,,,,,,-,
+Djibouti,DJ,2022-09-19,12:00:00 PM,3D,exp202209_DJ,Gulf of Tadjourah,Maskali / Moucha,Sunken Buoy,EXP202209_DJ_005,11.698833,43.143800,11.699717,43.143700,,1x 100m transect: everything went smooth,,,,,,,,,-,
+Djibouti,DJ,2022-09-19,,SG,exp202209_DJ,Gulf of Tadjourah,Maskali / Moucha,Sunken Buoy,EXP202209_DJ_005,11.6904671667,43.140866,,,,,,,,,,,,,,-
+Djibouti,DJ,2022-09-20,12:15:00 PM,3D,exp202209_DJ,Gulf of Tadjourah,Arta,Shark Island,EXP202209_DJ_006,11.591900,42.894583,11.590350,42.893083,,Swim 3/4 way around the island counter-clockwise: not a straight line transect: bad visibility: a bit of a chaotic beginning,,,,,,,,,-,
+Djibouti,DJ,2022-09-20,5:00:00 PM,3D,exp202209_DJ,Gulf of Tadjourah,Arta,Ras korali,EXP202209_DJ_007,11.578083,42.791200,11.578983,42.791383,,1x100m transect,,,,,,,,,-,
+Djibouti,DJ,2022-09-20,,SG,exp202209_DJ,Gulf of Tadjourah,Arta,Ras Korali,EXP202209_DJ_007,11.5789833333,42.7913833333,,,,,,,,,,,,,,-
+Djibouti,DJ,2022-09-21,8:00:00 AM,3D,exp202209_DJ,Gulf of Tadjourah,Ghoubet,Fare mare,EXP202209_DJ_008,11.520083,42.661567,11.520833,42.661100,,1x100m transect on reef wall,,,,,,,,,-,
+Djibouti,DJ,2022-09-21,,SG,exp202209_DJ,Gulf of Tadjourah,Ghoubet,Fare mare,EXP202209_DJ_008,11.5200833333,42.6615666667,,,,,,,,,,,,,,
+Djibouti,DJ,2022-09-21,12:00:00 PM,3D,exp202209_DJ,Gulf of Tadjourah,Ghoubet,Fare mare,EXP202209_DJ_009,11.522283,42.660183,11.523100,42.659817,,1x100m transect on reef wall,,,,,,,,,,
+Djibouti,DJ,2022-09-23,8:00:00 AM,3D,exp202209_DJ,Gulf of Tadjourah,Tadjoura,Sable blanc,EXP202209_DJ_010,11.779317,42.919017,11.779133,42.919950,,1x 100m and free random mapping,,,,,,,,,-,
+Djibouti,DJ,2022-09-23,,SG,exp202209_DJ,Gulf of Tadjourah,Tadjoura,Sable blanc,EXP202209_DJ_010,11.7793166667,42.9190166667,11.772750,42.927650,,1x 100m and free random mapping: turtles on mapping!,,,,,,,,,,
+Djibouti,DJ,2022-09-23,11:00:00 AM,3D,exp202209_DJ,Gulf of Tadjourah,Tadjoura,Sable blanc,EXP202209_DJ_011,11.773283,42.927017,,,,,,,,,,,,,,-
+Djibouti,DJ,2022-09-24,12:45:00 PM,3D,exp202209_DJ,Gulf of Tadjourah,Obock,Surcouffe,EXP202209_DJ_012,11.958667,43.313033,11.958483,43.312150,,1x 100m mapping and loooots of free roaming,,,,,,,,,,-
+Djibouti,DJ,2022-09-24,,SG,exp202209_DJ,Gulf of Tadjourah,Obock,Surcouffe,EXP202209_DJ_012,11.9586666667,43.3130333333,,,,,,,,,,,,,,
+Djibouti,DJ,2022-09-24,4:30:00 PM,3D,exp202209_DJ,Gulf of Tadjourah,Obock,Surcouffe,EXP202209_DJ_013,11.960217,43.317217,11.959933,43.316367,,1x 100m mapping and then we go up immediately,,,,,,,,,,
+Djibouti,DJ,2022-09-26,9:15:00 AM,3D,exp202209_DJ,Gulf of Tadjourah,Maskali / Moucha,Buoy Air France,EXP202209_DJ_014,11.735367,43.167483,11.736233,43.167517,,1x100m mapping and then we do free roaming,,,,,,,,,-,
+Djibouti,DJ,2022-09-26,2:00:00 PM,3D,exp202209_DJ,Gulf of Tadjourah,Maskali / Moucha,Aquarium,EXP202209_DJ_015,11.703033,43.162550,11.702700,43.163367,,1x100m mapping and then we do free roaming,,,,,,,,-,,
+Djibouti,DJ,2022-09-26,,MP,exp202209_DJ,Gulf of Tadjourah,Maskali / Moucha,Sunken Buoy,EXP202209_DJ_016,11.695223,43.145888,,,,,,,,,,,,-,,
+Djibouti,DJ,2022-09-26,,SG,exp202209_DJ,Gulf of Tadjourah,Maskali / Moucha,Sunken Buoy,EXP202209_DJ_017,11.6904671667,43.140866,,,,,,,,,,,,,-,
+Djibouti,DJ,2022-09-27,2:00:00 PM,3D,exp202209_DJ,Gulf of Tadjourah,Maskali / Moucha,North Wall,EXP202209_DJ_018,11.703033,43.162550,11.702700,43.163367,,1x100m mapping and then we do free roaming,,,,,,,,,-,
+Djibouti,DJ,2022-09-27,8:00:00 AM,3D,exp202209_DJ,Gulf of Tadjourah,Maskali / Moucha,Canyon,EXP202209_DJ_019,11.739117,43.196650,11.738833,43.197517,,1x100m mapping and then we do free roaming,,,,,,,,-,,
+Djibouti,DJ,2022-09-27,,MP,exp202209_DJ,Gulf of Tadjourah,Maskali / Moucha,Sunken Buoy,EXP202209_DJ_020,11.695223,43.145888,,,,,,,,,,,,,,-
+Djibouti,DJ,2022-09-27,,SG,exp202209_DJ,Gulf of Tadjourah,Maskali / Moucha,Sunken Buoy,EXP202209_DJ_021,11.6904671667,43.140866,,,,,,,,,,,,,-,
+Djibouti,DJ,2022-09-28,8:00:00 AM,3D,exp202209_DJ,Gulf of Tadjourah,Maskali / Moucha,Sunken Buoy,EXP202209_DJ_022,11.694417,43.146083,11.694400,43.145150,,,,,,,,,,-,,
+Israel,IL,2022-08-01,,MP,exp202208_IL,,Eilat,Japanese Garden,EXP202208_IL_001,29.5062661,34.9210153,,,,,,,,,,,,,,-
+Israel,IL,2022-08-01,,SG,exp202208_IL,,Eilat,Japanese Garden,EXP202208_IL_001,29.5063530556,34.9208558333,,,,,,,,,,,,-,,
+Israel,IL,2022-08-02,,MP,exp202208_IL,,Eilat,Japanese Garden,EXP202208_IL_002,29.5062661,34.9210153,,,,,,,,,,,,,,-
+Israel,IL,2022-08-02,,SG,exp202208_IL,,Eilat,Japanese Garden,EXP202208_IL_002,29.5063530556,34.9208558333,,,,,,,,,,,,-,,
+Israel,IL,2022-08-03,,MP,exp202208_IL,,Eilat,Japanese Garden,EXP202208_IL_003,29.5048665,34.9202513,,,,,,,,,,,,-,,
+Israel,IL,2022-08-03,,SG,exp202208_IL,,Eilat,Japanese Garden,EXP202208_IL_003,29.5063530556,34.9208558333,,,,,,,,,,,,-,,
+Israel,IL,2022-08-24,,MP,exp202208_IL,,Eilat,Japanese Garden,EXP202208_IL_004,29.5062661,34.9210153,,,,,,,,,,,,,,-
+Israel,IL,2022-08-24,,SG,exp202208_IL,,Eilat,Japanese Garden,EXP202208_IL_004,29.5063530556,34.9208558333,,,,,,,,,,,,-,,
+Jordan,JO,2022-08-07,,MP,exp202208_JO,,Aqaba,King Abdullah Reef,EXP202208_JO_001,29.440167,34.969447,,,,,,,,,,,,,,-
+Jordan,JO,2022-08-07,,SG,exp202208_JO,,Aqaba,King Abdullah Reef,EXP202208_JO_001,29.4393980556,34.9695958333,,,,,,,,,,,,-,,
+Jordan,JO,2022-08-08,,MP,exp202208_JO,,Aqaba,King Abdullah Reef,EXP202208_JO_002,29.440167,34.969447,,,,,,,,,,,,,,-
+Jordan,JO,2022-08-08,,SG,exp202208_JO,,Aqaba,King Abdullah Reef,EXP202208_JO_002,29.4393980556,34.9695958333,,,,,,,,,,,,-,,
+Jordan,JO,2022-08-09,,MP,exp202208_JO,,Aqaba,Phosphate Port South,EXP202208_JO_003,29.372742,34.965594,,,,,,,,,,,,,,-
+Jordan,JO,2022-08-09,,SG,exp202208_JO,,Aqaba,Phosphate Port South,EXP202208_JO_003,29.3715519444,34.9651619444,,,,,,,,,,,,-,,
+Jordan,JO,2022-08-11,,MP,exp202208_JO,,Aqaba,Hotel Area,EXP202208_JO_004,29.530406,34.997800,,,,,,,,,,,,-,,
+Djibouti,DJ,2023-11-12,5:21:00 PM,3D,exp202311_DJ,Gulf of Tadjourah,Maskali / Moucha,Sunken Buoy,EXP202311_DJ_001,11.695854,43.145544,,,"Anders, Devis, Jonny, Gabi",-,,,,,,,,,,
+Djibouti,DJ,2023-11-12,5:21:00 PM,MP,exp202311_DJ,Gulf of Tadjourah,Maskali / Moucha,Sunken Buoy,EXP202311_DJ_001,11.69921667,43.1435,,,"Guilhem, Manon, Ibrahim",-,,,,,,,,,,
+Djibouti,DJ,2023-11-12,5:21:00 PM,Sym,exp202311_DJ,Gulf of Tadjourah,Maskali / Moucha,Sunken Buoy,EXP202311_DJ_001,11.69921667,43.1435,12.472107,43.433253,"Osama, Mustafa",-,,,,,,,,,,
+Djibouti,DJ,2023-11-13,12:35:00 PM,3D,exp202311_DJ,Seven brothers,Kadda Dabali,Japanese Garden,EXP202311_DJ_002,12.472562,43.432745,,,"Anders, Devis, Jonny, Gabi","80-100% hard coral cover at 3 - 6m depth; mostly Pocillopora damicornis/verrucosa, some Porites sp., some Acropora sp.; 10/20% bleached (Porites, P. damicornis, Acropora, Sinularia, Platygyra); 31°C; lots of waves and currents, very hard conditions to sample (we only managed to collect 15 SPIS and 10 Pver).",,,,,,,,,,
+Djibouti,DJ,2023-11-13,12:35:00 PM,SG,exp202311_DJ,Seven brothers,Kadda Dabali,Japanese Garden,EXP202311_DJ_002,12.47263333,43.43271667,,,"Guilhem, Manon, Ibrahim","80-100% hard coral cover at 3 - 6m depth; mostly Pocillopora damicornis/verrucosa, some Porites sp., some Acropora sp.; 10/20% bleached (Porites, P. damicornis, Acropora, Sinularia, Platygyra); 31°C; lots of waves and currents, very hard conditions to sample (we only managed to collect 15 SPIS and 10 Pver).",,,,,,,,,,
+Djibouti,DJ,2023-11-13,12:35:00 PM,MP,exp202311_DJ,Seven brothers,Kadda Dabali,Japanese Garden,EXP202311_DJ_002,12.47263333,43.43271667,,,"Guilhem, Manon, Ibrahim",-,,,,,,,,,,
+Djibouti,DJ,2023-11-13,12:35:00 PM,Sym,exp202311_DJ,Seven brothers,Kadda Dabali,Japanese Garden,EXP202311_DJ_002,12.47263333,43.43271667,12.465226,43.434361,"Osama, Mustafa",-,,,,,,,,,,
+Djibouti,DJ,2023-11-13,4:30:00 PM,3D,exp202311_DJ,Seven brothers,Kadda Dabali,Japanese Garden,EXP202311_DJ_003,12.465301,43.43419,,,"Anders, Devis, Jonny, Gabi","100% hard coral cover; 5/10% bleached; we finished the sampling for SPIS, Pver, and did Porites sp.",,,,,,,,,,
+Djibouti,DJ,2023-11-13,4:30:00 PM,SG,exp202311_DJ,Seven brothers,Kadda Dabali,Kadda Dabali,EXP202311_DJ_003,12.47263333,43.43271667,,,"Guilhem, Manon, Ibrahim","100% hard coral cover; 5/10% bleached; we finished the sampling for SPIS, Pver, and did Porites sp.",,,,,,,,,,
+Djibouti,DJ,2023-11-13,4:30:00 PM,MP,exp202311_DJ,Seven brothers,Kadda Dabali,Kadda Dabali,EXP202311_DJ_003,12.47263333,43.43271667,,,"Guilhem, Manon, Ibrahim",-,,,,,,,,,,
+Djibouti,DJ,2023-11-13,4:30:00 PM,Sym,exp202311_DJ,Seven brothers,Kadda Dabali,Kadda Dabali,EXP202311_DJ_003,12.47263333,43.43271667,12.461997,43.36407,"Osama, Mustafa",-,,,,,,,,,,
+Djibouti,DJ,2023-11-14,8:14:00 AM,3D,exp202311_DJ,Seven brothers,Hamra,Protected side,EXP202311_DJ_004,12.46229,43.36494,,,"Anders, Devis, Jonny, Gabi","We dove to the Red Sea facing side of the island; we collected Pver; no SPIS alive; 20/30% hard coral cover; 50% coral bleaching; mostly Pver, rare Pocillopora damicornis.",,,,,,,,,,
+Djibouti,DJ,2023-11-14,8:14:00 AM,SG,exp202311_DJ,Seven brothers,Hamra,Protected side,EXP202311_DJ_004,12.4624,43.36455,,,"Guilhem, Manon, Ibrahim","We dove to the Red Sea facing side of the island; we collected Pver; no SPIS alive; 20/30% hard coral cover; 50% coral bleaching; mostly Pver, rare Pocillopora damicornis.",,,,,,,,,,
+Djibouti,DJ,2023-11-14,8:14:00 AM,MP,exp202311_DJ,Seven brothers,Hamra,Protected side,EXP202311_DJ_004,12.4624,43.36455,,,"Guilhem, Manon, Ibrahim",-,,,,,,,,,,
+Djibouti,DJ,2023-11-14,8:14:00 AM,Sym,exp202311_DJ,Seven brothers,Hamra,Protected side,EXP202311_DJ_004,12.4624,43.36455,12.461213,43.411193,"Osama, Mustafa",-,,,,,,,,,,
+Djibouti,DJ,2023-11-14,11:46:00 AM,3D,exp202311_DJ,Seven brothers,Tolka,Protected side,EXP202311_DJ_005,12.461124,43.412022,,,"Anders, Devis, Jonny, Gabi","2 x 17 min on power 8; 2 cartridges; about 200 m long each way; water temperature 28°C; for the first filter, starts at 5.1 m, and ends at 6 m; for the second filter, starts at 6 m, and ends at 5 m; 50/60% hard coral cover; less than 10% bleaching.",,,,,,,,,,
+Djibouti,DJ,2023-11-14,11:46:00 AM,eDNA,exp202311_DJ,Seven brothers,Tolka,Protected side,EXP202311_DJ_005,12.46131667,43.41235,12.458409,43.412904,"Guilhem, Ibrahim",-,,,,,,,,,,
+Djibouti,DJ,2023-11-14,4:01:00 PM,3D,exp202311_DJ,Seven brothers,Tolka,Exposed side,EXP202311_DJ_006,12.458933,43.413086,,,"Anders, Devis, Jonny, Gabi",-,,,,,,,,,,
+Djibouti,DJ,2023-11-14,4:01:00 PM,MP,exp202311_DJ,Seven brothers,Tolka,Exposed side,EXP202311_DJ_006,12.458933,43.413086,,,"Gabi, Ibrahim, Djama",-,,,,,,,,,,
+Djibouti,DJ,2023-11-14,7:00:00 PM,eDNA,exp202311_DJ,Seven brothers,Kadda Dabali,Japanese Garden,EXP202311_DJ_007,12.4669,43.43145,,,"Gabi, Jonny",-,,,,,,,,,,
+Djibouti,DJ,2023-11-14,7:00:00 PM,echi,exp202311_DJ,Seven brothers,Kadda Dabali,Japanese Garden,EXP202311_DJ_007,12.4669,43.43145,,,"Guilhem, Manon, Jean-Michel",-,,,,,,,,,,
+Djibouti,DJ,2023-11-15,7:58:00 AM,3D,exp202311_DJ,Seven brothers,Horod le Rhale,Lagoon,EXP202311_DJ_008,12.452566,43.443604,,,"Anders, Devis, Jonny, Gabi","2 filters, 17 min each; first filter starts at 3.5 m, ends at 5 m; second filter starts at 5 m, and ends at 4 m; water temperature 29°C.",,,,,,,,,,
+Djibouti,DJ,2023-11-15,7:58:00 AM,eDNA,exp202311_DJ,Seven brothers,Horod le Rhale,Lagoon,EXP202311_DJ_008,12.45245,43.44318333,12.455855,43.439621,"Guilhem, Ibrahim",-,,,,,,,,,,
+Djibouti,DJ,2023-11-15,11:12:00 AM,3D,exp202311_DJ,Seven brothers,Horod le Rhale,Protected side,EXP202311_DJ_009,12.45503,43.439232,,,"Anders, Devis, Jonny, Gabi",Collection of SPIS and Pver (21 colonies from each).,,,,,,,,,,
+Djibouti,DJ,2023-11-15,11:12:00 AM,SG,exp202311_DJ,Seven brothers,Horod le Rhale,Protected side,EXP202311_DJ_009,12.45311667,43.44305,,,"Guilhem, Manon, Ibrahim",-,,,,,,,,,,
+Djibouti,DJ,2023-11-15,11:12:00 AM,Sym,exp202311_DJ,Seven brothers,Horod le Rhale,Protected side,EXP202311_DJ_009,12.45311667,43.44305,12.458363,43.365411,"Osama, Mustafa",-,,,,,,,,,,
+Djibouti,DJ,2023-11-15,3:30:00 PM,3D,exp202311_DJ,Seven brothers,Hamra,Exposed side,EXP202311_DJ_010,12.45893,43.366106,,,"Anders, Devis, Jonny, Gabi",-,,,,,,,,,,
+Djibouti,DJ,2023-11-15,3:30:00 PM,eDNA,exp202311_DJ,Seven brothers,Hamra,Exposed side,EXP202311_DJ_010,12.4588,43.3665,,,"Gabi, Ibrahim",Sampled 21 Pver and 11 SPIS.,,,,,,,,,,
+Djibouti,DJ,2023-11-15,3:30:00 PM,SG,exp202311_DJ,Seven brothers,Hamra,Exposed side,EXP202311_DJ_010,12.4588,43.3665,,,"Guilhem, Manon",Sampled 21 Pver and 11 SPIS.,,,,,,,,,,
+Djibouti,DJ,2023-11-15,3:30:00 PM,Sym,exp202311_DJ,Seven brothers,Hamra,Exposed side,EXP202311_DJ_010,12.4588,43.3665,12.482268,43.316203,"Guilhem, Manon",-,,,,,,,,,,
+Djibouti,DJ,2023-11-16,8:23:00 AM,3D,exp202311_DJ,Seven brothers,Ras Siyyan,Sand,EXP202311_DJ_011,12.482124,43.31663,,,"Anders, Devis, Jonny","Low visibility; some Pver alive, very patchy; recent mortality of SPIS; 80% hard coral cover; 5% alive; water temperature 29°C.",,,,,,,,,,
+Djibouti,DJ,2023-11-16,8:23:00 AM,SG,exp202311_DJ,Seven brothers,Ras Siyyan,Sand,EXP202311_DJ_011,12.48196667,43.31643333,,,"Guilhem, Manon, Ibrahim","Low visibility; some Pver alive, very patchy; recent mortality of SPIS; 80% hard coral cover; 5% alive; water temperature 29°C.",,,,,,,,,,
+Djibouti,DJ,2023-11-16,8:23:00 AM,MP,exp202311_DJ,Seven brothers,Ras Siyyan,Sand,EXP202311_DJ_011,12.48196667,43.31643333,,,"Guilhem, Manon, Ibrahim",-,,,,,,,,,,
+Djibouti,DJ,2023-11-16,8:23:00 AM,Sym,exp202311_DJ,Seven brothers,Ras Siyyan,Sand,EXP202311_DJ_011,12.48196667,43.31643333,12.485582,43.304032,"Osama, Mustafa",-,,,,,,,,,,
+Djibouti,DJ,2023-11-16,10:31:00 AM,3D,exp202311_DJ,Seven brothers,Ras Siyyan,Lagoon,EXP202311_DJ_012,12.485126,43.304618,,,"Anders, Devis, Jonny","Done around 3D mapping transect; water temperature 29°C; 2 filters of 15 min each; 100% hard coral cover, 60% alive, no SPIS alive.",,,,,,,,,,
+Djibouti,DJ,2023-11-16,10:31:00 AM,eDNA,exp202311_DJ,Seven brothers,Ras Siyyan,Lagoon,EXP202311_DJ_012,12.48513333,43.30451667,11.976924,43.362169,"Guilhem, Ibrahim",-,,,,,,,,,,
+Djibouti,DJ,2023-11-17,8:28:00 AM,3D,exp202311_DJ,Gulf of Tadjourah,Obock,Ras Bir,EXP202311_DJ_013,11.976672,43.361306,,,"Anders, Devis, Jonny, Gabi","All SPIS dead (recent); sampled Pver; high hard coral cover, low live coral cover.",,,,,,,,,,
+Djibouti,DJ,2023-11-17,8:28:00 AM,SG,exp202311_DJ,Gulf of Tadjourah,Obock,Ras Bir,EXP202311_DJ_013,11.97688333,43.36078333,,,"Guilhem, Manon, Ibrahim","All SPIS dead (recent); sampled Pver; high hard coral cover, low live coral cover.",,,,,,,,,,
+Djibouti,DJ,2023-11-17,8:28:00 AM,MP,exp202311_DJ,Gulf of Tadjourah,Obock,Ras Bir,EXP202311_DJ_013,11.97688333,43.36078333,,,"Guilhem, Manon, Ibrahim",-,,,,,,,,,,
+Djibouti,DJ,2023-11-17,8:28:00 AM,Sym,exp202311_DJ,Gulf of Tadjourah,Obock,Ras Bir,EXP202311_DJ_013,11.97688333,43.36078333,11.96412,43.322387,"Osama, Mustafa",-,,,,,,,,,,
+Djibouti,DJ,2023-11-17,11:06:00 AM,3D,exp202311_DJ,Gulf of Tadjourah,Obock,Surcouffe,EXP202311_DJ_014,11.964247,43.321497,,,"Anders, Devis, Jonny",Done around 3D mapping transect; eDNA (2 filters for 15 min) and swabs.,,,,,,,,,,
+Djibouti,DJ,2023-11-17,11:06:00 AM,eDNA,exp202311_DJ,Gulf of Tadjourah,Obock,Surcouffe,EXP202311_DJ_014,11.964247,43.321497,,,Gabi,-,,,,,,,,,,
+Djibouti,DJ,2023-11-17,11:06:00 AM,echi,exp202311_DJ,Gulf of Tadjourah,Obock,Surcouffe,EXP202311_DJ_014,11.96453333,43.32165,,,Guilhem,-,,,,,,,,,,
+Djibouti,DJ,2023-11-17,11:06:00 AM,Sym,exp202311_DJ,Gulf of Tadjourah,Obock,Surcouffe,EXP202311_DJ_014,11.96453333,43.32165,,,"Osama, Mustafa",-,,,,,,,,,,
+Djibouti,DJ,2023-11-17,4:00:00 PM,eDNA,exp202311_DJ,Gulf of Tadjourah,Maskali / Moucha,Sunken Buoy,EXP202311_DJ_015,11.69921667,43.1435,,,"Gabi, Jonny",Surface collection.,,,,,,,,,,
+Djibouti,DJ,2023-11-17,4:00:00 PM,eDNA,exp202311_DJ,Gulf of Tadjourah,Maskali / Moucha,Sunken Buoy,EXP202311_DJ_015,11.69603333,43.14428333,,,"Guilhem, Gabi",Collecting remaining samples from day 1 (5 x SPIS; 3 x Pver; 1 x sediment). eDNA underwater (2 x filters for 15 min); eDNA surface (2 x filters for 17 min).,,,,,,,,,,
+Djibouti,DJ,2023-11-17,4:00:00 PM,MP,exp202311_DJ,Gulf of Tadjourah,Maskali / Moucha,Sunken Buoy,EXP202311_DJ_015,11.69921667,43.1435,,,"Guilhem, Devis",Collecting remaining samples from day 1 (5 x SPIS; 3 x Pver; 1 x sediment). eDNA underwater (2 x filters for 15 min); eDNA surface (2 x filters for 17 min).,,,,,,,,,,
+Djibouti,DJ,2023-11-17,4:00:00 PM,Sym,exp202311_DJ,Gulf of Tadjourah,Maskali / Moucha,Sunken Buoy,EXP202311_DJ_015,11.69921667,43.1435,11.738827,43.197475,"Guilhem, Devis",-,,,,,,,,,,
+Djibouti,DJ,2023-11-20,7:49:00 AM,3D,exp202311_DJ,Gulf of Tadjourah,Maskali / Moucha,North Wall,EXP202311_DJ_016,11.739134,43.196618,11.736208,43.167631,"Jonny, Gabi, Ibrahim",-,,,,,,,,,,
+Djibouti,DJ,2023-11-20,9:47:00 AM,3D,exp202311_DJ,Gulf of Tadjourah,Maskali / Moucha,Buoy Air France,EXP202311_DJ_017,11.735338,43.167548,11.702758,43.163374,"Jonny, Gabi, Ibrahim",-,,,,,,,,,,
+Djibouti,DJ,2023-11-20,12:19:00 PM,3D,exp202311_DJ,Gulf of Tadjourah,Maskali / Moucha,Aquarium,EXP202311_DJ_018,11.70308,43.162538,11.694692,43.144976,"Jonny, Gabi, Ibrahim",-,,,,,,,,,,
+Djibouti,DJ,2023-11-20,1:42:00 PM,3D,exp202311_DJ,Gulf of Tadjourah,Maskali / Moucha,Sunken Buoy,EXP202311_DJ_019,11.695606,43.144872,,,"Jonny, Gabi, Ibrahim",,,,,,,,,,,
