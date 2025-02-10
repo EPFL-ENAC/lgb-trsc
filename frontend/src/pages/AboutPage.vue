@@ -5,25 +5,15 @@
     </p>
     <div class="bottom-element">
       <div class="card" v-for="person in people" :key="person.id">
-        <!--    example  src="https://cdn.quasar.dev/img/image-src.png"
-      srcset="https://cdn.quasar.dev/img/image-1x.png 400w,
-              https://cdn.quasar.dev/img/image-2x.png 800w,
-              https://cdn.quasar.dev/img/image-3x.png 1200w,
-              https://cdn.quasar.dev/img/image-4x.png 1600w"
-      sizes="(max-width: 400px) 400w,
-            (min-width: 400px) and (max-width: 800px) 800w,
-            (min-width: 800px) and (max-width: 1200px) 1200w,
-            (min-width: 1200px) 1600w"
-      style="height: 280px; max-width: 300px" -->
-        
         <a :href="person.epflPage" target="_blank">
           <q-img :src="person.image" alt="Picture of {{ person.name }}" />
         </a>
-        <a :href="person.epflPage" target="_blank">
-       <h3>{{ person.name }}</h3> </a>
-        <p class="two-lines" v-if="person.function"><em>{{ person.function }}</em></p>
-        <a :href="person.epflPage" target="_blank">
+        <a class="trsc-link" :href="person.epflPage" target="_blank">
+          <div class="name-function">
+            <h3>{{ person.name }}</h3>
+          </div>
         </a>
+        <p class="two-lines" v-if="person.function"><em>{{ person.function }}</em></p>
         <!-- <p>{{ person.description }}</p> -->
       </div>
     </div>
@@ -45,7 +35,7 @@ const people = ref([
   {
     id: 2,
     name: 'Samuel Gardaz',
-    function: 'Project manager and communication director',
+    function: 'Project Manager',
     image: 'https://people.epfl.ch/private/common/photos/links/336212.jpg?ts=1734001629',
     epflPage: 'https://people.epfl.ch/samuel.gardaz',
     description: 'Chef de projet, Laboratoire de géochimie biologique'
@@ -53,7 +43,7 @@ const people = ref([
   {
     id: 3,
     name: 'Dr. Guilhem Banc-Prandi',
-    function: 'Scientific director',
+    function: 'Scientific Director',
     image: '/people/guilhem_x660.webp',
     epflPage: 'https://people.epfl.ch/guilhem.banc-prandi',
     description: 'My work mostly focused on the impact of thermal stress on the resilience of Red Sea coral to anthropogenic heavy metal pollution. I am also interested in the mechanisms of thermal acclimatisation and adaptation in cnidarians. '
@@ -85,8 +75,9 @@ const people = ref([
 }
 .about-page {
   display: grid;
-  grid-auto-rows: 10% 90%;
+  grid-auto-rows: auto 1fr;
   gap: 1rem;
+  /* max-width: 1200px; */
 }
 
 .top-element {
@@ -94,12 +85,12 @@ const people = ref([
   justify-content: center;
   align-items: center;
 }
-.two-lines {
+/* .two-lines {
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-}
+} */
 .bottom-element {
   display: grid;
     grid-template-columns: repeat(4, minmax(200px, 300px));
@@ -135,5 +126,11 @@ const people = ref([
 
 .right-element p {
   margin-bottom: 1rem;
+}
+
+.name-function {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 </style>

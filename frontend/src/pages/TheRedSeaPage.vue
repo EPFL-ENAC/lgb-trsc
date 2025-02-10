@@ -1,7 +1,6 @@
 <template>
   <div>
-    <!-- <h1>The Red Sea</h1> -->
-    <p class="q-pa-md">
+    <div class="q-pa-md">
 
       <p>
         Coral reefs, vital ecosystems which support a third of all marine species,
@@ -83,7 +82,7 @@
         technology developed at EPFL, the center fosters international
         partnerships and trains the next generation of scientists in the region.
       </p>
-    </p>
+    </div>
   </div>
 </template>
 
