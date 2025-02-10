@@ -4,7 +4,7 @@
     :style="{
       width: content.type === 'country' ? 'auto' : '400px',
       '--display-tooltip': content ? 'inline-block' : 'none',
-      '--left-tooltip': `${position?.[0] || 0}px`,
+      '--left-tooltip': `${getLeftPosition()}px`,
       '--top-tooltip': `${position?.[1] || 0}px`,
     }"
   >
@@ -37,7 +37,7 @@ interface Position {
   1: number;
 }
 
-defineProps<{
+const props = defineProps<{
   content?: {
     type: 'country' | 'Expedition';
     name: string;
@@ -58,7 +58,23 @@ defineProps<{
     time?: string;
   };
   position?: Position;
+  mapWidth: number;
+  mapHeight: number;
 }>();
+
+const TOOLTIP_WIDTH = 400;
+const TOOLTIP_OFFSET = 40;
+
+const getLeftPosition = () => {
+  if (!props.position) return 0;
+  
+  // If cursor is in the right half of the map, show tooltip on the left side
+  if (props.position[0] > props.mapWidth / 2) {
+    return props.position[0] - TOOLTIP_WIDTH - TOOLTIP_OFFSET;
+  }
+  // Otherwise show tooltip on the right side
+  return props.position[0] + TOOLTIP_OFFSET;
+};
 </script>
 
 <style scoped lang="scss">
@@ -73,7 +89,7 @@ defineProps<{
 .map-tooltip {
   position: absolute;
   top: calc(var(--top-tooltip) - 10px);
-  left: calc(var(--left-tooltip) + 40px);
+  left: var(--left-tooltip);
   background: white;
   padding: 10px;
   border: 1px solid black;

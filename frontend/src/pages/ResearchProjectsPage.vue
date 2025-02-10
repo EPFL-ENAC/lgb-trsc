@@ -1,11 +1,17 @@
 <template>
   <div
     id="map"
+    ref="mapElement"
     class="map"
     :style="{ '--drawer-width': drawer ? '500px' : '0px' }"
   ></div>
   <MapLegend />
-  <MapTooltip :content="hoveredExpedition" :position="hoveredExpeditionPixel"/>
+  <MapTooltip 
+    :content="hoveredExpedition" 
+    :position="hoveredExpeditionPixel"
+    :mapWidth="mapWidth"
+    :mapHeight="mapHeight"
+  />
   <MapRightPanel />
 </template>
 
@@ -13,7 +19,7 @@
 import 'ol/ol.css';
 import 'ol-layerswitcher/dist/ol-layerswitcher.css';
 
-import { onMounted, onUnmounted, ref } from 'vue';
+import { onMounted, onUnmounted, ref, watch } from 'vue';
 import { MapController } from '@/maps/MapController';
 import { storeToRefs } from 'pinia';
 import { useMapStore } from '@/stores/mapStore';
@@ -23,13 +29,34 @@ import MapTooltip from '@/components/MapTooltip.vue';
 import { useMapController } from '@/maps/composables/useMapController';
 
 const mapStore = useMapStore();
-
+const mapElement = ref<HTMLElement | null>(null);
+const mapWidth = ref(0);
+const mapHeight = ref(0);
 const mapController = ref<MapController | null>(null);
 
 const { hoveredExpedition, hoveredExpeditionPixel, drawer } = storeToRefs(mapStore);
 
+// Update dimensions when drawer changes
+watch(drawer, () => {
+  updateMapDimensions();
+});
+
+const updateMapDimensions = () => {
+  if (mapElement.value) {
+    mapWidth.value = mapElement.value.clientWidth;
+    mapHeight.value = mapElement.value.clientHeight;
+  }
+};
+
 onMounted(() => {
   mapController.value = useMapController();
+  updateMapDimensions();
+  
+  // Add resize observer to update dimensions when window resizes
+  const resizeObserver = new ResizeObserver(updateMapDimensions);
+  if (mapElement.value) {
+    resizeObserver.observe(mapElement.value);
+  }
 });
 
 onUnmounted(() => {
