@@ -5,12 +5,26 @@
     </p>
     <div class="bottom-element">
       <div class="card" v-for="person in people" :key="person.id">
-        <h3>{{ person.name }}</h3>
-        <p v-if="person.function"><em>{{ person.function }}</em></p>
+        <!--    example  src="https://cdn.quasar.dev/img/image-src.png"
+      srcset="https://cdn.quasar.dev/img/image-1x.png 400w,
+              https://cdn.quasar.dev/img/image-2x.png 800w,
+              https://cdn.quasar.dev/img/image-3x.png 1200w,
+              https://cdn.quasar.dev/img/image-4x.png 1600w"
+      sizes="(max-width: 400px) 400w,
+            (min-width: 400px) and (max-width: 800px) 800w,
+            (min-width: 800px) and (max-width: 1200px) 1200w,
+            (min-width: 1200px) 1600w"
+      style="height: 280px; max-width: 300px" -->
+        
         <a :href="person.epflPage" target="_blank">
-          <img :src="person.image" alt="Picture of {{ person.name }}" />
+          <q-img :src="person.image" alt="Picture of {{ person.name }}" />
         </a>
-        <p>{{ person.description }}</p>
+        <a :href="person.epflPage" target="_blank">
+       <h3>{{ person.name }}</h3> </a>
+        <p class="two-lines" v-if="person.function"><em>{{ person.function }}</em></p>
+        <a :href="person.epflPage" target="_blank">
+        </a>
+        <!-- <p>{{ person.description }}</p> -->
       </div>
     </div>
   </div>
@@ -22,8 +36,8 @@ import { ref } from 'vue';
 const people = ref([
   {
     id: 1,
-    name: 'Anders Meibom',
-    function: 'Director',
+    name: 'Prof. Anders Meibom',
+    function: 'General Director',
     image: 'https://people.epfl.ch/private/common/photos/links/220185.jpg?ts=1734001592',
     epflPage: 'https://people.epfl.ch/anders.meibom',
     description: 'Anders is the director of the TRSC'
@@ -31,24 +45,24 @@ const people = ref([
   {
     id: 2,
     name: 'Samuel Gardaz',
-    function: 'Director',
+    function: 'Project manager and communication director',
     image: 'https://people.epfl.ch/private/common/photos/links/336212.jpg?ts=1734001629',
     epflPage: 'https://people.epfl.ch/samuel.gardaz',
     description: 'Chef de projet, Laboratoire de géochimie biologique'
   },
   {
     id: 3,
-    name: 'Guilhem Banc-Prandi',
-    function: 'Researcher',
-    image: 'https://people.epfl.ch/private/common/photos/links/348498.jpg?ts=1734001660',
+    name: 'Dr. Guilhem Banc-Prandi',
+    function: 'Scientific director',
+    image: '/people/guilhem_x660.webp',
     epflPage: 'https://people.epfl.ch/guilhem.banc-prandi',
     description: 'My work mostly focused on the impact of thermal stress on the resilience of Red Sea coral to anthropogenic heavy metal pollution. I am also interested in the mechanisms of thermal acclimatisation and adaptation in cnidarians. '
   },
   {
     id: 4,
-    name: 'Samuel Alain C.Donck',
-    function: 'Research Assistant',
-    image: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTYgMjU2Ij48cGF0aCBkPSJNMTAyLjQzIDEyNC41M1MxMDUuNSAxNTIgMTI4IDE1MnMyNS41Ny0yNy40NiAyNS41Ny0yNy40NiA0Ljg1IDEgNy4xOS05LjI4YzEuNS02LjctLjUtOC40OS0xLjc2LTguNDloLTEuMkMxNjMuNjggNzQuMjggMTQwIDY0IDEyOCA2NHMtMzUuNjggMTAuMjgtMjkuOCA0Mi43Nkg5N2MtMS4yNiAwLTMuMjYgMS43OS0xLjc2IDguNDkgMi4zNCAxMC4zMyA3LjE5IDkuMjggNy4xOSA5LjI4ek0xNzAuMzYgMTY0Yy0yMC4yNi0zLjg5LTI0LjM0LTgtMjUuMS0xMS42NGEyOS4xNSAyOS4xNSAwIDAgMS0zNC41MiAwYy0uNzQgMy42NC00Ljg0IDcuNzItMjUuMSAxMS42NC0yMC44NSA0LTIwLjU3IDIxLjE4LTIwLjU3IDI0aDEyNS44NmMwLTIuODUuMjgtMjAtMjAuNTctMjR6Ii8+PC9zdmc+Cg==',
+    name: 'Samuel Donck',
+    function: 'Science and education officer',
+    image: '/people/Donck_x660.webp',
     epflPage: 'https://people.epfl.ch/samuel.donck',
     description: 'Samuel is a research assistant at the TRSC...'
   }
@@ -80,15 +94,22 @@ const people = ref([
   justify-content: center;
   align-items: center;
 }
-
+.two-lines {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 .bottom-element {
   display: grid;
-  grid-template-columns: repeat(4, minmax(200px, 1fr));
-  gap: 1rem;
+    grid-template-columns: repeat(4, minmax(200px, 300px));
+    justify-content: center;
+    gap: 1rem;
+    align-items: self-end;
 }
 
 .card {
-  border: 1px solid #ccc;
+  /* border: 1px solid #ccc; */
   padding: 1rem;
   text-align: center;
 }
