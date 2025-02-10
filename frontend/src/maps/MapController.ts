@@ -21,7 +21,8 @@ import {
   addMapPointerMoveHandler,
 } from '@/maps/utils/MapPointerMove';
 import { useMapStore } from '@/stores/mapStore';
-import { expeditions as DjiboutiExpeditions } from '@/assets/data/expeditions';
+// import { expeditions as DjiboutiExpeditions } from '@/assets/data/expeditions';
+import DjiboutiExpeditions from '@/assets/data/expeditions.json';
 import Djibouti3DMapping from '@/assets/data/dji_3d_mapping_all_results.json';
 import { useLayerController } from '@/maps/composables/useLayerController';
 import GeoJSON from 'ol/format/GeoJSON';

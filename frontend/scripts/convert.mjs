@@ -1,5 +1,6 @@
 import csv from 'csvtojson';
 import { writeFileSync } from 'fs';
+import crypto from 'crypto';
 
 //csv file name
 const djibouti_2023_3d = "dji_3d_mapping_all_results";
@@ -38,53 +39,60 @@ const expeditions = "Expeditions";
 csv({ checkType: true, ignoreEmpty: true, trim: true })
   .fromFile(`./src/assets/data/${expeditions}.csv`)
   .then((jsonObj) => {
-    const path = `./src/assets/data/${expeditions}.geojson`;
+    const path = `./src/assets/data/${expeditions}.json`;
     const result = {
       "type": "FeatureCollection",
       "features": []
     };
 
-
     jsonObj.forEach((obj) => {
-
       const featureGeometry = {
         "type": "Feature",
         "geometry": {
           "type": "LineString",
           "coordinates": [
-            [obj.Longitude_Start, obj.Latitude_Start],   // Starting point: [longitude, latitude]
-            [obj.Longitude_End, obj.Latitude_End]    // Ending point: [longitude, latitude]
+            [obj.longitude_start, obj.latitude_start],   // Starting point: [longitude, latitude]
+            [obj.longitude_end, obj.latitude_end]    // Ending point: [longitude, latitude]
           ]
         },
       };
-      console.log(obj.Longitude_End, obj.Latitude_End);
-      if (obj.Longitude_End == null || obj.Latitude_End == null) {
+
+      if (obj.longitude_end == null || obj.latitude_end == null) {
         featureGeometry.geometry.type = "Point";
-        featureGeometry.geometry.coordinates = [obj.Longitude_Start, obj.Latitude_Start];
+        featureGeometry.geometry.coordinates = [obj.longitude_start, obj.latitude_start];
       }
+
+      // Create a unique ID based on the SHA256 hash of the object
+      const objectString = JSON.stringify(obj);
+      const hash = crypto.createHash('sha256').update(objectString).digest('hex');
+
       result.features.push({
-        "id": obj.Event_ID,
+        "id": hash,
+        "event_id": obj.event_id,
         ...featureGeometry,
-            "properties": {
-              "type": "Expedition",
-              "Event_ID": obj.Event_ID,
-              "Date": obj.Date,
-              "Time": obj.Time,
-              "Site": obj.Site,
-              "Site_Name": obj.Site_Name,
-              "Project_Code": obj.Project_Code,
-              "Project_Name": obj.Project_Name,
-              "Team_Members": obj.Team_Members,
-              "Latitude_Start": obj.Latitude_Start,
-              "Longitude_Start": obj.Longitude_Start,
-              "Latitude_End": obj.Latitude_End,
-              "Longitude_End": obj.Longitude_End,
-              "Comments": obj.Comments,
-            }
+        "properties": {
+          "type": "Expedition",
+          "country": obj.country,
+          "country_abbr": obj.country_abbr,
+          "date_iso": obj.date_iso,
+          "time": obj.time,
+          "experiment": obj.experiment,
+          "expe_name": obj.expe_name,
+          "region_name": obj.region_name,
+          "reef_area": obj.reef_area,
+          "sampling_site_name": obj.sampling_site_name,
+          "event_id": obj.event_id,
+          "latitude_start": obj.latitude_start,
+          "longitude_start": obj.longitude_start,
+          "latitude_end": obj.latitude_end,
+          "longitude_end": obj.longitude_end,
+          "team_members": obj.team_members,
+          "comments": obj.comments
+        }
       })
     });
     writeFileSync(path, JSON.stringify(result));
-    console.log(`data.csv converted successfully to JSON in ${path}`)
+    console.log(`${expeditions}.csv converted successfully to JSON in ${path}`)
   });
 
 

@@ -2,6 +2,7 @@
   <div v-if="content"
     class="map-tooltip"
     :style="{
+      width: content.type === 'country' ? 'auto' : '400px',
       '--display-tooltip': content ? 'inline-block' : 'none',
       '--left-tooltip': `${position?.[0] || 0}px`,
       '--top-tooltip': `${position?.[1] || 0}px`,
@@ -14,16 +15,17 @@
     </span>
     <span v-if="content?.type === 'Expedition'">
       <div class="expedition-tooltip">
-        <p><strong>Comments:</strong> {{ content.Comments }}</p>
-        <p><strong>Date:</strong> {{ content.Date }}</p>
-        <p><strong>Event ID:</strong> {{ content.Event_ID }}</p>
-        <p><strong>Latitude Start:</strong> {{ content.Latitude_Start }}</p>
-        <p><strong>Longitude Start:</strong> {{ content.Longitude_Start }}</p>
-        <p><strong>Project Code:</strong> {{ content.Project_Code }}</p>
-        <p><strong>Project Name:</strong> {{ content.Project_Name }}</p>
-        <p><strong>Site Name:</strong> {{ content.Site_Name }}</p>
-        <p><strong>Team Members:</strong> {{ content.Team_Members }}</p>
-        <p><strong>Time:</strong> {{ content.Time }}</p>
+        <p><strong>Comments:</strong> {{ content.comments }}</p>
+        <p><strong>Date:</strong> {{ content.date }}</p>
+        <p><strong>Event ID:</strong> {{ content.event_id }}</p>
+        <p><strong>Latitude Start:</strong> {{ content.latitude_start }}</p>
+        <p><strong>Longitude Start:</strong> {{ content.longitude_start }}</p>
+        <p><strong>Latitude End:</strong> {{ content.latitude_end }}</p>
+        <p><strong>Longitude End:</strong> {{ content.longitude_end }}</p>
+        <p><strong>Reef Area:</strong> {{ content.reef_area }}</p>
+        <p><strong>Region Name:</strong> {{ content.region_name }}</p>
+        <p><strong>Sampling Site Name:</strong> {{ content.sampling_site_name }}</p>
+        <p><strong>Time:</strong> {{ content.time }}</p>
       </div>
     </span>
   </div>
@@ -43,9 +45,14 @@ defineProps<{
     date?: string;
     event_id?: string;
     latitude_start?: number;
+    latitude_end?: number;
     longitude_start?: number;
+    longitude_end?: number;
     project_code?: string;
     project_name?: string;
+    reef_area?: string;
+    region_name?: string;
+    sampling_site_name?: string;
     site_name?: string;
     team_members?: string;
     time?: string;
@@ -57,7 +64,7 @@ defineProps<{
 <style scoped lang="scss">
 .expedition-tooltip {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 200px 200px;
   gap: 2px;
   p {
     margin: 0;
