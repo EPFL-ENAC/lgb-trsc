@@ -11,13 +11,7 @@ import {
 import LayerSwitcher, { BaseLayerOptions } from 'ol-layerswitcher';
 import { createOSMLayer } from './layers/base/OSMLayer';
 import { createArcGISLayer } from './layers/base/ArcGISLayer';
-import { createCountryLayer } from './layers/overlay/CountryLayer';
-import { createExpeditionLayer } from './layers/overlay/ExpeditionLayer';
-import { createDjiboutiGeomorphicLayer,
-        createDjiboutiBenthicLayer,
-        createDjiboutiBoundaryLayer,
-        createDjiboutiReefExtentLayer
- } from './layers/overlay/DjiboutiLayer';
+import { Feature } from 'ol';
 import { defaultCenter, defaultMinZoom, defaultExtent, defaultMinZoomCountry } from './config';
 import {
   addMapClickHandler,
@@ -67,16 +61,12 @@ export class MapController {
     } as BaseLayerOptions);
 
     const layerController = useLayerController();
-
     layerController.initDjibouti();
-    // const layers = layerController.getActiveLayers()
-    // const coralAllenLayers = Object.values(layerController.getLayers());
-    const djiboutiLayer = createDjiboutiGeomorphicLayer();
-    // find a way to group Coral Allen's layers
+
     const overlayMaps = new LayerGroup({
       title: 'Overlays',
       fold: 'open',
-      layers: [createCountryLayer(), djiboutiLayer],
+      layers: layerController.getLayers(),
     } as BaseLayerOptions);
 
     this.map.addLayer(baseMaps);
@@ -167,8 +157,10 @@ export class MapController {
       {
         featureProjection: 'EPSG:4326',
       }
-    );
-    const extent = coastlineFeature.getGeometry().getExtent();
+    ) as Feature;
+    
+    const extent = coastlineFeature.getGeometry()?.getExtent();
+    if (!extent) return;
 
     const transformedExtent = transformExtent(
       extent,
