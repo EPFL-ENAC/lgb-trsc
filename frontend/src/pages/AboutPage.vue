@@ -106,10 +106,11 @@ const people = ref([
 }
 
 .card h3 {
-  font-weight: bold;
-  height: 2.5rem; /* Adjust this value as needed */
-  overflow: hidden;
-  text-overflow: ellipsis;
+    font-weight: bold;
+    height: 2.5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: larger;
 }
 
 .card img {
