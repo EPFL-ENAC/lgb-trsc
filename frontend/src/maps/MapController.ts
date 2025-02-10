@@ -28,6 +28,7 @@ import { useLayerController } from '@/maps/composables/useLayerController';
 import GeoJSON from 'ol/format/GeoJSON';
 import { getCenter } from 'ol/extent';
 import { transformExtent } from 'ol/proj';
+import countries from '@/assets/data/countries';
 
 export class MapController {
   private map: Map;
@@ -67,7 +68,30 @@ export class MapController {
     const overlayMaps = new LayerGroup({
       title: 'Overlays',
       fold: 'open',
-      layers: layerController.getLayers(),
+      layers: [
+        new LayerGroup({
+          title: 'Environmental',
+          fold: 'close',
+          layers: [],
+        } as BaseLayerOptions),
+        new LayerGroup({
+          title: 'Reef',
+          fold: 'close',
+          layers: [],
+        } as BaseLayerOptions),
+        new LayerGroup({
+          title: 'Environmental',
+          fold: 'close',
+          layers: [],
+        } as BaseLayerOptions),
+        new LayerGroup({
+          title: 'Sampling sites',
+          fold: 'close',
+          layers: [],
+        } as BaseLayerOptions),
+        layerController.getCountryLayer(),
+        layerController.getExpeditionLayer(),
+      ],
     } as BaseLayerOptions);
 
     this.map.addLayer(baseMaps);
