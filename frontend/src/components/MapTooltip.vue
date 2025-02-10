@@ -108,21 +108,24 @@ const getLeftPosition = () => {
   if (!props.position) return 0;
   const width = props.content?.type === 'country' ? TOOLTIP_MIN_WIDTH : 
     parseInt(getTooltipWidth(), 10);
+  const offset = props.content?.type === 'country' ? TOOLTIP_OFFSET / 2 : TOOLTIP_OFFSET;
+  const rightOffset = props.content?.type === 'country' ? TOOLTIP_OFFSET / 4 : TOOLTIP_OFFSET;
   
   // If cursor is in the right half of the map, show tooltip on the left side
   if (props.position[0] > props.mapWidth / 2) {
-    return props.position[0] - width - TOOLTIP_OFFSET;
+    return props.position[0] - width - rightOffset;
   }
   // Otherwise show tooltip on the right side
-  return props.position[0] + TOOLTIP_OFFSET;
+  return props.position[0] + offset;
 };
 
 const getTopPosition = () => {
   if (!props.position) return 0;
   const height = getEstimatedHeight();
-  
-  // If tooltip would go below the map bottom, show it above the cursor
-  if (props.position[1] + height > props.mapHeight) {
+  const mapCenterY = props.mapHeight / 2;
+
+  // If cursor is in the bottom half of the map, show tooltip above the cursor
+  if (props.position[1] > mapCenterY) {
     return props.position[1] - height - TOOLTIP_VERTICAL_OFFSET;
   }
   // Otherwise show below the cursor
