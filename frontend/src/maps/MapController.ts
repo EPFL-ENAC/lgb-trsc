@@ -62,7 +62,7 @@ export class MapController {
     } as BaseLayerOptions);
 
     const layerController = useLayerController();
-    layerController.initDjibouti();
+    // layerController.initDjibouti();
 
     const overlayMaps = new LayerGroup({
       title: 'Overlays',
