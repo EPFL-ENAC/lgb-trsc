@@ -13,7 +13,18 @@
       {{ content.name }}
     </span>
     <span v-if="content?.type === 'Expedition'">
-      {{ content.name }}
+      <div class="expedition-tooltip">
+        <p><strong>Comments:</strong> {{ content.Comments }}</p>
+        <p><strong>Date:</strong> {{ content.Date }}</p>
+        <p><strong>Event ID:</strong> {{ content.Event_ID }}</p>
+        <p><strong>Latitude Start:</strong> {{ content.Latitude_Start }}</p>
+        <p><strong>Longitude Start:</strong> {{ content.Longitude_Start }}</p>
+        <p><strong>Project Code:</strong> {{ content.Project_Code }}</p>
+        <p><strong>Project Name:</strong> {{ content.Project_Name }}</p>
+        <p><strong>Site Name:</strong> {{ content.Site_Name }}</p>
+        <p><strong>Team Members:</strong> {{ content.Team_Members }}</p>
+        <p><strong>Time:</strong> {{ content.Time }}</p>
+      </div>
     </span>
   </div>
 </template>
@@ -28,12 +39,30 @@ defineProps<{
   content?: {
     type: 'country' | 'Expedition';
     name: string;
+    comments?: string;
+    date?: string;
+    event_id?: string;
+    latitude_start?: number;
+    longitude_start?: number;
+    project_code?: string;
+    project_name?: string;
+    site_name?: string;
+    team_members?: string;
+    time?: string;
   };
   position?: Position;
 }>();
 </script>
 
 <style scoped lang="scss">
+.expedition-tooltip {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  p {
+    margin: 0;
+  }
+}
 .map-tooltip {
   position: absolute;
   top: calc(var(--top-tooltip) - 10px);
