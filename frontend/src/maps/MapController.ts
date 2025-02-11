@@ -17,9 +17,9 @@ import {
   addMapClickHandler,
   MapClickHandlerOptions,
 } from '@/maps/utils/MapClickHandler';
-import {
-  addMapPointerMoveHandler,
-} from '@/maps/utils/MapPointerMove';
+// import {
+//   addMapPointerMoveHandler,
+// } from '@/maps/utils/MapPointerMove';
 import { useMapStore } from '@/stores/mapStore';
 // import { expeditions as DjiboutiExpeditions } from '@/assets/data/expeditions';
 import DjiboutiExpeditions from '@/assets/data/Expeditions.json';
@@ -28,6 +28,16 @@ import { useLayerController } from '@/maps/composables/useLayerController';
 import GeoJSON from 'ol/format/GeoJSON';
 import { getCenter } from 'ol/extent';
 import { transformExtent } from 'ol/proj';
+import {
+  createDjiboutiGeomorphicLayer,
+  createDjiboutiBenthicLayer,
+  createDjiboutiBoundaryLayer,
+  createDjiboutiReefExtentLayer
+} from '@/maps/layers/overlay/ReefLayers/DjiboutiLayer';
+import { FeatureLike } from 'ol/Feature';
+import { Pixel } from 'ol/pixel';
+import Target from 'ol/events/Target';
+import { createCHL_monthly_mean_1997_2024_MeanLayer } from './layers/overlay/EnvironmentalLayers/DjiboutiLayer';
 
 export class MapController {
   private map: Map;
@@ -67,7 +77,35 @@ export class MapController {
     const overlayMaps = new LayerGroup({
       title: 'Overlays',
       fold: 'open',
-      layers: layerController.getLayers(),
+      layers: [
+        new LayerGroup({
+          title: 'Environmental Clusters',
+          fold: 'close',
+          layers: [],
+        } as BaseLayerOptions),
+        new LayerGroup({
+          title: 'Reef',
+          fold: 'open',
+          
+          layers: [createDjiboutiGeomorphicLayer(), createDjiboutiBenthicLayer(), createDjiboutiBoundaryLayer(), createDjiboutiReefExtentLayer()],
+          // layers: [layerController.getGeomorphicLayer(), layerController.getBenthicLayer()]
+        } as BaseLayerOptions),
+        new LayerGroup({
+          title: 'Environmental Layers',
+          fold: 'open',
+          // NOAA Layers Geotiff
+          layers: [
+            createCHL_monthly_mean_1997_2024_MeanLayer(),
+          ],
+        } as BaseLayerOptions),
+        new LayerGroup({
+          title: 'Sampling sites',
+          fold: 'close',
+          layers: [],
+        } as BaseLayerOptions),
+        layerController.getCountryLayer(),
+        layerController.getExpeditionLayer(),
+      ],
     } as BaseLayerOptions);
 
     this.map.addLayer(baseMaps);
@@ -109,12 +147,56 @@ export class MapController {
     addMapClickHandler(this.map, clickHandlerOptions);
 
 
-    const cleanup = addMapPointerMoveHandler(this.map, {
-      onHover
-    });
+    // const cleanup = addMapPointerMoveHandler(this.map, {
+    //   onHover
+    // });
 
+    const info = document.getElementById('info');
+
+    let currentFeature: FeatureLike | undefined;
+    const displayFeatureInfo = (pixel: Pixel, target: unknown) => {
+      const feature: FeatureLike | undefined = target.closest('.ol-control')
+        ? undefined
+        : this.map.getFeaturesAtPixel(pixel, {
+          hitTolerance: 10,
+          layerFilter: (layer) => {
+            // Only check specific layers you're interested in
+            return layer.get('title') === 'Countries' || layer.get('title') === 'Expedition';
+          }
+        })[0];
+      if (info) {
+        if (feature) {
+          info.style.left = pixel[0] + 'px';
+          info.style.top = pixel[1] + 'px';
+          const text = feature.get('name') || feature.get('event_id');
+          if (feature !== currentFeature && text) {
+            info.style.visibility = 'visible';
+            info.innerText = feature.get('name') || feature.get('event_id');
+          }
+        } else {
+          info.style.visibility = 'hidden';
+        }
+      }
+      currentFeature = feature;
+    };
+    
+    this.map.on('pointermove', function (evt) {
+      if (evt.dragging && info) {
+        info.style.visibility = 'hidden';
+        currentFeature = undefined;
+        return;
+      }
+      displayFeatureInfo(evt.pixel, evt.originalEvent.target);
+    });
+    
+    this.map.getTargetElement().addEventListener('pointerleave', function () {
+      currentFeature = undefined;
+      if (info) {
+        info.style.visibility = 'hidden';
+      }
+    });
     // Store cleanup callback
-    this.cleanupCallbacks.push(cleanup);
+    // this.cleanupCallbacks.push(cleanup);
   }
 
   public zoomToCountry(): void {

@@ -1,7 +1,7 @@
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import { createCountryLayer } from '@/maps/layers/overlay/CountryLayer';
-import { createExpeditionLayer } from '@/maps/layers/overlay/ExpeditionLayer';
+import { createExpeditionLayer } from '@/maps/layers/overlay/SamplingSites/ExpeditionLayer';
 import { countryStyle } from '@/maps/styles/layerStyles';
 import { Style } from 'ol/style';
 import GeoJSON from 'ol/format/GeoJSON';
@@ -12,7 +12,7 @@ import {
   createDjiboutiBenthicLayer,
   createDjiboutiBoundaryLayer,
   createDjiboutiReefExtentLayer
-} from '@/maps/layers/overlay/DjiboutiLayer';
+} from '@/maps/layers/overlay/ReefLayers/DjiboutiLayer';
 
 interface GeoJSONFeatureCollection {
   type: 'FeatureCollection';
@@ -40,10 +40,10 @@ export class LayerController {
     this.countryLayer = createCountryLayer();
     this.expeditionLayer = createExpeditionLayer();
     // this.coastlineLayer = this.countryLayer;
-    this.geomorphicLayer = createDjiboutiGeomorphicLayer();
-    this.benthicLayer = createDjiboutiBenthicLayer();
-    this.boundaryLayer = createDjiboutiBoundaryLayer();
-    this.reefExtentLayer = createDjiboutiReefExtentLayer();
+    // this.geomorphicLayer = createDjiboutiGeomorphicLayer();
+    // this.benthicLayer = createDjiboutiBenthicLayer();
+    // this.boundaryLayer = createDjiboutiBoundaryLayer();
+    // this.reefExtentLayer = createDjiboutiReefExtentLayer();
   }
 
   // public initDefaultLayers() {
@@ -102,7 +102,29 @@ export class LayerController {
       this.reefExtentLayer];
   }
 
-  public getExpeditonLayer() {
+  public getGeomorphicLayer() {
+    return this.geomorphicLayer;
+  }
+  
+  public getBenthicLayer() {
+    return this.benthicLayer;
+  }
+
+  public getBoundaryLayer() {
+    return this.boundaryLayer;
+  }
+
+  public getReefExtentLayer() {
+    return this.reefExtentLayer
+  }
+  public getCountryLayer() {
+    return this.countryLayer;
+  }
+  public setCountryLayer(countryLayer: VectorLayer<VectorSource>) {
+    this.countryLayer = countryLayer;
+  }
+
+  public getExpeditionLayer() {
     return this.expeditionLayer;
   }
   public setExpeditionLayer(expeditionLayer: VectorLayer<VectorSource>) {

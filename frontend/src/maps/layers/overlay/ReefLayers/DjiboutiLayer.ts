@@ -1,5 +1,8 @@
 import { BaseLayerOptions } from 'ol-layerswitcher';
 import { geoMorphicStyle } from '@/maps/styles/geomorphicLayerStyle';
+import { benthicStyle  } from '@/maps/styles/benthicLayerStyle';
+import { reefExtentLayerStyle } from '@/maps/styles/reefExtentLayerStyle';
+import { boundaryLayerStyle } from '@/maps/styles/boundaryLayerStyle';
 import { createPMTilesSource as createGeomorphicSource } from '@/maps/sources/DjiboutiGeomorphicSource';
 import { createPMTilesSource as createBenthicSource } from '@/maps/sources/DjiboutiBenthicSource';
 import { createPMTilesSource as createBoundarySource } from '@/maps/sources/DjiboutiBoundarySource';
@@ -28,7 +31,7 @@ export const createDjiboutiGeomorphicLayer = () =>
       title: 'Benthic',
       visible: true,
       base: false,
-      style: geoMorphicStyle,
+      style: benthicStyle,
     } as BaseLayerOptions);
 
   export const createDjiboutiBoundaryLayer = () =>
@@ -39,7 +42,7 @@ export const createDjiboutiGeomorphicLayer = () =>
       title: 'Boundary',
       visible: true,
       base: false,
-      style: geoMorphicStyle,
+      style: boundaryLayerStyle,
     } as BaseLayerOptions);
 
   export const createDjiboutiReefExtentLayer = () =>
@@ -50,5 +53,5 @@ export const createDjiboutiGeomorphicLayer = () =>
       title: 'Reef Extent',
       visible: true,
       base: false,
-      style: geoMorphicStyle,
+      style: reefExtentLayerStyle,
     } as BaseLayerOptions);

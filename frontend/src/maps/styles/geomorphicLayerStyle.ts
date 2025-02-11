@@ -1,4 +1,4 @@
-import { Style, Fill } from 'ol/style';
+import { Style, Fill, Stroke } from 'ol/style';
 
 const classColorMap: { [key: string]: string } = {
   'Reef Slope': 'rgb(40, 132, 113)',
@@ -15,11 +15,18 @@ const classColorMap: { [key: string]: string } = {
   'Deep Lagoon': 'rgb(44, 162, 249)',
 };
 
-export const geoMorphicStyle = (feature: any) =>
-  new Style({
+export const geoMorphicStyle = (feature: any) => {
+  // Debug: log feature properties
+  
+  return new Style({
     fill: new Fill({
       color: feature.get('class')
         ? (classColorMap[feature.get('class')] as string)
-        : 'gray',
+        : 'rgba(128, 128, 128, 0.5)',
     }),
+    stroke: new Stroke({
+      color: 'rgba(0, 0, 0, 0.3)',
+      width: 1
+    })
   });
+}
