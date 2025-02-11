@@ -4,14 +4,13 @@ import { CHL_monthly_mean_1997_2024_Mean, CHL_monthly_mean_1997_2024_SD } from '
 
 import TileLayer from 'ol/layer/Tile';
 
-const LayerTitle = 'Geomorphic';
 // NOAA Layers
 export const createCHL_monthly_mean_1997_2024_MeanLayer = () =>
   new TileLayer({
     declutter: true,
     _pmtiles: true,
     source: CHL_monthly_mean_1997_2024_Mean,
-    title: LayerTitle,
+    title: 'CHL_monthly_mean_1997_2024_Mean',
     visible: true,
     base: false,
     // style: geoMorphicStyle,
@@ -22,7 +21,7 @@ export const createCHL_monthly_mean_1997_2024_MeanLayer = () =>
       declutter: true,
       _pmtiles: true,
       source: CHL_monthly_mean_1997_2024_SD,
-      title: LayerTitle,
+      title: 'monthly_mean_1997_2024_SD',
       visible: true,
       base: false,
       // style: geoMorphicStyle,

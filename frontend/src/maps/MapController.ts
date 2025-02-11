@@ -37,6 +37,7 @@ import {
 import { FeatureLike } from 'ol/Feature';
 import { Pixel } from 'ol/pixel';
 import Target from 'ol/events/Target';
+import { createCHL_monthly_mean_1997_2024_MeanLayer } from './layers/overlay/EnvironmentalLayers/DjiboutiLayer';
 
 export class MapController {
   private map: Map;
@@ -78,7 +79,7 @@ export class MapController {
       fold: 'open',
       layers: [
         new LayerGroup({
-          title: 'Environmental',
+          title: 'Environmental Clusters',
           fold: 'close',
           layers: [],
         } as BaseLayerOptions),
@@ -90,9 +91,12 @@ export class MapController {
           // layers: [layerController.getGeomorphicLayer(), layerController.getBenthicLayer()]
         } as BaseLayerOptions),
         new LayerGroup({
-          title: 'Environmental',
-          fold: 'close',
-          layers: [],
+          title: 'Environmental Layers',
+          fold: 'open',
+          // NOAA Layers Geotiff
+          layers: [
+            createCHL_monthly_mean_1997_2024_MeanLayer(),
+          ],
         } as BaseLayerOptions),
         new LayerGroup({
           title: 'Sampling sites',
