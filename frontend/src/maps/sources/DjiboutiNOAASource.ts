@@ -1,11 +1,21 @@
 import GeoTIFF from 'ol/source/GeoTIFF.js';
 
-export const CHL_monthly_mean_1997_2024_Mean = new GeoTIFF({
-    sources: [
-        {
-            url: "https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/CHL_monthly_mean_1997_2024_Mean.tif"
-        }
-    ]});
+// ok source should be wrapped in a function
+
+export const createSourceCHL_monthly_mean_1997_2024_Mean = () => {
+    const url = "https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/CHL_monthly_mean_1997_2024_Mean.tif";
+    const source = new GeoTIFF({
+        sources: [{
+            url: url,
+            normalize: true,
+          }],
+          // Add error handling
+          wrapX: true,
+          transition: 0
+    });
+    return source;
+}
+
 export const CHL_monthly_mean_1997_2024_SD = new GeoTIFF({
     sources: [
         {
