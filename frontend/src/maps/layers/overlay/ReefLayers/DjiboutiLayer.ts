@@ -18,7 +18,7 @@ export const createDjiboutiGeomorphicLayer = () =>
     _pmtiles: true,
     source: createGeomorphicSource(),
     title: LayerTitle,
-    visible: true,
+    visible: false,
     base: false,
     style: geoMorphicStyle,
   } as BaseLayerOptions);
@@ -29,7 +29,7 @@ export const createDjiboutiGeomorphicLayer = () =>
       _pmtiles: true,
       source: createBenthicSource(),
       title: 'Benthic',
-      visible: true,
+      visible: false,
       base: false,
       style: benthicStyle,
     } as BaseLayerOptions);
@@ -40,7 +40,7 @@ export const createDjiboutiGeomorphicLayer = () =>
       _pmtiles: true,
       source: createBoundarySource(),
       title: 'Boundary',
-      visible: true,
+      visible: false,
       base: false,
       style: boundaryLayerStyle,
     } as BaseLayerOptions);
@@ -51,7 +51,7 @@ export const createDjiboutiGeomorphicLayer = () =>
       _pmtiles: true,
       source: createReefExtentSource(),
       title: 'Reef Extent',
-      visible: true,
+      visible: false,
       base: false,
       style: reefExtentLayerStyle,
     } as BaseLayerOptions);

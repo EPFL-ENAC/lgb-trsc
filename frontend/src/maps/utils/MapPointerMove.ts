@@ -1,9 +1,9 @@
 import type { Map } from 'ol';
-import type { MapBrowserEvent } from 'ol';
+// import type { MapBrowserEvent } from 'ol';
+import type { Pixel } from 'ol/pixel';
 import { FeatureLike } from 'ol/Feature';
-import { throttle, debounce } from 'lodash';
-import type { DebouncedFunc } from 'lodash';
-
+// import { throttle, debounce } from 'lodash';
+// import type { DebouncedFunc } from 'lodash';
 interface ExpeditionProperties {
   type: 'Expedition' | 'country';
   [key: string]: string | number | boolean;
@@ -15,58 +15,51 @@ interface MapPointerMoveHandlerOptions {
   throttleTime?: number;
 }
 
-// export function addMapPointerMoveHandler(
-//   map: Map,
-//   options: MapPointerMoveHandlerOptions
-// ): () => void {
-//   const processFeatures = (pixel: number[]) => {
-//     const hit = map.hasFeatureAtPixel(pixel);
+export function addMapPointerMoveHandler(map: Map, options: MapPointerMoveHandlerOptions) {
 
-//     // Update cursor style
-//     const targetElement = map.getTargetElement();
-//     if (targetElement) {
-//       targetElement.style.cursor = hit ? 'pointer' : '';
-//     }
+  const info = document.getElementById('info');
 
-//     const featureHitCallback = (feature: FeatureLike) => {
-//       const properties = feature.getProperties() as ExpeditionProperties;
-//       if (properties.type === 'Expedition' || properties.type === 'country') {
-//         if (options.onHover) {
-//           options.onHover(properties, pixel);
-//         }
-//       }
-//     }
-
-//     if (hit) {
-//       map.forEachFeatureAtPixel(
-//         pixel,
-//         featureHitCallback
-//       );
-//     } else {
-//       if (options.onHover) {
-//         options.onHover(null, []);
-//       }
-//     }
-//   };
-
-//   // Create throttled version that's then debounced
-//   // const throttledProcess = throttle(processFeatures, options.throttleTime ?? 150);
-//   // const debouncedThrottledProcess: DebouncedFunc<typeof throttledProcess> = 
-//   //   debounce(throttledProcess, options.debounceTime ?? 10);
-
-//   const pointerMoveHandler = (event: MapBrowserEvent<UIEvent>) => {
-//     if (!map) return;
-//     const pixel = map.getEventPixel(event.originalEvent);
-//     // debouncedThrottledProcess(pixel);
-//     processFeatures(pixel);
-//   };
-
-//   map.on('pointermove', pointerMoveHandler);
-
-//   return () => {
-//     map.un('pointermove', pointerMoveHandler);
-//     // Cancel any pending debounced/throttled calls
-//     // debouncedThrottledProcess.cancel();
-//     // throttledProcess.cancel();
-//   };
-// }
+  let currentFeature: FeatureLike | undefined;
+  const displayFeatureInfo = (pixel: Pixel, target: unknown) => {
+    const feature: FeatureLike | undefined = target.closest('.ol-control')
+      ? undefined
+      : map.getFeaturesAtPixel(pixel, {
+        hitTolerance: 10,
+        layerFilter: (layer) => {
+          // Only check specific layers you're interested in
+          return layer.get('title') === 'Countries' || layer.get('title') === 'Expedition';
+        }
+      })[0];
+    if (info) {
+      if (feature) {
+        info.style.left = pixel[0] + 'px';
+        info.style.top = pixel[1] + 'px';
+        const text = feature.get('name') || feature.get('event_id');
+        if (feature !== currentFeature && text) {
+          info.style.visibility = 'visible';
+          info.innerText = feature.get('name') || feature.get('event_id');
+        }
+      } else {
+        info.style.visibility = 'hidden';
+      }
+    }
+    currentFeature = feature;
+  };
+  
+  const onMap = map.on('pointermove', function (evt) {
+    if (evt.dragging && info) {
+      info.style.visibility = 'hidden';
+      currentFeature = undefined;
+      return;
+    }
+    displayFeatureInfo(evt.pixel, evt.originalEvent.target);
+  });
+  
+  map.getTargetElement().addEventListener('pointerleave', function () {
+    currentFeature = undefined;
+    if (info) {
+      info.style.visibility = 'hidden';
+    }
+  });
+  return onMap;
+}

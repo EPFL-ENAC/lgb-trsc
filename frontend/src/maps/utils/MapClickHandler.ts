@@ -1,5 +1,6 @@
 import GeoJSON from 'ol/format/GeoJSON';
 import type { Map } from 'ol';
+import type { FeatureLike } from 'ol/Feature';
 import { useLayerController } from '@/maps/composables/useLayerController';
 import { useMapController } from '@/maps/composables/useMapController';
 import { clear } from 'console';
@@ -24,33 +25,31 @@ export function addMapClickHandler(
 
     if (!map) return;
     const layerController = useLayerController();
-    const { countryLayer, expeditionLayer } = layerController.getLayers();
+    // const { countryLayer, expeditionLayer } = layerController.getLayers();
 
 
     const pixel = map.getEventPixel(evt.originalEvent);
-    const hit = map.hasFeatureAtPixel(pixel);
+    const target = evt.originalEvent.target
+    // const hit = map.hasFeatureAtPixel(pixel);
 
-    map.forEachFeatureAtPixel(pixel, function (feature, layer) {
-      const properties = feature.getProperties();
-      if (properties.type === 'country') {
-        // Update the store via callback
-        onCountryClick(properties, options);
-      } else if (properties.type === 'Expedition') {
-        // Update the store via callback
-        onExpeditionClick(properties, options);
-      }
-      // Update coastline layer based on the selected country
-      // if (properties.type === 'country' && properties.coastline) {
-      //   const coastlineFeature = new GeoJSON().readFeature(
-      //     properties.coastline,
-      //     {
-      //       featureProjection: 'EPSG:4326',
-      //     }
-      //   );
-      //   options.coastlineLayer.getSource().clear();
-      //   options.coastlineLayer.getSource().addFeature(coastlineFeature);
-      // }
-    });
+    const feature: FeatureLike | undefined = target.closest('.ol-control')
+          ? undefined
+          : map.getFeaturesAtPixel(pixel, {
+            hitTolerance: 10,
+            layerFilter: (layer) => {
+              // Only check specific layers you're interested in
+              return layer.get('title') === 'Countries' || layer.get('title') === 'Expedition';
+            }
+          })[0];
+    const properties = feature?.getProperties();
+    if (properties?.type === 'country') {
+      // Update the store via callback
+      onCountryClick(properties, options);
+    } else if (properties?.type === 'Expedition') {
+      // Update the store via callback
+      onExpeditionClick(properties, options);
+    }
+
   });
 }
 
@@ -76,6 +75,7 @@ function onCountryClick(properties: any, options: MapClickHandlerOptions) {
 
 function onExpeditionClick(properties: any, options: MapClickHandlerOptions) {
   options.selectExpedition(properties);
-  const mapController = useMapController();
-  mapController.zoomToExpedition();
+  // TODO: fix me later
+  // const mapController = useMapController();
+  // mapController.zoomToExpedition();
 }

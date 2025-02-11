@@ -17,9 +17,9 @@ import {
   addMapClickHandler,
   MapClickHandlerOptions,
 } from '@/maps/utils/MapClickHandler';
-// import {
-//   addMapPointerMoveHandler,
-// } from '@/maps/utils/MapPointerMove';
+import {
+  addMapPointerMoveHandler,
+} from '@/maps/utils/MapPointerMove';
 import { useMapStore } from '@/stores/mapStore';
 // import { expeditions as DjiboutiExpeditions } from '@/assets/data/expeditions';
 import DjiboutiExpeditions from '@/assets/data/Expeditions.json';
@@ -81,6 +81,7 @@ export class MapController {
         new LayerGroup({
           title: 'Environmental Clusters',
           fold: 'close',
+          active: false,
           layers: [],
         } as BaseLayerOptions),
         new LayerGroup({
@@ -144,57 +145,13 @@ export class MapController {
       selectedCountryStyle
     };
 
-    addMapClickHandler(this.map, clickHandlerOptions);
+    const cleanUpClickHandler = addMapClickHandler(this.map, clickHandlerOptions);
+    // this.cleanupCallbacks.push(cleanUpClickHandler);
 
-
-    // const cleanup = addMapPointerMoveHandler(this.map, {
-    //   onHover
-    // });
-
-    const info = document.getElementById('info');
-
-    let currentFeature: FeatureLike | undefined;
-    const displayFeatureInfo = (pixel: Pixel, target: unknown) => {
-      const feature: FeatureLike | undefined = target.closest('.ol-control')
-        ? undefined
-        : this.map.getFeaturesAtPixel(pixel, {
-          hitTolerance: 10,
-          layerFilter: (layer) => {
-            // Only check specific layers you're interested in
-            return layer.get('title') === 'Countries' || layer.get('title') === 'Expedition';
-          }
-        })[0];
-      if (info) {
-        if (feature) {
-          info.style.left = pixel[0] + 'px';
-          info.style.top = pixel[1] + 'px';
-          const text = feature.get('name') || feature.get('event_id');
-          if (feature !== currentFeature && text) {
-            info.style.visibility = 'visible';
-            info.innerText = feature.get('name') || feature.get('event_id');
-          }
-        } else {
-          info.style.visibility = 'hidden';
-        }
-      }
-      currentFeature = feature;
-    };
-    
-    this.map.on('pointermove', function (evt) {
-      if (evt.dragging && info) {
-        info.style.visibility = 'hidden';
-        currentFeature = undefined;
-        return;
-      }
-      displayFeatureInfo(evt.pixel, evt.originalEvent.target);
+    const cleanup = addMapPointerMoveHandler(this.map, {
+      onHover
     });
-    
-    this.map.getTargetElement().addEventListener('pointerleave', function () {
-      currentFeature = undefined;
-      if (info) {
-        info.style.visibility = 'hidden';
-      }
-    });
+
     // Store cleanup callback
     // this.cleanupCallbacks.push(cleanup);
   }
