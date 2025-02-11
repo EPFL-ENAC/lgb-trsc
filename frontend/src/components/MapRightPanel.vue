@@ -20,8 +20,6 @@
     />
     <ExpeditionMapPopup
       v-if="selectedExpedition"
-      :expedition="selectedExpedition"
-      :closeDrawer="closeExpedition"
     />
   </q-drawer>
 </template>

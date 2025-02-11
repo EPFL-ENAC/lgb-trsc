@@ -60,15 +60,9 @@
   >
     <CountryMapPopup
       v-if="selectedCountry && !selectedExpedition"
-      :country="selectedCountry"
-      :closeDrawer="closeDrawer"
-      :zoomToCountry="zoomToCountry"
     />
     <ExpeditionMapPopup
       v-if="selectedExpedition"
-      :expedition="selectedExpedition"
-      :closeDrawer="closeExpedition"
-      :zoomToExpedition="zoomToExpedition"
     />
   </q-drawer>
 </template>
