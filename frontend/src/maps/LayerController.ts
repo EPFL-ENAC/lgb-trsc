@@ -40,10 +40,10 @@ export class LayerController {
     this.countryLayer = createCountryLayer();
     this.expeditionLayer = createExpeditionLayer();
     // this.coastlineLayer = this.countryLayer;
-    this.geomorphicLayer = createDjiboutiGeomorphicLayer();
-    this.benthicLayer = createDjiboutiBenthicLayer();
-    this.boundaryLayer = createDjiboutiBoundaryLayer();
-    this.reefExtentLayer = createDjiboutiReefExtentLayer();
+    // this.geomorphicLayer = createDjiboutiGeomorphicLayer();
+    // this.benthicLayer = createDjiboutiBenthicLayer();
+    // this.boundaryLayer = createDjiboutiBoundaryLayer();
+    // this.reefExtentLayer = createDjiboutiReefExtentLayer();
   }
 
   // public initDefaultLayers() {
@@ -102,6 +102,21 @@ export class LayerController {
       this.reefExtentLayer];
   }
 
+  public getGeomorphicLayer() {
+    return this.geomorphicLayer;
+  }
+  
+  public getBenthicLayer() {
+    return this.benthicLayer;
+  }
+
+  public getBoundaryLayer() {
+    return this.boundaryLayer;
+  }
+
+  public getReefExtentLayer() {
+    return this.reefExtentLayer
+  }
   public getCountryLayer() {
     return this.countryLayer;
   }
