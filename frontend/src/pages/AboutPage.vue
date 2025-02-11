@@ -77,13 +77,14 @@ const people = ref([
   display: grid;
   grid-auto-rows: auto 1fr;
   gap: 1rem;
-  /* max-width: 1200px; */
+  justify-content: center;
 }
 
 .top-element {
   display:inline-block;
   justify-content: center;
   align-items: center;
+  max-width: 1400px;
 }
 .two-lines {
   display: -webkit-box;
@@ -94,10 +95,16 @@ const people = ref([
 }
 .bottom-element {
   display: grid;
-    grid-template-columns: repeat(4, minmax(200px, 300px));
-    justify-content: center;
-    gap: 1rem;
-    align-items: self-end;
+  grid-template-columns: repeat(4, minmax(200px, 300px));
+  justify-content: center;
+  gap: 1rem;
+  align-items: self-end;
+  @media screen and (max-width: 1200px) {
+    grid-template-columns: repeat(2, minmax(200px, 300px));
+  }
+  @media screen and (max-width: 850px) {
+    grid-template-columns: repeat(1, minmax(200px, 300px));
+  }
 }
 
 .card {
