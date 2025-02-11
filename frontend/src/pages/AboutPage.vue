@@ -6,7 +6,7 @@
     <div class="bottom-element">
       <div class="card" v-for="person in people" :key="person.id">
         <a :href="person.epflPage" target="_blank">
-          <q-img :src="person.image" alt="Picture of {{ person.name }}" />
+          <q-img :ratio="1/1" :fit="'cover'" :position="'top center'" :src="person.image" alt="Picture of {{ person.name }}" />
         </a>
         <a class="trsc-link" :href="person.epflPage" target="_blank">
           <div class="name-function">
@@ -35,7 +35,7 @@ const people = ref([
   {
     id: 2,
     name: 'Samuel Gardaz',
-    function: 'Project Manager',
+    function: 'Project Manager and Communication Director',
     image: 'https://people.epfl.ch/private/common/photos/links/336212.jpg?ts=1734001629',
     epflPage: 'https://people.epfl.ch/samuel.gardaz',
     description: 'Chef de projet, Laboratoire de géochimie biologique'
@@ -85,12 +85,13 @@ const people = ref([
   justify-content: center;
   align-items: center;
 }
-/* .two-lines {
+.two-lines {
   display: -webkit-box;
+  height: 3rem;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-} */
+}
 .bottom-element {
   display: grid;
     grid-template-columns: repeat(4, minmax(200px, 300px));
@@ -113,14 +114,6 @@ const people = ref([
     font-size: larger;
 }
 
-.card img {
-  width: 100%;
-  height: auto;
-  aspect-ratio: 3 / 4;
-  object-fit: cover;
-  margin-bottom: 1rem;
-}
-
 .card p {
   margin-bottom: 0.5rem;
 }
@@ -133,5 +126,20 @@ const people = ref([
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.q-img {
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+/* This targets the inner container of q-img */
+:deep(.q-img__content) {
+  border-radius: 50%;
+}
+
+/* This targets the actual image inside q-img */
+:deep(.q-img__image) {
+  border-radius: 50%;
 }
 </style>
