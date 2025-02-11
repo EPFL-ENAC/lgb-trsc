@@ -22,7 +22,18 @@ csv({ checkType: true, ignoreEmpty: true, trim: true })
         ID_site: obj.ID_site,
         year: obj.year,
         Date: obj.Date,
-        date_iso: obj.Date.split('/').reverse().map((v, i) => i === 0 ? '20' + v : v).join('-'),
+        date_iso: ((inputDate) => {
+          const parts = inputDate.split("-"); // Split the string into parts
+
+          // Reorder correctly: year, day, month -> year, month, day
+          const correctedDate = `${parts[0]}-${parts[2]}-${parts[1]}`
+          return new Date(correctedDate).toISOString().split('T')[0];
+        })(obj.Date.split('/').reverse().map((v, i) => {
+          if (i === 0) return '20' + v.padStart(2, '0');
+          if (i === 1) return v.padStart(2, '0');
+          // Get the original day value
+          return obj.Date.split('/')[0].padStart(2, '0');
+        }).join('-')),
         country: obj.country,
         latitude_begin: obj.latitude_begin,
         longitude_begin: obj.longitude_begin,
