@@ -1,12 +1,6 @@
 <template>
   <div class="popup">
     <button class="close-btn" @click="closeDrawer">Back</button>
-        <!--
-          title in h3 red {{ Region Name - Event Id}}
-          {{ Reef Area }} -- {{ Sampling Site Name}}
-          Position N E
-          Date as Day Month Year {{  date_iso }}
-        -->
         <h3>{{ expedition.region_name }} - {{ expedition.event_id }}</h3>
         <p>{{ expedition.reef_area }} - {{ expedition.sampling_site_name}}</p>
         <p>Position: 
@@ -20,26 +14,16 @@
             E {{ formatCoordinate(expedition.longitude_end, 'E') }}
           </p>
         <p>{{ expedition.date_iso }}</p>
-        <!-- <p><strong>Comments:</strong> {{ expedition.comments }}</p>
-        <p><strong>Date:</strong> {{ expedition.date_iso }}</p>
-        <p><strong>Event ID:</strong> {{ expedition.event_id }}</p>
-        <p><strong>Latitude <span v-if="expedition.latitude_end">Start</span>:</strong> {{ expedition.latitude_start }}</p>
-        <p><strong>Longitude <span v-if="expedition.latitude_end">Start</span>:</strong> {{ expedition.longitude_start }}</p>
-        <p v-if="expedition.latitude_end"><strong>Latitude End:</strong> {{ expedition.latitude_end }}</p>
-        <p v-if="expedition.longitude_end"><strong>Longitude End:</strong> {{ expedition.longitude_end }}</p>
-        <p><strong>Reef Area:</strong> {{ expedition.reef_area }}</p>
-        <p><strong>Region Name:</strong> {{ expedition.region_name }}</p>
-        <p><strong>Sampling Site Name:</strong> {{ expedition.sampling_site_name }}</p>
-        <p><strong>Time:</strong> {{ expedition.time }}</p> -->
         <div v-if="expedition.experiment === '3D'">
           display echart here
+          {{ sampling_site_id }}
         </div>
     <button @click="handleGoToExpedition" v-if="expedition.enabled">Go to {{ expedition.Site_Name }}</button>
   </div>
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue';
+import { computed, defineProps } from 'vue';
 
 const formatCoordinate = (decimal: number, direction: 'N' | 'E'): string => {
   const absolute = Math.abs(decimal);
@@ -48,6 +32,7 @@ const formatCoordinate = (decimal: number, direction: 'N' | 'E'): string => {
   
   return `${degrees.toString().padStart(2, '0')}º${minutes.toFixed(3)}'`;
 };
+
 const props = defineProps({
   expedition: {
     type: Object,
@@ -57,6 +42,15 @@ const props = defineProps({
     type: Function,
     required: true
   }
+});
+
+
+const sampling_site_id = computed(() => {
+  const country = props.expedition.country.toLowerCase().replaceAll(' ', '_');
+  // "Maskali / Moucha" should convert to "maskali"
+  const reef_area = props.expedition.reef_area.toLowerCase().split('/')[0].trim().replaceAll(' ', '_');
+  const site_name = props.expedition.sampling_site_name.toLowerCase().replaceAll(' ', '_');
+  return `${country}_${reef_area}_${site_name}`;
 });
 
 
