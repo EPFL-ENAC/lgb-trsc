@@ -36,12 +36,19 @@ const communities = [
     country: "Djibouti",
     logo: "/community/UniversitéDjibouti.jpg"
   },
+  // {
+  //   url: "https://mensur.gouv.dj/",
+  //   name: "Ministère de l'Enseignement Supérieur & de la Recherche djibouti",
+  //   country: "Djibouti",
+  //   logo: "/community/MinistèreRecherche.jpg"
+  // },
   {
-    url: "https://mensur.gouv.dj/",
-    name: "Ministère de l'Enseignement Supérieur & de la Recherche djibouti",
+    url: "https://www.cerd.dj",
+    name: "CERD (centre d'étude et de recherche à Djibouti)",
     country: "Djibouti",
-    logo: "/community/MinistèreRecherche.jpg"
+    logo: "/community/cerd.png"
   },
+  
   {
     url: "https://rsu.edu.sd/?page_id=14026&lang=en",
     name: "Red Sea University",
