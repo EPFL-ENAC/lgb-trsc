@@ -85,11 +85,10 @@
               <!-- Non-expandable version when no legend is available -->
               <q-expansion-item
                 v-else
-                disable
                 dense
                 dense-toggle
                 header-class="text-caption text-grey-7"
-                class="layer-grid"
+                class="layer-grid no-expand"
               >
                 <template #header>
                   <div class="layer-controls">
@@ -182,7 +181,18 @@ const toggleOverlayLayer = (groupIndex: number, layerIndex: number, val: boolean
 };
 </script>
 
+<style>
+.q-item.disabled .q-checkbox__bg,
+.q-item[aria-disabled="true"] .q-checkbox__bg {
+  cursor: default !important;
+}
+</style>
+
 <style scoped>
+:root {
+  --checkbox-cursor: default !important;
+}
+
 :deep(.q-drawer--left.q-drawer--bordered.q-drawer--standard) {
   background: rgba(255, 255, 255, 0.9) !important;
   transform: translateX(-300px) !important;
@@ -196,69 +206,52 @@ const toggleOverlayLayer = (groupIndex: number, layerIndex: number, val: boolean
   background: rgba(33, 33, 33, 0.9) !important;
 }
 
-:deep(.legend-expansion) {
-  margin-top: 4px;
-}
+.q-drawer {
+  :deep(.q-checkbox__bg) {
+    cursor: var(--checkbox-cursor);
+  }
 
-:deep(.legend-card) {
-  background: transparent;
-  box-shadow: none;
-}
+  .layer-grid {
+    width: 100%;
+  }
 
-:deep(.q-expansion-item__content) {
-  padding: 0;
-}
+  .layer-controls {
+    display: grid;
+    grid-template-columns: auto 1fr 0.5fr;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+  }
 
-.layer-grid {
-  width: 100%;
+  .show-legend {
+    color: var(--q-primary);
+    font-size: 0.8rem;
+  }
 
-  &[disabled] {
-    cursor: pointer;
-    
-    :deep(.q-item) {
-      cursor: pointer;
-    }
+  :deep(.legend-card) {
+    margin-top: 8px;
+    margin-left: calc(24px + 8px);
+    background: transparent;
+    box-shadow: none;
+    width: calc(100% - 32px);
+  }
+
+  :deep(.q-expansion-item__content) {
+    padding: 0;
   }
 }
 
-.layer-controls {
-  display: grid;
-  grid-template-columns: auto 1fr 0.5fr;
-  align-items: center;
-  gap: 8px;
-  width: 100%;
-}
-
-.checkbox-wrapper {
-  display: flex;
-  align-items: center;
+.layer-grid.no-expand {
+  pointer-events: none;
+  
+  .checkbox-wrapper {
+    pointer-events: all;
+  }
 }
 
 .layer-title {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-:deep(.legend-expansion) {
-  margin-top: 0;
-  min-width: fit-content;
-}
-
-:deep(.legend-card) {
-  margin-top: 8px;
-  margin-left: calc(24px + 8px); /* Aligns with the content, accounting for checkbox width */
-  background: transparent;
-  box-shadow: none;
-  width: calc(100% - 32px);
-}
-
-:deep(.q-expansion-item__content) {
-  padding: 0;
-}
-
-.show-legend {
-  color: var(--q-primary);
-  font-size: 0.8rem;
 }
 </style>
