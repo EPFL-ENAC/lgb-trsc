@@ -1,6 +1,6 @@
 import { Style, Fill, Stroke } from 'ol/style';
 
-const classColorMap: { [key: string]: string } = {
+export const classColorMap: { [key: string]: string } = {
   'Reef Slope': 'rgb(40, 132, 113)',
   'Sheltered Reef Slope': 'rgb(16, 189, 166)',
   'Reef Crest': 'rgb(97, 66, 114)',

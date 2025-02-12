@@ -63,6 +63,10 @@
             </q-item-section>
             <q-item-section>{{ layer.title }}</q-item-section>
           </q-item>
+          <MapLegend
+            v-if="getLayerLegend(group.layers)"
+            :classColorMap="getLayerLegend(group.layers)"
+          />
         </q-list>
       </q-expansion-item>
     </q-list>
@@ -73,6 +77,14 @@
 import { ref } from 'vue';
 import { useQuasar } from 'quasar';
 import { useLayerManager } from '@/maps/composables/useLayerManager';
+import MapLegend from './MapLegend.vue';
+import { classColorMap as geomorphicColorMap } from '@/maps/styles/geomorphicLayerStyle';
+import { classColorMap as benthicColorMap } from '@/maps/styles/benthicLayerStyle';
+
+interface Layer {
+  title: string;
+  visible: boolean;
+}
 
 const $q = useQuasar();
 const leftDrawerOpen = ref(true);
@@ -95,6 +107,20 @@ const getGroupIcon = (title: string) => {
   };
 
   return icons[title] || icons['Default'];
+};
+
+const getLayerLegend = (layers: Layer[]) => {
+  const visibleLayer = layers.find(layer => layer.visible);
+  if (!visibleLayer) return undefined;
+  // Return the appropriate color map based on the layer title
+  switch (visibleLayer.title) {
+    case 'Geomorphic':
+      return geomorphicColorMap;
+    case 'Benthic':
+      return benthicColorMap;
+    default:
+      return undefined;
+  }
 };
 </script>
 

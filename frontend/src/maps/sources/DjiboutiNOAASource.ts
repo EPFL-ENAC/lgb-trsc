@@ -7,8 +7,11 @@ export const createSourceCHL_monthly_mean_1997_2024_Mean = () => {
     const source = new GeoTIFF({
         sources: [{
             url: url,
+            attributions: 'Your Attribution Here',
             normalize: true,
           }],
+
+          attributions: 'Your Attribution Here',
           // Add error handling
           wrapX: true,
           transition: 0

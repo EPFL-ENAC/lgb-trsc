@@ -1,23 +1,37 @@
 <template>
   <div class="legend">
-        <ol>
-          <li>
-            <span
-              class="legend-color"
-              :style="{ 'background-color': legendColor }"
-            ></span>
-            {{ legendText }}
-          </li>
-        </ol>
+    <ol v-if="classColorMap">
+      <li v-for="(color, className) in classColorMap" :key="className">
+        <span
+          class="legend-color"
+          :style="{ 'background-color': color }"
+        ></span>
+        {{ className }}
+      </li>
+    </ol>
+    <ol v-else>
+      <li>
+        <span
+          class="legend-color"
+          :style="{ 'background-color': legendColor }"
+        ></span>
+        {{ legendText }}
+      </li>
+    </ol>
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed, defineProps } from 'vue';
 
+interface ClassColorMap {
+  [key: string]: string;
+}
+
 const props = defineProps<{
   selectedCountry?: string;
   selectedExpedition?: string;
+  classColorMap?: ClassColorMap;
 }>();
 
 const legendColor = computed(() =>

@@ -1,18 +1,17 @@
 import { Style, Fill, Stroke } from 'ol/style';
+import { Feature } from 'ol';
+import { Geometry } from 'ol/geom';
 
-const classColorMap: { [key: string]: string } = {
-  "Coral/Algae": "rgb(255, 97, 97)",
-  "Seagrass": "rgb(102, 132, 56)",
-  "Microalgal Mats": "rgb(155, 204, 79)",
-  "Rock": "rgb(177, 156, 58)",
-  "Rubble": "rgb(224, 208, 94)",
-  "Sand": "rgb(255, 255, 190)"
+export const classColorMap: { [key: string]: string } = {
+  'Sand': 'rgb(255, 244, 183)',
+  'Rock': 'rgb(161, 133, 88)',
+  'Seagrass': 'rgb(112, 168, 0)',
+  'Coral': 'rgb(255, 190, 190)',
+  'Rubble': 'rgb(200, 200, 200)',
+  'Algae': 'rgb(0, 168, 132)',
 };
 
-
-export const benthicStyle = (feature: any) => {
-  // Debug: log feature properties
-  
+export const benthicStyle = (feature: Feature<Geometry>) => {
   return new Style({
     fill: new Fill({
       color: feature.get('class')

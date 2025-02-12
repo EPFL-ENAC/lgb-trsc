@@ -1,5 +1,6 @@
 import VectorSource from 'ol/source/Vector';
 import { GeoJSON } from 'ol/format';
+import { attributions } from '@/maps/utils/attributions';
 const geoFeatures = {
   "type": "FeatureCollection",
   "features": [
@@ -44,4 +45,6 @@ export const createPMTilesSource = () => (new VectorSource({
     features: new GeoJSON().readFeatures(geoFeatures, {
       featureProjection: 'EPSG:3857',
     }),
+
+    attributions: attributions.allenCoralAtlas,
   }));
