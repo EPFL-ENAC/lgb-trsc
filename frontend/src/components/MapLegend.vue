@@ -47,34 +47,34 @@ const legendText = computed(() =>
 
 <style scoped lang="scss">
 .legend {
-  position: absolute;
-  top: 1.5em;
-  left: 3.5em;
-  background: white;
-  padding: 10px;
-  border: 1px solid black;
-  border-radius: 5px;
-  ul {
+  position: relative;
+  background: if(var(--q-dark), rgba(33, 33, 33, 0.8), rgba(255, 255, 255, 0.8));
+  padding: 0.5rem;
+  margin: 0.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  ol {
     list-style-type: none;
     padding: 0;
     margin: 0;
-    ol:first-child {
-      list-style-type: decimal;
-      padding: 0;
-      margin: 0;
+
+    li {
+      display: flex;
+      align-items: center;
+      padding: 0.25rem 0;
+      font-size: 0.9rem;
+      color: if(var(--q-dark), #fff, #333);
     }
   }
-  ol {
-      list-style-type: none;
-      padding: 0;
-      margin: 0;
-    }
 }
 
 .legend-color {
   display: inline-block;
-  width: 10px;
-  height: 10px;
-  margin-right: 5px;
+  width: 12px;
+  height: 12px;
+  margin-right: 8px;
+  border-radius: 3px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 </style>

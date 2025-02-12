@@ -61,12 +61,25 @@
                 />
               </template>
             </q-item-section>
-            <q-item-section>{{ layer.title }}</q-item-section>
+            <q-item-section>
+              {{ layer.title }}
+              <q-expansion-item
+                v-if="layer.visible && getLayerLegend(group.layers)"
+                dense
+                dense-toggle
+                switch-toggle-side
+                header-class="text-caption text-grey-7"
+                class="legend-expansion"
+                label="Show legend"
+              >
+                <q-card class="legend-card">
+                  <MapLegend
+                    :classColorMap="getLayerLegend(group.layers)"
+                  />
+                </q-card>
+              </q-expansion-item>
+            </q-item-section>
           </q-item>
-          <MapLegend
-            v-if="getLayerLegend(group.layers)"
-            :classColorMap="getLayerLegend(group.layers)"
-          />
         </q-list>
       </q-expansion-item>
     </q-list>
@@ -136,5 +149,18 @@ const getLayerLegend = (layers: Layer[]) => {
 
 .q-drawer--dark {
   background: rgba(33, 33, 33, 0.9) !important;
+}
+
+:deep(.legend-expansion) {
+  margin-top: 4px;
+}
+
+:deep(.legend-card) {
+  background: transparent;
+  box-shadow: none;
+}
+
+:deep(.q-expansion-item__content) {
+  padding: 0;
 }
 </style>

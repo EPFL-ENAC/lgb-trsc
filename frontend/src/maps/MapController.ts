@@ -67,7 +67,7 @@ export class MapController {
         new Zoom(),
         new Attribution({
           collapsible: false,
-          
+
         }),
         new Rotate({ autoHide: false, className: 'ol-rotate' }),
       ],
@@ -89,7 +89,7 @@ export class MapController {
       layers: [
         new LayerGroup({
           title: 'Environmental Layers',
-          inputType: 'radio',
+          inputType: 'checkbox',
           layers: [
             createCHL_monthly_mean_1997_2024_MeanLayer(),
             createCHL_monthly_mean_1997_2024_SD()
