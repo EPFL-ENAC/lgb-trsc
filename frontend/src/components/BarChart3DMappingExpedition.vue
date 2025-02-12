@@ -65,12 +65,6 @@ export default {
         '#27374d',
         '#000000',
       ];
-      // function getSiteNameFromSiteId(data, SiteId) {
-      //   if (data === undefined) {
-      //     return '';
-      //   }
-      //   return data.find((item) => item.id === parseInt(SiteId))?.Site || '';
-      // }
       function processData(data) {
         const seriesData = {}; // init to 0
         // init to 0
@@ -84,13 +78,23 @@ export default {
             seriesData[item.Substrate_1] += item.mean;
           }
         });
-        return validSubstrates.map((substrate, index) => ({
+        return validSubstrates.map((substrate, index) => {
+          const size = validSubstrates.length;
+          const _data = new Array(size).fill(0);
+          _data[index] = seriesData[substrate];
+
+          return ({
           name: substrate,
-          value: seriesData[substrate],
+          type: 'bar',
+          data: _data,
           itemStyle: {
-            color: colorPalette[index],
+            color: colorPalette[index]
           },
-        }));
+          barGap: '-100%',
+          barCategoryGap: '0%',
+          barWidth: '80%',
+        })
+        });
       }
 
       let localTooltip = {
@@ -99,13 +103,15 @@ export default {
             type: 'shadow'
           },
           formatter: function (params) {
-            let result = `Substrate1: ${params[0].axisValue}<br/>`;
-            // result+= `Site Name: ${getSiteNameFromSiteId(data, params[0].axisValue)}<br/>`
-            params.forEach((param) => {
-              result += `<span style="margin-right:1rem;background-color:${param.color};display: inline-block;width: 10px;height: 10px;"></span>${(param.value * 100).toFixed(
-                2
-              )}%<br/>`;
-            });
+            let result = ``;
+            let param = params[params[0].dataIndex];
+            console.log(params);
+            if (param === undefined) {
+              return '';
+            }
+            result+= `<span style="margin-right:1rem;background-color:${param.color};display: inline-block;width: 10px;height: 10px;"></span>`;
+            result+= `${param.axisValueLabel} ${(param.value *100).toFixed(2)}%<br/>`
+            
             return result;
           }
         };
@@ -121,7 +127,7 @@ export default {
           data: validSubstrates,
           type: 'scroll',
           orient: 'horizontal',
-          bottom: 0
+          bottom: 10
         },
         grid: {
           left: '4%',
@@ -132,6 +138,9 @@ export default {
         xAxis: {
           type: 'category',
           data: validSubstrates,
+          axisLabel: { rotate: 30,
+            fontSize: 10,
+            color: '#000', },
           name: 'substrate',
         },
         yAxis: {
@@ -145,12 +154,7 @@ export default {
           max: 1,
           min: 0,
         },
-        series: [
-          {
-            data: processData(data),
-            type: 'bar',
-          },
-        ],
+        series: processData(data),
       };
     },
   },
