@@ -16,11 +16,11 @@
   >
     <q-list padding>
       <!-- Base maps section -->
+      <!-- default-opened -->
       <q-expansion-item
         group="layers"
         icon="map"
         label="Base maps"
-        default-opened
       >
         <q-list padding>
           <q-item v-for="layer in baseMaps" :key="layer.title">
@@ -43,7 +43,6 @@
         group="overlays"
         :icon="getGroupIcon(group.title)"
         :label="group.title"
-        default-opened
       >
         <q-list padding>
           <q-item v-for="(layer, layerIndex) in group.layers" :key="layer.title">

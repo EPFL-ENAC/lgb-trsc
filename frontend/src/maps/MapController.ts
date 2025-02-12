@@ -37,6 +37,7 @@ import { FeatureLike } from 'ol/Feature';
 import { Pixel } from 'ol/pixel';
 import Target from 'ol/events/Target';
 import { createCHL_monthly_mean_1997_2024_MeanLayer } from './layers/overlay/EnvironmentalLayers/DjiboutiLayer';
+import LayerSwitcher, { BaseLayerOptions } from 'ol-layerswitcher';
 
 export class MapController {
   private map: Map;
@@ -76,21 +77,25 @@ export class MapController {
     this.overlayMaps = new LayerGroup({
       layers: [
         new LayerGroup({
-          layers: [],
-        }),
-        new LayerGroup({
-          layers: [createDjiboutiGeomorphicLayer(), createDjiboutiBenthicLayer(), createDjiboutiBoundaryLayer(), createDjiboutiReefExtentLayer()],
-        }),
-        new LayerGroup({
+          title: 'Environmental Layers',
           layers: [
             createCHL_monthly_mean_1997_2024_MeanLayer(),
           ],
-        }),
+        } as BaseLayerOptions),
         new LayerGroup({
+          title: 'Reef Layers',
+          layers: [createDjiboutiGeomorphicLayer(), createDjiboutiBenthicLayer(), createDjiboutiBoundaryLayer(), createDjiboutiReefExtentLayer()],
+        } as BaseLayerOptions),
+        new LayerGroup({
+          title: 'Environmental Clusters',
           layers: [],
-        }),
+        } as BaseLayerOptions),
+        new LayerGroup({
+          title: 'Sampling sites',
+          layers: [layerController.getExpeditionLayer(),],
+        } as BaseLayerOptions),
         layerController.getCountryLayer(),
-        layerController.getExpeditionLayer(),
+        
       ],
     });
 
