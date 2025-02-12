@@ -36,12 +36,14 @@ export function useLayerManager() {
       const layers = (group instanceof LayerGroup ? group.getLayers().getArray() : [group])
         .map((layer: BaseLayer) => ({
           title: layer.get('title') || 'Untitled',
+          inputType: layer.get('inputType'),
           visible: layer.getVisible(),
           layer
         }));
 
       return {
         title: group.get('title') || 'Untitled',
+        inputType: group.get('inputType'),
         layers
       };
     });

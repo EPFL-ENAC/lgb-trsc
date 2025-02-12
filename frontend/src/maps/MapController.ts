@@ -36,8 +36,14 @@ import {
 import { FeatureLike } from 'ol/Feature';
 import { Pixel } from 'ol/pixel';
 import Target from 'ol/events/Target';
-import { createCHL_monthly_mean_1997_2024_MeanLayer } from './layers/overlay/EnvironmentalLayers/DjiboutiLayer';
+import { createCHL_monthly_mean_1997_2024_MeanLayer, createCHL_monthly_mean_1997_2024_SD } from './layers/overlay/EnvironmentalLayers/DjiboutiLayer';
 import LayerSwitcher, { BaseLayerOptions } from 'ol-layerswitcher';
+
+
+interface CustomBaseLayerOptions extends BaseLayerOptions {
+  inputType?: 'base' | 'checkbox' | 'radio';
+
+}
 
 export class MapController {
   private map: Map;
@@ -67,6 +73,7 @@ export class MapController {
   private baseMaps: LayerGroup | null = null;
   private overlayMaps: LayerGroup | null = null;
 
+
   public init(): void {
     this.baseMaps = new LayerGroup({
       layers: [createArcGISLayer(), createOSMLayer()],
@@ -78,22 +85,24 @@ export class MapController {
       layers: [
         new LayerGroup({
           title: 'Environmental Layers',
+          inputType: 'radio',
           layers: [
             createCHL_monthly_mean_1997_2024_MeanLayer(),
+            createCHL_monthly_mean_1997_2024_SD()
           ],
-        } as BaseLayerOptions),
+        } as CustomBaseLayerOptions),
         new LayerGroup({
           title: 'Reef Layers',
           layers: [createDjiboutiGeomorphicLayer(), createDjiboutiBenthicLayer(), createDjiboutiBoundaryLayer(), createDjiboutiReefExtentLayer()],
-        } as BaseLayerOptions),
+        } as CustomBaseLayerOptions),
         new LayerGroup({
           title: 'Environmental Clusters',
           layers: [],
-        } as BaseLayerOptions),
+        } as CustomBaseLayerOptions),
         new LayerGroup({
           title: 'Sampling sites',
           layers: [layerController.getExpeditionLayer(),],
-        } as BaseLayerOptions),
+        } as CustomBaseLayerOptions),
         layerController.getCountryLayer(),
         
       ],
