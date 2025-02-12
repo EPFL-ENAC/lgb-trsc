@@ -2,13 +2,28 @@ import { ref, computed } from 'vue';
 import { defineStore } from 'pinia';
 import { useLayerController } from '@/maps/composables/useLayerController';
 import { useMapController } from '@/maps/composables/useMapController';
+import { useLayerStyles } from '@/maps/composables/useLayerStyles';
+
+interface CountryProperties {
+  name: string;
+  coastline?: object;
+  [key: string]: unknown;
+}
+
+interface ExpeditionProperties {
+  country: string;
+  date_iso: string;
+  reef_area: string;
+  sampling_site_name: string;
+  [key: string]: unknown;
+}
 
 export const useMapStore = defineStore('map', () => {
-  const selectedCountry = ref<any>(undefined);
-  const selectedExpedition = ref<any>(undefined);
+  const selectedCountry = ref<CountryProperties | null>(null);
+  const selectedExpedition = ref<ExpeditionProperties | null>(null);
 
-  const hoveredExpedition = ref<any>(undefined);
-  const hoveredExpeditionPixel = ref<any>(undefined);
+  const hoveredExpedition = ref<ExpeditionProperties | null>(null);
+  const hoveredExpeditionPixel = ref<[number, number] | null>(null);
   const rawTooltipContent = ref<string>('');
   const tooltipPosition = ref({ x: 0, y: 0 });
   const _drawer = ref<boolean>(false);
@@ -19,39 +34,34 @@ export const useMapStore = defineStore('map', () => {
     },
   });
 
+  const { visibleClasses, setClassVisibility, setAllClassesVisibility } = useLayerStyles();
+
   function closeDrawer() {
     drawer.value = false;
     selectedCountry.value = null;
     selectedExpedition.value = null;
 
-    // does this mean that layers should be in the store?
     const layerController = useLayerController();
-    // layerController.resetLayers();
-    // coastlineLayer.value.getSource().clear();
-    // expeditionsLayer.value.getSource().clear();
-    // countryLayer.value.setStyle(countryStyle); // Reset style to show yellow circles
-    // TODO find a way for zoomOutOFcountry to be called
-    // zoomOutOfCountry();
     layerController.showCountryLayer();
     const mapController = useMapController();
     mapController.zoomOutOfCountry();
   }
 
   function closeExpedition() {
-    selectedExpedition.value = undefined;
+    selectedExpedition.value = null;
   }
 
-  function selectCountry(properties: any) {
+  function selectCountry(properties: CountryProperties) {
     selectedCountry.value = properties;
     drawer.value = true;
   }
 
-  function selectExpedition(properties: any) {
+  function selectExpedition(properties: ExpeditionProperties) {
     selectedExpedition.value = properties;
     drawer.value = true;
   }
 
-  function onHover(properties: any, pixel: number[]) {
+  function onHover(properties: ExpeditionProperties | null, pixel: [number, number] | null) {
     if (!properties) {
       hoveredExpedition.value = null;
       hoveredExpeditionPixel.value = null;
@@ -71,9 +81,12 @@ export const useMapStore = defineStore('map', () => {
     drawer,
     rawTooltipContent,
     tooltipPosition,
+    visibleClasses,
     closeDrawer,
     closeExpedition,
     selectCountry,
-    selectExpedition
+    selectExpedition,
+    setClassVisibility,
+    setAllClassesVisibility
   };
 });

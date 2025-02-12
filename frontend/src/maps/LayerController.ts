@@ -7,12 +7,6 @@ import { Style } from 'ol/style';
 import GeoJSON from 'ol/format/GeoJSON';
 import VectorTileLayer from 'ol/layer/VectorTile';
 import VectorTileSource from 'ol/source/VectorTile';
-import {
-  createDjiboutiGeomorphicLayer,
-  createDjiboutiBenthicLayer,
-  createDjiboutiBoundaryLayer,
-  createDjiboutiReefExtentLayer
-} from '@/maps/layers/overlay/ReefLayers/DjiboutiLayer';
 
 interface GeoJSONFeatureCollection {
   type: 'FeatureCollection';
@@ -29,35 +23,15 @@ interface GeoJSONFeatureCollection {
 export class LayerController {
   private countryLayer: VectorLayer<VectorSource>;
   private expeditionLayer: VectorLayer<VectorSource>;
-  // private coastlineLayer: VectorLayer<VectorSource> ;
-  private geomorphicLayer: VectorTileLayer<VectorTileSource>;
-  private benthicLayer: VectorTileLayer<VectorTileSource>;
-  private boundaryLayer: VectorTileLayer<VectorTileSource>;
-  private reefExtentLayer: VectorTileLayer<VectorTileSource>;
-
+  private geomorphicLayer: VectorTileLayer<VectorTileSource> | null = null;
+  private benthicLayer: VectorTileLayer<VectorTileSource> | null = null;
+  private boundaryLayer: VectorTileLayer<VectorTileSource> | null = null;
+  private reefExtentLayer: VectorTileLayer<VectorTileSource> | null = null;
 
   constructor() {
     this.countryLayer = createCountryLayer();
     this.expeditionLayer = createExpeditionLayer();
-    // this.coastlineLayer = this.countryLayer;
-    // this.geomorphicLayer = createDjiboutiGeomorphicLayer();
-    // this.benthicLayer = createDjiboutiBenthicLayer();
-    // this.boundaryLayer = createDjiboutiBoundaryLayer();
-    // this.reefExtentLayer = createDjiboutiReefExtentLayer();
   }
-
-  // public initDefaultLayers() {
-  //   this.countryLayer = createCountryLayer();
-  //   this.expeditionLayer = createExpeditionLayer();
-  //   // this.coastlineLayer = this.countryLayer
-  // }
-
-  // public initDjibouti() {
-  //   this.geomorphicLayer = createDjiboutiGeomorphicLayer();
-  //   this.benthicLayer = createDjiboutiBenthicLayer();
-  //   this.boundaryLayer = createDjiboutiBoundaryLayer();
-  //   this.reefExtentLayer = createDjiboutiReefExtentLayer();
-  // }
 
   public showCountryLayer() {
     this.countryLayer.setVisible(true);
@@ -135,6 +109,9 @@ export class LayerController {
   }
 
   public getActiveLayers() {
-    return this.getLayers().filter((layer) => layer.getVisible());
+    return this.getLayers().filter((layer): layer is NonNullable<typeof layer> => {
+      return layer !== null && layer.getVisible();
+    });
   }
+
 }
