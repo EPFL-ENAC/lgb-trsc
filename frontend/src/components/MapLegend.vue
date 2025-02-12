@@ -1,8 +1,5 @@
 <template>
   <div class="legend">
-    <ul>
-      <li>
-        Legend:
         <ol>
           <li>
             <span
@@ -12,8 +9,6 @@
             {{ legendText }}
           </li>
         </ol>
-      </li>
-    </ul>
   </div>
 </template>
 
@@ -55,6 +50,11 @@ const legendText = computed(() =>
       margin: 0;
     }
   }
+  ol {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
 }
 
 .legend-color {

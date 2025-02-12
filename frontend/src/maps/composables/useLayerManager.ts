@@ -1,5 +1,4 @@
 import { ref, onMounted } from 'vue';
-import { useMapStore } from '@/stores/mapStore';
 import BaseLayer from 'ol/layer/Base';
 import LayerGroup from 'ol/layer/Group';
 import { useMapController } from './useMapController';
@@ -12,11 +11,11 @@ export interface LayerInfo {
 
 export interface LayerGroupInfo {
   title: string;
+  inputType?: 'radio' | 'checkbox';
   layers: LayerInfo[];
 }
 
 export function useLayerManager() {
-  const mapStore = useMapStore();
   const baseMaps = ref<LayerInfo[]>([]);
   const overlayGroups = ref<LayerGroupInfo[]>([]);
 
@@ -32,7 +31,8 @@ export function useLayerManager() {
     }));
 
     // Initialize overlay groups
-    overlayGroups.value = controller.getOverlayMaps().map((group: LayerGroup) => {
+    overlayGroups.value = controller.getOverlayMaps().map((baseLayer: BaseLayer) => {
+      const group = baseLayer as LayerGroup;
       const layers = (group instanceof LayerGroup ? group.getLayers().getArray() : [group])
         .map((layer: BaseLayer) => ({
           title: layer.get('title') || 'Untitled',
@@ -70,6 +70,21 @@ export function useLayerManager() {
     }
   };
 
+  const setOverlayLayerRadio = (groupIndex: number, layerIndex: number) => {
+    const controller = useMapController();
+    if (!controller) return;
+
+    const group = overlayGroups.value[groupIndex];
+    if (group) {
+      // Set all layers in the group to invisible except the selected one
+      group.layers.forEach((layerInfo, idx) => {
+        const visible = idx === layerIndex;
+        layerInfo.visible = visible;
+        controller.setLayerVisibility(groupIndex, idx, visible);
+      });
+    }
+  };
+
   onMounted(() => {
     initializeLayers();
   });
@@ -79,6 +94,7 @@ export function useLayerManager() {
     overlayGroups,
     setBaseMapVisible,
     toggleOverlayLayer,
+    setOverlayLayerRadio,
     initializeLayers
   };
 }

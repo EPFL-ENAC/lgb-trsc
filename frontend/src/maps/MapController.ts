@@ -93,6 +93,7 @@ export class MapController {
         } as CustomBaseLayerOptions),
         new LayerGroup({
           title: 'Reef Layers',
+          inputType: 'radio',
           layers: [createDjiboutiGeomorphicLayer(), createDjiboutiBenthicLayer(), createDjiboutiBoundaryLayer(), createDjiboutiReefExtentLayer()],
         } as CustomBaseLayerOptions),
         new LayerGroup({

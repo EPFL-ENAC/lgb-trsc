@@ -16,7 +16,6 @@
   >
     <q-list padding>
       <!-- Base maps section -->
-      <!-- default-opened -->
       <q-expansion-item
         group="layers"
         icon="map"
@@ -47,10 +46,19 @@
         <q-list padding>
           <q-item v-for="(layer, layerIndex) in group.layers" :key="layer.title">
             <q-item-section avatar>
-              <q-checkbox
-                v-model="layer.visible"
-                @update:model-value="(val) => toggleOverlayLayer(groupIndex, layerIndex, val)"
-              />
+              <template v-if="group.inputType === 'radio'">
+                <q-radio
+                  v-model="layer.visible"
+                  :val="true"
+                  @update:model-value="() => setOverlayLayerRadio(groupIndex, layerIndex)"
+                />
+              </template>
+              <template v-else>
+                <q-checkbox
+                  v-model="layer.visible"
+                  @update:model-value="(val) => toggleOverlayLayer(groupIndex, layerIndex, val)"
+                />
+              </template>
             </q-item-section>
             <q-item-section>{{ layer.title }}</q-item-section>
           </q-item>
@@ -73,7 +81,8 @@ const {
   baseMaps,
   overlayGroups,
   setBaseMapVisible,
-  toggleOverlayLayer
+  toggleOverlayLayer,
+  setOverlayLayerRadio
 } = useLayerManager();
 
 const getGroupIcon = (title: string) => {
