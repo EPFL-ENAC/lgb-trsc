@@ -1,5 +1,5 @@
 <template>
-  <div class="legend">
+  <div class="legend" :class="{ 'legend-absolute': isAbsolute }">
     <ol v-if="classColorMap">
       <li v-for="(color, className) in classColorMap" :key="className">
         <span
@@ -32,6 +32,7 @@ const props = defineProps<{
   selectedCountry?: string;
   selectedExpedition?: string;
   classColorMap?: ClassColorMap;
+  isAbsolute?: boolean;
 }>();
 
 const legendColor = computed(() =>
@@ -53,6 +54,21 @@ const legendText = computed(() =>
   margin: 0.5rem;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  &.legend-absolute {
+    position: absolute;
+    top: 1.5em;
+    left: 3.5em;
+    background: white;
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin: 0;
+
+    li {
+      color: #333;
+    }
+  }
 
   ol {
     list-style-type: none;

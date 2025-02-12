@@ -7,7 +7,7 @@
   >
     <div id="info"></div>
   </div>
-  <MapLegend />
+  <MapLegend :isAbsolute="true" />
   <MapTooltip 
     :content="hoveredExpedition" 
     :position="hoveredExpeditionPixel"
