@@ -61,7 +61,7 @@ export function useLayerStyles() {
     });
   };
 
-  const createGeomorphicStyle = (feature: Feature<Geometry>) => createFeatureStyle(feature, geomorphicColorMap);;
+  const createGeomorphicStyle = (feature: Feature<Geometry>) => createFeatureStyle(feature, geomorphicColorMap);
   const createBenthicStyle = (feature: Feature<Geometry>) => createFeatureStyle(feature, benthicColorMap);
   // const createBathymetricStyle = (feature: Feature<Geometry>) => createFeatureStyle(feature, bathymetricColorMap);
   const createMarineProtectedStyle = (feature: Feature<Geometry>) => createFeatureStyle(feature, marineProtectedAreaColorMap, true);

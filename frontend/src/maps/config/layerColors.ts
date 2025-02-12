@@ -32,11 +32,11 @@ export const bathymetricColorMap: { [key: string]: string } = {
 
 
 export const boundaryColorMap: { [key: string]: string } = {
-  'boundary': 'rgb(125,201,201, 0.5)',
+  'boundary': 'rgba(125,201,201, 0.5)',
 };
 
 export const marineProtectedAreaColorMap: { [key: string]: string } = {
-  'Protected Area': 'rgb(125,201,201, 0.5)',
+  'Protected Area': 'rgba(125,201,201, 0.5)',
 };
 
 

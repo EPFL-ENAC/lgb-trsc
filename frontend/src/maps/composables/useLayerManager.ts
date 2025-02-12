@@ -21,7 +21,10 @@ export function useLayerManager() {
 
   const initializeLayers = () => {
     const controller = useMapController();
-    if (!controller) return;
+    if (!controller) {
+      console.error('MapController is not available. Unable to initialize layers.');
+      return;
+    }
 
     // Initialize base maps
     baseMaps.value = controller.getBaseMaps().map((layer: BaseLayer) => ({
@@ -51,7 +54,10 @@ export function useLayerManager() {
 
   const setBaseMapVisible = (layerTitle: string) => {
     const controller = useMapController();
-    if (!controller) return;
+    if (!controller) {
+      console.error('MapController is not available. Unable to initialize layers.');
+      return;
+    }
 
     baseMaps.value.forEach((layerInfo, index) => {
       const visible = layerInfo.title === layerTitle;
@@ -62,7 +68,10 @@ export function useLayerManager() {
 
   const toggleOverlayLayer = (groupIndex: number, layerIndex: number, visible: boolean) => {
     const controller = useMapController();
-    if (!controller) return;
+    if (!controller) {
+      console.error('MapController is not available. Unable to initialize layers.');
+      return;
+    }
 
     if (overlayGroups.value[groupIndex]?.layers[layerIndex]) {
       overlayGroups.value[groupIndex].layers[layerIndex].visible = visible;
@@ -72,7 +81,10 @@ export function useLayerManager() {
 
   const setOverlayLayerRadio = (groupIndex: number, layerIndex: number) => {
     const controller = useMapController();
-    if (!controller) return;
+    if (!controller) {
+      console.error('MapController is not available. Unable to initialize layers.');
+      return;
+    }
 
     const group = overlayGroups.value[groupIndex];
     if (group) {
