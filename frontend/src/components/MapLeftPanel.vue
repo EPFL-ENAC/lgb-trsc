@@ -46,37 +46,71 @@
       >
         <q-list padding>
           <q-item v-for="(layer, layerIndex) in group.layers" :key="layer.title">
-            <q-item-section avatar>
-              <template v-if="group.inputType === 'radio'">
-                <q-radio
-                  v-model="layer.visible"
-                  :val="true"
-                  @update:model-value="() => setOverlayLayerRadio(groupIndex, layerIndex)"
-                />
-              </template>
-              <template v-else>
-                <q-checkbox
-                  v-model="layer.visible"
-                  @update:model-value="(val) => toggleOverlayLayer(groupIndex, layerIndex, val)"
-                />
-              </template>
-            </q-item-section>
             <q-item-section>
-              {{ layer.title }}
               <q-expansion-item
-                v-if="layer.visible && getLayerLegend(group.layers)"
+                v-if="layer.visible && getLayerLegend(layer)"
                 dense
                 dense-toggle
-                switch-toggle-side
                 header-class="text-caption text-grey-7"
-                class="legend-expansion"
-                label="Show legend"
+                class="layer-grid"
               >
+                <template #header>
+                  <div class="layer-controls">
+                    <div class="checkbox-wrapper">
+                      <template v-if="group.inputType === 'radio'">
+                        <q-radio
+                          v-model="layer.visible"
+                          :val="true"
+                          @update:model-value="() => setOverlayLayerRadio(groupIndex, layerIndex)"
+                        />
+                      </template>
+                      <template v-else>
+                        <q-checkbox
+                          v-model="layer.visible"
+                          @update:model-value="(val) => toggleOverlayLayer(groupIndex, layerIndex, val)"
+                        />
+                      </template>
+                    </div>
+                    <div class="layer-title">{{ layer.title }}</div>
+                    <div class="show-legend">Show legend</div>
+                  </div>
+                </template>
                 <q-card class="legend-card">
                   <MapLegend
-                    :classColorMap="getLayerLegend(group.layers)"
+                    :classColorMap="getLayerLegend(layer)"
                   />
                 </q-card>
+              </q-expansion-item>
+
+              <!-- Non-expandable version when no legend is available -->
+              <q-expansion-item
+                v-else
+                disable
+                dense
+                dense-toggle
+                header-class="text-caption text-grey-7"
+                class="layer-grid"
+              >
+                <template #header>
+                  <div class="layer-controls">
+                    <div class="checkbox-wrapper">
+                      <template v-if="group.inputType === 'radio'">
+                        <q-radio
+                          v-model="layer.visible"
+                          :val="true"
+                          @update:model-value="() => setOverlayLayerRadio(groupIndex, layerIndex)"
+                        />
+                      </template>
+                      <template v-else>
+                        <q-checkbox
+                          v-model="layer.visible"
+                          @update:model-value="(val) => toggleOverlayLayer(groupIndex, layerIndex, val)"
+                        />
+                      </template>
+                    </div>
+                    <div class="layer-title">{{ layer.title }}</div>
+                  </div>
+                </template>
               </q-expansion-item>
             </q-item-section>
           </q-item>
@@ -124,11 +158,9 @@ const getGroupIcon = (title: string) => {
   return icons[title] || icons['Default'];
 };
 
-const getLayerLegend = (layers: Layer[]) => {
-  const visibleLayer = layers.find(layer => layer.visible);
-  if (!visibleLayer) return undefined;
+const getLayerLegend = (layer: Layer) => {
   // Return the appropriate color map based on the layer title
-  switch (visibleLayer.title) {
+  switch (layer.title) {
     case 'Geomorphic':
       return geomorphicColorMap;
     case 'Benthic':
@@ -175,5 +207,58 @@ const toggleOverlayLayer = (groupIndex: number, layerIndex: number, val: boolean
 
 :deep(.q-expansion-item__content) {
   padding: 0;
+}
+
+.layer-grid {
+  width: 100%;
+
+  &[disabled] {
+    cursor: pointer;
+    
+    :deep(.q-item) {
+      cursor: pointer;
+    }
+  }
+}
+
+.layer-controls {
+  display: grid;
+  grid-template-columns: auto 1fr 0.5fr;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.checkbox-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.layer-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+:deep(.legend-expansion) {
+  margin-top: 0;
+  min-width: fit-content;
+}
+
+:deep(.legend-card) {
+  margin-top: 8px;
+  margin-left: calc(24px + 8px); /* Aligns with the content, accounting for checkbox width */
+  background: transparent;
+  box-shadow: none;
+  width: calc(100% - 32px);
+}
+
+:deep(.q-expansion-item__content) {
+  padding: 0;
+}
+
+.show-legend {
+  color: var(--q-primary);
+  font-size: 0.8rem;
 }
 </style>
