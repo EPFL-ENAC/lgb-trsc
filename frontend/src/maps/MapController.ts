@@ -8,7 +8,6 @@ import {
   Attribution,
   Rotate,
 } from 'ol/control';
-import LayerSwitcher, { BaseLayerOptions } from 'ol-layerswitcher';
 import { createOSMLayer } from './layers/base/OSMLayer';
 import { createArcGISLayer } from './layers/base/ArcGISLayer';
 import { Feature } from 'ol';
@@ -64,61 +63,39 @@ export class MapController {
     });
   }
 
+  private baseMaps: LayerGroup | null = null;
+  private overlayMaps: LayerGroup | null = null;
+
   public init(): void {
-    const baseMaps = new LayerGroup({
-      title: 'Base maps',
-      fold: 'close',
+    this.baseMaps = new LayerGroup({
       layers: [createArcGISLayer(), createOSMLayer()],
-    } as BaseLayerOptions);
+    });
 
     const layerController = useLayerController();
-    // layerController.initDjibouti();
 
-    const overlayMaps = new LayerGroup({
-      title: 'Overlays',
-      fold: 'open',
+    this.overlayMaps = new LayerGroup({
       layers: [
         new LayerGroup({
-          title: 'Environmental Clusters',
-          fold: 'close',
-          active: false,
           layers: [],
-        } as BaseLayerOptions),
+        }),
         new LayerGroup({
-          title: 'Reef',
-          fold: 'open',
-          
           layers: [createDjiboutiGeomorphicLayer(), createDjiboutiBenthicLayer(), createDjiboutiBoundaryLayer(), createDjiboutiReefExtentLayer()],
-          // layers: [layerController.getGeomorphicLayer(), layerController.getBenthicLayer()]
-        } as BaseLayerOptions),
+        }),
         new LayerGroup({
-          title: 'Environmental Layers',
-          fold: 'open',
-          // NOAA Layers Geotiff
           layers: [
             createCHL_monthly_mean_1997_2024_MeanLayer(),
           ],
-        } as BaseLayerOptions),
+        }),
         new LayerGroup({
-          title: 'Sampling sites',
-          fold: 'close',
           layers: [],
-        } as BaseLayerOptions),
+        }),
         layerController.getCountryLayer(),
         layerController.getExpeditionLayer(),
       ],
-    } as BaseLayerOptions);
-
-    this.map.addLayer(baseMaps);
-    this.map.addLayer(overlayMaps);
-
-    const layerSwitcher = new LayerSwitcher({
-      reverse: true,
-      groupSelectStyle: 'group',
-      startActive: true,
-      tipLabel: 'Layers',
     });
-    this.map.addControl(layerSwitcher);
+
+    this.map.addLayer(this.baseMaps);
+    this.map.addLayer(this.overlayMaps);
 
     // Retrieve the store instance
     const mapStore = useMapStore();
@@ -154,6 +131,36 @@ export class MapController {
 
     // Store cleanup callback
     // this.cleanupCallbacks.push(cleanup);
+  }
+
+  // Add new layer management methods
+  public setBaseMapVisible(layerIndex: number): void {
+    if (!this.baseMaps) return;
+    const layers = this.baseMaps.getLayers();
+    layers.forEach((layer, index) => {
+      layer.setVisible(index === layerIndex);
+    });
+  }
+
+  public getBaseMaps() {
+    return this.baseMaps?.getLayers().getArray() || [];
+  }
+
+  public getOverlayMaps() {
+    return this.overlayMaps?.getLayers().getArray() || [];
+  }
+
+  public setLayerVisibility(groupIndex: number, layerIndex: number, visible: boolean): void {
+    if (!this.overlayMaps) return;
+    const groups = this.overlayMaps.getLayers();
+    const group = groups.item(groupIndex);
+    if (group instanceof LayerGroup) {
+      const layers = group.getLayers();
+      const layer = layers.item(layerIndex);
+      if (layer) {
+        layer.setVisible(visible);
+      }
+    }
   }
 
   public zoomToCountry(): void {
