@@ -14,7 +14,7 @@ import { useMapStore } from '@/stores/mapStore';
 import { Feature } from 'ol';
 import { Geometry } from 'ol/geom';
 import VectorTileLayer from 'ol/layer/VectorTile';
-import { createPMTilesSource as createMarineProtectedAreaSource } from '@/maps/sources/DjiboutiMarineProtectedAreaSource';
+import { createPMTilesSource  as createDjiboutiMarineProtectedAreaSource } from '@/maps/sources/DjiboutiMarineProtectedAreaSource';
 
 const LayerTitle = 'Geomorphic';
 
@@ -80,13 +80,13 @@ export const createDjiboutiBenthicLayer = () => {
   return layer;
 };
 
-export const createDjiboutiMarineProtectedAreaLayer = () =>
+export const createDjiboutiMarineProtectedAreaLayer = () => 
   new VectorLayer({
     declutter: true,
     _pmtiles: true,
-    source: createMarineProtectedAreaSource(),
-    title: 'Marine Protected Area',
-    visible: false,
+    source: createDjiboutiMarineProtectedAreaSource(),
+    title: 'Protected Area',
+    visible: true,
     base: false,
     style: marineProtectedAreaStyle,
   } as BaseLayerOptions);

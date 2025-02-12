@@ -123,5 +123,7 @@ export class LayerController {
     if (this.benthicLayer) {
       this.benthicLayer.changed();
     }
+    // TODO: add all the other layers
+    
   }
 }

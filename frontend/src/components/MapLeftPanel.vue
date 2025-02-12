@@ -170,7 +170,7 @@ const getLayerLegend = (layer: Layer) => {
       return reefExtentColorMap;
     case 'Boundary':
       return boundaryColorMap;
-    case 'Marine Protected Areas':
+    case 'Protected Area':
       return marineProtectedAreaColorMap;
     default:
       return undefined;
