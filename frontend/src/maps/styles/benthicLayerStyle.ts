@@ -1,6 +1,7 @@
 import { Style, Fill, Stroke } from 'ol/style';
 import { Feature } from 'ol';
 import { Geometry } from 'ol/geom';
+import { useMapStore } from '@/stores/mapStore';
 
 export const classColorMap: { [key: string]: string } = {
   'Sand': 'rgb(255, 244, 183)',
@@ -12,10 +13,18 @@ export const classColorMap: { [key: string]: string } = {
 };
 
 export const benthicStyle = (feature: Feature<Geometry>) => {
+  const mapStore = useMapStore();
+  const featureClass = feature.get('class');
+  
+  // Hide feature if its class is not visible
+  if (!mapStore.visibleClasses[featureClass]) {
+    return new Style({});  // Empty style = hidden feature
+  }
+
   return new Style({
     fill: new Fill({
-      color: feature.get('class')
-        ? (classColorMap[feature.get('class')] as string)
+      color: featureClass
+        ? (classColorMap[featureClass] as string)
         : 'rgba(128, 128, 128, 0.5)',
     }),
     stroke: new Stroke({

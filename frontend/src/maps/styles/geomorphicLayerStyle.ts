@@ -1,4 +1,7 @@
 import { Style, Fill, Stroke } from 'ol/style';
+import { useMapStore } from '@/stores/mapStore';
+import { Feature } from 'ol';
+import { Geometry } from 'ol/geom';
 
 export const classColorMap: { [key: string]: string } = {
   'Reef Slope': 'rgb(40, 132, 113)',
@@ -15,13 +18,19 @@ export const classColorMap: { [key: string]: string } = {
   'Deep Lagoon': 'rgb(44, 162, 249)',
 };
 
-export const geoMorphicStyle = (feature: any) => {
-  // Debug: log feature properties
+export const geoMorphicStyle = (feature: Feature<Geometry>) => {
+  const mapStore = useMapStore();
+  const featureClass = feature.get('class') as string;
   
+  // Hide feature if its class is not visible
+  if (!mapStore.visibleClasses[featureClass]) {
+    return new Style({});  // Empty style = hidden feature
+  }
+
   return new Style({
     fill: new Fill({
-      color: feature.get('class')
-        ? (classColorMap[feature.get('class')] as string)
+      color: featureClass
+        ? (classColorMap[featureClass] as string)
         : 'rgba(128, 128, 128, 0.5)',
     }),
     stroke: new Stroke({

@@ -93,6 +93,7 @@ import { useLayerManager } from '@/maps/composables/useLayerManager';
 import MapLegend from './MapLegend.vue';
 import { classColorMap as geomorphicColorMap } from '@/maps/styles/geomorphicLayerStyle';
 import { classColorMap as benthicColorMap } from '@/maps/styles/benthicLayerStyle';
+import { useMapStore } from '@/stores/mapStore';
 
 interface Layer {
   title: string;
@@ -107,9 +108,11 @@ const {
   baseMaps,
   overlayGroups,
   setBaseMapVisible,
-  toggleOverlayLayer,
+  toggleOverlayLayer: originalToggleOverlayLayer,
   setOverlayLayerRadio
 } = useLayerManager();
+
+const mapStore = useMapStore();
 
 const getGroupIcon = (title: string) => {
   const icons: Record<string, string> = {
@@ -134,6 +137,17 @@ const getLayerLegend = (layers: Layer[]) => {
     default:
       return undefined;
   }
+};
+
+const toggleOverlayLayer = (groupIndex: number, layerIndex: number, val: boolean) => {
+  const layer = overlayGroups.value[groupIndex].layers[layerIndex];
+  
+  // Set visibility for all classes when toggling Geomorphic or Benthic layers
+  if (layer.title === 'Geomorphic' || layer.title === 'Benthic') {
+    mapStore.setAllClassesVisibility(layer.title, val);
+  }
+  
+  originalToggleOverlayLayer(groupIndex, layerIndex, val);
 };
 </script>
 

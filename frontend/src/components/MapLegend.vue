@@ -2,11 +2,21 @@
   <div class="legend" :class="{ 'legend-absolute': isAbsolute }">
     <ol v-if="classColorMap">
       <li v-for="(color, className) in classColorMap" :key="className">
-        <span
-          class="legend-color"
-          :style="{ 'background-color': color }"
-        ></span>
-        {{ className }}
+        <q-checkbox
+          v-model="visibleClasses[className.toString()]"
+          @update:model-value="() => toggleClassVisibility(className.toString())"
+          dense
+        >
+          <template v-slot:default>
+            <span class="legend-item">
+              <span
+                class="legend-color"
+                :style="{ 'background-color': color }"
+              ></span>
+              {{ className }}
+            </span>
+          </template>
+        </q-checkbox>
       </li>
     </ol>
     <ol v-else>
@@ -22,7 +32,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineProps } from 'vue';
+import { computed, defineProps, ref, watch, onMounted } from 'vue';
+import { useMapStore } from '@/stores/mapStore';
 
 interface ClassColorMap {
   [key: string]: string;
@@ -34,6 +45,33 @@ const props = defineProps<{
   classColorMap?: ClassColorMap;
   isAbsolute?: boolean;
 }>();
+
+const mapStore = useMapStore();
+const visibleClasses = ref<{ [key: string]: boolean }>({});
+
+// Initialize all classes as visible
+onMounted(() => {
+  if (props.classColorMap) {
+    Object.keys(props.classColorMap).forEach(className => {
+      visibleClasses.value[className] = true;
+    });
+  }
+});
+
+// Watch for changes in classColorMap to initialize new classes
+watch(() => props.classColorMap, (newClassColorMap) => {
+  if (newClassColorMap) {
+    Object.keys(newClassColorMap).forEach(className => {
+      if (visibleClasses.value[className] === undefined) {
+        visibleClasses.value[className] = true;
+      }
+    });
+  }
+}, { immediate: true });
+
+const toggleClassVisibility = (className: string) => {
+  mapStore.setClassVisibility(className.toString(), visibleClasses.value[className.toString()]);
+};
 
 const legendColor = computed(() =>
   props.selectedCountry || props.selectedExpedition ? 'blue' : 'yellow'
@@ -92,5 +130,11 @@ const legendText = computed(() =>
   margin-right: 8px;
   border-radius: 3px;
   border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin-left: 8px;
 }
 </style>
