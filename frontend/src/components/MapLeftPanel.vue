@@ -42,6 +42,7 @@
         group="overlays"
         :icon="getGroupIcon(group.title)"
         :label="group.title"
+        default-open
       >
         <q-list padding>
           <q-item v-for="(layer, layerIndex) in group.layers" :key="layer.title">

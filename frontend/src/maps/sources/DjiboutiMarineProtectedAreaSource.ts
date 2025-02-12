@@ -45,9 +45,3 @@ export const createPMTilesSource = () => (new VectorSource({
       featureProjection: 'EPSG:3857',
     }),
   }));
-
-// pmtiles is too big to be used in the frontend 33k vs 1.5k of the geojson above
-// new PMTilesVectorSource({
-//   url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/processed_data/djibouti-20250115143859/boundary/boundary.pmtiles',
-//   attributions: 'Your Attribution Here',
-// });

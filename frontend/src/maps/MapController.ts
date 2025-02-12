@@ -30,6 +30,7 @@ import { transformExtent } from 'ol/proj';
 import {
   createDjiboutiGeomorphicLayer,
   createDjiboutiBenthicLayer,
+  createDjiboutiMarineProtectedAreaLayer,
   createDjiboutiBoundaryLayer,
   createDjiboutiReefExtentLayer
 } from '@/maps/layers/overlay/ReefLayers/DjiboutiLayer';
@@ -93,8 +94,14 @@ export class MapController {
         } as CustomBaseLayerOptions),
         new LayerGroup({
           title: 'Reef Layers',
-          inputType: 'radio',
-          layers: [createDjiboutiGeomorphicLayer(), createDjiboutiBenthicLayer(), createDjiboutiBoundaryLayer(), createDjiboutiReefExtentLayer()],
+          inputType: 'checkbox',
+          layers: [
+            createDjiboutiReefExtentLayer(),
+            createDjiboutiGeomorphicLayer(),
+            createDjiboutiMarineProtectedAreaLayer(),
+            createDjiboutiBenthicLayer(),
+            createDjiboutiBoundaryLayer(),
+          ]
         } as CustomBaseLayerOptions),
         new LayerGroup({
           title: 'Environmental Clusters',

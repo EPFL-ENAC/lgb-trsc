@@ -11,7 +11,7 @@ const countries = {
       type: 'Feature',
       geometry: {
         type: 'Point',
-        coordinates: [42.590275, 11.825138],
+        coordinates: [43.1, 11.55],
       },
       properties: {
         type: 'country',
