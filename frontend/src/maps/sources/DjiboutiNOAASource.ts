@@ -1,30 +1,38 @@
 import GeoTIFF from 'ol/source/GeoTIFF.js';
-
+import { attributions } from '@/maps/utils/attributions';
 // ok source should be wrapped in a function
+// documentation here: https://openlayers.org/en/latest/apidoc/module-ol_source_GeoTIFF.html#~SourceInfo
 
 export const createSourceCHL_monthly_mean_1997_2024_Mean = () => {
     const url = "https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/CHL_monthly_mean_1997_2024_Mean.tif";
     const source = new GeoTIFF({
         sources: [{
             url: url,
-            attributions: 'Your Attribution Here',
+        }],
             normalize: true,
-          }],
-
-          attributions: 'Your Attribution Here',
           // Add error handling
           wrapX: true,
           transition: 0
     });
+    source.setAttributions(attributions.noaa);
     return source;
 }
 
-export const CHL_monthly_mean_1997_2024_SD = new GeoTIFF({
-    sources: [
-        {
-            url: "https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/CHL_monthly_mean_1997_2024_SD.tif"
-        }
-    ]});
+
+export const createSourceCHL_monthly_mean_1997_2024_SD = () => {
+    const url = "https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/CHL_monthly_mean_1997_2024_SD.tif";
+    const source = new GeoTIFF({
+        sources: [{
+            url: url,
+        }],
+            normalize: true,
+          // Add error handling
+          wrapX: true,
+          transition: 0
+    });
+    source.setAttributions(attributions.noaa);
+    return source;
+}
 export const DHW_annual_max_1985_2024_Mean = new GeoTIFF({
     sources: [
         {

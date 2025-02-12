@@ -65,7 +65,10 @@ export class MapController {
         new FullScreen(),
         new ZoomSlider(),
         new Zoom(),
-        new Attribution(),
+        new Attribution({
+          collapsible: false,
+          
+        }),
         new Rotate({ autoHide: false, className: 'ol-rotate' }),
       ],
     });
