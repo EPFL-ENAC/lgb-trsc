@@ -114,16 +114,4 @@ export class LayerController {
     });
   }
 
-  public updateLayerVisibility(): void {
-    // The style is now reactive through computed properties
-    // Just trigger a redraw of the layers
-    if (this.geomorphicLayer) {
-      this.geomorphicLayer.changed();
-    }
-    if (this.benthicLayer) {
-      this.benthicLayer.changed();
-    }
-    // TODO: add all the other layers
-    
-  }
 }

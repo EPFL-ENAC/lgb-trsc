@@ -155,7 +155,7 @@ export class MapController {
     });
 
     // Store cleanup callback
-    // this.cleanupCallbacks.push(cleanup);
+    this.cleanupCallbacks.push(cleanup);
   }
 
   // Add new layer management methods
@@ -267,6 +267,10 @@ export class MapController {
     this.map.setView(new View(currentView));
     this.map.getView().animate({ zoom: 3, duration: 300 });
   };
+
+  public refreshMap() {
+    this.map.renderSync();
+  }
   
 
   public zoomToExpedition = () => {

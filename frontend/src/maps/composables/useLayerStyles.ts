@@ -3,6 +3,8 @@ import { geomorphicColorMap, benthicColorMap, bathymetricColorMap, reefExtentCol
 import { Style, Fill, Stroke } from 'ol/style';
 import { Feature } from 'ol';
 import { Geometry } from 'ol/geom';
+import { map } from 'lodash';
+import { useMapController } from './useMapController';
 
 // Create a singleton state for layer styles
 const visibleClasses = ref<{ [key: string]: boolean }>({
@@ -42,7 +44,7 @@ const createCommonStyle = (colorMap: Record<string, string>, featureClass: strin
 };
 
 const createFeatureStyle = (feature: Feature<Geometry>, colorMap: Record<string, string>, dotted = false) => {
-  const featureClass = feature.get('class') as string;
+  const featureClass = feature.get('class') || feature.get('name') as string;
   if (!visibleClasses.value[featureClass]) {
     return new Style({});
   }
@@ -52,10 +54,20 @@ const createFeatureStyle = (feature: Feature<Geometry>, colorMap: Record<string,
 export function useLayerStyles() {
   const setClassVisibility = (className: string, isVisible: boolean) => {
     visibleClasses.value[className] = isVisible;
+    const mapController = useMapController();
+    mapController?.refreshMap();
   };
 
   const setAllClassesVisibility = (layerType: 'Geomorphic' | 'Benthic', isVisible: boolean) => {
-    const colorMap = layerType === 'Geomorphic' ? geomorphicColorMap : benthicColorMap;
+    const colorMap = {
+      'Geomorphic': geomorphicColorMap,
+      'Benthic': benthicColorMap,
+      'Bathymetric': bathymetricColorMap,
+      'ReefExtent': reefExtentColorMap,
+      'Boundary': boundaryColorMap,
+      'MarineProtectedArea': marineProtectedAreaColorMap
+    }[layerType] || {};
+
     Object.keys(colorMap).forEach(className => {
       visibleClasses.value[className] = isVisible;
     });
