@@ -62,7 +62,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import { useQuasar } from 'quasar';
 import { useLayerManager } from '@/maps/composables/useLayerManager';
 
@@ -90,8 +90,13 @@ const getGroupIcon = (title: string) => {
 </script>
 
 <style scoped>
-.q-drawer {
+:deep(.q-drawer--left.q-drawer--bordered.q-drawer--standard) {
   background: rgba(255, 255, 255, 0.9) !important;
+  transform: translateX(-300px) !important;
+  scroll-behavior: smooth !important;
+  top: 0px !important;
+  bottom: 0px !important;
+  width: 300px !important;
 }
 
 .q-drawer--dark {

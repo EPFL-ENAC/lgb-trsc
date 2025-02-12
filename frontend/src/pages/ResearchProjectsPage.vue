@@ -75,7 +75,7 @@ onUnmounted(() => {
 
 .map {
   width: calc(100vw - var(--drawer-width) - var(--left-drawer-width));
-  margin-left: var(--left-drawer-width);
+  // margin-left: var(--left-drawer-width);
   /* height: 100vh minus header, minus footer, minus border footer*/
   height: calc(100vh - var(--header-height) - var(--footer-height) - 1px);
 }
