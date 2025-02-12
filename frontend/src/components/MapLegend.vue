@@ -68,7 +68,7 @@ const legendText = computed(() =>
 <style scoped lang="scss">
 .legend {
   position: relative;
-  background: if(var(--q-dark), rgba(33, 33, 33, 0.8), rgba(255, 255, 255, 0.8));
+  background: inherit;
   padding: 0.5rem;
   margin: 0.5rem;
   border-radius: 8px;
@@ -99,7 +99,7 @@ const legendText = computed(() =>
       align-items: center;
       padding: 0.25rem 0;
       font-size: 0.9rem;
-      color: if(var(--q-dark), #fff, #333);
+      color: #333;
     }
   }
 }

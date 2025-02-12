@@ -42,6 +42,5 @@ export const marineProtectedAreaColorMap: { [key: string]: string } = {
 
 export const reefExtentColorMap: { [key: string]: string } = {
   "Reef": "rgb(178, 8, 76)"
-  
 };
 
