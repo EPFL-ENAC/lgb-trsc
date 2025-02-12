@@ -12,6 +12,8 @@
       height: -moz-available;
       height: fill-available;
       height: initial;
+      padding-left: 10px;
+      padding-right: 10px;
     "
   >
     <q-list padding>
@@ -47,7 +49,7 @@
         <q-list padding>
           <q-item v-for="(layer, layerIndex) in group.layers" :key="layer.title">
             <q-item-section>
-              <q-expansion-item
+                <q-expansion-item
                 v-if="layer.visible && getLayerLegend(layer)"
                 dense
                 dense-toggle
@@ -265,5 +267,15 @@ const toggleOverlayLayer = (groupIndex: number, layerIndex: number, val: boolean
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+:deep(.q-list .q-item.q-item-type.row) {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+:deep(.q-item.q-item-type) {
+  padding-left: 0;
+  padding-right: 0;
 }
 </style>
