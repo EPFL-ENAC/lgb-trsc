@@ -115,12 +115,13 @@ export class LayerController {
   }
 
   public updateLayerVisibility(): void {
-    // Force layer redraw by toggling source refresh
-    if (this.geomorphicLayer?.getSource()) {
-      this.geomorphicLayer.getSource()?.refresh();
+    // The style is now reactive through computed properties
+    // Just trigger a redraw of the layers
+    if (this.geomorphicLayer) {
+      this.geomorphicLayer.changed();
     }
-    if (this.benthicLayer?.getSource()) {
-      this.benthicLayer.getSource()?.refresh();
+    if (this.benthicLayer) {
+      this.benthicLayer.changed();
     }
   }
 }

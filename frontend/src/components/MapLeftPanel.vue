@@ -91,8 +91,7 @@ import { ref } from 'vue';
 import { useQuasar } from 'quasar';
 import { useLayerManager } from '@/maps/composables/useLayerManager';
 import MapLegend from './MapLegend.vue';
-import { classColorMap as geomorphicColorMap } from '@/maps/styles/geomorphicLayerStyle';
-import { classColorMap as benthicColorMap } from '@/maps/styles/benthicLayerStyle';
+import { geomorphicColorMap, benthicColorMap } from '@/maps/config/layerColors';
 import { useMapStore } from '@/stores/mapStore';
 
 interface Layer {

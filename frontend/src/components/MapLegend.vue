@@ -3,8 +3,8 @@
     <ol v-if="classColorMap">
       <li v-for="(color, className) in classColorMap" :key="className">
         <q-checkbox
-          v-model="visibleClasses[className.toString()]"
-          @update:model-value="() => toggleClassVisibility(className.toString())"
+          :model-value="visibleClasses[className]"
+          @update:model-value="() => toggleClassVisibility(className)"
           dense
         >
           <template v-slot:default>
@@ -47,30 +47,11 @@ const props = defineProps<{
 }>();
 
 const mapStore = useMapStore();
-const visibleClasses = ref<{ [key: string]: boolean }>({});
-
-// Initialize all classes as visible
-onMounted(() => {
-  if (props.classColorMap) {
-    Object.keys(props.classColorMap).forEach(className => {
-      visibleClasses.value[className] = true;
-    });
-  }
-});
-
-// Watch for changes in classColorMap to initialize new classes
-watch(() => props.classColorMap, (newClassColorMap) => {
-  if (newClassColorMap) {
-    Object.keys(newClassColorMap).forEach(className => {
-      if (visibleClasses.value[className] === undefined) {
-        visibleClasses.value[className] = true;
-      }
-    });
-  }
-}, { immediate: true });
+// Use the store's visibleClasses directly instead of local state
+const visibleClasses = computed(() => mapStore.visibleClasses);
 
 const toggleClassVisibility = (className: string) => {
-  mapStore.setClassVisibility(className.toString(), visibleClasses.value[className.toString()]);
+  mapStore.setClassVisibility(className, !visibleClasses.value[className]);
 };
 
 const legendColor = computed(() =>
