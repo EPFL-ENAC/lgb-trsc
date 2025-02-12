@@ -70,3 +70,24 @@ export const reefExtentColorMap = {
     Reef: 'rgb(178, 8, 76)',
   },
 };
+
+
+export const samplingSiteByYearColorMap: { [key: string]: string } = {
+  "2022": "rgb(178, 8, 76)",
+  "2023": "rgb(0, 0, 0)",
+  "2024": "rgb(30, 185, 185)",
+}
+
+export const samplingSiteByProjectColorMap: { [key: string]: string } = {
+  "3D": "rgb(178, 8, 76)",
+  "MP": "rgb(0, 0, 0)",
+  "Sym": "rgb(30, 185, 185)",
+}
+
+export const samplingSiteByHardCoralCoverColorMap: { [key: string]: string } = {
+  "0-10%": "rgb(178, 8, 76)",
+  "10-30%": "rgb(0, 0, 0)",
+  "30-50%": "rgb(30, 185, 185)",
+  "50-75%": "rgb(255, 255, 0)",
+  "75-100%": "rgb(0, 255, 0)",
+}

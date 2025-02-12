@@ -181,7 +181,6 @@ const getGroupIcon = (title: string) => {
 };
 
 const getLayerLegend = (layer: Layer) => {
-  console.log(layer);
   // Return the appropriate color map based on the layer title
   switch (layer.title) {
     case 'Geomorphic':

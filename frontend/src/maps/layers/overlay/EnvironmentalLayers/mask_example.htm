@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GeoTIFF with GeoJSON Mask</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@v8.2.0/ol.css">
+    <style>
+        .map {
+            width: 100%;
+            height: 600px;
+        }
+    </style>
+</head>
+<body>
+    <div id="map" class="map"></div>
+    <script src="https://cdn.jsdelivr.net/npm/ol@v8.2.0/dist/ol.js"></script>
+    <script>
+        // Create the map
+        const map = new ol.Map({
+            target: 'map',
+            view: new ol.View({
+                center: [0, 0], // Set your map center
+                zoom: 2
+            })
+        });
+
+        // Add a base layer (optional)
+        const baseLayer = new ol.layer.Tile({
+            source: new ol.source.OSM()
+        });
+        map.addLayer(baseLayer);
+
+        // Load your GeoTIFF
+        const geotiffLayer = new ol.layer.Image({
+            source: new ol.source.GeoTIFF({
+                sources: [{
+                    url: 'path/to/your/geotiff.tif'
+                }]
+            })
+        });
+
+        // Load your GeoJSON
+        const maskSource = new ol.source.Vector({
+            url: 'path/to/your/mask.geojson',
+            format: new ol.format.GeoJSON()
+        });
+
+        // Create a mask layer
+        const maskLayer = new ol.layer.Vector({
+            source: maskSource,
+            style: new ol.style.Style({
+                fill: new ol.style.Fill({
+                    color: 'rgba(0, 0, 0, 0)' // Transparent fill
+                }),
+                stroke: new ol.style.Stroke({
+                    color: 'rgba(0, 0, 0, 0)' // Transparent stroke
+                })
+            })
+        });
+
+        // Create a WebGL post-render function to apply the mask
+        const maskWebGLPostRender = function(gl, frameState, context) {
+            // Save WebGL state
+            const stencilTest = gl.isEnabled(gl.STENCIL_TEST);
+            const stencilFunc = gl.getParameter(gl.STENCIL_FUNC);
+            const stencilMask = gl.getParameter(gl.STENCIL_VALUE_MASK);
+            const stencilRef = gl.getParameter(gl.STENCIL_REF);
+
+            // Enable stencil test
+            gl.enable(gl.STENCIL_TEST);
+            gl.stencilFunc(gl.EQUAL, 1, 0xff);
+            gl.stencilOp(gl.KEEP, gl.KEEP, gl.KEEP);
+
+            // Clear stencil buffer
+            gl.clearStencil(0);
+            gl.clear(gl.STENCIL_BUFFER_BIT);
+
+            // Draw mask to stencil buffer
+            gl.stencilFunc(gl.ALWAYS, 1, 0xff);
+            gl.stencilOp(gl.REPLACE, gl.REPLACE, gl.REPLACE);
+            
+            // Restore WebGL state
+            if (!stencilTest) {
+                gl.disable(gl.STENCIL_TEST);
+            }
+            gl.stencilFunc(stencilFunc[0], stencilFunc[1], stencilFunc[2]);
+            gl.stencilMask(stencilMask);
+        };
+
+        // Apply the mask to the GeoTIFF layer
+        geotiffLayer.on('postrender', function(event) {
+            const context = event.context;
+            if (context instanceof WebGLRenderingContext) {
+                maskWebGLPostRender(context, event.frameState);
+            }
+        });
+
+        // Add layers to map in correct order
+        map.addLayer(geotiffLayer);
+        map.addLayer(maskLayer);
+
+        // Fit to GeoJSON extent when loaded
+        maskSource.once('change', function() {
+            if (maskSource.getState() === 'ready') {
+                map.getView().fit(maskSource.getExtent(), {
+                    padding: [50, 50, 50, 50]
+                });
+            }
+        });
+    </script>
+</body>
+</html>

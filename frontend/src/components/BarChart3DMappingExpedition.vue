@@ -74,7 +74,6 @@ export default {
 
         data.forEach((item) => {
           if (validSubstrates.includes(item.Substrate_1)) {
-            console.log(item.mean);
             seriesData[item.Substrate_1] += item.mean;
           }
         });
@@ -105,7 +104,6 @@ export default {
           formatter: function (params) {
             let result = ``;
             let param = params[params[0].dataIndex];
-            console.log(params);
             if (param === undefined) {
               return '';
             }

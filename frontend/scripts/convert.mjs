@@ -92,6 +92,7 @@ csv({ checkType: true, ignoreEmpty: true, trim: true })
           "country": obj.country,
           "country_abbr": obj.country_abbr,
           "date_iso": obj.date_iso,
+          "year": obj.date_iso.split('-')[0],
           "time": obj.time,
           "experiment": obj.experiment,
           "expe_name": obj.expe_name,

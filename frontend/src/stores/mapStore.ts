@@ -67,7 +67,6 @@ export const useMapStore = defineStore('map', () => {
       hoveredExpeditionPixel.value = null;
       return;
     }
-    console.log('Hovering over:', properties);
     hoveredExpedition.value = properties;
     hoveredExpeditionPixel.value = pixel;
   }

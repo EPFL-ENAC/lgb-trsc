@@ -599,11 +599,9 @@ function processData(data) {
 
         data.forEach((item) => {
           if (validSubstrates.includes(item.Substrate_1)) {
-            console.log(item.mean)
             seriesData[item.Substrate_1] += item.mean;
           }
         });
-        console.log(seriesData)
 
         return validSubstrates.map((substrate, index) => ({
           name: substrate,

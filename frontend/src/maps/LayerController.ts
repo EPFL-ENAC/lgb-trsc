@@ -98,8 +98,17 @@ export class LayerController {
     this.countryLayer = countryLayer;
   }
 
-  public getExpeditionLayer() {
-    return this.expeditionLayer;
+  public getExpeditionLayer(type: 'by project' | 'by year'| 'hard coral cover' = 'by project') {
+    if (type === 'by project') {
+     return createExpeditionLayer('by project');
+    }
+    if (type === 'by year') {
+      return createExpeditionLayer('by year');
+    }
+    if (type === 'hard coral cover') {
+      return createExpeditionLayer('hard coral cover');
+    }
+    // return this.expeditionLayer;
   }
   public setExpeditionLayer(expeditionLayer: VectorLayer<VectorSource>) {
     this.expeditionLayer = expeditionLayer;

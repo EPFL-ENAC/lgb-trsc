@@ -43,8 +43,8 @@ const createCommonStyle = (colorMap: Record<string, string>, featureClass: strin
   });
 };
 
-const createFeatureStyle = (feature: Feature<Geometry>, colorMap: Record<string, string>, dotted = false) => {
-  const featureClass = feature.get('class') || feature.get('name') as string;
+export const createFeatureStyle = (feature: Feature<Geometry>, colorMap: Record<string, string>, dotted = false, featureName = 'class') => {
+  const featureClass = feature.get(featureName) || feature.get('name') as string;
   if (!visibleClasses.value[featureClass]) {
     return new Style({});
   }

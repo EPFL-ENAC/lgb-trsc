@@ -185,10 +185,9 @@ const zoomToCountry = () => {
     currentView.zoom = defaultMinZoomCountry;
     currentView.minZoom = defaultMinZoomCountry;
     currentView.center = getCenter(extent);
-    console.log(extent);
     // make the following extent bigger to show the whole country
     // Add a buffer of 2 degrees around the extent
-    const buffer = 2;
+    // const buffer = 2;
     // currentView.extent = [
     //   extent[0] - buffer,
     //   extent[1] - buffer,
