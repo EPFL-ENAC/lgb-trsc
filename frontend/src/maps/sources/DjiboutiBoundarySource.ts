@@ -8,7 +8,8 @@ const geoFeatures = {
     {
       "type": "Feature",
       "properties": {
-        "name": "boundary"
+        "name": "boundary",
+        "class": "boundary",
       },
       "geometry": {
         "type": "MultiPolygon",

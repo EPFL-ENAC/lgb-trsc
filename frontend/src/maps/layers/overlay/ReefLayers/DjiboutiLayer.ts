@@ -1,9 +1,9 @@
 import { BaseLayerOptions } from 'ol-layerswitcher';
 import { geoMorphicStyle } from '@/maps/styles/geomorphicLayerStyle';
 import { benthicStyle  } from '@/maps/styles/benthicLayerStyle';
-import { reefExtentLayerStyle } from '@/maps/styles/reefExtentLayerStyle';
-import { boundaryLayerStyle } from '@/maps/styles/boundaryLayerStyle';
-import { marineProtectedAreaLayerStyle } from '@/maps/styles/marineProtectedAreaLayerStyle';
+import { reefExtentStyle } from '@/maps/styles/reefExtentLayerStyle';
+import { boundaryStyle } from '@/maps/styles/boundaryLayerStyle';
+import { marineProtectedAreaStyle } from '@/maps/styles/marineProtectedAreaLayerStyle';
 import VectorLayer from 'ol/layer/Vector';
 import { computed, watch } from 'vue';
 import { createPMTilesSource as createGeomorphicSource } from '@/maps/sources/DjiboutiGeomorphicSource';
@@ -88,7 +88,7 @@ export const createDjiboutiMarineProtectedAreaLayer = () =>
     title: 'Marine Protected Area',
     visible: false,
     base: false,
-    style: marineProtectedAreaLayerStyle,
+    style: marineProtectedAreaStyle,
   } as BaseLayerOptions);
 
 export const createDjiboutiBoundaryLayer = () =>
@@ -99,7 +99,7 @@ export const createDjiboutiBoundaryLayer = () =>
     title: 'Boundary',
     visible: false,
     base: false,
-    style: boundaryLayerStyle,
+    style: boundaryStyle,
   } as BaseLayerOptions);
 
 export const createDjiboutiReefExtentLayer = () =>
@@ -110,6 +110,6 @@ export const createDjiboutiReefExtentLayer = () =>
     title: 'Reef Extent',
     visible: false,
     base: false,
-    style: reefExtentLayerStyle,
+    style: reefExtentStyle,
   } as BaseLayerOptions);
 

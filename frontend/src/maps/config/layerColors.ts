@@ -21,3 +21,27 @@ export const benthicColorMap: { [key: string]: string } = {
   'Rubble': 'rgb(200, 200, 200)',
   'Algae': 'rgb(0, 168, 132)',
 };
+
+export const bathymetricColorMap: { [key: string]: string } = {
+  '0-10m': 'rgb(0, 0, 255)',
+  '10-20m': 'rgb(0, 255, 255)',
+  '20-30m': 'rgb(0, 255, 0)',
+  '30-40m': 'rgb(255, 255, 0)',
+  '40-50m': 'rgb(255, 0, 0)',
+};
+
+
+export const boundaryColorMap: { [key: string]: string } = {
+  'boundary': 'rgb(125,201,201, 0.5)',
+};
+
+export const marineProtectedAreaColorMap: { [key: string]: string } = {
+  'Protected Area': 'rgb(125,201,201, 0.5)',
+};
+
+
+export const reefExtentColorMap: { [key: string]: string } = {
+  "Reef": "rgb(178, 8, 76)"
+  
+};
+

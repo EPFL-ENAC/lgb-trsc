@@ -72,7 +72,7 @@
                       </template>
                     </div>
                     <div class="layer-title">{{ layer.title }}</div>
-                    <div class="show-legend">Show legend</div>
+                    <div v-if="getLayerLegend(layer)" class="show-legend">Show legend</div>
                   </div>
                 </template>
                 <q-card class="legend-card">
@@ -124,7 +124,7 @@ import { ref } from 'vue';
 import { useQuasar } from 'quasar';
 import { useLayerManager } from '@/maps/composables/useLayerManager';
 import MapLegend from './MapLegend.vue';
-import { geomorphicColorMap, benthicColorMap } from '@/maps/config/layerColors';
+import { geomorphicColorMap, benthicColorMap, reefExtentColorMap, boundaryColorMap, marineProtectedAreaColorMap } from '@/maps/config/layerColors';
 import { useMapStore } from '@/stores/mapStore';
 
 interface Layer {
@@ -164,6 +164,14 @@ const getLayerLegend = (layer: Layer) => {
       return geomorphicColorMap;
     case 'Benthic':
       return benthicColorMap;
+    case 'Environmental':
+      return undefined;
+    case 'Reef Extent':
+      return reefExtentColorMap;
+    case 'Boundary':
+      return boundaryColorMap;
+    case 'Marine Protected Areas':
+      return marineProtectedAreaColorMap;
     default:
       return undefined;
   }
@@ -246,6 +254,10 @@ const toggleOverlayLayer = (groupIndex: number, layerIndex: number, val: boolean
   
   .checkbox-wrapper {
     pointer-events: all;
+  }
+
+  :deep(.q-expansion-item__toggle-icon) {
+    display: none;
   }
 }
 
