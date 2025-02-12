@@ -1,3 +1,0 @@
-### Outlet Pipes (clear waters)
-
-...
