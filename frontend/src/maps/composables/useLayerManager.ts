@@ -2,6 +2,7 @@ import { ref, onMounted } from 'vue';
 import { useMapStore } from '@/stores/mapStore';
 import BaseLayer from 'ol/layer/Base';
 import LayerGroup from 'ol/layer/Group';
+import { useMapController } from './useMapController';
 
 export interface LayerInfo {
   title: string;
@@ -20,7 +21,7 @@ export function useLayerManager() {
   const overlayGroups = ref<LayerGroupInfo[]>([]);
 
   const initializeLayers = () => {
-    const controller = mapStore.mapController;
+    const controller = useMapController();
     if (!controller) return;
 
     // Initialize base maps
@@ -47,7 +48,7 @@ export function useLayerManager() {
   };
 
   const setBaseMapVisible = (layerTitle: string) => {
-    const controller = mapStore.mapController;
+    const controller = useMapController();
     if (!controller) return;
 
     baseMaps.value.forEach((layerInfo, index) => {
@@ -58,7 +59,7 @@ export function useLayerManager() {
   };
 
   const toggleOverlayLayer = (groupIndex: number, layerIndex: number, visible: boolean) => {
-    const controller = mapStore.mapController;
+    const controller = useMapController();
     if (!controller) return;
 
     if (overlayGroups.value[groupIndex]?.layers[layerIndex]) {
