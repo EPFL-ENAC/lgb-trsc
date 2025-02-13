@@ -17,6 +17,11 @@
         <!-- <p>{{ person.description }}</p> -->
       </div>
     </div>
+    <q-img class="fade-in-from-bottom" fit="cover" src="/background-about.jpg" alt="bg" style="height: 100%; width: 100%;">
+      <div class="absolute-bottom-right text-subtitle2">
+        Guilhem Banc-Prandi | TRSC
+      </div>
+    </q-img>
   </div>
 </template>
 
@@ -60,6 +65,55 @@ const people = ref([
 </script>
 
 <style scoped>
+.about-page .card .q-img {
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+/* This targets the inner container of q-img */
+.about-page .card :deep(.q-img__content) {
+  border-radius: 50%;
+}
+
+/* This targets the actual image inside q-img */
+.about-page .card :deep(.q-img__image) {
+  border-radius: 50%;
+}
+
+.about-page .q-img.fade-in-from-bottom,
+.about-page .q-img.fade-in-from-bottom :deep(.q-img__content),
+.about-page .q-img.fade-in-from-bottom :deep(.q-img__image) {
+  border-radius: 0 !important;
+  overflow: hidden;
+}
+
+.q-img.fade-in-from-bottom {
+  border-radius: 0 !important;
+  overflow: hidden;
+}
+.fade-in-from-bottom {
+  position: relative;
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 20px;
+    background: linear-gradient(to bottom, white, transparent);
+    z-index: 1;
+  }
+  /* &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 150px;
+    background: linear-gradient(to top, white, transparent);
+    z-index: 1;
+  } */
+}
 .trsc-link {
   color: red;
   font-weight: bold;
@@ -74,10 +128,17 @@ const people = ref([
   }
 }
 .about-page {
+  /* display: grid;
+  grid-auto-rows: auto 1fr 200px;
+  gap: 1rem; */
+  /* justify-content: center; */
+
   display: grid;
-  grid-auto-rows: auto 1fr;
-  gap: 1rem;
-  justify-content: center;
+    grid-auto-rows: auto max-content minmax(200px, 300px);
+    gap: 1rem;
+    /* justify-content: center; */
+    height: 100%;
+    align-items: center;
 }
 
 .top-element {
@@ -135,18 +196,18 @@ const people = ref([
   align-items: center;
 }
 
-.q-img {
+.card .q-img {
   border-radius: 50%;
   overflow: hidden;
 }
 
 /* This targets the inner container of q-img */
-:deep(.q-img__content) {
+.card :deep(.q-img__content) {
   border-radius: 50%;
 }
 
 /* This targets the actual image inside q-img */
-:deep(.q-img__image) {
+.card :deep(.q-img__image) {
   border-radius: 50%;
 }
 </style>
