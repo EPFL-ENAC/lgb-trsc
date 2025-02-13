@@ -5,7 +5,12 @@
     <div class="logo-row">
       <div class="logo-item" v-for="community in communities" :key="community.name" >
         <a :href="community.url" target="_blank" class="logo-item-link">
-        <q-img :src="community.logo" :alt="community.name" fit="contain" style="min-height: 150px;">
+        <q-img
+          :src="community.logo"
+          :alt="community.name"
+          fit="contain"
+          style="height: 150px; width: 150px;"
+        >
         </q-img>
         <p>{{ community.name }}</p>
       </a>
@@ -100,14 +105,13 @@ const communities = [
 .logo-item-link {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
   align-items: center;
-  justify-content: end;
   text-decoration: none;
   color: inherit;
 
   p {
-    margin: 0;
+    margin-top: 1rem;
+    text-align: center;
     transition: all 0.2s ease;
   }
 
@@ -121,20 +125,18 @@ const communities = [
 }
 
 .logo-row {
-
-  display:grid;
-  grid-auto-flow: column;
-  height: 300px;
+  display: grid;
+  grid-auto-flow: row;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 3rem;
   width: 100%;
   justify-content: space-around;
-  align-items: center;
   margin-top: 3rem;
+  padding: 0 2rem;
 }
 
-.logo-row a {
-  width: 150px;
-  height: 150px;
+.logo-item {
   display: flex;
-  align-items: end;
+  justify-content: center;
 }
 </style>
