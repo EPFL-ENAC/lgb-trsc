@@ -31,21 +31,21 @@ export function addMapClickHandler(
     const pixel = map.getEventPixel(evt.originalEvent);
     const target = evt.originalEvent.target
     // const hit = map.hasFeatureAtPixel(pixel);
-
+    const validExpeditons = ['Expedition', 'by year', 'by project', 'hard coral cover'];
     const feature: FeatureLike | undefined = target.closest('.ol-control')
           ? undefined
           : map.getFeaturesAtPixel(pixel, {
             hitTolerance: 10,
             layerFilter: (layer) => {
               // Only check specific layers you're interested in
-              return layer.get('title') === 'Countries' || layer.get('title') === 'Expedition';
+              return layer.get('title') === 'Countries' || validExpeditons.includes(layer.get('title'));
             }
           })[0];
     const properties = feature?.getProperties();
     if (properties?.type === 'country') {
       // Update the store via callback
       onCountryClick(properties, options);
-    } else if (properties?.type === 'Expedition') {
+    } else if (validExpeditons.includes(properties?.type)) {
       // Update the store via callback
       onExpeditionClick(properties, options);
     }

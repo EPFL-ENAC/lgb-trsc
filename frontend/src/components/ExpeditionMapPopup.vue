@@ -15,6 +15,8 @@
       {{ formatCoordinate(selectedExpedition.longitude_end, 'E') }}
     </p>
     <p>{{ selectedExpedition.date_iso }}</p>
+    <p>experiment: {{ selectedExpedition.experiment }}</p>
+    <p>year: {{ selectedExpedition.year }}</p>
     <div v-if="selectedExpedition.experiment === '3D'">
       <div v-if="sampleSet.length > 0">
         <BarChart3DMappingExpedition

@@ -5,17 +5,18 @@ import crypto from 'crypto';
 //csv file name
 const djibouti_2023_3d = "dji_3d_mapping_all_results";
 
+let dji3d = [];
 
 csv({ checkType: true, ignoreEmpty: true, trim: true })
   .fromFile(`./src/assets/data/${djibouti_2023_3d}.csv`)
   .then((jsonObj) => {
     const path = `./src/assets/data/${djibouti_2023_3d}.json`;
-    const result = [];
+    dji3d = [];
 
 
     jsonObj.forEach((obj) => {
 
-      result.push({
+      dji3d.push({
         "id": obj.ID,
         "Site": obj.Site,
         "Site_name": obj.Site_name,
@@ -46,7 +47,7 @@ csv({ checkType: true, ignoreEmpty: true, trim: true })
         mean: obj.mean,
       })
     });
-    writeFileSync(path, JSON.stringify(result));
+    writeFileSync(path, JSON.stringify(dji3d));
     console.log(`data.csv converted successfully to JSON in ${path}`)
   });
 
@@ -83,6 +84,10 @@ csv({ checkType: true, ignoreEmpty: true, trim: true })
       const objectString = JSON.stringify(obj);
       const hash = crypto.createHash('sha256').update(objectString).digest('hex');
 
+      // generate hard coral cover from dji3d
+      // const dji3dId = dji3d.find(d => d.Site_name === obj.sampling_site_name);
+      // const hardCoralCover = dji3d.find(d => d.Site_name === obj.sampling_site_name);
+
       result.features.push({
         "id": hash,
         "event_id": obj.event_id,
@@ -93,8 +98,9 @@ csv({ checkType: true, ignoreEmpty: true, trim: true })
           "country_abbr": obj.country_abbr,
           "date_iso": obj.date_iso,
           "year": obj.date_iso.split('-')[0],
-          "time": obj.time,
           "experiment": obj.experiment,
+          "hard coral cover": "0-10%",
+          "time": obj.time,
           "expe_name": obj.expe_name,
           "region_name": obj.region_name,
           "reef_area": obj.reef_area,
