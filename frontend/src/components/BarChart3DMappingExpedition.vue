@@ -8,6 +8,8 @@ import 'echarts/lib/chart/bar'; // Import bar chart
 import 'echarts/lib/component/tooltip'; // Import tooltip component
 import 'echarts/lib/component/title'; // Import title component
 import 'echarts/lib/component/legend'; // Import legend component
+import { d3MappingColorSubstrate1 as colorPalette } from '@/maps/config/layerColors';
+import { validSubstrates } from '@/maps/config/substrateOrder';
 
 export default {
   name: 'BarChart3DMappingExpedition',
@@ -38,33 +40,8 @@ export default {
       const option = this.getChartOption(this.rawData);
       chart.setOption(option);
     },
-    getChartOption(data) {
-      const validSubstrates = [
-        'sand',
-        'rubble',
-        'unknown_hard_substrate',
-        'algae_covered_substrate',
-        'coral_bleached',
-        'coral_dead',
-        'coral_alive',
-        'other_invertebrates',
-        'anemone',
-        'other_animal',
-        'trash',
-      ];
-      const colorPalette = [
-        '#d4b483',
-        '#a39081',
-        '#828282',
-        '#5b7065',
-        '#fff1af',
-        '#8b6b61',
-        '#5c8374',
-        '#9db2bf',
-        '#526d82',
-        '#27374d',
-        '#000000',
-      ];
+    getChartOption(data) {;
+
       function processData(data) {
         const seriesData = {}; // init to 0
         // init to 0
@@ -123,22 +100,21 @@ export default {
         tooltip: localTooltip,
         legend: {
           data: validSubstrates,
-          type: 'scroll',
           orient: 'horizontal',
           bottom: 10
         },
         grid: {
           left: '4%',
           right: '4%',
-          bottom: '10%',
+          bottom: '130px',
           containLabel: true
         },
         xAxis: {
           type: 'category',
           data: validSubstrates,
-          axisLabel: { rotate: 30,
-            fontSize: 10,
-            color: '#000', },
+            axisLabel: { 
+            show: false
+            },
           name: 'substrate',
         },
         yAxis: {

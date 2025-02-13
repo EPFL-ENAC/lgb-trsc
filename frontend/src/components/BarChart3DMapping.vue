@@ -8,6 +8,8 @@ import 'echarts/lib/chart/bar'; // Import bar chart
 import 'echarts/lib/component/tooltip'; // Import tooltip component
 import 'echarts/lib/component/title'; // Import title component
 import 'echarts/lib/component/legend'; // Import legend component
+import { d3MappingColorSubstrate1 as colorPalette } from '@/maps/config/layerColors';
+import { validSubstrates } from '@/maps/config/substrateOrder';
 
 export default {
   name: 'BarChart3DMapping',
@@ -47,19 +49,6 @@ export default {
       }
       function processData(data) {
         const seriesData = {};
-        const validSubstrates = [
-          'sand',
-          'rubble',
-          'unknown_hard_substrate',
-          'algae_covered_substrate',
-          'coral_bleached',
-          'coral_dead',
-          'coral_alive',
-          'other_invertebrates',
-          'anemone',
-          'other_animal',
-          'trash'
-        ];
 
         validSubstrates.forEach((substrate) => {
           seriesData[substrate] = new Array(31).fill(0);
@@ -90,20 +79,6 @@ export default {
           data: seriesData[substrate]
         }));
       }
-
-      const colorPalette = [
-        '#d4b483',
-        '#a39081',
-        '#828282',
-        '#5b7065',
-        '#fff1af',
-        '#8b6b61',
-        '#5c8374',
-        '#9db2bf',
-        '#526d82',
-        '#27374d',
-        '#000000'
-      ];
 
       let localTooltip = {
           trigger: 'axis',

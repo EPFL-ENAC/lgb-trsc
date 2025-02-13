@@ -83,19 +83,6 @@ const countryLower = computed(() =>
   selectedExpedition.value.country.toLowerCase().replaceAll(' ', '_')
 );
 
-// const sampling_site_id = computed(() => {
-//   const country = selectedExpedition.value.country.toLowerCase().replaceAll(' ', '_');
-//   // "Maskali / Moucha" should convert to "maskali"
-//   const reef_area = selectedExpedition.value.reef_area
-//     .toLowerCase()
-//     .split('/')[0]
-//     .trim()
-//     .replaceAll(' ', '_');
-//   const site_name = selectedExpedition.value.sampling_site_name
-//     .toLowerCase()
-//     .replaceAll(' ', '_');
-//   return `${country}_${reef_area}_${site_name}`;
-// });
 
 const sampleSet = computed(() => {
   try {
