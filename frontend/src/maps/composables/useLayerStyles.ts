@@ -1,9 +1,10 @@
 import { ref, computed } from 'vue';
-import { geomorphicColorMap, benthicColorMap, bathymetricColorMap, reefExtentColorMap, boundaryColorMap, marineProtectedAreaColorMap } from '@/maps/config/layerColors';
-import { Style, Fill, Stroke } from 'ol/style';
+import { samplingSiteByYearColorMap,
+  samplingSiteByProjectColorMap,
+  samplingSiteByHardCoralCoverColorMap,geomorphicColorMap, benthicColorMap, bathymetricColorMap, reefExtentColorMap, boundaryColorMap, marineProtectedAreaColorMap } from '@/maps/config/layerColors';
+import { Style, Fill, Stroke, Circle as CircleStyle } from 'ol/style';
 import { Feature } from 'ol';
 import { Geometry } from 'ol/geom';
-import { map } from 'lodash';
 import { useMapController } from './useMapController';
 
 // Create a singleton state for layer styles
@@ -20,6 +21,10 @@ const visibleClasses = ref<{ [key: string]: boolean }>({
   ...Object.fromEntries(Object.keys(boundaryColorMap.colorMap).map(key => [key, true])),
   // Initialize Marine Protected Area classes
   ...Object.fromEntries(Object.keys(marineProtectedAreaColorMap.colorMap).map(key => [key, true])),
+  // Initialize Sampling Site classes
+  ...Object.fromEntries(Object.keys(samplingSiteByYearColorMap.colorMap).map(key => [key, true])),
+  ...Object.fromEntries(Object.keys(samplingSiteByProjectColorMap.colorMap).map(key => [key, true])),
+  ...Object.fromEntries(Object.keys(samplingSiteByHardCoralCoverColorMap.colorMap).map(key => [key, true])),
 });
 
 // Add this helper function at the top level of the file
@@ -27,6 +32,16 @@ const createCommonStyle = (colorMap: Record<string, string>, featureClass: strin
   return new Style({
     fill: new Fill({
       color: colorMap[featureClass] || 'rgba(128, 128, 128, 0.5)',
+    }),
+    image: new CircleStyle({
+      radius: 5,
+      fill: new Fill({
+        color: colorMap[featureClass] || 'blue',
+      }),
+      stroke: new Stroke({
+        color: colorMap[featureClass] || 'white',
+        width: 1,
+      }),
     }),
     stroke: new Stroke(
       dottedStroke 

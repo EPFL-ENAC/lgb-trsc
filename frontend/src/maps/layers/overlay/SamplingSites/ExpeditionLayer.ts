@@ -1,11 +1,12 @@
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import { BaseLayerOptions } from 'ol-layerswitcher';
-// import { expeditionStyle } from '@/maps/styles/layerStyles';
+import { expeditionStyle } from '@/maps/styles/layerStyles';
 import { createFeatureStyle } from '@/maps/composables/useLayerStyles';
-import GeoJSON from 'ol/format/GeoJSON';
+// import GeoJSON from 'ol/format/GeoJSON';
+
 // const LayerTitle = 'Expedition';
-import DjiboutiExpeditions from '@/assets/data/Expeditions.json';
+// import DjiboutiExpeditions from '@/assets/data/Expeditions.json';
 import { 
   samplingSiteByYearColorMap,
   samplingSiteByProjectColorMap,
@@ -27,9 +28,9 @@ import Geometry from 'ol/geom/Geometry';
 export type ExpeditionStyleType = 'by project' | 'by year' | 'hard coral cover';
 
 export const expeditionStyleTypeMap: Record<ExpeditionStyleType,Record<string, string>>  = {
-  'by project': samplingSiteByYearColorMap,
-  'by year': samplingSiteByProjectColorMap,
-  'hard coral cover': samplingSiteByHardCoralCoverColorMap,
+  'by project': samplingSiteByProjectColorMap.colorMap,
+  'by year':  samplingSiteByYearColorMap.colorMap,
+  'hard coral cover': samplingSiteByHardCoralCoverColorMap.colorMap,
 }
 
 export const propertyFeatureNameMap: Record<ExpeditionStyleType, string> = {
@@ -38,16 +39,18 @@ export const propertyFeatureNameMap: Record<ExpeditionStyleType, string> = {
   'hard coral cover': 'hard_coral_cover',
 }
 
+const expeditionSource = new VectorSource({});
+
 export const createExpeditionLayer = (expeditionType: 'by project' | 'by year'| 'hard coral cover' = 'by project') =>
   {
-    const source = new VectorSource({});
+    // const source = new VectorSource({});
     const createReefExtentStyle = (feature: Feature<Geometry>) => createFeatureStyle(feature, expeditionStyleTypeMap[expeditionType], false, propertyFeatureNameMap[expeditionType]);
     return  new VectorLayer({
-      source,
+      source: expeditionSource,
       title: `${expeditionType}`,
       visible: true,
-      style: createReefExtentStyle
-      ,
+      style: createReefExtentStyle,
+      // style: expeditionStyle,
     } as BaseLayerOptions);
   }
 

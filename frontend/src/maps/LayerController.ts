@@ -33,7 +33,7 @@ export class LayerController {
 
   constructor() {
     this.countryLayer = createCountryLayer();
-    this.expeditionLayer = createExpeditionLayer();
+    this.expeditionLayer = createExpeditionLayer('unknown');
     this.expeditionProjectLayer = createExpeditionLayer('by project');
     this.expeditionYearLayer = createExpeditionLayer('by year');
     this.expeditionHardCoralCoverLayer = createExpeditionLayer('hard coral cover');
@@ -58,17 +58,17 @@ export class LayerController {
     this.expeditionHardCoralCoverLayer.getSource()?.clear();
 
     if (expeditionData) {
-      const expeditionFeatures = new GeoJSON().readFeatures(expeditionData, {
+      // Create features for each layer separately
+      const createFeaturesForLayer = () => new GeoJSON().readFeatures(expeditionData, {
         dataProjection: 'EPSG:4326',
         featureProjection: 'EPSG:3857'
-        // was  featureProjection: 'EPSG:4326',
       });
-      this.expeditionLayer.getSource()?.addFeatures(expeditionFeatures);
-      this.expeditionProjectLayer.getSource()?.addFeatures(expeditionFeatures);
-      this.expeditionYearLayer.getSource()?.addFeatures(expeditionFeatures);
-      this.expeditionHardCoralCoverLayer.getSource()?.addFeatures(expeditionFeatures);
-      // we shoudld probably update the map view here when we change the layer.
-      
+
+      // Add cloned features to each layer
+      this.expeditionLayer.getSource()?.addFeatures(createFeaturesForLayer());
+      this.expeditionProjectLayer.getSource()?.addFeatures(createFeaturesForLayer());
+      this.expeditionYearLayer.getSource()?.addFeatures(createFeaturesForLayer());
+      this.expeditionHardCoralCoverLayer.getSource()?.addFeatures(createFeaturesForLayer());
     }
   }
 
