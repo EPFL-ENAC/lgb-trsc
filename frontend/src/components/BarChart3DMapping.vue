@@ -1,5 +1,5 @@
 <template>
-  <div ref="chart" :style="{ width: width, height: height }"></div>
+  <div ref="chart" :style="{  width: width, height: height, ...style }"></div>
 </template>
 
 <script>
@@ -25,6 +25,10 @@ export default {
     width: {
       type: String,
       default: '100%'
+    },
+    style: {
+      type: Object,
+      default: () => ({})
     },
     tooltip: {
       type: Boolean,

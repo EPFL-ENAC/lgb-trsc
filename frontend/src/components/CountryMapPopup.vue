@@ -15,13 +15,12 @@
       v-model="showZoomedChart"
       persistent
       :maximized="false"
-      full-width
-      full-height
+        
       class="popup"
     >
-      <q-card>
+      <q-card style="width: 80vw; max-width: 1200px; height: 80vh; max-height: 800px;">
         <q-card-section class="q-pa-md row items-center justify-between">
-          <h4>3D Mapping</h4>
+          <h4 class="q-pa-sm q-ma-sm">3D Mapping</h4>
           <q-btn
             icon="close"
             class="close-btn"
@@ -34,7 +33,8 @@
 
         <BarChart3DMapping
           :rawData="country.rawData"
-          height="65vh"
+          :style="{ margin: '0 auto'}"
+          height="76%"
           width="90%"
           :tooltip="true"
         />
