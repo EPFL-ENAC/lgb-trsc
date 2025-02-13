@@ -51,16 +51,18 @@
     </q-dialog>
     <div class="images">
       <div class="card" @click="toggle3DZoomedChart">
-        <BarChart3DMapping :rawData="country.rawData" :tooltip="false" />
+        <BarChart3DMapping :rawData="country.rawData" :tooltip="false" width="90%"/>
         <p>3D Mapping</p>
       </div>
       <div class="card">
-        <img src="/eDNA.png" alt="eDNA" />
+        <!-- <img src="/eDNA.png" alt="eDNA" /> -->
         <p>eDNA</p>
+        <p><i>Coming soon</i></p>
       </div>
       <div class="card">
-        <img src="/seacape-genomics.png" alt="Seascape Genomics" />
+        <!-- <img src="/seacape-genomics.png" alt="Seascape Genomics" /> -->
         <p>Seascape Genomics</p>
+        <p><i>Coming soon</i></p>
       </div>
     </div>
     <button @click="handleGoToCountry" v-if="country.enabled">
@@ -130,7 +132,8 @@ const toggle3DZoomedChart = () => {
 
 .images {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+  grid-template-columns: auto;
+  grid-template-rows: repeat(auto-fit, minmax(50px, 1fr));
   gap: 1rem;
   width: 100%;
 }
@@ -141,8 +144,8 @@ const toggle3DZoomedChart = () => {
   align-items: stretch;
   border: 1px solid #ccc; /* Optional styling */
   overflow: hidden; /* To avoid overflow issues */
-  /* height: 80vh;
-  width: 80vw; */
+  /* height: 80vh; */
+  width: 100%;
 }
 
 .card img {
