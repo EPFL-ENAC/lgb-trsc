@@ -14,7 +14,9 @@
     <q-dialog
       v-model="showZoomedChart"
       persistent
-      :maximized="true"
+      :maximized="false"
+      full-width
+      full-height
       class="popup"
     >
       <q-card>
@@ -32,10 +34,19 @@
 
         <BarChart3DMapping
           :rawData="country.rawData"
-          height="60vh"
-          width="80vw"
+          height="65vh"
+          width="90%"
           :tooltip="true"
         />
+
+        <q-card-actions align="right">
+          <q-btn
+            label="View on Map"
+            color="white"
+            flat
+            @click="toggle3DZoomedChart"
+          />
+          </q-card-actions>
       </q-card>
     </q-dialog>
     <div class="images">
@@ -124,12 +135,14 @@ const toggle3DZoomedChart = () => {
   width: 100%;
 }
 
-.card {
+:deep(.card) {
   display: flex;
   flex-direction: column;
   align-items: stretch;
   border: 1px solid #ccc; /* Optional styling */
   overflow: hidden; /* To avoid overflow issues */
+  /* height: 80vh;
+  width: 80vw; */
 }
 
 .card img {

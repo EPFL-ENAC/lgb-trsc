@@ -29,6 +29,10 @@ export default {
     tooltip: {
       type: Boolean,
       default: true
+    },
+    substrateLevel: {
+      type: String,
+      default: 'Substrate_1'
     }
   },
   mounted() {
@@ -86,6 +90,10 @@ export default {
             type: 'shadow'
           },
           formatter: function (params) {
+            let param = params[params[0].dataIndex];
+            if (param === undefined) {
+              return '';
+            }
             let result = `ID: ${params[0].axisValue}<br/>`;
             result+= `Site Name: ${getSiteNameFromSiteId(data, params[0].axisValue)}<br/>`
             params.forEach((param) => {
