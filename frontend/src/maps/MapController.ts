@@ -37,11 +37,27 @@ import {
   createDjiboutiReefExtentLayer,
 } from '@/maps/layers/overlay/ReefLayers/DjiboutiLayer';
 import { createDjiboutiEnvironmentalClusterLayer } from '@/maps/layers/overlay/EnvironmentalClusters/DjiboutiLayer';
-import {
-  createCHL_monthly_mean_1997_2024_MeanLayer,
-  createCHL_monthly_mean_1997_2024_SD,
-} from './layers/overlay/EnvironmentalLayers/DjiboutiLayer';
+
 import { BaseLayerOptions } from 'ol-layerswitcher';
+import { createCHL_monthly_mean_1997_2024_MeanLayer, createCHL_monthly_mean_1997_2024_SD,
+
+  createDHW_annual_max_1985_2024_MeanLayer,
+createDHW_annual_max_1985_2024_SDLayer,
+createSCV_monthly_mean_1993_2021_MeanLayer,
+createSCV_monthly_mean_1993_2021_SDLayer,
+createSPM_monthly_mean_1997_2024_MeanLayer,
+createSPM_monthly_mean_1997_2024_SDLayer,
+createSST_monthly_max_1985_2024_MeanLayer,
+createSST_monthly_max_1985_2024_SDLayer,
+createSST_monthly_mean_1985_2024_MeanLayer,
+createSST_monthly_mean_1985_2024_SDLayer,
+createSST_monthly_min_1985_2024_MeanLayer,
+createSST_monthly_min_1985_2024_SDLayer,
+createSWS_monthly_mean_1993_2021_MeanLayer,
+createSWS_monthly_mean_1993_2021_SDLayer,
+ } from './layers/overlay/EnvironmentalLayers/DjiboutiLayer';
+import { BaseLayerOptions } from 'ol-layerswitcher';
+
 
 interface CustomBaseLayerOptions extends BaseLayerOptions {
   inputType?: 'base' | 'checkbox' | 'radio';
@@ -117,6 +133,20 @@ export class MapController {
           layers: [
             createCHL_monthly_mean_1997_2024_MeanLayer(),
             createCHL_monthly_mean_1997_2024_SD(),
+            createDHW_annual_max_1985_2024_MeanLayer(),
+            createDHW_annual_max_1985_2024_SDLayer(),
+            createSCV_monthly_mean_1993_2021_MeanLayer(),
+            createSCV_monthly_mean_1993_2021_SDLayer(),
+            createSPM_monthly_mean_1997_2024_MeanLayer(),
+            createSPM_monthly_mean_1997_2024_SDLayer(),
+            createSST_monthly_max_1985_2024_MeanLayer(),
+            createSST_monthly_max_1985_2024_SDLayer(),
+            createSST_monthly_mean_1985_2024_MeanLayer(),
+            createSST_monthly_mean_1985_2024_SDLayer(),
+            createSST_monthly_min_1985_2024_MeanLayer(),
+            createSST_monthly_min_1985_2024_SDLayer(),
+            createSWS_monthly_mean_1993_2021_MeanLayer(),
+            createSWS_monthly_mean_1993_2021_SDLayer(),
           ],
         } as CustomBaseLayerOptions),
         new LayerGroup({

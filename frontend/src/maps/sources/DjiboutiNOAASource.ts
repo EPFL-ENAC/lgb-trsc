@@ -1,135 +1,179 @@
 import GeoTIFF from 'ol/source/GeoTIFF.js';
 import { attributions } from '@/maps/utils/attributions';
-// ok source should be wrapped in a function
-// documentation here: https://openlayers.org/en/latest/apidoc/module-ol_source_GeoTIFF.html#~SourceInfo
 
-export const createSourceCHL_monthly_mean_1997_2024_Mean = () => {
-  const url =
-    'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/processed_data/SG_MANON/ENV_RASTERS_CUT/CHL_monthly_mean_1997_2024_Mean_cog.tif';
+const createGeoTIFFSource = (url: string, attribution = "Attribution not set") => {
   const source = new GeoTIFF({
-    sources: [
-      {
-        url: url,
-      },
-    ],
-    wrapX: false,
-    normalize: false,
+    sources: [{ url }],
+    normalize: true,
+    wrapX: true,
+    transition: 0,
   });
-
-  source.setAttributions(attributions.noaa);
+  source.setAttributions(attribution);
   return source;
 };
 
-export const createSourceCHL_monthly_mean_1997_2024_SD = () => {
-  const url =
-    'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/CHL_monthly_mean_1997_2024_SD.tif';
-  const source = new GeoTIFF({
-    sources: [
-      {
-        url: url,
-      },
+export const createSourceCHL_monthly_mean_1997_2024_Mean = () =>
+  createGeoTIFFSource('https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/CHL_monthly_mean_1997_2024_Mean.tif', attributions.copernicus);
+
+export const createSourceCHL_monthly_mean_1997_2024_SD = () =>
+  createGeoTIFFSource('https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/CHL_monthly_mean_1997_2024_SD.tif', attributions.copernicus);
+
+export const createSourceDHW_annual_max_1985_2024_Mean = () =>
+  createGeoTIFFSource('https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/DHW_annual_max_1985_2024_Mean.tif', attributions.noaa);
+
+export const createSourceDHW_annual_max_1985_2024_SD = () =>
+  createGeoTIFFSource('https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/DHW_annual_max_1985_2024_SD.tif', attributions.noaa);
+
+export const createSourceSCV_monthly_mean_1993_2021_Mean = () =>
+  createGeoTIFFSource('https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/SCV_monthly_mean_1993_2021_Mean.tif', attributions.copernicus);
+
+export const createSourceSCV_monthly_mean_1993_2021_SD = () =>
+  createGeoTIFFSource('https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/SCV_monthly_mean_1993_2021_SD.tif', attributions.copernicus);
+
+export const createSourceSPM_monthly_mean_1997_2024_Mean = () =>
+  createGeoTIFFSource('https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/SPM_monthly_mean_1997_2024_Mean.tif', attributions.copernicus);
+
+export const createSourceSPM_monthly_mean_1997_2024_SD = () =>
+  createGeoTIFFSource('https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/SPM_monthly_mean_1997_2024_SD.tif', attributions.copernicus);
+
+export const createSourceSST_monthly_max_1985_2024_Mean = () =>
+  createGeoTIFFSource('https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/SST_monthly_max_1985_2024_Mean.tif', attributions.copernicus);
+
+export const createSourceSST_monthly_max_1985_2024_SD = () =>
+  createGeoTIFFSource('https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/SST_monthly_max_1985_2024_SD.tif', attributions.copernicus);
+
+export const createSourceSST_monthly_mean_1985_2024_Mean = () =>
+  createGeoTIFFSource('https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/SST_monthly_mean_1985_2024_Mean.tif', attributions.copernicus);
+
+export const createSourceSST_monthly_mean_1985_2024_SD = () =>
+  createGeoTIFFSource('https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/SST_monthly_mean_1985_2024_SD.tif', attributions.copernicus);
+
+export const createSourceSST_monthly_min_1985_2024_Mean = () =>
+  createGeoTIFFSource('https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/SST_monthly_min_1985_2024_Mean.tif', attributions.copernicus);
+
+export const createSourceSST_monthly_min_1985_2024_SD = () =>
+  createGeoTIFFSource('https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/SST_monthly_min_1985_2024_SD.tif', attributions.copernicus);
+
+export const createSourceSWS_monthly_mean_1993_2021_Mean = () =>
+  createGeoTIFFSource('https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/SWS_monthly_mean_1993_2021_Mean.tif', attributions.copernicus);
+
+export const createSourceSWS_monthly_mean_1993_2021_SD = () =>
+  createGeoTIFFSource('https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/SWS_monthly_mean_1993_2021_SD.tif', attributions.copernicus);
+
+export const metadata = {
+  OCEANCOLOUR_GLO_BGC_L4_MY_009_104: {
+    title:
+      'CHL chlorophyll concentration : Mass concentration of chlorophyll a in sea water CHL [mg/m3]',
+    short_title: 'Mass concentration of chlorophyll a in sea water CHL [mg/m3]',
+    shorter_title: 'CHL [mg/m3]',
+    identifier: 'OCEANCOLOUR_GLO_BGC_L4_MY_009_104',
+    name: 'Global Ocean Colour (Copernicus-GlobColour), Bio-Geo-Chemical, L4 (monthly and interpolated) from Satellite Observations (1997-ongoing)',
+    dataset: 'cmems_obs-oc_glo_bgc-plankton_my_l4-multi-4km_P1M',
+    date: 'CHL_09-1997_05-2024',
+    urls: [
+      'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/CHL_monthly_mean_1997_2024_Mean.tif',
+      'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/CHL_monthly_mean_1997_2024_SD.tif',
     ],
-    wrapX: false,
-    normalize: false,
-  });
-  source.setAttributions(attributions.noaa);
-  return source;
+    attributions: 'copernicus',
+    sources: [
+      createSourceCHL_monthly_mean_1997_2024_Mean,
+      createSourceCHL_monthly_mean_1997_2024_SD,
+    ],
+  },
+  SST_GLO_SST_L4_REP_OBSERVATIONS_010_024: {
+    title:
+      'SST sea surface Temperature : Sea water temperature analysed_sst [K] 0.05°',
+    short_title: 'Sea water temperature analysed_sst [K]',
+    identifier: 'SST_GLO_SST_L4_REP_OBSERVATIONS_010_024',
+    name: 'ESA SST CCI and C3S reprocessed sea surface temperature analyses',
+    dataset: [
+      'Dataset 1 ESACCI-GLO-SST-L4-REP-OBS-SST 02/09/1981→31/12/2016',
+      'Dataset 2 C3S-GLO-SST-L4-REP-OBS-SST 02/01/2017→30/09/2022',
+    ],
+    date: ['02/09/1981→31/12/2016', '02/01/2017→30/09/2022'],
+    url: [
+      'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/SST_monthly_max_1985_2024_Mean.tif',
+      'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/SST_monthly_max_1985_2024_SD.tif',
+      'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/SST_monthly_mean_1985_2024_Mean.tif',
+      'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/SST_monthly_mean_1985_2024_SD.tif',
+      'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/SST_monthly_min_1985_2024_Mean.tif',
+      'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/SST_monthly_min_1985_2024_SD.tif',
+    ],
+    attributions: 'copernicus',
+    sources: [
+      createSourceSST_monthly_max_1985_2024_Mean,
+      createSourceSST_monthly_max_1985_2024_SD,
+      createSourceSST_monthly_mean_1985_2024_Mean,
+      createSourceSST_monthly_mean_1985_2024_SD,
+      createSourceSST_monthly_min_1985_2024_Mean,
+      createSourceSST_monthly_min_1985_2024_SD,
+    ],
+  },
+  GLOBAL_MULTIYEAR_PHY_001_030: {
+    title: 'Sea Current Velocity, Water Salinity, and Water Velocity',
+    identifier: 'GLOBAL_MULTIYEAR_PHY_001_030',
+    name: 'Global Ocean Physics Reanalysis',
+    dataset: 'cmems_mod_glo_phy_my_0.083_P1D-m',
+    resolution: '0.083°',
+    date: '01-1993_06-2021',
+    attributions: 'copernicus',
+    sources: [
+      createSourceSCV_monthly_mean_1993_2021_Mean,
+      createSourceSCV_monthly_mean_1993_2021_SD,
+      createSourceSWS_monthly_mean_1993_2021_Mean,
+      createSourceSWS_monthly_mean_1993_2021_SD,
+    ],
+    components: {
+      SCV: {
+        short_title: 'Sea Current Velocity [m/s]',
+        description:
+          'Calculated from NWV (Northward) and EWV (Eastern) velocities',
+      },
+      NWV: {
+        short_title: 'Northward sea water velocity [m/s]',
+        description: 'Northward component of sea water velocity (vo)',
+      },
+      EWV: {
+        short_title: 'Eastern sea water velocity [m/s]',
+        description: 'Eastern component of sea water velocity (uo)',
+      },
+      SWS: {
+        short_title: 'Sea water salinity [10-3]',
+        description: 'Sea water salinity measurement',
+      },
+    },
+  },
+
+  OCEANCOLOUR_SPM: {
+    title: 'SPM suspended particulate matter',
+    short_title:
+      'Mass concentration of suspended matter in sea water SPM [g/m3]',
+    identifier: 'OCEANCOLOUR_GLO_BGC_L4_MY_009_104',
+    name: 'Global Ocean Colour (Copernicus-GlobColour), Bio-Geo-Chemical, L4 (monthly and interpolated) from Satellite Observations (1997-ongoing)',
+    dataset: 'cmems_obs-oc_glo_bgc-transp_my_l4-multi-4km_P1M',
+    resolution: '4km',
+    date: 'SPM_09-1997_05-2024',
+    attributions: 'copernicus',
+    sources: [
+      createSourceSPM_monthly_mean_1997_2024_Mean,
+      createSourceSPM_monthly_mean_1997_2024_SD,
+    ],
+  },
+
+  NOAA_DHW: {
+    title: 'Degree Heating Week (DHW)',
+    short_title: 'Degree Heating Week [°C-weeks]',
+    identifier: 'DWH_ct5km_dhw-max_v3.1',
+    name: 'Year-to-date Annual Composites of 5km Satellite Coral Bleaching Heat Stress Products',
+    version: '3.1',
+    resolution: '5km',
+    date: '1985-2023',
+    description:
+      'DHW is calculated as the accumulation of thermal stress (temperature >1°C above the monthly maximal mean temperature) over the previous 12 weeks',
+    attributions: 'noaa',
+    sources: [
+      createSourceDHW_annual_max_1985_2024_Mean,
+      createSourceDHW_annual_max_1985_2024_SD,
+    ],
+  },
 };
-export const DHW_annual_max_1985_2024_Mean = new GeoTIFF({
-  sources: [
-    {
-      url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/DHW_annual_max_1985_2024_Mean.tif',
-    },
-  ],
-});
-export const DHW_annual_max_1985_2024_SD = new GeoTIFF({
-  sources: [
-    {
-      url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/DHW_annual_max_1985_2024_SD.tif',
-    },
-  ],
-});
-export const SCV_monthly_mean_1993_2021_Mean = new GeoTIFF({
-  sources: [
-    {
-      url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/SCV_monthly_mean_1993_2021_Mean.tif',
-    },
-  ],
-});
-export const SCV_monthly_mean_1993_2021_SD = new GeoTIFF({
-  sources: [
-    {
-      url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/SCV_monthly_mean_1993_2021_SD.tif',
-    },
-  ],
-});
-export const SPM_monthly_mean_1997_2024_Mean = new GeoTIFF({
-  sources: [
-    {
-      url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/SPM_monthly_mean_1997_2024_Mean.tif',
-    },
-  ],
-});
-export const SPM_monthly_mean_1997_2024_SD = new GeoTIFF({
-  sources: [
-    {
-      url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/SPM_monthly_mean_1997_2024_SD.tif',
-    },
-  ],
-});
-export const SST_monthly_max_1985_2024_Mean = new GeoTIFF({
-  sources: [
-    {
-      url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/SST_monthly_max_1985_2024_Mean.tif',
-    },
-  ],
-});
-export const SST_monthly_max_1985_2024_SD = new GeoTIFF({
-  sources: [
-    {
-      url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/SST_monthly_max_1985_2024_SD.tif',
-    },
-  ],
-});
-export const SST_monthly_mean_1985_2024_Mean = new GeoTIFF({
-  sources: [
-    {
-      url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/SST_monthly_mean_1985_2024_Mean.tif',
-    },
-  ],
-});
-export const SST_monthly_mean_1985_2024_SD = new GeoTIFF({
-  sources: [
-    {
-      url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/SST_monthly_mean_1985_2024_SD.tif',
-    },
-  ],
-});
-export const SST_monthly_min_1985_2024_Mean = new GeoTIFF({
-  sources: [
-    {
-      url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/SST_monthly_min_1985_2024_Mean.tif',
-    },
-  ],
-});
-export const SST_monthly_min_1985_2024_SD = new GeoTIFF({
-  sources: [
-    {
-      url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/SST_monthly_min_1985_2024_SD.tif',
-    },
-  ],
-});
-export const SWS_monthly_mean_1993_2021_Mean = new GeoTIFF({
-  sources: [
-    {
-      url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/SWS_monthly_mean_1993_2021_Mean.tif',
-    },
-  ],
-});
-export const SWS_monthly_mean_1993_2021_SD = new GeoTIFF({
-  sources: [
-    {
-      url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/SWS_monthly_mean_1993_2021_SD.tif',
-    },
-  ],
-});

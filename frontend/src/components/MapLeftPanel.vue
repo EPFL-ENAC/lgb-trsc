@@ -173,6 +173,7 @@ import {
   marineProtectedAreaColorMap,
   chlMonthlyMean1997_2024,
   environmentalClusterColorMap,
+  chlMonthlyStd1997_2024,
   samplingSiteByYearColorMap,
   samplingSiteByProjectColorMap,
   samplingSiteByHardCoralCoverColorMap,
@@ -232,10 +233,12 @@ const getLayerLegend = (layer: BaseLayer) => {
       return boundaryColorMap;
     case 'Protected Area':
       return marineProtectedAreaColorMap;
-    case 'CHL_monthly_mean_1997_2024_Mean':
+    case 'CHL [mg/m3] Mean':
       return chlMonthlyMean1997_2024;
     case 'Reef clusters':
       return environmentalClusterColorMap;
+    case 'CHL [mg/m3] Std':
+      return chlMonthlyStd1997_2024;
     case 'by year':
       return samplingSiteByYearColorMap;
     case 'by project':
