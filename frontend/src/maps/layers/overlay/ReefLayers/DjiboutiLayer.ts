@@ -106,7 +106,7 @@ export const createDjiboutiMarineProtectedAreaLayer = () => {
     _pmtiles: true,
     source: createDjiboutiMarineProtectedAreaSource(),
     title: 'Protected Area',
-    visible: true,
+    visible: false,
     base: false,
     renderMode: 'vector',
     updateWhileAnimating: true,

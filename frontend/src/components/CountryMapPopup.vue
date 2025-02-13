@@ -14,42 +14,62 @@
     <q-dialog
       v-model="showZoomedChart"
       persistent
-      :maximized="true"
+      :maximized="false"
+        
       class="popup"
     >
-      <q-card>
+      <q-card style="width: 80vw; max-width: 1200px; height: 80vh; max-height: 800px;">
         <q-card-section class="q-pa-md row items-center justify-between">
-          <h4>3D Mapping</h4>
-          <q-btn
-            icon="close"
-            class="close-btn"
-            flat
-            round
-            dense
-            v-close-popup
-          />
-        </q-card-section>
+          <h4 class="q-pa-sm q-ma-sm">3D Mapping</h4>
+          <div class="right-actions">
 
+            <q-toggle v-model="substrateLevel"
+              trueValue="Substrate_1"
+              falseValue="Substrate_2"
+              :label="substrateLevel"></q-toggle>
+            <q-btn
+              icon="close"
+              class="close-btn"
+              flat
+              round
+              dense
+              v-close-popup
+            />
+          </div>
+        </q-card-section>
         <BarChart3DMapping
           :rawData="country.rawData"
-          height="60vh"
-          width="80vw"
+          :style="{ margin: '0 auto'}"
+          height="76%"
+          width="90%"
           :tooltip="true"
+          :substrateLevel="substrateLevel"
         />
+
+        <q-card-actions align="right">
+          <q-btn
+            label="View on Map"
+            color="white"
+            flat
+            @click="toggle3DZoomedChart"
+          />
+          </q-card-actions>
       </q-card>
     </q-dialog>
     <div class="images">
       <div class="card" @click="toggle3DZoomedChart">
-        <BarChart3DMapping :rawData="country.rawData" :tooltip="false" />
+        <BarChart3DMapping :rawData="country.rawData" :tooltip="false" width="90%"/>
         <p>3D Mapping</p>
       </div>
       <div class="card">
-        <img src="/eDNA.png" alt="eDNA" />
+        <!-- <img src="/eDNA.png" alt="eDNA" /> -->
         <p>eDNA</p>
+        <p><i>Coming soon</i></p>
       </div>
       <div class="card">
-        <img src="/seacape-genomics.png" alt="Seascape Genomics" />
+        <!-- <img src="/seacape-genomics.png" alt="Seascape Genomics" /> -->
         <p>Seascape Genomics</p>
+        <p><i>Coming soon</i></p>
       </div>
     </div>
     <button @click="handleGoToCountry" v-if="country.enabled">
@@ -73,6 +93,8 @@ const props = defineProps({
     required: true,
   },
 });
+
+const substrateLevel = ref('Substrate_1');
 
 const handleGoToCountry = () => {
   // props.zoomToCountry();
@@ -104,6 +126,14 @@ const toggle3DZoomedChart = () => {
   position: relative;
 }
 
+.right-actions {
+  display: flex;
+  width: 206px;
+  justify-content: space-between;
+  align-self: center;
+  flex-direction: column;
+}
+
 .close-btn {
   background-color: white;
   color: black;
@@ -119,17 +149,20 @@ const toggle3DZoomedChart = () => {
 
 .images {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+  grid-template-columns: auto;
+  grid-template-rows: repeat(auto-fit, minmax(50px, 1fr));
   gap: 1rem;
   width: 100%;
 }
 
-.card {
+:deep(.card) {
   display: flex;
   flex-direction: column;
   align-items: stretch;
   border: 1px solid #ccc; /* Optional styling */
   overflow: hidden; /* To avoid overflow issues */
+  /* height: 80vh; */
+  width: 100%;
 }
 
 .card img {
