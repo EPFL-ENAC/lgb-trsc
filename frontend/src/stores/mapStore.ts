@@ -15,6 +15,7 @@ interface ExpeditionProperties {
   date_iso: string;
   reef_area: string;
   sampling_site_name: string;
+  event_id: string;
   [key: string]: unknown;
 }
 

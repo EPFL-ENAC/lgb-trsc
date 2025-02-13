@@ -13,44 +13,36 @@ csv({ checkType: true, ignoreEmpty: true, trim: true })
     const path = `./src/assets/data/${djibouti_2023_3d}.json`;
     dji3d = [];
 
-
     jsonObj.forEach((obj) => {
-
       dji3d.push({
         "id": obj.ID,
-        "Site": obj.Site,
-        "Site_name": obj.Site_name,
-        ID_site: obj.ID_site,
-        year: obj.year,
-        Date: obj.Date,
-        date_iso: ((inputDate) => {
-          const parts = inputDate.split("-"); // Split the string into parts
-
-          // Reorder correctly: year, day, month -> year, month, day
-          const correctedDate = `${parts[0]}-${parts[2]}-${parts[1]}`
-          return new Date(correctedDate).toISOString().split('T')[0];
-        })(obj.Date.split('/').reverse().map((v, i) => {
-          if (i === 0) return '20' + v.padStart(2, '0');
-          if (i === 1) return v.padStart(2, '0');
-          // Get the original day value
-          return obj.Date.split('/')[0].padStart(2, '0');
-        }).join('-')),
+        "expe_name": obj.expe_name,
+        "region_name": obj.region_name,
+        "reef_area": obj.reef_area,
+        "sampling_site_name": obj.sampling_site_name,
+        "event_id": obj.event_id,
+        "experiment": obj.experiment,
+        year: obj.date_iso.split('-')[0],
+        date_iso: obj.date_iso,
+        time: obj.time,
         country: obj.country,
-        latitude_begin: obj.latitude_begin,
-        longitude_begin: obj.longitude_begin,
+        country_abbr: obj.country_abbr,
+        latitude_start: obj.latitude_start,
+        longitude_start: obj.longitude_start,
         latitude_end: obj.latitude_end,
         longitude_end: obj.longitude_end,
-        length: obj.Length,
+        length: obj.length,
         Substrate_1: obj.Substrate_1,
         Substrate_2: obj.Substrate_2,
         Substrate_3: obj.Substrate_3,
         mean: obj.mean,
-      })
+        median: obj.median,
+        stdev: obj.stdev
+      });
     });
     writeFileSync(path, JSON.stringify(dji3d));
     console.log(`data.csv converted successfully to JSON in ${path}`)
   });
-
 
 const expeditions = "Expeditions";
 

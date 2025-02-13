@@ -87,29 +87,29 @@ export class MapController {
 
     this.overlayMaps = new LayerGroup({
       layers: [
-        // new LayerGroup({
-        //   title: 'Environmental Layers',
-        //   inputType: 'checkbox',
-        //   layers: [
-        //     createCHL_monthly_mean_1997_2024_MeanLayer(),
-        //     createCHL_monthly_mean_1997_2024_SD()
-        //   ],
-        // } as CustomBaseLayerOptions),
-        // new LayerGroup({
-        //   title: 'Reef Layers',
-        //   inputType: 'checkbox',
-        //   layers: [
-        //     createDjiboutiReefExtentLayer(),
-        //     createDjiboutiGeomorphicLayer(),
-        //     createDjiboutiMarineProtectedAreaLayer(),
-        //     createDjiboutiBenthicLayer(),
-        //     createDjiboutiBoundaryLayer(),
-        //   ]
-        // } as CustomBaseLayerOptions),
-        // new LayerGroup({
-        //   title: 'Environmental Clusters',
-        //   layers: [],
-        // } as CustomBaseLayerOptions),
+        new LayerGroup({
+          title: 'Environmental Layers',
+          inputType: 'checkbox',
+          layers: [
+            createCHL_monthly_mean_1997_2024_MeanLayer(),
+            createCHL_monthly_mean_1997_2024_SD()
+          ],
+        } as CustomBaseLayerOptions),
+        new LayerGroup({
+          title: 'Reef Layers',
+          inputType: 'checkbox',
+          layers: [
+            createDjiboutiReefExtentLayer(),
+            createDjiboutiGeomorphicLayer(),
+            createDjiboutiMarineProtectedAreaLayer(),
+            createDjiboutiBenthicLayer(),
+            createDjiboutiBoundaryLayer(),
+          ]
+        } as CustomBaseLayerOptions),
+        new LayerGroup({
+          title: 'Environmental Clusters',
+          layers: [],
+        } as CustomBaseLayerOptions),
         new LayerGroup({
           title: 'Sampling sites',
           layers: [
