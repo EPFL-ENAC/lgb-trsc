@@ -28,13 +28,29 @@ const visibleClasses = ref<{ [key: string]: boolean }>({
 });
 
 // Add this helper function at the top level of the file
-const createCommonStyle = (colorMap: Record<string, string>, featureClass: string, dottedStroke = false) => {
+const createCommonStyle = (colorMap: Record<string, string>, featureClass: string, dottedStroke = false, dottedStrokeType: 'dotted' | 'default' | '3D' = 'default') => {
+  const dottedStyle = {
+    dotted: new Stroke({
+      color: colorMap[featureClass] || '#64c9c9',
+      width: 2,
+      lineDash: [2, 2]
+    }),
+    default: new Stroke({
+      color: colorMap[featureClass] || 'rgba(0, 0, 0, 0.3)',
+      width: 1
+    }),
+    '3D': new Stroke({
+      color: colorMap[featureClass] ||'blue',
+      width: 4,
+    })
+  } as const;
+  
   return new Style({
     fill: new Fill({
       color: colorMap[featureClass] || 'rgba(128, 128, 128, 0.5)',
     }),
     image: new CircleStyle({
-      radius: 5,
+      radius: 4,
       fill: new Fill({
         color: colorMap[featureClass] || 'blue',
       }),
@@ -43,27 +59,19 @@ const createCommonStyle = (colorMap: Record<string, string>, featureClass: strin
         width: 1,
       }),
     }),
-    stroke: new Stroke(
+    stroke: 
       dottedStroke 
-        ? {
-            color: '#64c9c9',
-            width: 2,
-            lineDash: [2, 2]
-          }
-        : {
-            color: 'rgba(0, 0, 0, 0.3)',
-            width: 1
-          }
-    )
+        ? dottedStyle[dottedStrokeType]
+        : dottedStyle.default
   });
 };
 
-export const createFeatureStyle = (feature: Feature<Geometry>, colorMap: Record<string, string>, dotted = false, featureName = 'class') => {
+export const createFeatureStyle = (feature: Feature<Geometry>, colorMap: Record<string, string>, dotted = false, featureName = 'class', dottedStrokeType: 'dotted' | 'default' | '3D' = 'default') => {
   const featureClass = feature.get(featureName) || feature.get('name') as string;
   if (!visibleClasses.value[featureClass]) {
     return new Style({});
   }
-  return createCommonStyle(colorMap, featureClass, dotted);
+  return createCommonStyle(colorMap, featureClass, dotted, dottedStrokeType);
 };
 
 export function useLayerStyles() {
@@ -91,8 +99,8 @@ export function useLayerStyles() {
   const createGeomorphicStyle = (feature: Feature<Geometry>) => createFeatureStyle(feature, geomorphicColorMap.colorMap);
   const createBenthicStyle = (feature: Feature<Geometry>) => createFeatureStyle(feature, benthicColorMap.colorMap);
   // const createBathymetricStyle = (feature: Feature<Geometry>) => createFeatureStyle(feature, bathymetricColorMap);
-  const createMarineProtectedStyle = (feature: Feature<Geometry>) => createFeatureStyle(feature, marineProtectedAreaColorMap.colorMap, true);
-  const createBoundaryStyle = (feature: Feature<Geometry>) => createFeatureStyle(feature, boundaryColorMap.colorMap, true);
+  const createMarineProtectedStyle = (feature: Feature<Geometry>) => createFeatureStyle(feature, marineProtectedAreaColorMap.colorMap, true, 'class', 'dotted');
+  const createBoundaryStyle = (feature: Feature<Geometry>) => createFeatureStyle(feature, boundaryColorMap.colorMap, true, 'class', 'dotted');
   const createReefExtentStyle = (feature: Feature<Geometry>) => createFeatureStyle(feature, reefExtentColorMap.colorMap);
 
   return {

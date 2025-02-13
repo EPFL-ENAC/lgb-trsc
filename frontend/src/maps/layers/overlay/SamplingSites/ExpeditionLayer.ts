@@ -56,7 +56,7 @@ const expeditionSource = new VectorSource({});
 
   export const createExpeditionLayer = (expeditionType: 'by project' | 'by year'| 'hard coral cover' = 'by project') => {
     const mapStore = useMapStore();
-    const createReefExtentStyle = (feature: Feature<Geometry>) => createFeatureStyle(feature, expeditionStyleTypeMap[expeditionType], false, propertyFeatureNameMap[expeditionType]);
+    const createReefExtentStyle = (feature: Feature<Geometry>) => createFeatureStyle(feature, expeditionStyleTypeMap[expeditionType], true, propertyFeatureNameMap[expeditionType], '3D');
     const layer = new VectorLayer({
       source: expeditionSource,
       title: `${expeditionType}`,
