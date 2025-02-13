@@ -1,5 +1,5 @@
 <template>
-  <div ref="chart" :style="{  width: width, height: height, ...style }"></div>
+  <div ref="chart" :style="{  width: width, height: height, ...style}"></div>
 </template>
 
 <script>
@@ -39,16 +39,32 @@ export default {
       default: 'Substrate_1'
     }
   },
+  data() {
+    return {
+      chart: null,
+      chartSubtrate: null,
+    };
+  },
+  watch: {
+    substrateLevel() {
+      this.chart.clear();
+      const option = this.getChartOption(this.rawData, this.substrateLevel);
+      this.chart.setOption(option);
+    }
+  },
   mounted() {
     this.initChart();
   },
   methods: {
     initChart() {
-      const chart = echarts.init(this.$refs.chart);
-      const option = this.getChartOption(this.rawData);
-      chart.setOption(option);
+        this.chart = echarts.init(this.$refs.chart);
+        const option = this.getChartOption(this.rawData, this.substrateLevel);
+        this.chart.setOption(option);
+        window.addEventListener('resize', () => {
+        this.chart.resize();
+      });
     },
-    getChartOption(data) {
+    getChartOption(data, substrateLevel) {
 
       function getSiteNameFromSiteId(data, SiteId) {
         if (data === undefined) {
@@ -94,13 +110,11 @@ export default {
           axisPointer: {
             type: 'shadow'
           },
-          formatter: function (params) {
+          formatter: (params) => {
             let result = `ID: ${params[0].axisValue}<br/>`;
-            result+= `Site Name: ${getSiteNameFromSiteId(data, params[0].axisValue)}<br/>`
+            result += `Site Name: ${getSiteNameFromSiteId(this.rawData, params[0].axisValue)}<br/>`;
             params.forEach((param) => {
-              result += `<span style="margin-right:1rem;background-color:${param.color};display: inline-block;width: 10px;height: 10px;"></span>${param.seriesName}: ${(param.value * 100).toFixed(
-                2
-              )}%<br/>`;
+              result += `<span style="margin-right:1rem;background-color:${param.color};display: inline-block;width: 10px;height: 10px;"></span>${param.seriesName}: ${(param.value * 100).toFixed(2)}%<br/>`;
             });
             return result;
           }
@@ -156,7 +170,7 @@ export default {
           max: 1,
           min: 0
         },
-        series: processData(data, this.substrateLevel),
+        series: processData(data, substrateLevel),
         color: colorPalette
       };
     }

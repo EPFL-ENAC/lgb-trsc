@@ -37,13 +37,13 @@
             />
           </div>
         </q-card-section>
-
         <BarChart3DMapping
           :rawData="country.rawData"
           :style="{ margin: '0 auto'}"
           height="76%"
           width="90%"
           :tooltip="true"
+          :substrateLevel="substrateLevel"
         />
 
         <q-card-actions align="right">
