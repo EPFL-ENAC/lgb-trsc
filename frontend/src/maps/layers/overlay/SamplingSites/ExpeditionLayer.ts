@@ -3,7 +3,7 @@ import VectorSource from 'ol/source/Vector';
 import { BaseLayerOptions } from 'ol-layerswitcher';
 import { computed, watch } from 'vue';
 import { useMapStore } from '@/stores/mapStore';
-import { expeditionStyle } from '@/maps/styles/layerStyles';
+// import { expeditionStyle } from '@/maps/styles/layerStyles';
 import { createFeatureStyle } from '@/maps/composables/useLayerStyles';
 // import GeoJSON from 'ol/format/GeoJSON';
 

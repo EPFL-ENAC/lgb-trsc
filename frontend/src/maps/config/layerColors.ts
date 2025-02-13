@@ -103,3 +103,18 @@ export const samplingSiteByHardCoralCoverColorMap = {
     '75-100%': 'rgba(0, 255, 0, 1)',
   },
 };
+
+
+export const d3MappingColorSubstrate1 = [
+  "rgb(205, 127, 50)",  // goldenrod3 - sand
+  "rgb(153, 153, 153)", // gray60 - rubble
+  "rgb(102, 102, 102)", // gray40 - unknown_hard_substrate
+  "rgb(46, 139, 87)",   // seagreen - algae_covered_substrate
+  "rgb(255, 250, 240)", // floralwhite - coral_bleached
+  "rgb(205, 85, 85)",   // indianred3 - coral_dead
+  "rgb(79, 148, 205)",  // steelblue3 - coral_alive
+  "rgb(205, 150, 205)", // plum3 - other_invertebrates
+  "rgb(238, 162, 173)", // lightpink2 - anemone
+  "rgb(205, 104, 137)", // palevioletred3 - other_animal
+  "rgb(139, 129, 76)"   // lightgoldenrod4 - trash
+];

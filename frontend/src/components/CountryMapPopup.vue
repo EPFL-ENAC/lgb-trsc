@@ -42,11 +42,7 @@
       <div class="card" @click="toggle3DZoomedChart">
         <BarChart3DMapping :rawData="country.rawData" :tooltip="false" />
         <p>3D Mapping</p>
-        {{ showZoomedChart }}
       </div>
-      <!-- <Teleport to="body"> -->
-
-      <!-- </Teleport> -->
       <div class="card">
         <img src="/eDNA.png" alt="eDNA" />
         <p>eDNA</p>
