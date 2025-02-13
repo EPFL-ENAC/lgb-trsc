@@ -46,7 +46,22 @@
           <q-item
             v-for="(layer, layerIndex) in group.layers"
             :key="layer.title"
+            class="column"
           >
+            <q-item-section
+              v-if="layer.title === 'Reef clusters'"
+              class="q-px-xl"
+            >
+              <q-input
+                type="number"
+                v-model.number="mapStore.selectedEnvironmentalClusterNumber"
+                label="Number of Reef Clusters"
+                dense
+                min="3"
+                max="6"
+                hide-bottom-space
+              />
+            </q-item-section>
             <q-item-section>
               <q-expansion-item
                 v-if="layer.visible && getLayerLegend(layer)"
@@ -147,6 +162,7 @@ import {
   boundaryColorMap,
   marineProtectedAreaColorMap,
   chlMonthlyMean1997_2024,
+  environmentalClusterColorMap,
   samplingSiteByYearColorMap,
   samplingSiteByProjectColorMap,
   samplingSiteByHardCoralCoverColorMap,
@@ -200,6 +216,8 @@ const getLayerLegend = (layer: Layer) => {
       return marineProtectedAreaColorMap;
     case 'CHL_monthly_mean_1997_2024_Mean':
       return chlMonthlyMean1997_2024;
+    case 'Reef clusters':
+      return environmentalClusterColorMap;
     case 'by year':
       return samplingSiteByYearColorMap;
     case 'by project':

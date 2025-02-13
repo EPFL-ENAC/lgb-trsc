@@ -148,3 +148,14 @@ export const d3MappingColorSubstrate2 = [
   "rgb(79, 148, 205)",   // steelblue3 - meandering_alive
   "rgb(54, 100, 139)"    // steelblue4 - massive/meandering_alive
 ];
+export const environmentalClusterColorMap = {
+  type: 'categorical',
+  colorMap: {
+    '1': 'rgba(255, 0, 0, 1)',
+    '2': 'rgb(116, 193, 231)',
+    '3': 'rgba(0, 255, 0, 1)',
+    '4': 'rgb(199, 123, 206)',
+    '5': 'rgb(25, 0, 255)',
+    '6': 'rgba(255, 165, 0, 1)',
+  },
+};

@@ -1,4 +1,4 @@
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { defineStore } from 'pinia';
 import { useLayerController } from '@/maps/composables/useLayerController';
 import { useMapController } from '@/maps/composables/useMapController';
@@ -23,6 +23,17 @@ export const useMapStore = defineStore('map', () => {
   const selectedCountry = ref<CountryProperties | null>(null);
   const selectedExpedition = ref<ExpeditionProperties | null>(null);
 
+  const selectedEnvironmentalClusterNumber = ref<number>(3);
+
+  const selectedEnvironmentalClusterClassName = computed(
+    () => 'HCl_K' + selectedEnvironmentalClusterNumber.value.toString()
+  );
+  watch(
+    () => selectedEnvironmentalClusterClassName.value,
+    (newValue) => {
+      console.log('selectedEnvironmentalClusterClassName changed', newValue);
+    }
+  );
   const hoveredExpedition = ref<ExpeditionProperties | null>(null);
   const hoveredExpeditionPixel = ref<[number, number] | null>(null);
   const rawTooltipContent = ref<string>('');
@@ -35,7 +46,8 @@ export const useMapStore = defineStore('map', () => {
     },
   });
 
-  const { visibleClasses, setClassVisibility, setAllClassesVisibility } = useLayerStyles();
+  const { visibleClasses, setClassVisibility, setAllClassesVisibility } =
+    useLayerStyles();
 
   function closeDrawer() {
     drawer.value = false;
@@ -62,7 +74,10 @@ export const useMapStore = defineStore('map', () => {
     drawer.value = true;
   }
 
-  function onHover(properties: ExpeditionProperties | null, pixel: [number, number] | null) {
+  function onHover(
+    properties: ExpeditionProperties | null,
+    pixel: [number, number] | null
+  ) {
     if (!properties) {
       hoveredExpedition.value = null;
       hoveredExpeditionPixel.value = null;
@@ -75,6 +90,8 @@ export const useMapStore = defineStore('map', () => {
   return {
     selectedCountry,
     selectedExpedition,
+    selectedEnvironmentalClusterNumber,
+    selectedEnvironmentalClusterClassName,
     hoveredExpedition,
     hoveredExpeditionPixel,
     onHover,
@@ -87,6 +104,6 @@ export const useMapStore = defineStore('map', () => {
     selectCountry,
     selectExpedition,
     setClassVisibility,
-    setAllClassesVisibility
+    setAllClassesVisibility,
   };
 });

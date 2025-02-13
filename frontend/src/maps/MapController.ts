@@ -11,14 +11,17 @@ import {
 import { createOSMLayer } from './layers/base/OSMLayer';
 import { createArcGISLayer } from './layers/base/ArcGISLayer';
 import { Feature } from 'ol';
-import { defaultCenter, defaultMinZoom, defaultExtent, defaultMinZoomCountry } from './config';
+import {
+  defaultCenter,
+  defaultMinZoom,
+  defaultExtent,
+  defaultMinZoomCountry,
+} from './config';
 import {
   addMapClickHandler,
   MapClickHandlerOptions,
 } from '@/maps/utils/MapClickHandler';
-import {
-  addMapPointerMoveHandler,
-} from '@/maps/utils/MapPointerMove';
+import { addMapPointerMoveHandler } from '@/maps/utils/MapPointerMove';
 import { useMapStore } from '@/stores/mapStore';
 // import { expeditions as DjiboutiExpeditions } from '@/assets/data/expeditions';
 import DjiboutiExpeditions from '@/assets/data/Expeditions.json';
@@ -32,18 +35,20 @@ import {
   createDjiboutiBenthicLayer,
   createDjiboutiMarineProtectedAreaLayer,
   createDjiboutiBoundaryLayer,
-  createDjiboutiReefExtentLayer
+  createDjiboutiReefExtentLayer,
 } from '@/maps/layers/overlay/ReefLayers/DjiboutiLayer';
+import { createDjiboutiEnvironmentalClusterLayer } from '@/maps/layers/overlay/EnvironmentalClusters/DjiboutiLayer';
 import { FeatureLike } from 'ol/Feature';
 import { Pixel } from 'ol/pixel';
 import Target from 'ol/events/Target';
-import { createCHL_monthly_mean_1997_2024_MeanLayer, createCHL_monthly_mean_1997_2024_SD } from './layers/overlay/EnvironmentalLayers/DjiboutiLayer';
+import {
+  createCHL_monthly_mean_1997_2024_MeanLayer,
+  createCHL_monthly_mean_1997_2024_SD,
+} from './layers/overlay/EnvironmentalLayers/DjiboutiLayer';
 import LayerSwitcher, { BaseLayerOptions } from 'ol-layerswitcher';
-
 
 interface CustomBaseLayerOptions extends BaseLayerOptions {
   inputType?: 'base' | 'checkbox' | 'radio';
-
 }
 
 export class MapController {
@@ -67,7 +72,6 @@ export class MapController {
         new Zoom(),
         new Attribution({
           collapsible: false,
-
         }),
         new Rotate({ autoHide: false, className: 'ol-rotate' }),
       ],
@@ -76,7 +80,6 @@ export class MapController {
 
   private baseMaps: LayerGroup | null = null;
   private overlayMaps: LayerGroup | null = null;
-
 
   public init(): void {
     this.baseMaps = new LayerGroup({
@@ -92,7 +95,7 @@ export class MapController {
           inputType: 'checkbox',
           layers: [
             createCHL_monthly_mean_1997_2024_MeanLayer(),
-            createCHL_monthly_mean_1997_2024_SD()
+            createCHL_monthly_mean_1997_2024_SD(),
           ],
         } as CustomBaseLayerOptions),
         new LayerGroup({
@@ -104,11 +107,11 @@ export class MapController {
             createDjiboutiMarineProtectedAreaLayer(),
             createDjiboutiBenthicLayer(),
             createDjiboutiBoundaryLayer(),
-          ]
+          ],
         } as CustomBaseLayerOptions),
         new LayerGroup({
           title: 'Environmental Clusters',
-          layers: [],
+          layers: [createDjiboutiEnvironmentalClusterLayer()],
         } as CustomBaseLayerOptions),
         new LayerGroup({
           title: 'Sampling sites',
@@ -124,7 +127,6 @@ export class MapController {
           ],
         } as CustomBaseLayerOptions),
         layerController.getCountryLayer(),
-        
       ],
     });
 
@@ -134,8 +136,7 @@ export class MapController {
     // Retrieve the store instance
     const mapStore = useMapStore();
 
-    const { selectCountry, selectExpedition, onHover } =
-      mapStore;
+    const { selectCountry, selectExpedition, onHover } = mapStore;
 
     // Define any extra parameters (raw data, expedition GeoJSON, and a new style)
     const threeDMappingByCountry = {
@@ -153,14 +154,17 @@ export class MapController {
       selectExpedition,
       threeDMappingByCountry,
       expeditionsByCountry,
-      selectedCountryStyle
+      selectedCountryStyle,
     };
 
-    const cleanUpClickHandler = addMapClickHandler(this.map, clickHandlerOptions);
+    const cleanUpClickHandler = addMapClickHandler(
+      this.map,
+      clickHandlerOptions
+    );
     // this.cleanupCallbacks.push(cleanUpClickHandler);
 
     const cleanup = addMapPointerMoveHandler(this.map, {
-      onHover
+      onHover,
     });
 
     // Store cleanup callback
@@ -184,7 +188,11 @@ export class MapController {
     return this.overlayMaps?.getLayers().getArray() || [];
   }
 
-  public setLayerVisibility(groupIndex: number, layerIndex: number, visible: boolean): void {
+  public setLayerVisibility(
+    groupIndex: number,
+    layerIndex: number,
+    visible: boolean
+  ): void {
     if (!this.overlayMaps) return;
     const groups = this.overlayMaps.getLayers();
     const group = groups.item(groupIndex);
@@ -198,7 +206,7 @@ export class MapController {
   }
 
   public zoomToCountry(): void {
-     /*
+    /*
   This function zoomToCountry is a map navigation function that appears to be using OpenLayers (a JavaScript mapping library). Here's what it does step by step:
 
     Check for Selected Country:
@@ -230,41 +238,41 @@ export class MapController {
     The function essentially zooms and centers the map to focus on a selected country's coastline with some predefined zoom constraints.
   */
 
-  const mapStore = useMapStore();
-  const selectedCountry = mapStore.selectedCountry;
-  if (selectedCountry && selectedCountry.coastline) {
-    const coastlineFeature = new GeoJSON().readFeature(
-      selectedCountry.coastline,
-      {
-        featureProjection: 'EPSG:4326',
-      }
-    ) as Feature;
-    
-    const extent = coastlineFeature.getGeometry()?.getExtent();
-    if (!extent) return;
+    const mapStore = useMapStore();
+    const selectedCountry = mapStore.selectedCountry;
+    if (selectedCountry && selectedCountry.coastline) {
+      const coastlineFeature = new GeoJSON().readFeature(
+        selectedCountry.coastline,
+        {
+          featureProjection: 'EPSG:4326',
+        }
+      ) as Feature;
 
-    const transformedExtent = transformExtent(
-      extent,
-      'EPSG:4326',
-      'EPSG:3857'
-    );
-    this.map.getView().fit(transformedExtent, { duration: 300 });
-    const currentView = this.map.getView().getProperties();
-    currentView.zoom = defaultMinZoomCountry;
-    currentView.minZoom = defaultMinZoomCountry;
-    currentView.center = getCenter(transformedExtent);
-    // make the following extent bigger to show the whole country
-    // Add a buffer of 2 degrees around the extent
-    // const buffer = 2;
-    // currentView.extent = [
-    //   transformedExtent[0] - buffer,
-    //   transformedExtent[1] - buffer,
-    //   transformedExtent[2] + buffer,
-    //   transformedExtent[3] + buffer
-    // ];
+      const extent = coastlineFeature.getGeometry()?.getExtent();
+      if (!extent) return;
 
-    this.map.setView(new View(currentView));
-  }
+      const transformedExtent = transformExtent(
+        extent,
+        'EPSG:4326',
+        'EPSG:3857'
+      );
+      this.map.getView().fit(transformedExtent, { duration: 300 });
+      const currentView = this.map.getView().getProperties();
+      currentView.zoom = defaultMinZoomCountry;
+      currentView.minZoom = defaultMinZoomCountry;
+      currentView.center = getCenter(transformedExtent);
+      // make the following extent bigger to show the whole country
+      // Add a buffer of 2 degrees around the extent
+      // const buffer = 2;
+      // currentView.extent = [
+      //   transformedExtent[0] - buffer,
+      //   transformedExtent[1] - buffer,
+      //   transformedExtent[2] + buffer,
+      //   transformedExtent[3] + buffer
+      // ];
+
+      this.map.setView(new View(currentView));
+    }
   }
 
   public zoomOutOfCountry = () => {
@@ -280,7 +288,6 @@ export class MapController {
   public refreshMap() {
     this.map.renderSync();
   }
-  
 
   public zoomToExpedition = () => {
     const mapStore = useMapStore();
