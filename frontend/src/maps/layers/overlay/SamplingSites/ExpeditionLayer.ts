@@ -60,7 +60,7 @@ const expeditionSource = new VectorSource({});
     const layer = new VectorLayer({
       source: expeditionSource,
       title: `${expeditionType}`,
-      visible: true,
+      visible: expeditionType === 'by project',
       style: createReefExtentStyle,
     } as BaseLayerOptions);
 

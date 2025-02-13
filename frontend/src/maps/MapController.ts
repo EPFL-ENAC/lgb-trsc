@@ -112,6 +112,7 @@ export class MapController {
         } as CustomBaseLayerOptions),
         new LayerGroup({
           title: 'Sampling sites',
+          inputType: 'radio',
           layers: [
             // layerController.getExpeditionLayer('unknown'),
             // option 1: "hard coral cover" (by default), described in [FEATURE] Classify expeditions (the marker) in color by the coral condition #8

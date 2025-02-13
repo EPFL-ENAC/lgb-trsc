@@ -22,7 +22,6 @@ interface GeoJSONFeatureCollection {
 
 export class LayerController {
   private countryLayer: VectorLayer<VectorSource>;
-  private expeditionLayer: VectorLayer<VectorSource>;
   private geomorphicLayer: VectorTileLayer<VectorTileSource> | null = null;
   private benthicLayer: VectorTileLayer<VectorTileSource> | null = null;
   private boundaryLayer: VectorTileLayer<VectorTileSource> | null = null;
@@ -33,7 +32,6 @@ export class LayerController {
 
   constructor() {
     this.countryLayer = createCountryLayer();
-    this.expeditionLayer = createExpeditionLayer('unknown');
     this.expeditionProjectLayer = createExpeditionLayer('by project');
     this.expeditionYearLayer = createExpeditionLayer('by year');
     this.expeditionHardCoralCoverLayer = createExpeditionLayer('hard coral cover');
@@ -52,7 +50,6 @@ export class LayerController {
 
   public updateExpeditions(expeditionData: GeoJSONFeatureCollection) {
     // at the moment, only Djibouti has expedition data
-    this.expeditionLayer.getSource()?.clear();
     this.expeditionProjectLayer.getSource()?.clear();
     this.expeditionYearLayer.getSource()?.clear();
     this.expeditionHardCoralCoverLayer.getSource()?.clear();
@@ -65,7 +62,6 @@ export class LayerController {
       });
 
       // Add cloned features to each layer
-      this.expeditionLayer.getSource()?.addFeatures(createFeaturesForLayer());
       this.expeditionProjectLayer.getSource()?.addFeatures(createFeaturesForLayer());
       this.expeditionYearLayer.getSource()?.addFeatures(createFeaturesForLayer());
       this.expeditionHardCoralCoverLayer.getSource()?.addFeatures(createFeaturesForLayer());
@@ -74,14 +70,12 @@ export class LayerController {
 
   public resetLayers() {
     // this.coastlineLayer?.getSource()?.clear();
-    this.expeditionLayer?.getSource()?.clear();
     this.countryLayer.setStyle(countryStyle); // Reset style to show yellow circles
   }
 
   public getLayers() {
     return [
       this.countryLayer,
-      this.expeditionLayer,
       this.geomorphicLayer,
       this.benthicLayer,
       this.boundaryLayer,
@@ -120,10 +114,6 @@ export class LayerController {
     if (type === 'hard coral cover') {
       return this.expeditionHardCoralCoverLayer;
     }
-    return this.expeditionLayer;
-  }
-  public setExpeditionLayer(expeditionLayer: VectorLayer<VectorSource>) {
-    this.expeditionLayer = expeditionLayer;
   }
   public getCorrenAllenLayers() {
     return [this.geomorphicLayer, this.benthicLayer, this.boundaryLayer, this.reefExtentLayer];
