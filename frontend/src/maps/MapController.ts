@@ -118,7 +118,7 @@ export class MapController {
             // option 1: "hard coral cover" (by default), described in [FEATURE] Classify expeditions (the marker) in color by the coral condition #8
             // option 2 : "by year"
             // option 3 :by project
-            // layerController.getExpeditionLayer('hard coral cover'),
+            layerController.getExpeditionLayer('hard coral cover'),
             layerController.getExpeditionLayer('by year'),
             layerController.getExpeditionLayer('by project'),
           ],

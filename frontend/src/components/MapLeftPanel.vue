@@ -148,8 +148,8 @@ import {
   marineProtectedAreaColorMap,
   chlMonthlyMean1997_2024,
   samplingSiteByYearColorMap,
-samplingSiteByProjectColorMap,
-samplingSiteByHardCoralCoverColorMap
+  samplingSiteByProjectColorMap,
+  samplingSiteByHardCoralCoverColorMap,
 } from '@/maps/config/layerColors';
 import { useMapStore } from '@/stores/mapStore';
 

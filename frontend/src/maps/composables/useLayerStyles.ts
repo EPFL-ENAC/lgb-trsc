@@ -55,7 +55,7 @@ const createCommonStyle = (colorMap: Record<string, string>, featureClass: strin
         color: colorMap[featureClass] || 'blue',
       }),
       stroke: new Stroke({
-        color: colorMap[featureClass] || 'white',
+        color: 'white',
         width: 1,
       }),
     }),

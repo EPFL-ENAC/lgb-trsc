@@ -9,10 +9,10 @@ import { createFeatureStyle } from '@/maps/composables/useLayerStyles';
 
 // const LayerTitle = 'Expedition';
 // import DjiboutiExpeditions from '@/assets/data/Expeditions.json';
-import { 
+import {
   samplingSiteByYearColorMap,
   samplingSiteByProjectColorMap,
-  samplingSiteByHardCoralCoverColorMap
+  samplingSiteByHardCoralCoverColorMap,
 } from '@/maps/config/layerColors';
 import Feature from 'ol/Feature';
 import Geometry from 'ol/geom/Geometry';
@@ -29,17 +29,20 @@ import Geometry from 'ol/geom/Geometry';
 
 export type ExpeditionStyleType = 'by project' | 'by year' | 'hard coral cover';
 
-export const expeditionStyleTypeMap: Record<ExpeditionStyleType,Record<string, string>>  = {
+export const expeditionStyleTypeMap: Record<
+  ExpeditionStyleType,
+  Record<string, string>
+> = {
   'by project': samplingSiteByProjectColorMap.colorMap,
-  'by year':  samplingSiteByYearColorMap.colorMap,
+  'by year': samplingSiteByYearColorMap.colorMap,
   'hard coral cover': samplingSiteByHardCoralCoverColorMap.colorMap,
-}
+};
 
 export const propertyFeatureNameMap: Record<ExpeditionStyleType, string> = {
   'by project': 'experiment',
   'by year': 'year',
   'hard coral cover': 'hard_coral_cover',
-}
+};
 
 const expeditionSource = new VectorSource({});
 
@@ -53,35 +56,44 @@ const expeditionSource = new VectorSource({});
 //     } as BaseLayerOptions);
 //   }
 
-
-  export const createExpeditionLayer = (expeditionType: 'by project' | 'by year'| 'hard coral cover' = 'by project') => {
-    const mapStore = useMapStore();
-    const createReefExtentStyle = (feature: Feature<Geometry>) => createFeatureStyle(feature, expeditionStyleTypeMap[expeditionType], true, propertyFeatureNameMap[expeditionType], '3D');
-    const layer = new VectorLayer({
-      source: expeditionSource,
-      title: `${expeditionType}`,
-      visible: expeditionType === 'by project',
-      style: createReefExtentStyle,
-    } as BaseLayerOptions);
-
-    // Create a computed style function that will react to store changes
-    const computedStyle = computed(() => {
-      return (feature: Feature<Geometry>) => createReefExtentStyle(feature);
-    });
-  
-    // Set up watcher for style changes
-    layer.setStyle((feature) => computedStyle.value(feature as Feature<Geometry>));
-  
-    // Watch for changes in visibleClasses and trigger a redraw
-    watch(
-      () => mapStore.visibleClasses,
-      () => {
-        layer.changed();
-        layer.getSource()?.changed();
-      },
-      { deep: true }
+export const createExpeditionLayer = (
+  expeditionType: 'by project' | 'by year' | 'hard coral cover' = 'by project'
+) => {
+  const mapStore = useMapStore();
+  const createReefExtentStyle = (feature: Feature<Geometry>) =>
+    createFeatureStyle(
+      feature,
+      expeditionStyleTypeMap[expeditionType],
+      true,
+      propertyFeatureNameMap[expeditionType],
+      '3D'
     );
-  
-    return layer;
-  };
-  
+  const layer = new VectorLayer({
+    source: expeditionSource,
+    title: `${expeditionType}`,
+    visible: expeditionType === 'hard coral cover',
+    style: createReefExtentStyle,
+  } as BaseLayerOptions);
+
+  // Create a computed style function that will react to store changes
+  const computedStyle = computed(() => {
+    return (feature: Feature<Geometry>) => createReefExtentStyle(feature);
+  });
+
+  // Set up watcher for style changes
+  layer.setStyle((feature) =>
+    computedStyle.value(feature as Feature<Geometry>)
+  );
+
+  // Watch for changes in visibleClasses and trigger a redraw
+  watch(
+    () => mapStore.visibleClasses,
+    () => {
+      layer.changed();
+      layer.getSource()?.changed();
+    },
+    { deep: true }
+  );
+
+  return layer;
+};

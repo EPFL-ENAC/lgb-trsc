@@ -34,7 +34,8 @@ export class LayerController {
     this.countryLayer = createCountryLayer();
     this.expeditionProjectLayer = createExpeditionLayer('by project');
     this.expeditionYearLayer = createExpeditionLayer('by year');
-    this.expeditionHardCoralCoverLayer = createExpeditionLayer('hard coral cover');
+    this.expeditionHardCoralCoverLayer =
+      createExpeditionLayer('hard coral cover');
   }
 
   public showCountryLayer() {
@@ -56,15 +57,22 @@ export class LayerController {
 
     if (expeditionData) {
       // Create features for each layer separately
-      const createFeaturesForLayer = () => new GeoJSON().readFeatures(expeditionData, {
-        dataProjection: 'EPSG:4326',
-        featureProjection: 'EPSG:3857'
-      });
+      const createFeaturesForLayer = () =>
+        new GeoJSON().readFeatures(expeditionData, {
+          dataProjection: 'EPSG:4326',
+          featureProjection: 'EPSG:3857',
+        });
 
       // Add cloned features to each layer
-      this.expeditionProjectLayer.getSource()?.addFeatures(createFeaturesForLayer());
-      this.expeditionYearLayer.getSource()?.addFeatures(createFeaturesForLayer());
-      this.expeditionHardCoralCoverLayer.getSource()?.addFeatures(createFeaturesForLayer());
+      this.expeditionProjectLayer
+        .getSource()
+        ?.addFeatures(createFeaturesForLayer());
+      this.expeditionYearLayer
+        .getSource()
+        ?.addFeatures(createFeaturesForLayer());
+      this.expeditionHardCoralCoverLayer
+        .getSource()
+        ?.addFeatures(createFeaturesForLayer());
     }
   }
 
@@ -79,13 +87,14 @@ export class LayerController {
       this.geomorphicLayer,
       this.benthicLayer,
       this.boundaryLayer,
-      this.reefExtentLayer];
+      this.reefExtentLayer,
+    ];
   }
 
   public getGeomorphicLayer() {
     return this.geomorphicLayer;
   }
-  
+
   public getBenthicLayer() {
     return this.benthicLayer;
   }
@@ -95,7 +104,7 @@ export class LayerController {
   }
 
   public getReefExtentLayer() {
-    return this.reefExtentLayer
+    return this.reefExtentLayer;
   }
   public getCountryLayer() {
     return this.countryLayer;
@@ -104,7 +113,9 @@ export class LayerController {
     this.countryLayer = countryLayer;
   }
 
-  public getExpeditionLayer(type: 'by project' | 'by year'| 'hard coral cover' = 'by project') {
+  public getExpeditionLayer(
+    type: 'by project' | 'by year' | 'hard coral cover' = 'by project'
+  ) {
     if (type === 'by project') {
       return this.expeditionProjectLayer;
     }
@@ -116,13 +127,19 @@ export class LayerController {
     }
   }
   public getCorrenAllenLayers() {
-    return [this.geomorphicLayer, this.benthicLayer, this.boundaryLayer, this.reefExtentLayer];
+    return [
+      this.geomorphicLayer,
+      this.benthicLayer,
+      this.boundaryLayer,
+      this.reefExtentLayer,
+    ];
   }
 
   public getActiveLayers() {
-    return this.getLayers().filter((layer): layer is NonNullable<typeof layer> => {
-      return layer !== null && layer.getVisible();
-    });
+    return this.getLayers().filter(
+      (layer): layer is NonNullable<typeof layer> => {
+        return layer !== null && layer.getVisible();
+      }
+    );
   }
-
 }
