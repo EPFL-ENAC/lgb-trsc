@@ -1,6 +1,8 @@
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import { BaseLayerOptions } from 'ol-layerswitcher';
+import { computed, watch } from 'vue';
+import { useMapStore } from '@/stores/mapStore';
 import { expeditionStyle } from '@/maps/styles/layerStyles';
 import { createFeatureStyle } from '@/maps/composables/useLayerStyles';
 // import GeoJSON from 'ol/format/GeoJSON';
@@ -41,16 +43,45 @@ export const propertyFeatureNameMap: Record<ExpeditionStyleType, string> = {
 
 const expeditionSource = new VectorSource({});
 
-export const createExpeditionLayer = (expeditionType: 'by project' | 'by year'| 'hard coral cover' = 'by project') =>
-  {
-    // const source = new VectorSource({});
+// export const createExpeditionLayer = (expeditionType: 'by project' | 'by year'| 'hard coral cover' = 'by project') =>
+//   {
+//     return  new VectorLayer({
+//       source: expeditionSource,
+//       title: `${expeditionType}`,
+//       visible: true,
+//       style: createReefExtentStyle,
+//     } as BaseLayerOptions);
+//   }
+
+
+  export const createExpeditionLayer = (expeditionType: 'by project' | 'by year'| 'hard coral cover' = 'by project') => {
+    const mapStore = useMapStore();
     const createReefExtentStyle = (feature: Feature<Geometry>) => createFeatureStyle(feature, expeditionStyleTypeMap[expeditionType], false, propertyFeatureNameMap[expeditionType]);
-    return  new VectorLayer({
+    const layer = new VectorLayer({
       source: expeditionSource,
       title: `${expeditionType}`,
       visible: true,
       style: createReefExtentStyle,
-      // style: expeditionStyle,
     } as BaseLayerOptions);
-  }
 
+    // Create a computed style function that will react to store changes
+    const computedStyle = computed(() => {
+      return (feature: Feature<Geometry>) => createReefExtentStyle(feature);
+    });
+  
+    // Set up watcher for style changes
+    layer.setStyle((feature) => computedStyle.value(feature as Feature<Geometry>));
+  
+    // Watch for changes in visibleClasses and trigger a redraw
+    watch(
+      () => mapStore.visibleClasses,
+      () => {
+        layer.changed();
+        layer.getSource()?.changed();
+      },
+      { deep: true }
+    );
+  
+    return layer;
+  };
+  
