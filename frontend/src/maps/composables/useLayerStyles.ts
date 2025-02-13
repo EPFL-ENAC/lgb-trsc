@@ -9,17 +9,17 @@ import { useMapController } from './useMapController';
 // Create a singleton state for layer styles
 const visibleClasses = ref<{ [key: string]: boolean }>({
   // Initialize Geomorphic classes
-  ...Object.fromEntries(Object.keys(geomorphicColorMap).map(key => [key, true])),
+  ...Object.fromEntries(Object.keys(geomorphicColorMap.colorMap).map(key => [key, true])),
   // Initialize Benthic classes
-  ...Object.fromEntries(Object.keys(benthicColorMap).map(key => [key, true])),
+  ...Object.fromEntries(Object.keys(benthicColorMap.colorMap).map(key => [key, true])),
   // Initialize Bathymetric classes
-  ...Object.fromEntries(Object.keys(bathymetricColorMap).map(key => [key, true])),
+  ...Object.fromEntries(Object.keys(bathymetricColorMap.colorMap).map(key => [key, true])),
   // Initialize Reef Extent classes
-  ...Object.fromEntries(Object.keys(reefExtentColorMap).map(key => [key, true])),
+  ...Object.fromEntries(Object.keys(reefExtentColorMap.colorMap).map(key => [key, true])),
   // Initialize Boundary classes
-  ...Object.fromEntries(Object.keys(boundaryColorMap).map(key => [key, true])),
+  ...Object.fromEntries(Object.keys(boundaryColorMap.colorMap).map(key => [key, true])),
   // Initialize Marine Protected Area classes
-  ...Object.fromEntries(Object.keys(marineProtectedAreaColorMap).map(key => [key, true])),
+  ...Object.fromEntries(Object.keys(marineProtectedAreaColorMap.colorMap).map(key => [key, true])),
 });
 
 // Add this helper function at the top level of the file
@@ -60,12 +60,12 @@ export function useLayerStyles() {
 
   const setAllClassesVisibility = (layerType: 'Geomorphic' | 'Benthic', isVisible: boolean) => {
     const colorMap = {
-      'Geomorphic': geomorphicColorMap,
-      'Benthic': benthicColorMap,
-      'Bathymetric': bathymetricColorMap,
-      'ReefExtent': reefExtentColorMap,
-      'Boundary': boundaryColorMap,
-      'MarineProtectedArea': marineProtectedAreaColorMap
+      'Geomorphic': geomorphicColorMap.colorMap,
+      'Benthic': benthicColorMap.colorMap,
+      'Bathymetric': bathymetricColorMap.colorMap,
+      'ReefExtent': reefExtentColorMap.colorMap,
+      'Boundary': boundaryColorMap.colorMap,
+      'MarineProtectedArea': marineProtectedAreaColorMap.colorMap
     }[layerType] || {};
 
     Object.keys(colorMap).forEach(className => {
@@ -73,12 +73,12 @@ export function useLayerStyles() {
     });
   };
 
-  const createGeomorphicStyle = (feature: Feature<Geometry>) => createFeatureStyle(feature, geomorphicColorMap);
-  const createBenthicStyle = (feature: Feature<Geometry>) => createFeatureStyle(feature, benthicColorMap);
+  const createGeomorphicStyle = (feature: Feature<Geometry>) => createFeatureStyle(feature, geomorphicColorMap.colorMap);
+  const createBenthicStyle = (feature: Feature<Geometry>) => createFeatureStyle(feature, benthicColorMap.colorMap);
   // const createBathymetricStyle = (feature: Feature<Geometry>) => createFeatureStyle(feature, bathymetricColorMap);
-  const createMarineProtectedStyle = (feature: Feature<Geometry>) => createFeatureStyle(feature, marineProtectedAreaColorMap, true);
-  const createBoundaryStyle = (feature: Feature<Geometry>) => createFeatureStyle(feature, boundaryColorMap, true);
-  const createReefExtentStyle = (feature: Feature<Geometry>) => createFeatureStyle(feature, reefExtentColorMap);
+  const createMarineProtectedStyle = (feature: Feature<Geometry>) => createFeatureStyle(feature, marineProtectedAreaColorMap.colorMap, true);
+  const createBoundaryStyle = (feature: Feature<Geometry>) => createFeatureStyle(feature, boundaryColorMap.colorMap, true);
+  const createReefExtentStyle = (feature: Feature<Geometry>) => createFeatureStyle(feature, reefExtentColorMap.colorMap);
 
   return {
     visibleClasses: computed(() => visibleClasses.value),

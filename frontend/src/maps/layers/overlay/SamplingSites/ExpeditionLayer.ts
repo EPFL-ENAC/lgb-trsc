@@ -24,37 +24,29 @@ import Geometry from 'ol/geom/Geometry';
 // experiment class is 3D | MP | Sym
 // year is 2022 or 2023 and the correspding style color is used
 
+export type ExpeditionStyleType = 'by project' | 'by year' | 'hard coral cover';
 
-export const expeditionStyleTypeMap = {
+export const expeditionStyleTypeMap: Record<ExpeditionStyleType,Record<string, string>>  = {
   'by project': samplingSiteByYearColorMap,
   'by year': samplingSiteByProjectColorMap,
   'hard coral cover': samplingSiteByHardCoralCoverColorMap,
 }
 
-export const createExpeditionLayer = (type: 'by project' | 'by year'| 'hard coral cover' = 'by project') =>
+export const propertyFeatureNameMap: Record<ExpeditionStyleType, string> = {
+  'by project': 'experiment',
+  'by year': 'year',
+  'hard coral cover': 'hard_coral_cover',
+}
 
+export const createExpeditionLayer = (expeditionType: 'by project' | 'by year'| 'hard coral cover' = 'by project') =>
   {
-    const source = new VectorSource();
-    if (DjiboutiExpeditions) {
-      const expeditionFeatures = new GeoJSON().readFeatures(DjiboutiExpeditions, {
-        dataProjection: 'EPSG:4326',
-        featureProjection: 'EPSG:3857'
-        // was  featureProjection: 'EPSG:4326',
-      });
-      // DjiboutiExpeditions.getSource()?.addFeatures(expeditionFeatures);
-      // we shoudld probably update the map view here when we change the layer.
-      source.addFeatures(expeditionFeatures);
-    }
-
-
-
+    const source = new VectorSource({});
+    const createReefExtentStyle = (feature: Feature<Geometry>) => createFeatureStyle(feature, expeditionStyleTypeMap[expeditionType], false, propertyFeatureNameMap[expeditionType]);
     return  new VectorLayer({
       source,
-      title: `${type}`,
+      title: `${expeditionType}`,
       visible: true,
-      style: (feature: Feature<Geometry>) => {
-        return createFeatureStyle(feature, expeditionStyleTypeMap[type])
-      }
+      style: createReefExtentStyle
       ,
     } as BaseLayerOptions);
   }

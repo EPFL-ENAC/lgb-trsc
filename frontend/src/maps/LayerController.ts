@@ -27,10 +27,16 @@ export class LayerController {
   private benthicLayer: VectorTileLayer<VectorTileSource> | null = null;
   private boundaryLayer: VectorTileLayer<VectorTileSource> | null = null;
   private reefExtentLayer: VectorTileLayer<VectorTileSource> | null = null;
+  private expeditionProjectLayer: VectorLayer<VectorSource>;
+  private expeditionYearLayer: VectorLayer<VectorSource>;
+  private expeditionHardCoralCoverLayer: VectorLayer<VectorSource>;
 
   constructor() {
     this.countryLayer = createCountryLayer();
     this.expeditionLayer = createExpeditionLayer();
+    this.expeditionProjectLayer = createExpeditionLayer('by project');
+    this.expeditionYearLayer = createExpeditionLayer('by year');
+    this.expeditionHardCoralCoverLayer = createExpeditionLayer('hard coral cover');
   }
 
   public showCountryLayer() {
@@ -47,6 +53,9 @@ export class LayerController {
   public updateExpeditions(expeditionData: GeoJSONFeatureCollection) {
     // at the moment, only Djibouti has expedition data
     this.expeditionLayer.getSource()?.clear();
+    this.expeditionProjectLayer.getSource()?.clear();
+    this.expeditionYearLayer.getSource()?.clear();
+    this.expeditionHardCoralCoverLayer.getSource()?.clear();
 
     if (expeditionData) {
       const expeditionFeatures = new GeoJSON().readFeatures(expeditionData, {
@@ -55,6 +64,9 @@ export class LayerController {
         // was  featureProjection: 'EPSG:4326',
       });
       this.expeditionLayer.getSource()?.addFeatures(expeditionFeatures);
+      this.expeditionProjectLayer.getSource()?.addFeatures(expeditionFeatures);
+      this.expeditionYearLayer.getSource()?.addFeatures(expeditionFeatures);
+      this.expeditionHardCoralCoverLayer.getSource()?.addFeatures(expeditionFeatures);
       // we shoudld probably update the map view here when we change the layer.
       
     }
@@ -100,15 +112,15 @@ export class LayerController {
 
   public getExpeditionLayer(type: 'by project' | 'by year'| 'hard coral cover' = 'by project') {
     if (type === 'by project') {
-     return createExpeditionLayer('by project');
+      return this.expeditionProjectLayer;
     }
     if (type === 'by year') {
-      return createExpeditionLayer('by year');
+      return this.expeditionYearLayer;
     }
     if (type === 'hard coral cover') {
-      return createExpeditionLayer('hard coral cover');
+      return this.expeditionHardCoralCoverLayer;
     }
-    // return this.expeditionLayer;
+    return this.expeditionLayer;
   }
   public setExpeditionLayer(expeditionLayer: VectorLayer<VectorSource>) {
     this.expeditionLayer = expeditionLayer;
