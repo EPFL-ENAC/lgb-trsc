@@ -21,16 +21,21 @@
       <q-card style="width: 80vw; max-width: 1200px; height: 80vh; max-height: 800px;">
         <q-card-section class="q-pa-md row items-center justify-between">
           <h4 class="q-pa-sm q-ma-sm">3D Mapping</h4>
-          <q-toggle v-model="substrateLevel"
-            label="Action"></q-toggle>
-          <q-btn
-            icon="close"
-            class="close-btn"
-            flat
-            round
-            dense
-            v-close-popup
-          />
+          <div class="right-actions">
+
+            <q-toggle v-model="substrateLevel"
+              trueValue="Substrate_1"
+              falseValue="Substrate_2"
+              :label="substrateLevel"></q-toggle>
+            <q-btn
+              icon="close"
+              class="close-btn"
+              flat
+              round
+              dense
+              v-close-popup
+            />
+          </div>
         </q-card-section>
 
         <BarChart3DMapping
@@ -119,6 +124,14 @@ const toggle3DZoomedChart = () => {
   flex-direction: column;
   align-items: center;
   position: relative;
+}
+
+.right-actions {
+  display: flex;
+  width: 206px;
+  justify-content: space-between;
+  align-self: center;
+  flex-direction: column;
 }
 
 .close-btn {
