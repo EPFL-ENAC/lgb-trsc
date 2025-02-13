@@ -1,5 +1,4 @@
 import { BaseLayerOptions } from 'ol-layerswitcher';
-// import { geoMorphicStyle } from '@/maps/styles/geomorphicLayerStyle';
 import { createSourceCHL_monthly_mean_1997_2024_Mean, createSourceCHL_monthly_mean_1997_2024_SD } from '@/maps/sources/DjiboutiNOAASource';
 
 import WebGLTileLayer from 'ol/layer/WebGLTile';

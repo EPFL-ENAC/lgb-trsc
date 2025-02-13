@@ -70,3 +70,36 @@ export const reefExtentColorMap = {
     Reef: 'rgb(178, 8, 76)',
   },
 };
+
+export const samplingSiteByYearColorMap = {
+  type: 'categorical',
+  colorMap: {
+    '2022': 'rgb(225, 255, 0)', // Very dark grey-blue
+    '2023': 'rgb(3, 3, 255)', // Deep blue
+  },
+};
+
+export const samplingSiteByProjectColorMap = {
+  type: 'categorical',
+  // all of the projects:
+  // ['MP', '3D', 'SG', 'Sym', 'eDNA', 'echi']
+  colorMap: {
+    '3D': 'rgb(255, 140, 0)', // Dark Orange
+    MP: 'rgb(138, 43, 226)', // Blue Violet
+    Sym: 'rgb(220, 20, 60)', // Crimson
+    SG: 'rgb(34, 139, 34)', // Forest Green
+    eDNA: 'rgb(139, 206, 225)', // Midnight Blue
+    echi: 'rgb(218, 165, 32)', // Goldenrod
+  },
+};
+
+export const samplingSiteByHardCoralCoverColorMap = {
+  type: 'categorical',
+  colorMap: {
+    '0-10%': 'rgba(255, 0, 0, 1)',
+    '10-30%': 'rgba(255, 165, 0, 1)',
+    '30-50%': 'rgba(255, 255, 0, 1)',
+    '50-75%': 'rgba(144, 238, 144, 1)',
+    '75-100%': 'rgba(0, 255, 0, 1)',
+  },
+};

@@ -43,7 +43,7 @@ export default {
         if (data === undefined) {
           return '';
         }
-        return data.find((item) => item.id === parseInt(SiteId))?.Site || '';
+        return data.find((item) => item.id === parseInt(SiteId))?.sampling_site_name || '';
       }
       function processData(data) {
         const seriesData = {};

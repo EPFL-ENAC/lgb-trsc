@@ -7774,10 +7774,8 @@ option = {
     formatter: function (params) {
       let result = `ID: ${params[0].axisValue}<br/>`;
       let textStyle = '';
-        // console.log(params)
       params.forEach((param, index) => {
         textStyle = '';
-        // console.log(param.data)
         result += `<span style="margin-right:1rem;background-color:${param.color};display: inline-block;width: 10px;height: 10px;"></span>${param.seriesName}: ${(param.value * 100).toFixed(
           2
         )}%<br/>`;

@@ -1,54 +1,77 @@
 import { ref, computed } from 'vue';
-import { geomorphicColorMap, benthicColorMap, bathymetricColorMap, reefExtentColorMap, boundaryColorMap, marineProtectedAreaColorMap } from '@/maps/config/layerColors';
-import { Style, Fill, Stroke } from 'ol/style';
+import { samplingSiteByYearColorMap,
+  samplingSiteByProjectColorMap,
+  samplingSiteByHardCoralCoverColorMap,geomorphicColorMap, benthicColorMap, bathymetricColorMap, reefExtentColorMap, boundaryColorMap, marineProtectedAreaColorMap } from '@/maps/config/layerColors';
+import { Style, Fill, Stroke, Circle as CircleStyle } from 'ol/style';
 import { Feature } from 'ol';
 import { Geometry } from 'ol/geom';
-import { map } from 'lodash';
 import { useMapController } from './useMapController';
 
 // Create a singleton state for layer styles
 const visibleClasses = ref<{ [key: string]: boolean }>({
   // Initialize Geomorphic classes
-  ...Object.fromEntries(Object.keys(geomorphicColorMap).map(key => [key, true])),
+  ...Object.fromEntries(Object.keys(geomorphicColorMap.colorMap).map(key => [key, true])),
   // Initialize Benthic classes
-  ...Object.fromEntries(Object.keys(benthicColorMap).map(key => [key, true])),
+  ...Object.fromEntries(Object.keys(benthicColorMap.colorMap).map(key => [key, true])),
   // Initialize Bathymetric classes
-  ...Object.fromEntries(Object.keys(bathymetricColorMap).map(key => [key, true])),
+  ...Object.fromEntries(Object.keys(bathymetricColorMap.colorMap).map(key => [key, true])),
   // Initialize Reef Extent classes
-  ...Object.fromEntries(Object.keys(reefExtentColorMap).map(key => [key, true])),
+  ...Object.fromEntries(Object.keys(reefExtentColorMap.colorMap).map(key => [key, true])),
   // Initialize Boundary classes
-  ...Object.fromEntries(Object.keys(boundaryColorMap).map(key => [key, true])),
+  ...Object.fromEntries(Object.keys(boundaryColorMap.colorMap).map(key => [key, true])),
   // Initialize Marine Protected Area classes
-  ...Object.fromEntries(Object.keys(marineProtectedAreaColorMap).map(key => [key, true])),
+  ...Object.fromEntries(Object.keys(marineProtectedAreaColorMap.colorMap).map(key => [key, true])),
+  // Initialize Sampling Site classes
+  ...Object.fromEntries(Object.keys(samplingSiteByYearColorMap.colorMap).map(key => [key, true])),
+  ...Object.fromEntries(Object.keys(samplingSiteByProjectColorMap.colorMap).map(key => [key, true])),
+  ...Object.fromEntries(Object.keys(samplingSiteByHardCoralCoverColorMap.colorMap).map(key => [key, true])),
 });
 
 // Add this helper function at the top level of the file
-const createCommonStyle = (colorMap: Record<string, string>, featureClass: string, dottedStroke = false) => {
+const createCommonStyle = (colorMap: Record<string, string>, featureClass: string, dottedStroke = false, dottedStrokeType: 'dotted' | 'default' | '3D' = 'default') => {
+  const dottedStyle = {
+    dotted: new Stroke({
+      color: colorMap[featureClass] || '#64c9c9',
+      width: 2,
+      lineDash: [2, 2]
+    }),
+    default: new Stroke({
+      color: colorMap[featureClass] || 'rgba(0, 0, 0, 0.3)',
+      width: 1
+    }),
+    '3D': new Stroke({
+      color: colorMap[featureClass] ||'blue',
+      width: 4,
+    })
+  } as const;
+  
   return new Style({
     fill: new Fill({
       color: colorMap[featureClass] || 'rgba(128, 128, 128, 0.5)',
     }),
-    stroke: new Stroke(
+    image: new CircleStyle({
+      radius: 4,
+      fill: new Fill({
+        color: colorMap[featureClass] || 'blue',
+      }),
+      stroke: new Stroke({
+        color: 'white',
+        width: 1,
+      }),
+    }),
+    stroke: 
       dottedStroke 
-        ? {
-            color: '#64c9c9',
-            width: 2,
-            lineDash: [2, 2]
-          }
-        : {
-            color: 'rgba(0, 0, 0, 0.3)',
-            width: 1
-          }
-    )
+        ? dottedStyle[dottedStrokeType]
+        : dottedStyle.default
   });
 };
 
-const createFeatureStyle = (feature: Feature<Geometry>, colorMap: Record<string, string>, dotted = false) => {
-  const featureClass = feature.get('class') || feature.get('name') as string;
+export const createFeatureStyle = (feature: Feature<Geometry>, colorMap: Record<string, string>, dotted = false, featureName = 'class', dottedStrokeType: 'dotted' | 'default' | '3D' = 'default') => {
+  const featureClass = feature.get(featureName) || feature.get('name') as string;
   if (!visibleClasses.value[featureClass]) {
     return new Style({});
   }
-  return createCommonStyle(colorMap, featureClass, dotted);
+  return createCommonStyle(colorMap, featureClass, dotted, dottedStrokeType);
 };
 
 export function useLayerStyles() {
@@ -60,12 +83,12 @@ export function useLayerStyles() {
 
   const setAllClassesVisibility = (layerType: 'Geomorphic' | 'Benthic', isVisible: boolean) => {
     const colorMap = {
-      'Geomorphic': geomorphicColorMap,
-      'Benthic': benthicColorMap,
-      'Bathymetric': bathymetricColorMap,
-      'ReefExtent': reefExtentColorMap,
-      'Boundary': boundaryColorMap,
-      'MarineProtectedArea': marineProtectedAreaColorMap
+      'Geomorphic': geomorphicColorMap.colorMap,
+      'Benthic': benthicColorMap.colorMap,
+      'Bathymetric': bathymetricColorMap.colorMap,
+      'ReefExtent': reefExtentColorMap.colorMap,
+      'Boundary': boundaryColorMap.colorMap,
+      'MarineProtectedArea': marineProtectedAreaColorMap.colorMap
     }[layerType] || {};
 
     Object.keys(colorMap).forEach(className => {
@@ -73,12 +96,12 @@ export function useLayerStyles() {
     });
   };
 
-  const createGeomorphicStyle = (feature: Feature<Geometry>) => createFeatureStyle(feature, geomorphicColorMap);
-  const createBenthicStyle = (feature: Feature<Geometry>) => createFeatureStyle(feature, benthicColorMap);
+  const createGeomorphicStyle = (feature: Feature<Geometry>) => createFeatureStyle(feature, geomorphicColorMap.colorMap);
+  const createBenthicStyle = (feature: Feature<Geometry>) => createFeatureStyle(feature, benthicColorMap.colorMap);
   // const createBathymetricStyle = (feature: Feature<Geometry>) => createFeatureStyle(feature, bathymetricColorMap);
-  const createMarineProtectedStyle = (feature: Feature<Geometry>) => createFeatureStyle(feature, marineProtectedAreaColorMap, true);
-  const createBoundaryStyle = (feature: Feature<Geometry>) => createFeatureStyle(feature, boundaryColorMap, true);
-  const createReefExtentStyle = (feature: Feature<Geometry>) => createFeatureStyle(feature, reefExtentColorMap);
+  const createMarineProtectedStyle = (feature: Feature<Geometry>) => createFeatureStyle(feature, marineProtectedAreaColorMap.colorMap, true, 'class', 'dotted');
+  const createBoundaryStyle = (feature: Feature<Geometry>) => createFeatureStyle(feature, boundaryColorMap.colorMap, true, 'class', 'dotted');
+  const createReefExtentStyle = (feature: Feature<Geometry>) => createFeatureStyle(feature, reefExtentColorMap.colorMap);
 
   return {
     visibleClasses: computed(() => visibleClasses.value),

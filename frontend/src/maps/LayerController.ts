@@ -22,15 +22,20 @@ interface GeoJSONFeatureCollection {
 
 export class LayerController {
   private countryLayer: VectorLayer<VectorSource>;
-  private expeditionLayer: VectorLayer<VectorSource>;
   private geomorphicLayer: VectorTileLayer<VectorTileSource> | null = null;
   private benthicLayer: VectorTileLayer<VectorTileSource> | null = null;
   private boundaryLayer: VectorTileLayer<VectorTileSource> | null = null;
   private reefExtentLayer: VectorTileLayer<VectorTileSource> | null = null;
+  private expeditionProjectLayer: VectorLayer<VectorSource>;
+  private expeditionYearLayer: VectorLayer<VectorSource>;
+  private expeditionHardCoralCoverLayer: VectorLayer<VectorSource>;
 
   constructor() {
     this.countryLayer = createCountryLayer();
-    this.expeditionLayer = createExpeditionLayer();
+    this.expeditionProjectLayer = createExpeditionLayer('by project');
+    this.expeditionYearLayer = createExpeditionLayer('by year');
+    this.expeditionHardCoralCoverLayer =
+      createExpeditionLayer('hard coral cover');
   }
 
   public showCountryLayer() {
@@ -46,40 +51,50 @@ export class LayerController {
 
   public updateExpeditions(expeditionData: GeoJSONFeatureCollection) {
     // at the moment, only Djibouti has expedition data
-    this.expeditionLayer.getSource()?.clear();
+    this.expeditionProjectLayer.getSource()?.clear();
+    this.expeditionYearLayer.getSource()?.clear();
+    this.expeditionHardCoralCoverLayer.getSource()?.clear();
 
     if (expeditionData) {
-      const expeditionFeatures = new GeoJSON().readFeatures(expeditionData, {
-        dataProjection: 'EPSG:4326',
-        featureProjection: 'EPSG:3857'
-        // was  featureProjection: 'EPSG:4326',
-      });
-      this.expeditionLayer.getSource()?.addFeatures(expeditionFeatures);
-      // we shoudld probably update the map view here when we change the layer.
-      
+      // Create features for each layer separately
+      const createFeaturesForLayer = () =>
+        new GeoJSON().readFeatures(expeditionData, {
+          dataProjection: 'EPSG:4326',
+          featureProjection: 'EPSG:3857',
+        });
+
+      // Add cloned features to each layer
+      this.expeditionProjectLayer
+        .getSource()
+        ?.addFeatures(createFeaturesForLayer());
+      this.expeditionYearLayer
+        .getSource()
+        ?.addFeatures(createFeaturesForLayer());
+      this.expeditionHardCoralCoverLayer
+        .getSource()
+        ?.addFeatures(createFeaturesForLayer());
     }
   }
 
   public resetLayers() {
     // this.coastlineLayer?.getSource()?.clear();
-    this.expeditionLayer?.getSource()?.clear();
     this.countryLayer.setStyle(countryStyle); // Reset style to show yellow circles
   }
 
   public getLayers() {
     return [
       this.countryLayer,
-      this.expeditionLayer,
       this.geomorphicLayer,
       this.benthicLayer,
       this.boundaryLayer,
-      this.reefExtentLayer];
+      this.reefExtentLayer,
+    ];
   }
 
   public getGeomorphicLayer() {
     return this.geomorphicLayer;
   }
-  
+
   public getBenthicLayer() {
     return this.benthicLayer;
   }
@@ -89,7 +104,7 @@ export class LayerController {
   }
 
   public getReefExtentLayer() {
-    return this.reefExtentLayer
+    return this.reefExtentLayer;
   }
   public getCountryLayer() {
     return this.countryLayer;
@@ -98,20 +113,33 @@ export class LayerController {
     this.countryLayer = countryLayer;
   }
 
-  public getExpeditionLayer() {
-    return this.expeditionLayer;
-  }
-  public setExpeditionLayer(expeditionLayer: VectorLayer<VectorSource>) {
-    this.expeditionLayer = expeditionLayer;
+  public getExpeditionLayer(
+    type: 'by project' | 'by year' | 'hard coral cover' = 'by project'
+  ) {
+    if (type === 'by project') {
+      return this.expeditionProjectLayer;
+    }
+    if (type === 'by year') {
+      return this.expeditionYearLayer;
+    }
+    if (type === 'hard coral cover') {
+      return this.expeditionHardCoralCoverLayer;
+    }
   }
   public getCorrenAllenLayers() {
-    return [this.geomorphicLayer, this.benthicLayer, this.boundaryLayer, this.reefExtentLayer];
+    return [
+      this.geomorphicLayer,
+      this.benthicLayer,
+      this.boundaryLayer,
+      this.reefExtentLayer,
+    ];
   }
 
   public getActiveLayers() {
-    return this.getLayers().filter((layer): layer is NonNullable<typeof layer> => {
-      return layer !== null && layer.getVisible();
-    });
+    return this.getLayers().filter(
+      (layer): layer is NonNullable<typeof layer> => {
+        return layer !== null && layer.getVisible();
+      }
+    );
   }
-
 }

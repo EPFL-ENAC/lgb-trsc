@@ -147,6 +147,9 @@ import {
   boundaryColorMap,
   marineProtectedAreaColorMap,
   chlMonthlyMean1997_2024,
+  samplingSiteByYearColorMap,
+  samplingSiteByProjectColorMap,
+  samplingSiteByHardCoralCoverColorMap,
 } from '@/maps/config/layerColors';
 import { useMapStore } from '@/stores/mapStore';
 
@@ -181,7 +184,6 @@ const getGroupIcon = (title: string) => {
 };
 
 const getLayerLegend = (layer: Layer) => {
-  console.log(layer);
   // Return the appropriate color map based on the layer title
   switch (layer.title) {
     case 'Geomorphic':
@@ -198,6 +200,12 @@ const getLayerLegend = (layer: Layer) => {
       return marineProtectedAreaColorMap;
     case 'CHL_monthly_mean_1997_2024_Mean':
       return chlMonthlyMean1997_2024;
+    case 'by year':
+      return samplingSiteByYearColorMap;
+    case 'by project':
+      return samplingSiteByProjectColorMap;
+    case 'hard coral cover':
+      return samplingSiteByHardCoralCoverColorMap;
     default:
       return undefined;
   }

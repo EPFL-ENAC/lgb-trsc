@@ -15,6 +15,7 @@ interface ExpeditionProperties {
   date_iso: string;
   reef_area: string;
   sampling_site_name: string;
+  event_id: string;
   [key: string]: unknown;
 }
 
@@ -67,7 +68,6 @@ export const useMapStore = defineStore('map', () => {
       hoveredExpeditionPixel.value = null;
       return;
     }
-    console.log('Hovering over:', properties);
     hoveredExpedition.value = properties;
     hoveredExpeditionPixel.value = pixel;
   }

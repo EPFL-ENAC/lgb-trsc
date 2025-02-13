@@ -163,7 +163,7 @@ export const createDjiboutiReefExtentLayer = () => {
     _pmtiles: true,
     source: createReefExtentSource(),
     title: 'Reef Extent',
-    visible: true,
+    visible: false,
     base: false,
     renderMode: 'vector',
     updateWhileAnimating: true,

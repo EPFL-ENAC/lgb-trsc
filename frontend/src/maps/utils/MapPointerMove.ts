@@ -26,8 +26,10 @@ export function addMapPointerMoveHandler(map: Map, options: MapPointerMoveHandle
       : map.getFeaturesAtPixel(pixel, {
         hitTolerance: 10,
         layerFilter: (layer) => {
+          const validTooltipLayers = ['Countries', 'Expedition', 'by year', 'by project', 'hard coral cover'];
           // Only check specific layers you're interested in
-          return layer.get('title') === 'Countries' || layer.get('title') === 'Expedition';
+          // return layer.get('title') === 'Countries' || layer.get('title') === 'Expedition';
+          return validTooltipLayers.includes(layer.get('title'));
         }
       })[0];
     if (info) {

@@ -15,6 +15,7 @@
       {{ formatCoordinate(selectedExpedition.longitude_end, 'E') }}
     </p>
     <p>{{ selectedExpedition.date_iso }}</p>
+    <p>experiment: {{ selectedExpedition.experiment }}</p>
     <div v-if="selectedExpedition.experiment === '3D'">
       <div v-if="sampleSet.length > 0">
         <BarChart3DMappingExpedition
@@ -43,27 +44,26 @@ import { storeToRefs } from 'pinia';
 
 interface MappingData {
   id: number;
-  Site: string;
-  Site_name: string;
-  ID_site: string;
+  sampling_site_name: string;
+  event_id: string;
   year: number;
-  Date: string;
   date_iso: string;
   country: string;
-  latitude_begin: number;
-  longitude_begin: number;
+  latitude_start: number;
+  longitude_start: number;
   latitude_end: number;
   Substrate_1: string;
   mean: number;
 }
 
 interface D3Mapping {
-  Site_name: string;
+  sampling_site_name: string;
+  event_id: string;
   [key: string]: unknown;
 }
 
 const threedMappingByCountry: Record<string, MappingData[]> = {
-  djibouti: Djibouti3DMapping,
+  djibouti: Djibouti3DMapping as any,
 };
 
 const formatCoordinate = (decimal: number, direction: 'N' | 'E'): string => {
@@ -83,30 +83,30 @@ const countryLower = computed(() =>
   selectedExpedition.value.country.toLowerCase().replaceAll(' ', '_')
 );
 
-const sampling_site_id = computed(() => {
-  const country = selectedExpedition.value.country.toLowerCase().replaceAll(' ', '_');
-  // "Maskali / Moucha" should convert to "maskali"
-  const reef_area = selectedExpedition.value.reef_area
-    .toLowerCase()
-    .split('/')[0]
-    .trim()
-    .replaceAll(' ', '_');
-  const site_name = selectedExpedition.value.sampling_site_name
-    .toLowerCase()
-    .replaceAll(' ', '_');
-  return `${country}_${reef_area}_${site_name}`;
-});
+// const sampling_site_id = computed(() => {
+//   const country = selectedExpedition.value.country.toLowerCase().replaceAll(' ', '_');
+//   // "Maskali / Moucha" should convert to "maskali"
+//   const reef_area = selectedExpedition.value.reef_area
+//     .toLowerCase()
+//     .split('/')[0]
+//     .trim()
+//     .replaceAll(' ', '_');
+//   const site_name = selectedExpedition.value.sampling_site_name
+//     .toLowerCase()
+//     .replaceAll(' ', '_');
+//   return `${country}_${reef_area}_${site_name}`;
+// });
 
 const sampleSet = computed(() => {
   try {
+    const eventID = selectedExpedition.value.event_id;
     const sampleByIds = threedMappingByCountry[countryLower.value]?.filter(
-      (d3Mapping) => d3Mapping.Site_name === sampling_site_id.value
+      (d3Mapping) => d3Mapping.event_id === eventID
     ) || [];
     
     const result = sampleByIds.filter((d3Mapping) => 
       d3Mapping.date_iso === selectedExpedition.value.date_iso
     );
-
     return result.map(x => ({
       Substrate_1: String(x.Substrate_1),
       mean: Number(x.mean)
