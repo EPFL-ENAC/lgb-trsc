@@ -42,7 +42,6 @@ export default {
   data() {
     return {
       chart: null,
-      chartSubtrate: null,
     };
   },
   watch: {

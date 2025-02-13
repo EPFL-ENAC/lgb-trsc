@@ -16,6 +16,7 @@ const countries = {
       properties: {
         type: 'country',
         name: 'Djibouti',
+        country_code: 'DJ',
         description: 'Djibouti is a country located in the Horn of Africa.',
         visited: 'Visited in 2022, 2023',
         projects: '3D mapping, eDNA',
@@ -54,6 +55,7 @@ const countries = {
       properties: {
         type: 'country',
         name: 'Eritrea',
+        country_code: 'ER',
         description:
           'Eritrea is a country in the Horn of Africa, with a coastline along the Red Sea.',
         visited: 'Visited in 2024, 2025',
@@ -97,6 +99,7 @@ const countries = {
       properties: {
         type: 'country',
         name: 'Sudan',
+        country_code: 'SD',
         description: 'Sudan is a country in Northeast Africa.',
         visited: 'Visited in 2021, 2022',
         projects: 'Marine biodiversity, Coastal erosion',
@@ -129,18 +132,17 @@ const countries = {
       type: 'Feature',
       geometry: {
         type: 'Point',
-        coordinates: [34.947877939437745, 29.54957892767743],
+        coordinates: [34.978348156353604, 29.395590752501832],
       },
       properties: {
         type: 'country',
-        name: 'Israel',
-        description:
-          'Israel is a country in the Middle East, on the southeastern shore of the Mediterranean Sea.',
+        name: 'Jordan',
+        country_code: 'JO',
+        description: 'Jordan is a country in Western Asia, located on the east bank of the Jordan River.',
         visited: 'Visited in 2023, 2024',
         projects: 'Coral reef restoration, Marine pollution',
         lead: 'Lead by Michael Cohen',
-        collaboration:
-          'In collaboration with Israel Oceanographic and Limnological Research',
+        collaboration: 'In collaboration with Aqaba Marine Science Station',
         sites: '12 sites visited',
         samples: '350 samples collected',
         divers: '7 local divers trained',
@@ -149,15 +151,25 @@ const countries = {
           type: 'Polygon',
           coordinates: [
             [
-              [34.888417627215404, 29.537901750016033],
-              [34.93103305972542, 29.4312206467269],
-              [34.97934874272016, 29.497745070458663],
-              [34.983830709178676, 29.602327031986405],
-              [34.888417627215404, 29.537901750016033],
+              [34.97472381591797, 29.387104034423828],
+              [34.97583770751953, 29.394018173217773],
+              [34.976566314697266, 29.397470474243164],
+              [34.97875213623047, 29.401582717895508],
+              [34.98111343383789, 29.405420303344727],
+              [34.98319625854492, 29.408590316772461],
+              [34.985599517822266, 29.411760330200195],
+              [34.987701416015625, 29.414930343627926],
+              [34.989532470703125, 29.417808532714844],
+              [34.99153900146484, 29.42040252685547],
+              [34.993324279785156, 29.422716140747067],
+              [34.99510955810547, 29.425029754638672],
+              [34.99717712402344, 29.427343368530273],
+              [34.97472381591797, 29.387104034423828],
             ],
           ],
         },
-      },
+        enabled: true,
+      }
     },
   ],
 };
