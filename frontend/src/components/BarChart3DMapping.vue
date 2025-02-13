@@ -49,13 +49,14 @@ export default {
       chart.setOption(option);
     },
     getChartOption(data) {
+
       function getSiteNameFromSiteId(data, SiteId) {
         if (data === undefined) {
           return '';
         }
         return data.find((item) => item.id === parseInt(SiteId))?.sampling_site_name || '';
       }
-      function processData(data) {
+      function processData(data, substrateLevel) {
         const seriesData = {};
 
         validSubstrates.forEach((substrate) => {
@@ -71,10 +72,10 @@ export default {
         }, {});
 
         data.forEach((item) => {
-          if (validSubstrates.includes(item.Substrate_1)) {
+          if (validSubstrates.includes(item[substrateLevel])) {
             const index = idMapping[item.id];
             if (index !== undefined) {
-              seriesData[item.Substrate_1][index] += item.mean;
+              seriesData[item[substrateLevel]][index] += item.mean;
             }
           }
         });
@@ -159,7 +160,7 @@ export default {
           max: 1,
           min: 0
         },
-        series: processData(data),
+        series: processData(data, this.substrateLevel),
         color: colorPalette
       };
     }
