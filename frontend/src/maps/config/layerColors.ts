@@ -74,17 +74,17 @@ export const reefExtentColorMap = {
 export const samplingSiteByYearColorMap = {
   type: 'categorical',
   colorMap: {
-    '2022': 'rgb(178, 8, 76)',
-    '2023': 'rgb(30, 185, 185)',
+    '2022': 'rgb(65, 105, 225)',  // Royal Blue
+    '2023': 'rgb(50, 205, 50)',   // Lime Green
   },
 };
 
 export const samplingSiteByProjectColorMap = {
   type: 'categorical',
   colorMap: {
-    '3D': 'rgb(178, 8, 76)',
-    MP: 'rgb(0, 0, 0)',
-    Sym: 'rgb(30, 185, 185)',
+    '3D': 'rgb(255, 140, 0)',    // Dark Orange
+    MP: 'rgb(138, 43, 226)',     // Blue Violet
+    Sym: 'rgb(220, 20, 60)',     // Crimson
   },
 };
 

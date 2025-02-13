@@ -119,7 +119,7 @@ export class MapController {
             // option 3 :by project
             // layerController.getExpeditionLayer('hard coral cover'),
             layerController.getExpeditionLayer('by year'),
-            // layerController.getExpeditionLayer('by project'),
+            layerController.getExpeditionLayer('by project'),
           ],
         } as CustomBaseLayerOptions),
         layerController.getCountryLayer(),
