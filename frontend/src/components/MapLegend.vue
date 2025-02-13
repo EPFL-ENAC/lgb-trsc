@@ -1,10 +1,10 @@
 <template>
   <div class="legend" :class="{ 'legend-absolute': isAbsolute }">
-    <ol v-if="classColorMap">
+    <ol v-if="classColorMap && !isContinuous">
       <li v-for="(color, className) in classColorMap" :key="className">
         <q-checkbox
           :model-value="visibleClasses[className]"
-          @update:model-value="() => toggleClassVisibility(className)"
+          @update:model-value="() => toggleClassVisibility(className as string)"
           dense
         >
           <template v-slot:default>
@@ -18,6 +18,20 @@
           </template>
         </q-checkbox>
       </li>
+    </ol>
+    <!-- Continuous legend -->
+    <ol
+      v-else-if="isContinuous && classColorMap && colorLabels.length"
+      class="gradient-ramp"
+    >
+      <div class="color-ramp" :style="{ background: gradientCSS }"></div>
+      <div class="ramp-labels">
+        <span>{{ colorLabels[0] }}</span>
+        <span>
+          {{ colorLabels[Math.floor(colorLabels.length / 2)] }}
+        </span>
+        <span>{{ colorLabels[colorLabels.length - 1] }}</span>
+      </div>
     </ol>
     <ol v-else>
       <li>
@@ -43,6 +57,7 @@ const props = defineProps<{
   selectedCountry?: string;
   selectedExpedition?: string;
   classColorMap?: ClassColorMap;
+  isContinuous?: boolean;
   isAbsolute?: boolean;
 }>();
 
@@ -57,6 +72,17 @@ const toggleClassVisibility = (className: string) => {
 const legendColor = computed(() =>
   props.selectedCountry || props.selectedExpedition ? 'blue' : 'yellow'
 );
+
+const colorLabels = computed(() => {
+  if (!props.classColorMap) return [];
+  return Object.keys(props.classColorMap);
+});
+
+const gradientCSS = computed(() => {
+  if (!props.classColorMap) return '';
+  const colorsArray = Object.values(props.classColorMap);
+  return `linear-gradient(to bottom, ${colorsArray.join(', ')})`;
+});
 
 const legendText = computed(() =>
   props.selectedCountry || props.selectedExpedition
@@ -117,5 +143,26 @@ const legendText = computed(() =>
   display: flex;
   align-items: center;
   margin-left: 8px;
+}
+
+.gradient-ramp {
+  display: flex; /* Set display to flex */
+  align-items: center; /* Align items vertically */
+  width: 100%; /* Full width to accommodate labels next to the ramp */
+  height: 150px; /* Adjust height for better gradient visualization */
+}
+
+.color-ramp {
+  width: 40px; /* Fixed width for the color ramp */
+  height: 100%;
+  background: v-bind('gradientCSS');
+}
+
+.ramp-labels {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  margin-left: 10px; /* Add some spacing between ramp and labels */
 }
 </style>

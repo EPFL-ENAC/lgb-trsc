@@ -18,11 +18,7 @@
   >
     <q-list padding>
       <!-- Base maps section -->
-      <q-expansion-item
-        group="layers"
-        icon="map"
-        label="Base maps"
-      >
+      <q-expansion-item group="layers" icon="map" label="Base maps">
         <q-list padding>
           <q-item v-for="layer in baseMaps" :key="layer.title">
             <q-item-section avatar>
@@ -47,9 +43,12 @@
         default-open
       >
         <q-list padding>
-          <q-item v-for="(layer, layerIndex) in group.layers" :key="layer.title">
+          <q-item
+            v-for="(layer, layerIndex) in group.layers"
+            :key="layer.title"
+          >
             <q-item-section>
-                <q-expansion-item
+              <q-expansion-item
                 v-if="layer.visible && getLayerLegend(layer)"
                 dense
                 dense-toggle
@@ -63,23 +62,33 @@
                         <q-radio
                           v-model="layer.visible"
                           :val="true"
-                          @update:model-value="() => setOverlayLayerRadio(groupIndex, layerIndex)"
+                          @update:model-value="
+                            () => setOverlayLayerRadio(groupIndex, layerIndex)
+                          "
                         />
                       </template>
                       <template v-else>
                         <q-checkbox
                           v-model="layer.visible"
-                          @update:model-value="(val) => toggleOverlayLayer(groupIndex, layerIndex, val)"
+                          @update:model-value="
+                            (val) =>
+                              toggleOverlayLayer(groupIndex, layerIndex, val)
+                          "
                         />
                       </template>
                     </div>
                     <div class="layer-title">{{ layer.title }}</div>
-                    <div v-if="getLayerLegend(layer)" class="show-legend">Show legend</div>
+                    <div v-if="getLayerLegend(layer)" class="show-legend">
+                      Show legend
+                    </div>
                   </div>
                 </template>
                 <q-card class="legend-card">
                   <MapLegend
-                    :classColorMap="getLayerLegend(layer)"
+                    :classColorMap="getLayerLegend(layer)?.colorMap"
+                    :is-continuous="
+                      getLayerLegend(layer)?.type === 'continuous'
+                    "
                   />
                 </q-card>
               </q-expansion-item>
@@ -99,13 +108,18 @@
                         <q-radio
                           v-model="layer.visible"
                           :val="true"
-                          @update:model-value="() => setOverlayLayerRadio(groupIndex, layerIndex)"
+                          @update:model-value="
+                            () => setOverlayLayerRadio(groupIndex, layerIndex)
+                          "
                         />
                       </template>
                       <template v-else>
                         <q-checkbox
                           v-model="layer.visible"
-                          @update:model-value="(val) => toggleOverlayLayer(groupIndex, layerIndex, val)"
+                          @update:model-value="
+                            (val) =>
+                              toggleOverlayLayer(groupIndex, layerIndex, val)
+                          "
                         />
                       </template>
                     </div>
@@ -126,7 +140,14 @@ import { ref } from 'vue';
 import { useQuasar } from 'quasar';
 import { useLayerManager } from '@/maps/composables/useLayerManager';
 import MapLegend from './MapLegend.vue';
-import { geomorphicColorMap, benthicColorMap, reefExtentColorMap, boundaryColorMap, marineProtectedAreaColorMap } from '@/maps/config/layerColors';
+import {
+  geomorphicColorMap,
+  benthicColorMap,
+  reefExtentColorMap,
+  boundaryColorMap,
+  marineProtectedAreaColorMap,
+  chlMonthlyMean1997_2024,
+} from '@/maps/config/layerColors';
 import { useMapStore } from '@/stores/mapStore';
 
 interface Layer {
@@ -143,23 +164,24 @@ const {
   overlayGroups,
   setBaseMapVisible,
   toggleOverlayLayer: originalToggleOverlayLayer,
-  setOverlayLayerRadio
+  setOverlayLayerRadio,
 } = useLayerManager();
 
 const mapStore = useMapStore();
 
 const getGroupIcon = (title: string) => {
   const icons: Record<string, string> = {
-    'Environmental': 'eco',
-    'Reef': 'water',
-    'Sampling': 'location_on',
-    'Default': 'layers'
+    Environmental: 'eco',
+    Reef: 'water',
+    Sampling: 'location_on',
+    Default: 'layers',
   };
 
   return icons[title] || icons['Default'];
 };
 
 const getLayerLegend = (layer: Layer) => {
+  console.log(layer);
   // Return the appropriate color map based on the layer title
   switch (layer.title) {
     case 'Geomorphic':
@@ -174,26 +196,32 @@ const getLayerLegend = (layer: Layer) => {
       return boundaryColorMap;
     case 'Protected Area':
       return marineProtectedAreaColorMap;
+    case 'CHL_monthly_mean_1997_2024_Mean':
+      return chlMonthlyMean1997_2024;
     default:
       return undefined;
   }
 };
 
-const toggleOverlayLayer = (groupIndex: number, layerIndex: number, val: boolean) => {
+const toggleOverlayLayer = (
+  groupIndex: number,
+  layerIndex: number,
+  val: boolean
+) => {
   const layer = overlayGroups.value[groupIndex].layers[layerIndex];
-  
+
   // Set visibility for all classes when toggling Geomorphic or Benthic layers
   if (layer.title === 'Geomorphic' || layer.title === 'Benthic') {
     mapStore.setAllClassesVisibility(layer.title, val);
   }
-  
+
   originalToggleOverlayLayer(groupIndex, layerIndex, val);
 };
 </script>
 
 <style>
 .q-item.disabled .q-checkbox__bg,
-.q-item[aria-disabled="true"] .q-checkbox__bg {
+.q-item[aria-disabled='true'] .q-checkbox__bg {
   cursor: default !important;
 }
 </style>
@@ -253,7 +281,7 @@ const toggleOverlayLayer = (groupIndex: number, layerIndex: number, val: boolean
 
 .layer-grid.no-expand {
   pointer-events: none;
-  
+
   .checkbox-wrapper {
     pointer-events: all;
   }
