@@ -30,7 +30,10 @@
 
     <q-footer class="bg-white text-red q-row row align-right" style="border-top: 1px solid red;">
       <q-toolbar>
-        <q-toolbar-title class="row pd-x text-red justify-end">
+        <q-toolbar-title class="row pd-x text-red toolbar-footer">
+          <span class="footer-text">
+            Developed by the Transnational Red Sea Center at the Ecole Polytechnique Fédérale of Lausanne, Switzerland
+          </span>
           <q-avatar style="border-radius: 0%; width: auto; height: auto;">
             <img style="width:auto" src="/EPFL_logo.png">
           </q-avatar>
@@ -71,6 +74,16 @@ function navigateToHome() {
 </script>
 
 <style lang="scss" scoped>
+.toolbar-footer {
+  display: flex;
+    flex-direction: row;
+    justify-content: right;
+    align-items: center;
+    gap: 1rem;
+}
+.footer-text {
+  font-size: 0.8rem;
+}
 :root {
     --info: #46789a;
     --success: #8aa231;
