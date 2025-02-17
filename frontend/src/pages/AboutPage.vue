@@ -43,7 +43,9 @@
     <q-img
       class="fade-in-from-bottom"
       fit="cover"
-      src="/background-about.jpg"
+      src="/background-about-cropped.webp"
+      srcset="/background-about-cropped.webp 1080w, /background-about-cropped-2500.webp 2500w, /background-about-cropped-full-size.webp 9210w"
+      sizes="(min-width: 2500px) 9210px,  1080px"
       alt="bg"
       style="height: 100%; width: 100%"
     >
