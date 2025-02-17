@@ -19,12 +19,12 @@ export const geomorphicColorMap = {
 export const benthicColorMap = {
   type: 'categorical',
   colorMap: {
-    Sand: 'rgb(255, 244, 183)',
+    "Coral/Algae": 'rgb(255, 97, 97)',
+    Seagrass: 'rgb(102, 132, 57)',
+    "Microalgal Mats": 'rgb(156, 204, 78)',
     Rock: 'rgb(161, 133, 88)',
-    Seagrass: 'rgb(112, 168, 0)',
-    Coral: 'rgb(255, 190, 190)',
-    Rubble: 'rgb(200, 200, 200)',
-    Algae: 'rgb(0, 168, 132)',
+    Rubble: 'rgb(224, 208, 93)',
+    Sand: 'rgb(255, 255, 190)',
   },
 };
 
