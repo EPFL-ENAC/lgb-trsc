@@ -1,23 +1,52 @@
 <template>
   <div class="about-page">
     <p class="top-element q-pa-md">
-     <a class="trsc-link" href="https://trsc.org" target="_blank">The Transnational Red Sea</a>, established in 2019 at <a target="_blank" class="trsc-link" href="https://www.epfl.ch/">the Ecole Polytechnique Federale de Lausanne</a> with support from the Swiss Foreign Ministry, is an independent non-profit organisation dedicated to coral reef conservation in the Red Sea. By drawing on Switzerland's neutrality and scientific expertise, the Center promotes scientific collaboration among Red Sea countries to better understand how the region's corals have developed resilience to climate change. It also develops innovative, cost-effective technologies to enhance coral reef monitoring with higher resolution, standardisation, and scalability. The Center advocates for environmental protection policies by sharing these solutions with Red Sea nations and beyond, supporting science-based efforts to conserve coral reefs globally.
+      <a class="trsc-link" href="https://trsc.org" target="_blank"
+        >The Transnational Red Sea</a
+      >, established in 2019 at
+      <a target="_blank" class="trsc-link" href="https://www.epfl.ch/"
+        >the Ecole Polytechnique Federale de Lausanne</a
+      >
+      with support from the Swiss Foreign Ministry, is an independent non-profit
+      organisation dedicated to coral reef conservation in the Red Sea. By
+      drawing on Switzerland's neutrality and scientific expertise, the Center
+      promotes scientific collaboration among Red Sea countries to better
+      understand how the region's corals have developed resilience to climate
+      change. It also develops innovative, cost-effective technologies to
+      enhance coral reef monitoring with higher resolution, standardisation, and
+      scalability. The Center advocates for environmental protection policies by
+      sharing these solutions with Red Sea nations and beyond, supporting
+      science-based efforts to conserve coral reefs globally.
     </p>
     <div class="bottom-element">
       <div class="card" v-for="person in people" :key="person.id">
         <a :href="person.epflPage" target="_blank">
-          <q-img :ratio="1/1" :fit="'cover'" :position="'top center'" :src="person.image" alt="Picture of {{ person.name }}" />
+          <q-img
+            :ratio="1 / 1"
+            :fit="'cover'"
+            :position="'top center'"
+            :src="person.image"
+            alt="Picture of {{ person.name }}"
+          />
         </a>
         <a class="trsc-link" :href="person.epflPage" target="_blank">
           <div class="name-function">
             <h3>{{ person.name }}</h3>
           </div>
         </a>
-        <p class="two-lines" v-if="person.function"><em>{{ person.function }}</em></p>
+        <p class="two-lines" v-if="person.function">
+          <em>{{ person.function }}</em>
+        </p>
         <!-- <p>{{ person.description }}</p> -->
       </div>
     </div>
-    <q-img class="fade-in-from-bottom" fit="cover" src="/background-about.jpg" alt="bg" style="height: 100%; width: 100%;">
+    <q-img
+      class="fade-in-from-bottom"
+      fit="cover"
+      src="/background-about.jpg"
+      alt="bg"
+      style="height: 100%; width: 100%"
+    >
       <div class="absolute-bottom-right text-subtitle2">
         Guilhem Banc-Prandi | TRSC
       </div>
@@ -33,17 +62,19 @@ const people = ref([
     id: 1,
     name: 'Prof. Anders Meibom',
     function: 'General Director',
-    image: 'https://people.epfl.ch/private/common/photos/links/220185.jpg?ts=1734001592',
+    image:
+      'https://people.epfl.ch/private/common/photos/links/220185.jpg?ts=1734001592',
     epflPage: 'https://people.epfl.ch/anders.meibom',
-    description: 'Anders is the director of the TRSC'
+    description: 'Anders is the director of the TRSC',
   },
   {
     id: 2,
     name: 'Samuel Gardaz',
     function: 'Project Manager and Communication Director',
-    image: 'https://people.epfl.ch/private/common/photos/links/336212.jpg?ts=1734001629',
+    image:
+      'https://people.epfl.ch/private/common/photos/links/336212.jpg?ts=1734001629',
     epflPage: 'https://people.epfl.ch/samuel.gardaz',
-    description: 'Chef de projet, Laboratoire de géochimie biologique'
+    description: 'Chef de projet, Laboratoire de géochimie biologique',
   },
   {
     id: 3,
@@ -51,7 +82,8 @@ const people = ref([
     function: 'Scientific Director',
     image: '/people/guilhem_x660.webp',
     epflPage: 'https://people.epfl.ch/guilhem.banc-prandi',
-    description: 'My work mostly focused on the impact of thermal stress on the resilience of Red Sea coral to anthropogenic heavy metal pollution. I am also interested in the mechanisms of thermal acclimatisation and adaptation in cnidarians. '
+    description:
+      'My work mostly focused on the impact of thermal stress on the resilience of Red Sea coral to anthropogenic heavy metal pollution. I am also interested in the mechanisms of thermal acclimatisation and adaptation in cnidarians. ',
   },
   {
     id: 4,
@@ -59,8 +91,8 @@ const people = ref([
     function: 'Science and education officer',
     image: '/people/Donck_x660.webp',
     epflPage: 'https://people.epfl.ch/samuel.donck',
-    description: 'Samuel is a research assistant at the TRSC...'
-  }
+    description: 'Samuel is a research assistant at the TRSC...',
+  },
 ]);
 </script>
 
@@ -103,16 +135,6 @@ const people = ref([
     background: linear-gradient(to bottom, white, transparent);
     z-index: 1;
   }
-  /* &::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 150px;
-    background: linear-gradient(to top, white, transparent);
-    z-index: 1;
-  } */
 }
 .trsc-link {
   color: red;
@@ -128,21 +150,16 @@ const people = ref([
   }
 }
 .about-page {
-  /* display: grid;
-  grid-auto-rows: auto 1fr 200px;
-  gap: 1rem; */
-  /* justify-content: center; */
-
+  gap: 1rem;
   display: grid;
-    grid-auto-rows: auto max-content minmax(200px, 300px);
-    gap: 1rem;
-    /* justify-content: center; */
-    height: 100%;
-    align-items: center;
+  grid-template-rows: auto auto 200px;
+  height: calc(100vh - 163px);
+  align-content: space-between;
+  align-items: center;
 }
 
 .top-element {
-  display:inline-block;
+  display: inline-block;
   justify-content: center;
   align-items: center;
   max-width: 1400px;
@@ -175,11 +192,11 @@ const people = ref([
 }
 
 .card h3 {
-    font-weight: bold;
-    height: 2.5rem;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-size: larger;
+  font-weight: bold;
+  height: 2.5rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: larger;
 }
 
 .card p {
