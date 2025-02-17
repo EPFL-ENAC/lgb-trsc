@@ -8,8 +8,18 @@ import 'echarts/lib/chart/bar'; // Import bar chart
 import 'echarts/lib/component/tooltip'; // Import tooltip component
 import 'echarts/lib/component/title'; // Import title component
 import 'echarts/lib/component/legend'; // Import legend component
-import { d3MappingColorSubstrate1 as colorPalette } from '@/maps/config/layerColors';
-import { validSubstrates } from '@/maps/config/substrateOrder';
+import { d3MappingColorSubstrate1 as colorPalette, d3MappingColorSubstrate2 as colorPalette2 } from '@/maps/config/layerColors';
+import { validSubstrates, validSubstrates2 } from '@/maps/config/substrateOrder';
+
+const subtrateLevelMapColor = {
+  'Substrate_coarse': colorPalette,
+  'Substrate_intermediate': colorPalette2
+}
+
+const validSubstratesMap = {
+  'Substrate_coarse': validSubstrates,
+  'Substrate_intermediate': validSubstrates2
+}
 
 export default {
   name: 'BarChart3DMapping',
@@ -45,11 +55,13 @@ export default {
     };
   },
   watch: {
-    substrateLevel() {
-      this.chart.clear();
-      const option = this.getChartOption(this.rawData, this.substrateLevel);
-      this.chart.setOption(option);
-    }
+    substrateLevel: {
+      handler(newValue) {
+        this.chart.clear();
+        const option = this.getChartOption(this.rawData, newValue);
+        this.chart.setOption(option);
+      }
+    },
   },
   mounted() {
     this.initChart();
@@ -74,7 +86,7 @@ export default {
       function processData(data, substrateLevel) {
         const seriesData = {};
 
-        validSubstrates.forEach((substrate) => {
+        validSubstratesMap[substrateLevel].forEach((substrate) => {
           seriesData[substrate] = new Array(31).fill(0);
         });
 
@@ -87,7 +99,7 @@ export default {
         }, {});
 
         data.forEach((item) => {
-          if (validSubstrates.includes(item[substrateLevel])) {
+          if (validSubstratesMap[substrateLevel].includes(item[substrateLevel])) {
             const index = idMapping[item.id];
             if (index !== undefined) {
               seriesData[item[substrateLevel]][index] += item.mean;
@@ -95,7 +107,7 @@ export default {
           }
         });
 
-        return validSubstrates.map((substrate) => ({
+        return validSubstratesMap[substrateLevel].map((substrate) => ({
           name: substrate,
           type: 'bar',
           stack: 'total',
@@ -133,19 +145,7 @@ export default {
         },
         tooltip: localTooltip,
         legend: {
-          data: [
-            'sand',
-            'rubble',
-            'unknown_hard_substrate',
-            'algae_covered_substrate',
-            'coral_bleached',
-            'coral_dead',
-            'coral_alive',
-            'other_invertebrates',
-            'anemone',
-            'other_animal',
-            'trash'
-          ],
+          data: validSubstratesMap[substrateLevel],
           type: this.tooltip ? undefined: 'scroll',
           orient: 'horizontal',
           bottom: 0
@@ -153,7 +153,7 @@ export default {
         grid: {
           left: '3%',
           right: '4%',
-          bottom: '10%',
+          bottom: '13%',
           containLabel: true
         },
         xAxis: {
@@ -176,7 +176,7 @@ export default {
           min: 0
         },
         series: processData(data, substrateLevel),
-        color: colorPalette
+        color: subtrateLevelMapColor[substrateLevel]
       };
     }
   }
