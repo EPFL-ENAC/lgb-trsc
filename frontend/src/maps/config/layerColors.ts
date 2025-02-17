@@ -19,9 +19,9 @@ export const geomorphicColorMap = {
 export const benthicColorMap = {
   type: 'categorical',
   colorMap: {
-    "Coral/Algae": 'rgb(255, 97, 97)',
+    'Coral/Algae': 'rgb(255, 97, 97)',
     Seagrass: 'rgb(102, 132, 57)',
-    "Microalgal Mats": 'rgb(156, 204, 78)',
+    'Microalgal Mats': 'rgb(156, 204, 78)',
     Rock: 'rgb(161, 133, 88)',
     Rubble: 'rgb(224, 208, 93)',
     Sand: 'rgb(255, 255, 190)',
@@ -108,54 +108,57 @@ export const samplingSiteByHardCoralCoverColorMap = {
 // https://github.com/EPFL-ENAC/lgb-trsc/issues/1 for reference
 
 export const d3MappingColorSubstrate1 = [
-  "rgb(205, 127, 50)",  // goldenrod3 - sand
-  "rgb(153, 153, 153)", // gray60 - rubble
-  "rgb(102, 102, 102)", // gray40 - unknown_hard_substrate
-  "rgb(46, 139, 87)",   // seagreen - algae_covered_substrate
-  "rgb(255, 250, 240)", // floralwhite - coral_bleached
-  "rgb(205, 85, 85)",   // indianred3 - coral_dead
-  "rgb(79, 148, 205)",  // steelblue3 - coral_alive
-  "rgb(205, 150, 205)", // plum3 - other_invertebrates
-  "rgb(238, 162, 173)", // lightpink2 - anemone
-  "rgb(205, 104, 137)", // palevioletred3 - other_animal
-  "rgb(139, 129, 76)"   // lightgoldenrod4 - trash
+  'rgb(205, 127, 50)', // goldenrod3 - sand
+  'rgb(153, 153, 153)', // gray60 - rubble
+  'rgb(102, 102, 102)', // gray40 - unknown_hard_substrate
+  'rgb(46, 139, 87)', // seagreen - algae_covered_substrate
+  'rgb(255, 250, 240)', // floralwhite - coral_bleached
+  'rgb(205, 85, 85)', // indianred3 - coral_dead
+  'rgb(79, 148, 205)', // steelblue3 - coral_alive
+  'rgb(205, 150, 205)', // plum3 - other_invertebrates
+  'rgb(238, 162, 173)', // lightpink2 - anemone
+  'rgb(205, 104, 137)', // palevioletred3 - other_animal
+  'rgb(139, 129, 76)', // lightgoldenrod4 - trash
 ];
 
-
 export const d3MappingColorSubstrate2 = [
-  "rgb(205, 127, 50)",   // goldenrod3 - sand
-  "rgb(102, 102, 102)",  // gray40 - unknown_hard_substrate
-  "rgb(153, 153, 153)",  // gray60 - rubble
-  "rgb(139, 129, 76)",   // khaki4 - trash
-  "rgb(46, 139, 87)",    // seagreen4 - algae_covered_substrate
-  "rgb(205, 104, 137)",  // palevioletred3 - other_animal
-  "rgb(193, 255, 193)",  // seagreen1 - seagrass
-  "rgb(139, 115, 85)",   // burlywood4 - clam
-  "rgb(188, 238, 188)",  // darkseagreen2 - sea_cucumber
-  "rgb(255, 140, 0)",    // darkorange - sea_urchin
-  "rgb(145, 44, 238)",   // purple2 - sponge
-  "rgb(255, 182, 193)",  // lightpink1 - anemone
-  "rgb(139, 0, 0)",      // red4 - other_coral_dead
-  "rgb(205, 0, 0)",      // red3 - branching_dead
-  "rgb(205, 132, 63)",   // brown3 - meandering_dead
-  "rgb(255, 48, 48)",    // firebrick1 - massive/meandering_dead
-  "rgb(205, 183, 158)",  // bisque3 - branching_bleached
-  "rgb(238, 213, 183)",  // bisque2 - meandering_bleached
-  "rgb(255, 228, 196)",  // bisque1 - massive/meandering_bleached
-  "rgb(255, 228, 196)",  // bisque - other_coral_bleached
-  "rgb(0, 0, 139)",      // blue4 - other_coral_alive
-  "rgb(135, 206, 255)",  // skyblue1 - branching_alive
-  "rgb(79, 148, 205)",   // steelblue3 - meandering_alive
-  "rgb(54, 100, 139)"    // steelblue4 - massive/meandering_alive
+  'rgb(205, 127, 50)', // goldenrod3 - sand
+  'rgb(102, 102, 102)', // gray40 - unknown_hard_substrate
+  'rgb(153, 153, 153)', // gray60 - rubble
+  'rgb(139, 129, 76)', // khaki4 - trash
+  'rgb(46, 139, 87)', // seagreen4 - algae_covered_substrate
+  'rgb(205, 104, 137)', // palevioletred3 - other_animal
+  'rgb(193, 255, 193)', // seagreen1 - seagrass
+  'rgb(139, 115, 85)', // burlywood4 - clam
+  'rgb(188, 238, 188)', // darkseagreen2 - sea_cucumber
+  'rgb(255, 140, 0)', // darkorange - sea_urchin
+  'rgb(145, 44, 238)', // purple2 - sponge
+  'rgb(255, 182, 193)', // lightpink1 - anemone
+  'rgb(139, 0, 0)', // red4 - other_coral_dead
+  'rgb(205, 0, 0)', // red3 - branching_dead
+  'rgb(205, 132, 63)', // brown3 - meandering_dead
+  'rgb(255, 48, 48)', // firebrick1 - massive/meandering_dead
+  'rgb(205, 183, 158)', // bisque3 - branching_bleached
+  'rgb(238, 213, 183)', // bisque2 - meandering_bleached
+  'rgb(255, 228, 196)', // bisque1 - massive/meandering_bleached
+  'rgb(255, 228, 196)', // bisque - other_coral_bleached
+  'rgb(0, 0, 139)', // blue4 - other_coral_alive
+  'rgb(135, 206, 255)', // skyblue1 - branching_alive
+  'rgb(79, 148, 205)', // steelblue3 - meandering_alive
+  'rgb(54, 100, 139)', // steelblue4 - massive/meandering_alive
 ];
 export const environmentalClusterColorMap = {
   type: 'categorical',
   colorMap: {
-    '1': 'rgba(255, 0, 0, 1)',
-    '2': 'rgb(116, 193, 231)',
-    '3': 'rgba(0, 255, 0, 1)',
-    '4': 'rgb(199, 123, 206)',
-    '5': 'rgb(25, 0, 255)',
-    '6': 'rgba(255, 165, 0, 1)',
+    '1': 'rgb(81, 115, 207)',
+    '2': 'rgb(177, 128, 236)',
+    '3': 'rgb(92, 172, 108)',
+    '4': 'rgb(255, 157, 142)',
+    '5': 'rgb(129, 196, 180)',
+    '6': 'rgb(255, 96, 96)',
+    '7': 'rgb(230, 185, 72)',
+    '8': 'rgb(255,138,183)',
+    '9': 'rgb(156,107,78)',
+    '10': 'rgb(148,152,160)',
   },
 };

@@ -12,11 +12,11 @@ const LayerTitle = 'Reef clusters';
 export const createDjiboutiEnvironmentalClusterLayer = () => {
   const mapStore = useMapStore();
   const layer = new VectorTileLayer({
-    declutter: false,
+    declutter: true,
     _pmtiles: true,
     source: createEnvironmentalClusterSource(),
     title: LayerTitle,
-    visible: false,
+    visible: true,
     base: false,
     renderMode: 'vector',
     updateWhileAnimating: true,

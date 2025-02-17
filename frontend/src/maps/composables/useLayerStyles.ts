@@ -183,12 +183,10 @@ export function useLayerStyles() {
       string
     >;
 
+    const radius = Math.max(6, Math.pow(resolution, 0.45) / 2);
     return new Style({
-      fill: new Fill({
-        color: colorMap[featureClass] || 'rgba(128, 128, 128, 0.5)',
-      }),
       image: new CircleStyle({
-        radius: resolution < 160 ? 20 : 4,
+        radius: radius,
         fill: new Fill({
           color: colorMap[featureClass] || 'blue',
         }),
