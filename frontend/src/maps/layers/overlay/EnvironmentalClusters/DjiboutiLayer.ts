@@ -16,7 +16,7 @@ export const createDjiboutiEnvironmentalClusterLayer = () => {
     _pmtiles: true,
     source: createEnvironmentalClusterSource(),
     title: LayerTitle,
-    visible: true,
+    visible: false,
     base: false,
     renderMode: 'vector',
     updateWhileAnimating: true,
