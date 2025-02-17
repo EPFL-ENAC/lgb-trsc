@@ -121,9 +121,15 @@ export default {
       if (this.tooltip ===false) {
         localTooltip = false;
       }
+
+      const titleMap = {
+        Substrate_coarse: "main categories of coral reef benthic substrate",
+        Substrate_intermediate: "main categories of coral reef benthic substrate and hard coral growth forms",
+      }
+
       return {
         title: {
-          text: 'Substrate Distribution by Location ID'
+          text: titleMap[substrateLevel],
         },
         tooltip: localTooltip,
         legend: {
@@ -140,7 +146,7 @@ export default {
             'other_animal',
             'trash'
           ],
-          type: 'scroll',
+          type: this.tooltip ? undefined: 'scroll',
           orient: 'horizontal',
           bottom: 0
         },

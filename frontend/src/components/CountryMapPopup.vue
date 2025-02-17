@@ -1,16 +1,16 @@
 <template>
   <div class="popup">
     <button class="close-btn" @click="closeDrawer">Back</button>
-    <h3>{{ country.name }}</h3>
-    <p>{{ country.description }}</p>
-    <p>{{ country.visited }}</p>
-    <p>{{ country.projects }}</p>
-    <p>{{ country.lead }}</p>
-    <p>{{ country.collaboration }}</p>
-    <p>{{ country.sites }}</p>
-    <p>{{ country.samples }}</p>
-    <p>{{ country.divers }}</p>
-    <p>{{ country.monitoring }}</p>
+    <h3 class="country-name">{{ country.name }}</h3>
+    <div class="country-info">
+      <p><strong>Date of past visits:</strong> {{ country.visited }}</p>
+      <p><strong>Ongoing projects:</strong> {{ country.projects }}</p>
+      <p><strong>Number of sites visited:</strong> {{ country.sites }}</p>
+      <p><strong>Number of permanent monitoring sites:</strong> {{ country.monitoring }}</p>
+      <p v-if="country.training"><strong>Number of training workshop completed:</strong> {{ country.training }}</p>
+      <p><strong>Local collaborators:</strong> {{ country.collaboration }}</p>
+      <p v-if="country.contact"><strong>Contact persons:</strong> {{ country.contact }}</p>
+    </div>
     <q-dialog
       v-model="showZoomedChart"
       persistent
@@ -71,10 +71,13 @@
         <p>Seascape Genomics</p>
         <p><i>Coming soon</i></p>
       </div>
+      <div class="card">
+        <!-- <img src="/seacape-genomics.png" alt="Seascape Genomics" /> -->
+        <p>In Collaboration with</p>
+        <p><i>Coming soon</i></p>
+      </div>
+      
     </div>
-    <button @click="handleGoToCountry" v-if="country.enabled">
-      Go to {{ country.name }}
-    </button>
   </div>
 </template>
 
@@ -111,18 +114,14 @@ const toggle3DZoomedChart = () => {
 </script>
 
 <style scoped>
+.country-name {
+  margin: 0px;
+}
 .popup {
-  /* background: red;
-  padding: 10px;
-  border: 1px solid red;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  min-width: 400px;
-  max-width: 400px; */
   padding: 1rem;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: left;
   position: relative;
 }
 
@@ -132,6 +131,7 @@ const toggle3DZoomedChart = () => {
   justify-content: space-between;
   align-self: center;
   flex-direction: column;
+  margin-right: 60px;
 }
 
 .close-btn {
@@ -188,5 +188,19 @@ button {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+}
+
+.country-info {
+  width: 100%;
+  text-align: left;
+  margin: 1rem 0;
+}
+
+.country-info p {
+  margin: 0.5rem 0;
+}
+
+.country-info strong {
+  font-weight: bold;
 }
 </style>
