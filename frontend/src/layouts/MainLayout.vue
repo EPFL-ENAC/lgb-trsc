@@ -34,6 +34,10 @@
           <q-avatar style="border-radius: 0%; width: auto; height: auto;">
             <img style="width:auto" src="/EPFL_logo.png">
           </q-avatar>
+          <q-avatar style="border-radius: 0%; width: 118px; height: auto; margin-left:1rem;">
+
+            <q-img fit="scale-down" src="/fdfa.png" />
+          </q-avatar>
           <!-- <div>Sponsors</div> -->
         </q-toolbar-title>
       </q-toolbar>
