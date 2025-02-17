@@ -52,7 +52,7 @@ interface MappingData {
   latitude_start: number;
   longitude_start: number;
   latitude_end: number;
-  Substrate_1: string;
+  Substrate_coarse: string;
   mean: number;
 }
 
@@ -95,7 +95,7 @@ const sampleSet = computed(() => {
       d3Mapping.date_iso === selectedExpedition.value.date_iso
     );
     return result.map(x => ({
-      Substrate_1: String(x.Substrate_1),
+      Substrate_coarse: String(x.Substrate_coarse),
       mean: Number(x.mean)
     }));
   } catch (error) {
@@ -108,7 +108,7 @@ const isValidSampleSet = computed(() => {
   return sampleSet.value.every(sample => 
     typeof sample === 'object' &&
     sample !== null &&
-    'Substrate_1' in sample &&
+    'Substrate_coarse' in sample &&
     'mean' in sample &&
     typeof sample.mean === 'number'
   );

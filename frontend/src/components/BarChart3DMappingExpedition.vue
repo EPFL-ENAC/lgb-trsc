@@ -50,8 +50,8 @@ export default {
         });
 
         data.forEach((item) => {
-          if (validSubstrates.includes(item.Substrate_1)) {
-            seriesData[item.Substrate_1] += item.mean;
+          if (validSubstrates.includes(item.Substrate_coarse)) {
+            seriesData[item.Substrate_coarse] += item.mean;
           }
         });
         return validSubstrates.map((substrate, index) => {

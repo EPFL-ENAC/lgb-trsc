@@ -36,7 +36,7 @@ export default {
     },
     substrateLevel: {
       type: String,
-      default: 'Substrate_1'
+      default: 'Substrate_coarse'
     }
   },
   data() {

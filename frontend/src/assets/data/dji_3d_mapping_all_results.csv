@@ -1,4 +1,4 @@
-﻿country,country_abbr,date_iso,year,time,experiment,ID,expe_name,region_name,reef_area,sampling_site_name,event_id,latitude_start,longitude_start,latitude_end,longitude_end,length,Substrate_1,Substrate_2,Substrate_3,mean,median,stdev
+﻿country,country_abbr,date_iso,year,time,experiment,ID,expe_name,region_name,reef_area,sampling_site_name,event_id,latitude_start,longitude_start,latitude_end,longitude_end,length,Substrate_coarse,Substrate_intermediate,Substrate_fine,mean,median,stdev
 Djibouti,DJ,2022-09-16,2022,12:30:00,3D,1,exp202209_DJ,Gulf of Tadjourah,Djibouti_city,kempinski hotel,EXP202209_DJ_002,11.6258,43.154,11.62541667,43.1538,50,sand,sand,sand,0.066848622,0.060604724,0.01795078
 Djibouti,DJ,2022-09-16,2022,12:30:00,3D,1,exp202209_DJ,Gulf of Tadjourah,Djibouti_city,kempinski hotel,EXP202209_DJ_002,11.6258,43.154,11.62541667,43.1538,50,rubble,rubble,rubble,0.062610385,0.062399184,0.015546589
 Djibouti,DJ,2022-09-16,2022,12:30:00,3D,1,exp202209_DJ,Gulf of Tadjourah,Djibouti_city,kempinski hotel,EXP202209_DJ_002,11.6258,43.154,11.62541667,43.1538,50,unknown_hard_substrate,unknown_hard_substrate,unknown_hard_substrate,0.117193177,0.12871744,0.034537292
