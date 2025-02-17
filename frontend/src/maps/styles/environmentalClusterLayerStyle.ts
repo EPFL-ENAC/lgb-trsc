@@ -4,8 +4,9 @@ import { useLayerStyles } from '@/maps/composables/useLayerStyles';
 
 export const environmentalClusterStyle = (
   feature: Feature<Geometry>,
-  className: string
+  className: string,
+  resolution: number
 ) => {
   const { createEnvironmentalClustersStyle } = useLayerStyles();
-  return createEnvironmentalClustersStyle(feature, className);
+  return createEnvironmentalClustersStyle(feature, className, resolution);
 };

@@ -28,12 +28,7 @@ export const useMapStore = defineStore('map', () => {
   const selectedEnvironmentalClusterClassName = computed(
     () => 'HCl_K' + selectedEnvironmentalClusterNumber.value.toString()
   );
-  watch(
-    () => selectedEnvironmentalClusterClassName.value,
-    (newValue) => {
-      console.log('selectedEnvironmentalClusterClassName changed', newValue);
-    }
-  );
+
   const hoveredExpedition = ref<ExpeditionProperties | null>(null);
   const hoveredExpeditionPixel = ref<[number, number] | null>(null);
   const rawTooltipContent = ref<string>('');

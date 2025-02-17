@@ -12,7 +12,7 @@ const LayerTitle = 'Reef clusters';
 export const createDjiboutiEnvironmentalClusterLayer = () => {
   const mapStore = useMapStore();
   const layer = new VectorTileLayer({
-    declutter: true,
+    declutter: false,
     _pmtiles: true,
     source: createEnvironmentalClusterSource(),
     title: LayerTitle,
@@ -25,19 +25,21 @@ export const createDjiboutiEnvironmentalClusterLayer = () => {
 
   // Create a computed style function that will react to store changes
   const computedStyle = computed(() => {
-    return (feature: Feature<Geometry>) =>
+    return (feature: Feature<Geometry>, resolution: number) =>
       environmentalClusterStyle(
         feature,
-        mapStore.selectedEnvironmentalClusterClassName
+        mapStore.selectedEnvironmentalClusterClassName,
+        resolution
       );
   });
 
   watch(
     () => mapStore.selectedEnvironmentalClusterClassName,
     () => {
-      console.log('computedStyle changed');
       // Set up watcher for style changes
-      layer.setStyle((feature) => computedStyle.value(feature));
+      layer.setStyle((feature, resolution) =>
+        computedStyle.value(feature, resolution)
+      );
       layer.changed();
     },
     { immediate: true }

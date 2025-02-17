@@ -172,15 +172,29 @@ export function useLayerStyles() {
 
   const createEnvironmentalClustersStyle = (
     feature: Feature<Geometry>,
-    className: string
-  ) =>
-    createFeatureStyle(
-      feature,
-      environmentalClusterColorMap.colorMap,
-      true,
-      className,
-      'default'
-    );
+    className: string,
+    resolution: number
+  ) => {
+    const featureClass: string =
+      feature.get(className) || (feature.get('name') as string);
+
+    const colorMap = environmentalClusterColorMap.colorMap as Record<
+      string,
+      string
+    >;
+
+    return new Style({
+      fill: new Fill({
+        color: colorMap[featureClass] || 'rgba(128, 128, 128, 0.5)',
+      }),
+      image: new CircleStyle({
+        radius: resolution < 160 ? 20 : 4,
+        fill: new Fill({
+          color: colorMap[featureClass] || 'blue',
+        }),
+      }),
+    });
+  };
 
   return {
     visibleClasses: computed(() => visibleClasses.value),
