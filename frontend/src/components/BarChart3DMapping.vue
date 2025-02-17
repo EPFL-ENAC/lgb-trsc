@@ -77,6 +77,7 @@ export default {
     },
     getChartOption(data, substrateLevel) {
 
+      const ids = Array.from(new Set(data.map(x => x.id)))
       function getSiteNameFromSiteId(data, SiteId) {
         if (data === undefined) {
           return '';
@@ -89,11 +90,7 @@ export default {
         validSubstratesMap[substrateLevel].forEach((substrate) => {
           seriesData[substrate] = new Array(31).fill(0);
         });
-
-        const idMapping = [
-          1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 2000, 2001, 2002,
-          2003, 2004, 2005, 2006, 2007, 2008, 2009, 2011, 2012, 2013, 2015
-        ].reduce((acc, id, index) => {
+        const idMapping = ids.reduce((acc, id, index) => {
           acc[id] = index;
           return acc;
         }, {});
@@ -116,23 +113,23 @@ export default {
         }));
       }
 
-      let localTooltip = {
+      function getTooltip(data, substrateLevel) {
+        return {
           trigger: 'axis',
           axisPointer: {
             type: 'shadow'
           },
           formatter: (params) => {
             let result = `ID: ${params[0].axisValue}<br/>`;
-            result += `Site Name: ${getSiteNameFromSiteId(this.rawData, params[0].axisValue)}<br/>`;
+            result += `Site Name: ${getSiteNameFromSiteId(data, params[0].axisValue)}<br/>`;
             params.forEach((param) => {
               result += `<span style="margin-right:1rem;background-color:${param.color};display: inline-block;width: 10px;height: 10px;"></span>${param.seriesName}: ${(param.value * 100).toFixed(2)}%<br/>`;
             });
             return result;
           }
-        };
-      if (this.tooltip ===false) {
-        localTooltip = false;
+        }
       }
+
 
       const titleMap = {
         Substrate_coarse: "main categories of coral reef benthic substrate",
@@ -143,12 +140,12 @@ export default {
         title: {
           text: titleMap[substrateLevel],
         },
-        tooltip: localTooltip,
+        tooltip: this.tooltip ? getTooltip(data, substrateLevel) : undefined,
         legend: {
           data: validSubstratesMap[substrateLevel],
           type: this.tooltip ? undefined: 'scroll',
           orient: 'horizontal',
-          bottom: 0
+          bottom: 0,
         },
         grid: {
           left: '3%',
@@ -158,10 +155,7 @@ export default {
         },
         xAxis: {
           type: 'category',
-          data: [
-            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 2000, 2001,
-            2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2011, 2012, 2013, 2015
-          ],
+          data: ids,
           name: 'Location ID'
         },
         yAxis: {
