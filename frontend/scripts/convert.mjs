@@ -32,8 +32,8 @@ await csv({ checkType: true, ignoreEmpty: true, trim: true })
         latitude_end: obj.latitude_end,
         longitude_end: obj.longitude_end,
         length: obj.length,
-        Substrate_1: obj.Substrate_1,
-        Substrate_2: obj.Substrate_2,
+        Substrate_coarse: obj.Substrate_coarse,
+        Substrate_intermediate: obj.Substrate_intermediate,
         Substrate_3: obj.Substrate_3,
         mean: obj.mean,
         median: obj.median,
@@ -95,7 +95,7 @@ await csv({ checkType: true, ignoreEmpty: true, trim: true })
       // Find all entries in dji3d with matching event_id and sum their mean values
       const matchingEntries = dji3d.filter((d) => d.event_id === obj.event_id);
       const coralMatchingEntries = matchingEntries.filter(
-        (e) => e.Substrate_1 === 'coral_alive'
+        (e) => e.Substrate_coarse === 'coral_alive'
       );
       const totalMean = coralMatchingEntries.length
         ? coralMatchingEntries.reduce(

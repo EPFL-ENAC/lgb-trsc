@@ -24,8 +24,8 @@
           <div class="right-actions">
 
             <q-toggle v-model="substrateLevel"
-              trueValue="Substrate_1"
-              falseValue="Substrate_2"
+              trueValue="Substrate_coarse"
+              falseValue="Substrate_intermediate"
               :label="substrateLevel"></q-toggle>
             <q-btn
               icon="close"
@@ -94,7 +94,7 @@ const props = defineProps({
   },
 });
 
-const substrateLevel = ref('Substrate_1');
+const substrateLevel = ref('Substrate_coarse');
 
 const handleGoToCountry = () => {
   // props.zoomToCountry();
