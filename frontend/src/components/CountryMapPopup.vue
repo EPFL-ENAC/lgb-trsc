@@ -6,27 +6,37 @@
       <p><strong>Date of past visits:</strong> {{ country.visited }}</p>
       <p><strong>Ongoing projects:</strong> {{ country.projects }}</p>
       <p><strong>Number of sites visited:</strong> {{ country.sites }}</p>
-      <p><strong>Number of permanent monitoring sites:</strong> {{ country.monitoring }}</p>
-      <p v-if="country.training"><strong>Number of training workshop completed:</strong> {{ country.training }}</p>
+      <p>
+        <strong>Number of permanent monitoring sites:</strong>
+        {{ country.monitoring }}
+      </p>
+      <p v-if="country.training">
+        <strong>Number of training workshop completed:</strong>
+        {{ country.training }}
+      </p>
       <p><strong>Local collaborators:</strong> {{ country.collaboration }}</p>
-      <p v-if="country.contact"><strong>Contact persons:</strong> {{ country.contact }}</p>
+      <p v-if="country.contact">
+        <strong>Contact persons:</strong> {{ country.contact }}
+      </p>
     </div>
     <q-dialog
       v-model="showZoomedChart"
       persistent
       :maximized="false"
-        
       class="popup"
     >
-      <q-card style="width: 80vw; max-width: 1200px; height: 80vh; max-height: 800px;">
+      <q-card
+        style="width: 80vw; max-width: 1200px; height: 80vh; max-height: 800px"
+      >
         <q-card-section class="q-pa-md row items-center justify-between">
           <h4 class="q-pa-sm q-ma-sm">3D Mapping</h4>
           <div class="right-actions">
-
-            <q-toggle v-model="substrateLevel"
+            <q-toggle
+              v-model="substrateLevel"
               trueValue="Substrate_coarse"
               falseValue="Substrate_intermediate"
-              :label="substrateLevel"></q-toggle>
+              :label="substrateLevel"
+            ></q-toggle>
             <q-btn
               icon="close"
               class="close-btn"
@@ -39,7 +49,7 @@
         </q-card-section>
         <BarChart3DMapping
           :rawData="country.rawData"
-          :style="{ margin: '0 auto'}"
+          :style="{ margin: '0 auto' }"
           height="76%"
           width="90%"
           :tooltip="true"
@@ -53,12 +63,16 @@
             flat
             @click="toggle3DZoomedChart"
           />
-          </q-card-actions>
+        </q-card-actions>
       </q-card>
     </q-dialog>
     <div class="images">
       <div class="card" @click="toggle3DZoomedChart">
-        <BarChart3DMapping :rawData="country.rawData" :tooltip="false" width="90%"/>
+        <BarChart3DMapping
+          :rawData="country.rawData"
+          :tooltip="false"
+          width="90%"
+        />
         <p>3D Mapping</p>
       </div>
       <div class="card">
@@ -74,17 +88,33 @@
       <div class="card">
         <!-- <img src="/seacape-genomics.png" alt="Seascape Genomics" /> -->
         <p>In Collaboration with</p>
-        <p><i>Coming soon</i></p>
+        <div style="display: flex; gap: 1rem">
+          <div
+            class="logo-item"
+            v-for="community in computedCountryCommunities"
+            :key="community.name"
+          >
+            <a :href="community.url" target="_blank" class="logo-item-link">
+              <q-img
+                :src="community.logo"
+                :alt="community.name"
+                fit="contain"
+                style="height: 150px; width: 150px"
+              >
+              </q-img>
+            </a>
+          </div>
+        </div>
       </div>
-      
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { defineProps, ref } from 'vue';
+import { defineProps, ref, computed } from 'vue';
 import BarChart3DMapping from './BarChart3DMapping.vue';
 import { useMapController } from '@/maps/composables/useMapController';
+import communities from '@/assets/communities';
 
 const props = defineProps({
   country: {
@@ -97,6 +127,11 @@ const props = defineProps({
   },
 });
 
+const computedCountryCommunities = computed(() => {
+  return communities.filter(
+    (community) => community.country === props.country.name
+  );
+});
 const substrateLevel = ref('Substrate_coarse');
 
 const handleGoToCountry = () => {

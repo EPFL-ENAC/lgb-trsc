@@ -1,86 +1,38 @@
 <template>
   <q-page class="col items-center justify-center community-page">
     <!-- <h1 class="red-bold">Community</h1> -->
-    <p class="q-pa-md"><a class="trsc-link" href="https://trsc.org" target="_blank">The Transnational Red Sea Center</a> relies on many collaborators from the Red Sea region and Gulf of Aden</p>
+    <p class="q-pa-md">
+      <a class="trsc-link" href="https://trsc.org" target="_blank"
+        >The Transnational Red Sea Center</a
+      >
+      relies on many collaborators from the Red Sea region and Gulf of Aden
+    </p>
     <div class="logo-row">
-      <div class="logo-item" v-for="community in communities" :key="community.name" >
+      <div
+        class="logo-item"
+        v-for="community in communities"
+        :key="community.name"
+      >
         <a :href="community.url" target="_blank" class="logo-item-link">
-        <q-img
-          :src="community.logo"
-          :alt="community.name"
-          fit="contain"
-          style="height: 150px; width: 150px;"
-        >
-        </q-img>
-        <p>{{ community.name }}</p>
-      </a>
+          <q-img
+            :src="community.logo"
+            :alt="community.name"
+            fit="contain"
+            style="height: 150px; width: 150px"
+          >
+          </q-img>
+          <p>{{ community.name }}</p>
+        </a>
       </div>
-      
     </div>
   </q-page>
 </template>
 
 <script setup lang="ts">
-const communities = [
-  {
-    url: "https://aseza.jo/Default/Ar",
-    name: "Aqaba Special Economic Zone Authority",
-    country: "Jordan",
-    logo: "/community/Aqaba.jpg"
-  },
-  {
-    url: "https://mss.ju.edu.jo/Home.aspx",
-    name: "Marine Science Station of Aqaba",
-    country: "Jordan",
-    logo: "/community/MarineScienceStation.png"
-  },
+import { ref } from 'vue';
 
-  
-  {
-    url: "https://rsu.edu.sd/?page_id=14026&lang=en",
-    name: "Red Sea University",
-    country: "Sudan",
-    logo: "/community/RedSeaUniversity.jpg"
-  },
-  {
-    name: "Ministry of Marine Resources of Massawa, Eritrea",
-    country: "Eritrea",
-    logo: "/community/MinistryMarineResources.png"
-  },
-
-  {
-    url: "https://www.facebook.com/people/Minist%C3%A8re-de-lEnvironnement-et-du-D%C3%A9veloppement-Durable/61553005181813/",
-    name: "Ministère de l'Environnement et du Développement Durable",
-    country: "Djibouti",
-    logo: "/community/MinistèreEnvironnement.png"
-  },
-  // {
-  //   url: "https://mensur.gouv.dj/",
-  //   name: "Ministère de l'Enseignement Supérieur & de la Recherche djibouti",
-  //   country: "Djibouti",
-  //   logo: "/community/MinistèreRecherche.jpg"
-  // },
-  
-
-  {
-    url: "https://www.univ.edu.dj/",
-    name: "Université de Djibouti",
-    country: "Djibouti",
-    logo: "/community/UniversitéDjibouti.jpg"
-  },
-  {
-    url: "https://www.cerd.dj",
-    name: "CERD (centre d'étude et de recherche à Djibouti)",
-    country: "Djibouti",
-    logo: "/community/cerd.png"
-  },
-  // {
-  //   url: "https://iui-eilat.ac.il/",
-  //   name: "The Interuniversity Institute for Marine Sciences in Eilat",
-  //   country: "Israel",
-  //   logo: "/community/EilatInstitute.png"
-  // },
-];
+import communities from '@/assets/communities';
+// const communities = ref(communities);
 </script>
 
 <style scoped>
@@ -117,7 +69,7 @@ const communities = [
 
   &:hover {
     text-decoration: none;
-    
+
     p {
       text-decoration: underline;
     }
