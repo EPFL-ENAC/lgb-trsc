@@ -9,7 +9,7 @@ import 'echarts/lib/component/tooltip'; // Import tooltip component
 import 'echarts/lib/component/title'; // Import title component
 import 'echarts/lib/component/legend'; // Import legend component
 import { d3MappingColorSubstrate1 as colorPalette } from '@/maps/config/layerColors';
-import { validSubstrates } from '@/maps/config/substrateOrder';
+import { validSubstrates, validSubtrateMap } from '@/maps/config/substrateOrder';
 
 export default {
   name: 'BarChart3DMappingExpedition',
@@ -108,6 +108,9 @@ export default {
         tooltip: localTooltip,
         legend: {
           data: validSubstrates,
+          formatter: function (name) {
+            return validSubtrateMap[name];
+          },
           orient: 'horizontal',
           bottom: 10
         },

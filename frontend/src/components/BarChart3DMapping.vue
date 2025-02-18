@@ -9,7 +9,7 @@ import 'echarts/lib/component/tooltip'; // Import tooltip component
 import 'echarts/lib/component/title'; // Import title component
 import 'echarts/lib/component/legend'; // Import legend component
 import { d3MappingColorSubstrate1 as colorPalette, d3MappingColorSubstrate2 as colorPalette2 } from '@/maps/config/layerColors';
-import { validSubstrates, validSubstrates2 } from '@/maps/config/substrateOrder';
+import { validSubstrates, validSubstrates2, validSubtrateMap } from '@/maps/config/substrateOrder';
 
 const subtrateLevelMapColor = {
   'Substrate_coarse': colorPalette,
@@ -143,6 +143,10 @@ export default {
         tooltip: this.tooltip ? getTooltip(data, substrateLevel) : undefined,
         legend: {
           data: validSubstratesMap[substrateLevel],
+          
+          formatter: function (name) {
+            return validSubtrateMap[name];
+          },
           type: this.tooltip ? undefined: 'scroll',
           orient: 'horizontal',
           bottom: 0,

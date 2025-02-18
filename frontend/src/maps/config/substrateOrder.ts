@@ -12,6 +12,37 @@ export const validSubstrates = [
     'trash',
   ];
 
+  export const validSubtrateMap = {
+    'sand': "sand",
+    'rubble': "rubble",
+    'unknown_hard_substrate': "unknown hard substrate",
+    'algae_covered_substrate': "algae covered substrate",
+    'coral_bleached': "bleached coral",
+    'coral_dead': "dead coral",
+    'coral_alive': "live coral",
+    'other_invertebrates': "other invertebrates",
+    'anemone': "anemone",
+    'other_animal': "other animal",
+    'trash': "trash",
+    "seagrass": "seagrass",
+    "clam": "clam",
+    "sea_cucumber": "sea cucumber",
+    "sea_urchin": "sea urchin",
+    "sponge": "sponge",
+    "other_coral_dead": "other coral dead",
+    "branching_dead": "branching dead",
+    "meandering_dead": "meandering dead",
+    "massive/meandering_alive": "massive meandering alive",
+    "branching_bleached": "branching bleached",
+    "meandering_bleached": "meandering bleached",
+    "massive/meandering_bleached": "massive meandering bleached",
+    "other_coral_bleached": "other coral bleached",
+    "other_coral_alive": "other coral alive",
+    "branching_alive": "branching alive",
+    "meandering_alive": "meandering alive",
+    "massive/meandering_dead": "massive/meandering_dead",
+  }
+
   export const validSubstrates2 = [
     "sand",
     "unknown_hard_substrate",
