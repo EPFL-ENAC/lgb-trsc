@@ -1,17 +1,23 @@
 <template>
-  <div class="popup">
+  <div class="popup" v-if="selectedExpedition">
     <button class="close-btn" @click="closeExpedition">Back</button>
-    <h3>{{ selectedExpedition.region_name }} - {{ selectedExpedition.event_id }}</h3>
-    <p>{{ selectedExpedition.reef_area }} - {{ selectedExpedition.sampling_site_name }}</p>
+    <h3>
+      {{ selectedExpedition.region_name }} - {{ selectedExpedition.event_id }}
+    </h3>
     <p>
-      Position:
+      {{ selectedExpedition.reef_area }} -
+      {{ selectedExpedition.sampling_site_name }}
+    </p>
+    <p>
+      <span v-if="selectedExpedition.latitude_end">Start</span> Position:
       <span v-if="selectedExpedition.latitude_start">
         N {{ formatCoordinate(selectedExpedition.latitude_start, 'N') }} E
         {{ formatCoordinate(selectedExpedition.longitude_start, 'E') }}
       </span>
     </p>
     <p v-if="selectedExpedition.latitude_end">
-      End Position: N {{ formatCoordinate(selectedExpedition.latitude_end, 'N') }} E
+      End Position: N
+      {{ formatCoordinate(selectedExpedition.latitude_end, 'N') }} E
       {{ formatCoordinate(selectedExpedition.longitude_end, 'E') }}
     </p>
     <p>{{ selectedExpedition.date_iso }}</p>
@@ -28,14 +34,11 @@
       </div>
       <div v-else>No 3D Mapping data available</div>
     </div>
-    <button @click="handleGoToExpedition" v-if="selectedExpedition.enabled">
-      Go to {{ selectedExpedition.Site_Name }}
-    </button>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, defineProps } from 'vue';
+import { computed } from 'vue';
 // for now we hard code the data for Djibouti 3D Mapping
 import Djibouti3DMapping from '@/assets/data/dji_3d_mapping_all_results.json';
 import { useMapStore } from '@/stores/mapStore';
@@ -75,24 +78,24 @@ const formatCoordinate = (decimal: number, direction: 'N' | 'E'): string => {
 };
 
 const mapStore = useMapStore();
-const { selectedCountry, selectedExpedition, drawer } = storeToRefs(mapStore);
-const { closeDrawer, closeExpedition } =
+const {  selectedExpedition } = storeToRefs(mapStore);
+const {  closeExpedition } =
   mapStore;
 
 const countryLower = computed(() =>
-  selectedExpedition.value.country.toLowerCase().replaceAll(' ', '_')
+  selectedExpedition.value?.country.toLowerCase().replaceAll(' ', '_') ?? ''
 );
 
 
 const sampleSet = computed(() => {
   try {
-    const eventID = selectedExpedition.value.event_id;
+    const eventID = selectedExpedition.value?.event_id;
     const sampleByIds = threedMappingByCountry[countryLower.value]?.filter(
       (d3Mapping) => d3Mapping.event_id === eventID
     ) || [];
-    
-    const result = sampleByIds.filter((d3Mapping) => 
-      d3Mapping.date_iso === selectedExpedition.value.date_iso
+
+    const result = sampleByIds.filter((d3Mapping) =>
+      d3Mapping.date_iso === selectedExpedition.value?.date_iso
     );
     return result.map(x => ({
       Substrate_coarse: String(x.Substrate_coarse),
@@ -105,7 +108,7 @@ const sampleSet = computed(() => {
 });
 
 const isValidSampleSet = computed(() => {
-  return sampleSet.value.every(sample => 
+  return sampleSet.value.every(sample =>
     typeof sample === 'object' &&
     sample !== null &&
     'Substrate_coarse' in sample &&

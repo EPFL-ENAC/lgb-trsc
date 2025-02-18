@@ -34,6 +34,14 @@ export default {
   mounted() {
     this.initChart();
   },
+  watch: {
+    rawData: {
+      handler() {
+        this.initChart();
+      },
+      deep: true,
+    },
+  },
   methods: {
     initChart() {
       const chart = echarts.init(this.$refs.chart);
@@ -94,9 +102,9 @@ export default {
         localTooltip = false;
       }
       return {
-        // title: {
-        //   text: 'Substrate Distribution',
-        // },
+        title: {
+          text: 'Benthic cover at coarse substrate level',
+        },
         tooltip: localTooltip,
         legend: {
           data: validSubstrates,
@@ -119,7 +127,7 @@ export default {
         },
         yAxis: {
           type: 'value',
-          name: 'Percentage',
+          name: 'Percentage cover',
           axisLabel: {
             formatter: function (value) {
               return value * 100 + '%';
