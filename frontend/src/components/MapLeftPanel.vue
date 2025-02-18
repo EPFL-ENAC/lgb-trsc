@@ -28,7 +28,7 @@
                 @update:model-value="() => setBaseMapVisible(layer.title)"
               />
             </q-item-section>
-            <q-item-section>{{ layer.title }}</q-item-section>
+            <q-item-section> {{ layer.title }}</q-item-section>
           </q-item>
         </q-list>
       </q-expansion-item>
@@ -37,10 +37,10 @@
       <q-expansion-item
         v-for="(group, groupIndex) in overlayGroups"
         :key="group.title"
-        group="overlays"
+        :group="`overlays${groupIndex}`"
         :icon="getGroupIcon(group.title)"
         :label="group.title"
-        default-open
+        :default-opened="group.layers.some((layer) => layer.visible)"
       >
         <q-list padding>
           <q-item
@@ -67,6 +67,7 @@
                 v-if="layer.visible && getLayerLegend(layer)"
                 dense
                 dense-toggle
+                :default-opened="layer.visible && getLayerLegend(layer)"
                 header-class="text-caption text-grey-7"
                 class="layer-grid"
               >

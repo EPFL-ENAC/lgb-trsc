@@ -17,5 +17,6 @@ export const createCountryLayer = () =>
     }),
     title: LayerTitle,
     visible: true,
+    showInLayerSwitcher: false,
     style: countryStyle,
   } as BaseLayerOptions);
