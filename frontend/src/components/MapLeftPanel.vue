@@ -94,9 +94,6 @@
                       </template>
                     </div>
                     <div class="layer-title">{{ layer.title }}</div>
-                    <div v-if="getLayerLegend(layer)" class="show-legend">
-                      Show legend
-                    </div>
                   </div>
                 </template>
                 <q-card class="legend-card">
