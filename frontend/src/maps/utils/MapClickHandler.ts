@@ -60,13 +60,6 @@ export function addMapClickHandler(
   return onClickEventsKey;
 }
 
-export function removeMapClickHandler(
-  map: Map | null,
-  options: MapClickHandlerOptions
-): void {
-  return map?.un('click', clickHandlerFn(map, options));
-}
-
 function onCountryClick(properties: any, options: MapClickHandlerOptions) {
   // add any extra rawData if needed
 

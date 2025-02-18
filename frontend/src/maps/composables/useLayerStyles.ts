@@ -123,8 +123,6 @@ export const createFeatureStyle = (
 export function useLayerStyles() {
   const setClassVisibility = (className: string, isVisible: boolean) => {
     visibleClasses.value[className] = isVisible;
-    // const mapController = useMapController();
-    // mapController?.refreshMap();
   };
 
   const setAllClassesVisibility = (

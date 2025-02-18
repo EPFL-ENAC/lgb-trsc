@@ -19,17 +19,15 @@ import {
 } from './config';
 import {
   addMapClickHandler,
-  removeMapClickHandler,
   MapClickHandlerOptions,
 } from '@/maps/utils/MapClickHandler';
 import { addMapPointerMoveHandler } from '@/maps/utils/MapPointerMove';
 import { useMapStore } from '@/stores/mapStore';
-// import { expeditions as DjiboutiExpeditions } from '@/assets/data/expeditions';
 import DjiboutiExpeditions from '@/assets/data/Expeditions.json';
 import Djibouti3DMapping from '@/assets/data/dji_3d_mapping_all_results.json';
 import { useLayerController } from '@/maps/composables/useLayerController';
 import GeoJSON from 'ol/format/GeoJSON';
-import { Extent, getCenter } from 'ol/extent';
+import { getCenter } from 'ol/extent';
 import { transformExtent } from 'ol/proj';
 import {
   createDjiboutiGeomorphicLayer,
@@ -46,7 +44,7 @@ import {
   createCHL_monthly_mean_1997_2024_MeanLayer,
   createCHL_monthly_mean_1997_2024_SD,
 } from './layers/overlay/EnvironmentalLayers/DjiboutiLayer';
-import LayerSwitcher, { BaseLayerOptions } from 'ol-layerswitcher';
+import { BaseLayerOptions } from 'ol-layerswitcher';
 import { Geometry } from 'ol/geom';
 
 interface CustomBaseLayerOptions extends BaseLayerOptions {
@@ -55,7 +53,6 @@ interface CustomBaseLayerOptions extends BaseLayerOptions {
 
 export class MapController {
   private map: Map | null = null;
-  private cleanupCallbacks: (() => void)[] = [];
 
   constructor(target: string) {
     this.map = new Map({
@@ -97,8 +94,6 @@ export class MapController {
     interactions?.forEach(interaction => this.map?.removeInteraction(interaction));
 
     // Remove all event listeners
-    this.cleanupCallbacks.forEach(cleanup => cleanup?.());
-    removeMapClickHandler(this.map, {} as MapClickHandlerOptions);
     this.map?.setTarget("");
     this.map = null;
   }
