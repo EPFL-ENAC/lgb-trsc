@@ -37,9 +37,6 @@ import {
   createDjiboutiReefExtentLayer,
 } from '@/maps/layers/overlay/ReefLayers/DjiboutiLayer';
 import { createDjiboutiEnvironmentalClusterLayer } from '@/maps/layers/overlay/EnvironmentalClusters/DjiboutiLayer';
-import { FeatureLike } from 'ol/Feature';
-import { Pixel } from 'ol/pixel';
-import Target from 'ol/events/Target';
 import {
   createCHL_monthly_mean_1997_2024_MeanLayer,
   createCHL_monthly_mean_1997_2024_SD,

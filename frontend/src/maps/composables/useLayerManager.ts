@@ -2,11 +2,9 @@ import { ref, onMounted } from 'vue';
 import BaseLayer from 'ol/layer/Base';
 import LayerGroup from 'ol/layer/Group';
 import { useMapController } from './useMapController';
-import BaseObject from 'ol/Object';
 
 export interface LayerInfo {
   title: string;
-  visible: boolean;
   showInLayerSwitcher?: boolean;
   layer: BaseLayer;
 }
@@ -31,7 +29,6 @@ export function useLayerManager() {
     // Initialize base maps
     baseMaps.value = controller.getBaseMaps().map((layer: BaseLayer) => ({
       title: layer.get('title') || 'Untitled',
-      visible: layer.getVisible(),
       showInLayerSwitcher: layer.get('showInLayerSwitcher'),
       layer
     }));
@@ -67,17 +64,18 @@ export function useLayerManager() {
   };
 
   const setBaseMapVisible = (layerTitle: string) => {
+
     const controller = useMapController();
     if (!controller) {
       console.error('MapController is not available. Unable to initialize layers.');
       return;
     }
 
-    baseMaps.value.forEach((layerInfo, index) => {
+    baseMaps.value.forEach((layerInfo) => {
       const visible = layerInfo.title === layerTitle;
-      layerInfo.visible = visible;
-      controller.setBaseMapVisible(index);
+      layerInfo.layer.setVisible(visible);
     });
+
   };
 
   const toggleOverlayLayer = (groupIndex: number, layerIndex: number, visible: boolean) => {

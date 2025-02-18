@@ -20,15 +20,15 @@
       <!-- Base maps section -->
       <q-expansion-item group="layers" icon="map" label="Base maps">
         <q-list padding>
-          <q-item v-for="layer in baseMaps" :key="layer.title">
+          <q-item v-for="layerInfo in baseMaps" :key="layerInfo.title">
             <q-item-section avatar>
               <q-radio
-                v-model="activeBaseMap"
-                :val="layer.title"
-                @update:model-value="() => setBaseMapVisible(layer.title)"
+                :model-value="computedActivedBaseMap"
+                :val="layerInfo.title"
+                :label="layerInfo.title"
+                @update:model-value="() => setBaseMapVisible(layerInfo.title)"
               />
             </q-item-section>
-            <q-item-section> {{ layer.title }}</q-item-section>
           </q-item>
         </q-list>
       </q-expansion-item>
@@ -67,7 +67,7 @@
                 v-if="layer.visible && getLayerLegend(layer)"
                 dense
                 dense-toggle
-                :default-opened="layer.visible && getLayerLegend(layer)"
+                :default-opened="layer.visible && !!getLayerLegend(layer)"
                 header-class="text-caption text-grey-7"
                 class="layer-grid"
               >
@@ -149,7 +149,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useQuasar } from 'quasar';
 import { useLayerManager } from '@/maps/composables/useLayerManager';
 import MapLegend from './MapLegend.vue';
@@ -174,7 +174,6 @@ interface Layer {
 
 const $q = useQuasar();
 const leftDrawerOpen = ref(true);
-const activeBaseMap = ref('OpenStreetMap');
 
 const {
   baseMaps,
@@ -185,6 +184,10 @@ const {
 } = useLayerManager();
 
 const mapStore = useMapStore();
+
+const computedActivedBaseMap = computed(() => {
+  return baseMaps.value.find((baseMap) => baseMap.layer.get('visible'))?.title;
+});
 
 const getGroupIcon = (title: string) => {
   const icons: Record<string, string> = {
