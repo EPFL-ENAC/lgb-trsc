@@ -113,7 +113,6 @@
 <script setup lang="ts">
 import { defineProps, ref, computed } from 'vue';
 import BarChart3DMapping from './BarChart3DMapping.vue';
-import { useMapController } from '@/maps/composables/useMapController';
 import communities from '@/assets/communities';
 
 const props = defineProps({
@@ -134,15 +133,7 @@ const computedCountryCommunities = computed(() => {
 });
 const substrateLevel = ref('Substrate_coarse');
 
-const handleGoToCountry = () => {
-  // props.zoomToCountry();
-  // closeDrawer();
-  const mapController = useMapController();
-  mapController.zoomToCountry();
-};
-
 let showZoomedChart = ref(false);
-// toggle3DZoomedChart
 const toggle3DZoomedChart = () => {
   showZoomedChart.value = !showZoomedChart.value;
 };

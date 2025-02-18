@@ -71,7 +71,7 @@ export const createExpeditionLayer = (
   const layer = new VectorLayer({
     source: expeditionSource,
     title: `${expeditionType}`,
-    visible: expeditionType === 'by year',
+    visible: false,
     style: createReefExtentStyle,
   } as BaseLayerOptions);
 

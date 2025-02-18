@@ -254,6 +254,14 @@ export class MapController {
         currentView.center = getCenter(transformedExtent);
       }
 
+      // visible: expeditionType === 'by year',
+      this.map?.getAllLayers().forEach((layer) => {
+        const title = layer.get('title');
+        if (title === 'by year') {
+          layer.setVisible(true);
+        }
+      })
+
       this.map?.setView(new View(currentView));
     }
   }
@@ -265,6 +273,13 @@ export class MapController {
       currentView.minZoom = defaultMinZoom;
       currentView.center = getCenter(defaultExtent);
     }
+      // visible: expeditionType === 'by year',
+      this.map?.getAllLayers().forEach((layer) => {
+        // console.log("layer.get('title')", layer.get('title'))
+        if (!['ArcGIS', 'OSM', 'Countries'].includes(layer.get('title'))) {
+        layer.setVisible(false);
+      }});
+
     this.map?.setView(new View(currentView));
     this.map?.getView().animate({ zoom: 3, duration: 300 });
   };
