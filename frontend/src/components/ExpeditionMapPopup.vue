@@ -33,6 +33,27 @@
         />
       </div>
       <div v-else>No 3D Mapping data available</div>
+      <div class="card">
+        <!-- <img src="/seacape-genomics.png" alt="Seascape Genomics" /> -->
+        <p>In Collaboration with</p>
+        <div style="display: flex; gap: 1rem">
+          <div
+            class="logo-item"
+            v-for="community in computedCountryCommunities"
+            :key="community.name"
+          >
+            <a :href="community.url" target="_blank" class="logo-item-link">
+              <q-img
+                :src="community.logo"
+                :alt="community.name"
+                fit="contain"
+                style="height: 150px; width: 150px"
+              >
+              </q-img>
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -44,6 +65,7 @@ import Djibouti3DMapping from '@/assets/data/dji_3d_mapping_all_results.json';
 import { useMapStore } from '@/stores/mapStore';
 import BarChart3DMappingExpedition from '@/components/BarChart3DMappingExpedition.vue';
 import { storeToRefs } from 'pinia';
+import communities from '@/assets/communities';
 
 interface MappingData {
   id: number;
@@ -69,6 +91,7 @@ const threedMappingByCountry: Record<string, MappingData[]> = {
   djibouti: Djibouti3DMapping as any,
 };
 
+
 const formatCoordinate = (decimal: number, direction: 'N' | 'E'): string => {
   const absolute = Math.abs(decimal);
   const degrees = Math.floor(absolute);
@@ -85,6 +108,12 @@ const {  closeExpedition } =
 const countryLower = computed(() =>
   selectedExpedition.value?.country.toLowerCase().replaceAll(' ', '_') ?? ''
 );
+
+const computedCountryCommunities = computed(() => {
+  return communities.filter(
+    (community) => community.country.toLowerCase().replaceAll(' ', '_') === countryLower.value
+  );
+});
 
 
 const sampleSet = computed(() => {
