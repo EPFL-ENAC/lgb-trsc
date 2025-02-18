@@ -15,7 +15,7 @@ export default [
       logo: "/community/MarineScienceStation.png"
     },
     {
-      url: "https://mss.ju.edu.jo/Home.aspx",
+      url: "https://aseza.jo/EN/Pages/Aqaba_Marine_Reserve",
       name: "Aqaba Marine Reserve, Jordan",
       country: "Jordan",
       logo: "/community/aqaba-marine-reserve.png"
@@ -27,9 +27,10 @@ export default [
       logo: "/community/RedSeaUniversity.jpg"
     },
     {
+      url: "https://x.com/momr_eritrea?lang=fr",
       name: "Ministry of Maritime Resources of Massawa, Eritrea",
       country: "Eritrea",
-      logo: "/community/MinistryMarineResources.png"
+      logo: "/community/MinistryMarineResources.png",
     },
   
     {
