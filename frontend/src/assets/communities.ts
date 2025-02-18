@@ -70,6 +70,12 @@ export default [
       name: "École polytechnique fédérale de Zurich, Switzerland",
       country: "Switzerland",
       logo: "/community/ethz.jpg"
+    },
+    {
+      url: "https://www.epfl.ch/en/",
+      name: "École polytechnique fédérale de Lausanne, Switzerland",
+      country: "Switzerland",
+      logo: "/EPFL.svg"
     }
     // {
     //   url: "https://iui-eilat.ac.il/",
