@@ -110,10 +110,17 @@ export const createFeatureStyle = (
   colorMap: Record<string, string>,
   dotted = false,
   featureName = 'class',
-  dottedStrokeType: 'dotted' | 'default' | '3D' = 'default'
+  dottedStrokeType: 'dotted' | 'default' | '3D' = 'default',
+  filter?: Record<string, string>
 ) => {
   const featureClass =
     feature.get(featureName) || (feature.get('name') as string);
+  
+  // Add this line to the top of the function
+  const propertyName = Object.keys(filter || {})[0];
+  if (feature.get(propertyName) !== filter?.[propertyName]) {
+    return new Style({});
+  }
   if (!visibleClasses.value[featureClass]) {
     return new Style({});
   }

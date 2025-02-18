@@ -35,7 +35,7 @@ export class LayerController {
     this.expeditionProjectLayer = createExpeditionLayer('by project');
     this.expeditionYearLayer = createExpeditionLayer('by year');
     this.expeditionHardCoralCoverLayer =
-      createExpeditionLayer('hard coral cover');
+      createExpeditionLayer('hard coral cover', {experiment: '3D'});
   }
 
   public showCountryLayer() {
