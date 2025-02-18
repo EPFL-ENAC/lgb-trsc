@@ -28,7 +28,7 @@
                 @update:model-value="() => setBaseMapVisible(layer.title)"
               />
             </q-item-section>
-            <q-item-section>{{ layer.title }}</q-item-section>
+            <q-item-section> {{ layer.title }}</q-item-section>
           </q-item>
         </q-list>
       </q-expansion-item>

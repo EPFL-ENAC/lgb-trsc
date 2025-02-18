@@ -2,10 +2,12 @@ import { ref, onMounted } from 'vue';
 import BaseLayer from 'ol/layer/Base';
 import LayerGroup from 'ol/layer/Group';
 import { useMapController } from './useMapController';
+import BaseObject from 'ol/Object';
 
 export interface LayerInfo {
   title: string;
   visible: boolean;
+  showInLayerSwitcher?: boolean;
   layer: BaseLayer;
 }
 
@@ -30,23 +32,36 @@ export function useLayerManager() {
     baseMaps.value = controller.getBaseMaps().map((layer: BaseLayer) => ({
       title: layer.get('title') || 'Untitled',
       visible: layer.getVisible(),
+      showInLayerSwitcher: layer.get('showInLayerSwitcher'),
       layer
     }));
 
     // Initialize overlay groups
-    overlayGroups.value = controller.getOverlayMaps().map((baseLayer: BaseLayer) => {
+    overlayGroups.value = controller.getOverlayMaps().filter(
+      (baseLayer: BaseLayer) => {
+        const value = baseLayer.getProperties();
+        return value.showInLayerSwitcher === undefined
+      }
+    ).map((baseLayer: BaseLayer) => {
       const group = baseLayer as LayerGroup;
       const layers = (group instanceof LayerGroup ? group.getLayers().getArray() : [group])
         .map((layer: BaseLayer) => ({
           title: layer.get('title') || 'Untitled',
           inputType: layer.get('inputType'),
           visible: layer.getVisible(),
+          showInLayerSwitcher: layer.get('showInLayerSwitcher'),
           layer
-        }));
+        }))
+        .filter((layer: LayerInfo) => {
+          console.log(layer.showInLayerSwitcher)
+          return layer.showInLayerSwitcher !== false
+        });
 
       return {
         title: group.get('title') || 'Untitled',
         inputType: group.get('inputType'),
+        showInLayerSwitcher: group.get('showInLayerSwitcher'),
+        visible: group.getVisible(),
         layers
       };
     });
