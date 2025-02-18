@@ -23,7 +23,6 @@ import {
 } from '@/maps/utils/MapClickHandler';
 import { addMapPointerMoveHandler } from '@/maps/utils/MapPointerMove';
 import { useMapStore } from '@/stores/mapStore';
-// import { expeditions as DjiboutiExpeditions } from '@/assets/data/expeditions';
 import DjiboutiExpeditions from '@/assets/data/Expeditions.json';
 import Djibouti3DMapping from '@/assets/data/dji_3d_mapping_all_results.json';
 import { useLayerController } from '@/maps/composables/useLayerController';
@@ -45,15 +44,15 @@ import {
   createCHL_monthly_mean_1997_2024_MeanLayer,
   createCHL_monthly_mean_1997_2024_SD,
 } from './layers/overlay/EnvironmentalLayers/DjiboutiLayer';
-import LayerSwitcher, { BaseLayerOptions } from 'ol-layerswitcher';
+import { BaseLayerOptions } from 'ol-layerswitcher';
+import { Geometry } from 'ol/geom';
 
 interface CustomBaseLayerOptions extends BaseLayerOptions {
   inputType?: 'base' | 'checkbox' | 'radio';
 }
 
 export class MapController {
-  private map: Map;
-  private cleanupCallbacks: (() => void)[] = [];
+  private map: Map | null = null;
 
   constructor(target: string) {
     this.map = new Map({
@@ -77,7 +76,31 @@ export class MapController {
       ],
     });
   }
+  public destroy() {
+    // Remove all controls
+    const controls = this.map?.getControls().getArray();
+    controls?.forEach(control => this.map?.removeControl(control));
 
+    // // Remove all layers
+    if (this.baseMaps) {
+      this.map?.removeLayer(this.baseMaps);
+    }
+    if (this.overlayMaps) {
+      this.map?.removeLayer(this.overlayMaps);
+    }
+
+    // // Remove all interactions
+    const interactions = this.map?.getInteractions().getArray();
+    interactions?.forEach(interaction => this.map?.removeInteraction(interaction));
+
+    // Remove all event listeners
+    this.map?.setTarget("");
+    this.map = null;
+  }
+
+  public getMap() {
+    return this.map;
+  }
   private baseMaps: LayerGroup | null = null;
   private overlayMaps: LayerGroup | null = null;
 
@@ -130,8 +153,8 @@ export class MapController {
       ],
     });
 
-    this.map.addLayer(this.baseMaps);
-    this.map.addLayer(this.overlayMaps);
+    this.map?.addLayer(this.baseMaps);
+    this.map?.addLayer(this.overlayMaps);
 
     // Retrieve the store instance
     const mapStore = useMapStore();
@@ -157,18 +180,16 @@ export class MapController {
       selectedCountryStyle,
     };
 
-    const cleanUpClickHandler = addMapClickHandler(
-      this.map,
-      clickHandlerOptions
-    );
-    // this.cleanupCallbacks.push(cleanUpClickHandler);
-
-    const cleanup = addMapPointerMoveHandler(this.map, {
-      onHover,
-    });
-
-    // Store cleanup callback
-    this.cleanupCallbacks.push(cleanup);
+    if (this.map) {
+       addMapClickHandler(
+        this.map,
+        clickHandlerOptions
+      );
+  
+      addMapPointerMoveHandler(this.map, {
+        onHover,
+      });
+    }
   }
 
   // Add new layer management methods
@@ -206,37 +227,6 @@ export class MapController {
   }
 
   public zoomToCountry(): void {
-    /*
-  This function zoomToCountry is a map navigation function that appears to be using OpenLayers (a JavaScript mapping library). Here's what it does step by step:
-
-    Check for Selected Country:
-
-    First checks if there's a selected country and if it has coastline data
-    Create Geographic Feature:
-
-    Creates a GeoJSON feature from the country's coastline data
-    Uses the EPSG:4326 projection (standard latitude/longitude coordinate system)
-    Get Map Extent:
-
-    Calculates the geographical bounds (extent) of the coastline feature
-    An extent is an array of coordinates representing [minX, minY, maxX, maxY]
-    Initial Fit:
-
-    Fits the map view to the calculated extent with a 300ms animation duration
-    Configure View Settings:
-
-    Gets current view properties
-    Sets minimum zoom level (defaultMinZoomCountry)
-    Centers the view on the extent's center point
-    View Update:
-
-    Creates and sets a new view with the updated properties
-    There's also some commented-out code that would add a 2-degree buffer around the extent, presumably to show some surrounding area around the country.
-
-    A key thing to note is that this function is using Vue.js's reactivity system (indicated by selectedCountry.value), suggesting it's part of a Vue component or composable.
-
-    The function essentially zooms and centers the map to focus on a selected country's coastline with some predefined zoom constraints.
-  */
 
     const mapStore = useMapStore();
     const selectedCountry = mapStore.selectedCountry;
@@ -256,51 +246,39 @@ export class MapController {
         'EPSG:4326',
         'EPSG:3857'
       );
-      this.map.getView().fit(transformedExtent, { duration: 300 });
-      const currentView = this.map.getView().getProperties();
-      currentView.zoom = defaultMinZoomCountry;
-      currentView.minZoom = defaultMinZoomCountry;
-      currentView.center = getCenter(transformedExtent);
-      // make the following extent bigger to show the whole country
-      // Add a buffer of 2 degrees around the extent
-      // const buffer = 2;
-      // currentView.extent = [
-      //   transformedExtent[0] - buffer,
-      //   transformedExtent[1] - buffer,
-      //   transformedExtent[2] + buffer,
-      //   transformedExtent[3] + buffer
-      // ];
+      this.map?.getView().fit(transformedExtent, { duration: 300 });
+      const currentView = this.map?.getView().getProperties();
+      if (currentView) {
+        currentView.zoom = defaultMinZoomCountry;
+        currentView.minZoom = defaultMinZoomCountry;
+        currentView.center = getCenter(transformedExtent);
+      }
 
-      this.map.setView(new View(currentView));
+      this.map?.setView(new View(currentView));
     }
   }
 
   public zoomOutOfCountry = () => {
-    const currentView = this.map.getView().getProperties();
-    currentView.zoom = defaultMinZoom;
-    currentView.minZoom = defaultMinZoom;
-    currentView.center = getCenter(defaultExtent);
-    // currentView.extent = defaultExtent;
-    this.map.setView(new View(currentView));
-    this.map.getView().animate({ zoom: 3, duration: 300 });
+    const currentView = this.map?.getView().getProperties();
+    if (currentView) {
+      currentView.zoom = defaultMinZoom;
+      currentView.minZoom = defaultMinZoom;
+      currentView.center = getCenter(defaultExtent);
+    }
+    this.map?.setView(new View(currentView));
+    this.map?.getView().animate({ zoom: 3, duration: 300 });
   };
 
   public refreshMap() {
-    this.map.renderSync();
+    this.map?.renderSync();
   }
 
   public zoomToExpedition = () => {
     const mapStore = useMapStore();
     const selectedExpedition = mapStore.selectedCountry;
     if (selectedExpedition) {
-      const extent = selectedExpedition.geometry.getExtent();
-      this.map.getView().fit(extent, { duration: 300 });
+      const extent = (selectedExpedition?.geometry as Geometry).getExtent();
+      this.map?.getView().fit(extent, { duration: 300 });
     }
   };
-
-  public destroy(): void {
-    this.cleanupCallbacks.forEach((cb) => cb());
-    this.cleanupCallbacks = [];
-    this.map.setTarget(undefined);
-  }
 }

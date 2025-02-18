@@ -54,6 +54,8 @@ const updateMapDimensions = () => {
 
 onMounted(() => {
   mapController.value = useMapController();
+  const map = mapController.value?.getMap();
+  map?.renderSync();
   updateMapDimensions();
   
   // Add resize observer to update dimensions when window resizes
@@ -64,7 +66,7 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-  mapController.value?.destroy();
+  mapController.value?.destroy()
   mapController.value = null;
 });
 </script>

@@ -3,9 +3,8 @@ import type { Map } from 'ol';
 import type { FeatureLike } from 'ol/Feature';
 import { useLayerController } from '@/maps/composables/useLayerController';
 import { useMapController } from '@/maps/composables/useMapController';
-import { clear } from 'console';
-
-
+import { EventsKey } from 'ol/events';
+import BaseEvent from 'ol/events/Event';
 
 type CountryName = string;
 export interface MapClickHandlerOptions {
@@ -16,31 +15,33 @@ export interface MapClickHandlerOptions {
   selectedCountryStyle: any;
 }
 
-export function addMapClickHandler(
-  map: Map,
-  options: MapClickHandlerOptions
-): void {
-  map.on('click', (evt) => {
-
-
+export const clickHandlerFn =
+  (map: Map, options: MapClickHandlerOptions) => (evt: BaseEvent) => {
     if (!map) return;
     const layerController = useLayerController();
     // const { countryLayer, expeditionLayer } = layerController.getLayers();
 
-
     const pixel = map.getEventPixel(evt.originalEvent);
-    const target = evt.originalEvent.target
+    const target = evt.originalEvent.target;
     // const hit = map.hasFeatureAtPixel(pixel);
-    const validExpeditons = ['Expedition', 'by year', 'by project', 'hard coral cover'];
+    const validExpeditons = [
+      'Expedition',
+      'by year',
+      'by project',
+      'hard coral cover',
+    ];
     const feature: FeatureLike | undefined = target.closest('.ol-control')
-          ? undefined
-          : map.getFeaturesAtPixel(pixel, {
-            hitTolerance: 10,
-            layerFilter: (layer) => {
-              // Only check specific layers you're interested in
-              return layer.get('title') === 'Countries' || validExpeditons.includes(layer.get('title'));
-            }
-          })[0];
+      ? undefined
+      : map.getFeaturesAtPixel(pixel, {
+          hitTolerance: 10,
+          layerFilter: (layer) => {
+            // Only check specific layers you're interested in
+            return (
+              layer.get('title') === 'Countries' ||
+              validExpeditons.includes(layer.get('title'))
+            );
+          },
+        })[0];
     const properties = feature?.getProperties();
     if (properties?.type === 'country') {
       // Update the store via callback
@@ -49,8 +50,14 @@ export function addMapClickHandler(
       // Update the store via callback
       onExpeditionClick(properties, options);
     }
+  };
 
-  });
+export function addMapClickHandler(
+  map: Map,
+  options: MapClickHandlerOptions
+): EventsKey {
+  const onClickEventsKey = map.on('click', clickHandlerFn(map, options));
+  return onClickEventsKey;
 }
 
 function onCountryClick(properties: any, options: MapClickHandlerOptions) {
@@ -60,7 +67,7 @@ function onCountryClick(properties: any, options: MapClickHandlerOptions) {
   if (properties.name === 'Djibouti') {
     // I guess expeditionsByCountry is a dictionary of GeoJSON data
     // and rawData is for 3D Mapping
-   
+
     layerController.updateExpeditions(options.expeditionsByCountry['Djibouti']);
     properties.rawData = options.threeDMappingByCountry['Djibouti'];
     options.selectCountry(properties);
