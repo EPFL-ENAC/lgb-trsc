@@ -53,7 +53,6 @@ export function useLayerManager() {
           layer
         }))
         .filter((layer: LayerInfo) => {
-          console.log(layer.showInLayerSwitcher)
           return layer.showInLayerSwitcher !== false
         });
 
