@@ -83,7 +83,7 @@ await csv({ checkType: true, ignoreEmpty: true, trim: true })
         .digest('hex');
       // Function to get hard_coral_cover category based on mean value
       const getHardCoralCoverCategory = (mean) => {
-        if (!mean) return undefined;
+        if (!mean === null || mean === undefined) return undefined;
         const percentage = mean * 100;
         if (percentage <= 10) return '0-10%';
         if (percentage <= 30) return '10-30%';

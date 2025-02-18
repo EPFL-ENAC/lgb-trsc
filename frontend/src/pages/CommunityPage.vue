@@ -21,7 +21,7 @@
             style="height: 150px; width: 150px"
           >
           </q-img>
-          <p>{{ community.name }}</p>
+          <p>{{ community.name}}</p>
         </a>
       </div>
     </div>
@@ -32,7 +32,6 @@
 import { ref } from 'vue';
 
 import communities from '@/assets/communities';
-// const communities = ref(communities);
 </script>
 
 <style scoped>

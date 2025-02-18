@@ -1,33 +1,41 @@
+function tag(strings: TemplateStringsArray, country: string){
+    return strings[0] + country + strings[1];
+  }
 export default [
     {
       url: "https://aseza.jo/Default/Ar",
-      name: "Aqaba Special Economic Zone Authority",
+      name: "Aqaba Special Economic Zone Authority, Jordan",
       country: "Jordan",
       logo: "/community/Aqaba.jpg"
     },
     {
       url: "https://mss.ju.edu.jo/Home.aspx",
-      name: "Marine Science Station of Aqaba",
+      name: "Marine Science Station of Aqaba, Jordan",
       country: "Jordan",
       logo: "/community/MarineScienceStation.png"
     },
-  
-    
+    {
+      url: "https://aseza.jo/EN/Pages/Aqaba_Marine_Reserve",
+      name: "Aqaba Marine Reserve, Jordan",
+      country: "Jordan",
+      logo: "/community/aqaba-marine-reserve.png"
+    },
     {
       url: "https://rsu.edu.sd/?page_id=14026&lang=en",
-      name: "Red Sea University",
+      name: "Red Sea University of Port-Sudan, Sudan",
       country: "Sudan",
       logo: "/community/RedSeaUniversity.jpg"
     },
     {
-      name: "Ministry of Marine Resources of Massawa, Eritrea",
+      url: "https://x.com/momr_eritrea?lang=fr",
+      name: "Ministry of Maritime Resources of Massawa, Eritrea",
       country: "Eritrea",
-      logo: "/community/MinistryMarineResources.png"
+      logo: "/community/MinistryMarineResources.png",
     },
   
     {
       url: "https://www.facebook.com/people/Minist%C3%A8re-de-lEnvironnement-et-du-D%C3%A9veloppement-Durable/61553005181813/",
-      name: "Ministère de l'Environnement et du Développement Durable",
+      name: "Ministère de l'Environnement et du Développement Durable de Djibouti",
       country: "Djibouti",
       logo: "/community/MinistèreEnvironnement.png"
     },
@@ -47,10 +55,28 @@ export default [
     },
     {
       url: "https://www.cerd.dj",
-      name: "CERD (centre d'étude et de recherche à Djibouti)",
+      name: "Centre d'étude et de recherche de Djibouti",
       country: "Djibouti",
       logo: "/community/cerd.png"
     },
+    {
+      url: "https://www.uni-konstanz.de/en/",
+      name: "University of Konstanz, Germany",
+      country: "Germany",
+      logo: "/community/UniversityKonstanz.png"
+    },
+    {
+      url: "https://ethz.ch/de.html",
+      name: "École polytechnique fédérale de Zurich, Switzerland",
+      country: "Switzerland",
+      logo: "/community/ethz.jpg"
+    },
+    {
+      url: "https://www.epfl.ch/en/",
+      name: "École polytechnique fédérale de Lausanne, Switzerland",
+      country: "Switzerland",
+      logo: "/EPFL.svg"
+    }
     // {
     //   url: "https://iui-eilat.ac.il/",
     //   name: "The Interuniversity Institute for Marine Sciences in Eilat",
