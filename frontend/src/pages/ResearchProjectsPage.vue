@@ -7,13 +7,6 @@
   >
     <div id="info"></div>
   </div>
-  <!-- <MapLegend :isAbsolute="true" /> -->
-  <MapTooltip 
-    :content="hoveredExpedition" 
-    :position="hoveredExpeditionPixel"
-    :mapWidth="mapWidth"
-    :mapHeight="mapHeight"
-  />
   <MapLeftPanel />
   <MapRightPanel />
 </template>
@@ -26,9 +19,7 @@ import { onMounted, onUnmounted, ref, watch } from 'vue';
 import { MapController } from '@/maps/MapController';
 import { storeToRefs } from 'pinia';
 import { useMapStore } from '@/stores/mapStore';
-import MapLegend from '@/components/MapLegend.vue';
 import MapRightPanel from '@/components/MapRightPanel.vue';
-import MapTooltip from '@/components/MapTooltip.vue';
 import { useMapController } from '@/maps/composables/useMapController';
 import MapLeftPanel from '@/components/MapLeftPanel.vue';
 
@@ -38,7 +29,7 @@ const mapWidth = ref(0);
 const mapHeight = ref(0);
 const mapController = ref<MapController | null>(null);
 
-const { hoveredExpedition, hoveredExpeditionPixel, drawer } = storeToRefs(mapStore);
+const { drawer } = storeToRefs(mapStore);
 
 // Update dimensions when drawer changes
 watch(drawer, () => {

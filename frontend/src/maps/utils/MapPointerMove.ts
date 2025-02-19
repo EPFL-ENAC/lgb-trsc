@@ -40,6 +40,15 @@ export function addMapPointerMoveHandler(map: Map, options: MapPointerMoveHandle
         if (feature !== currentFeature && text) {
           info.style.visibility = 'visible';
           info.innerText = feature.get('name') || feature.get('event_id');
+          let ongoingProjects = ``;
+          if (feature.get('type') === 'country') {
+            
+            if (text === 'Djibouti') {
+              ongoingProjects = `
+            Ongoing projects: 3D, SG, MP, eDNA, Sym, echi`
+            };
+            info.innerText = feature.get('name') + ongoingProjects;
+          }
         }
       } else {
         info.style.visibility = 'hidden';
