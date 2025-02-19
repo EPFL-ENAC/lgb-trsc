@@ -14,7 +14,6 @@ import {
 import { Style, Fill, Stroke, Circle as CircleStyle } from 'ol/style';
 import { Feature } from 'ol';
 import { Geometry } from 'ol/geom';
-import { useMapController } from './useMapController';
 
 // Create a singleton state for layer styles
 const visibleClasses = ref<{ [key: string]: boolean }>({
@@ -184,9 +183,13 @@ export function useLayerStyles() {
       feature.get(className) || (feature.get('name') as string);
 
     const colorMap = environmentalClusterColorMap.colorMap as Record<
-      string,
-      string
-    >;
+        string,
+        string
+      >;
+      
+    if (!visibleClasses.value[featureClass]) {
+      return new Style({});
+    }
 
     const radius = Math.max(6, Math.pow(resolution, 0.45) / 2);
     return new Style({

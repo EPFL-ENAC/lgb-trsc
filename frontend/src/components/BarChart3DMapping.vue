@@ -72,8 +72,8 @@ export default {
         const option = this.getChartOption(this.rawData, this.substrateLevel);
         this.chart.setOption(option);
         window.addEventListener('resize', () => {
-        this.chart.resize();
-      });
+          this.chart?.resize();
+        });
     },
     getChartOption(data, substrateLevel) {
 

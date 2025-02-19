@@ -38,7 +38,7 @@ export const createDjiboutiEnvironmentalClusterLayer = () => {
     () => {
       // Set up watcher for style changes
       layer.setStyle((feature, resolution) =>
-        computedStyle.value(feature, resolution)
+        computedStyle.value(feature as Feature<Geometry>, resolution)
       );
       layer.changed();
     },
@@ -49,7 +49,6 @@ export const createDjiboutiEnvironmentalClusterLayer = () => {
     () => mapStore.visibleClasses,
     () => {
       layer.changed();
-      layer.getSource()?.changed();
     },
     { deep: true }
   );
