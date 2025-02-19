@@ -31,12 +31,26 @@ export default {
       default: true,
     },
   },
+  data() {
+    return {
+      chart: null,
+      windowResizeInnerWidth: window.innerWidth,
+      windowResizeInnerHeight: window.innerHeight,
+    };
+  },
   mounted() {
     this.initChart();
   },
+  unmounted() {
+    this.chart?.dispose();
+    this.chart = null;
+  },
   watch: {
     rawData: {
-      handler() {
+      handler(value) {
+        if (value.length === 0) {
+          return;
+        }
         this.initChart();
       },
       deep: true,
@@ -44,9 +58,11 @@ export default {
   },
   methods: {
     initChart() {
-      const chart = echarts.init(this.$refs.chart);
+      if (this.chart == null) {
+        this.chart = echarts.init(this.$refs.chart);
+      }
       const option = this.getChartOption(this.rawData);
-      chart.setOption(option);
+      this.chart.setOption(option);
     },
     getChartOption(data) {;
 

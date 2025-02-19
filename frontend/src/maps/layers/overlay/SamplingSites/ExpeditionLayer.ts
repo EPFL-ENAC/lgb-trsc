@@ -51,7 +51,7 @@ export const createExpeditionLayer = (
   filter?: Record<string, string>
 ) => {
   const mapStore = useMapStore();
-  const createReefExtentStyle = (feature: Feature<Geometry>) =>
+  const createExpedtionStyle = (feature: Feature<Geometry>) =>
     createFeatureStyle(
       feature,
       expeditionStyleTypeMap[expeditionType],
@@ -64,12 +64,12 @@ export const createExpeditionLayer = (
     source: expeditionSource,
     title: `${expeditionType}`,
     visible: false,
-    style: createReefExtentStyle,
+    style: createExpedtionStyle,
   } as BaseLayerOptions);
 
   // Create a computed style function that will react to store changes
   const computedStyle = computed(() => {
-    return (feature: Feature<Geometry>) => createReefExtentStyle(feature);
+    return (feature: Feature<Geometry>) => createExpedtionStyle(feature);
   });
 
   // Set up watcher for style changes
@@ -82,7 +82,16 @@ export const createExpeditionLayer = (
     () => mapStore.visibleClasses,
     () => {
       layer.changed();
-      layer.getSource()?.changed();
+    },
+    { deep: true }
+  );
+  watch(
+    () => mapStore.selectedExpedition,
+    (newValue) =>{
+      if (newValue !== undefined) {
+        debugger;
+        layer.changed();
+      }
     },
     { deep: true }
   );

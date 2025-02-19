@@ -14,6 +14,7 @@ import {
 import { Style, Fill, Stroke, Circle as CircleStyle } from 'ol/style';
 import { Feature } from 'ol';
 import { Geometry } from 'ol/geom';
+import { useMapStore } from '@/stores/mapStore';
 
 // Create a singleton state for layer styles
 const visibleClasses = ref<{ [key: string]: boolean }>({
@@ -63,12 +64,14 @@ const visibleClasses = ref<{ [key: string]: boolean }>({
   ),
 });
 
+export type dottedStroke = 'dotted' | 'default' | '3D' | 'selectedExpedition';
+
 // Add this helper function at the top level of the file
 const createCommonStyle = (
   colorMap: Record<string, string>,
   featureClass: string,
   dottedStroke = false,
-  dottedStrokeType: 'dotted' | 'default' | '3D' = 'default'
+  dottedStrokeType: dottedStroke = 'default'
 ) => {
   const dottedStyle = {
     dotted: new Stroke({
@@ -84,6 +87,10 @@ const createCommonStyle = (
       color: colorMap[featureClass] || 'blue',
       width: 4,
     }),
+    'selectedExpedition': new Stroke({
+      color: colorMap[featureClass] || 'red',
+      width: 10,
+    }),
   } as const;
 
   return new Style({
@@ -91,7 +98,7 @@ const createCommonStyle = (
       color: colorMap[featureClass] || 'rgba(128, 128, 128, 0.5)',
     }),
     image: new CircleStyle({
-      radius: 4,
+      radius: dottedStrokeType === 'selectedExpedition' ? 10: 4,
       fill: new Fill({
         color: colorMap[featureClass] || 'blue',
       }),
@@ -109,7 +116,7 @@ export const createFeatureStyle = (
   colorMap: Record<string, string>,
   dotted = false,
   featureName = 'class',
-  dottedStrokeType: 'dotted' | 'default' | '3D' = 'default',
+  dottedStrokeType: 'dotted' | 'default' | '3D'| 'selectedExpedition' = 'default',
   filter?: Record<string, string>
 ) => {
   const featureClass =
@@ -119,6 +126,10 @@ export const createFeatureStyle = (
   const propertyName = Object.keys(filter || {})[0];
   if (feature.get(propertyName) !== filter?.[propertyName]) {
     return new Style({});
+  }
+  const { selectedExpedition } = useMapStore();
+  if (selectedExpedition && feature.get('event_id') === selectedExpedition.event_id) {
+    return createCommonStyle(colorMap, featureClass, dotted, 'selectedExpedition');
   }
   if (!visibleClasses.value[featureClass]) {
     return new Style({});
@@ -143,6 +154,7 @@ export function useLayerStyles() {
         ReefExtent: reefExtentColorMap.colorMap,
         Boundary: boundaryColorMap.colorMap,
         MarineProtectedArea: marineProtectedAreaColorMap.colorMap,
+        EnvironmentalClusters: environmentalClusterColorMap.colorMap,
       }[layerType] || {};
 
     Object.keys(colorMap).forEach((className) => {
