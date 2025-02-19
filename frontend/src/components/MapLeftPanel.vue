@@ -40,16 +40,21 @@
         :group="`overlays${groupIndex}`"
         :icon="getGroupIcon(group.title)"
         :label="group.title"
-        :default-opened="group.layers.some((layer) => layer.visible)"
+        :default-opened="
+          group.layers.some((layerinfo) => layerinfo.layer.getVisible())
+        "
+        :model-value="
+          group.layers.some((layerinfo) => layerinfo.layer.getVisible())
+        "
       >
         <q-list padding>
           <q-item
-            v-for="(layer, layerIndex) in group.layers"
-            :key="layer.title"
+            v-for="(layerinfo, layerIndex) in group.layers"
+            :key="layerinfo.layer.get('title')"
             class="column"
           >
             <q-item-section
-              v-if="layer.title === 'Reef clusters'"
+              v-if="layerinfo.layer.get('title') === 'Reef clusters'"
               class="q-px-xl"
             >
               <q-input
@@ -64,10 +69,10 @@
             </q-item-section>
             <q-item-section>
               <q-expansion-item
-                v-if="layer.visible && getLayerLegend(layer)"
+                v-if="layerinfo.layer.get('visible') && getLayerLegend(layerinfo.layer as BaseLayer)"
                 dense
                 dense-toggle
-                :default-opened="layer.visible && !!getLayerLegend(layer)"
+                :default-opened="layerinfo.layer.get('visible') && !!getLayerLegend(layerinfo.layer as BaseLayer)"
                 header-class="text-caption text-grey-7"
                 class="layer-grid"
               >
@@ -76,7 +81,7 @@
                     <div class="checkbox-wrapper">
                       <template v-if="group.inputType === 'radio'">
                         <q-radio
-                          v-model="layer.visible"
+                          :model-value="layerinfo.layer.get('visible')"
                           :val="true"
                           @update:model-value="
                             () => setOverlayLayerRadio(groupIndex, layerIndex)
@@ -85,7 +90,7 @@
                       </template>
                       <template v-else>
                         <q-checkbox
-                          v-model="layer.visible"
+                          :model-value="layerinfo.layer.get('visible')"
                           @update:model-value="
                             (val) =>
                               toggleOverlayLayer(groupIndex, layerIndex, val)
@@ -93,23 +98,25 @@
                         />
                       </template>
                     </div>
-                    <div class="layer-title">{{ layer.title }}</div>
+                    <div class="layer-title">
+                      {{ layerinfo.layer.get('title') }}
+                    </div>
                   </div>
                 </template>
                 <q-card class="legend-card">
                   <MapLegend
-                    v-if="layer.title === 'Reef clusters'"
-                    :classColorMap="getLayerLegend(layer)?.colorMap"
+                    v-if="layerinfo.layer.get('title') === 'Reef clusters'"
+                    :classColorMap="getLayerLegend(layerinfo.layer as BaseLayer)?.colorMap"
                     :max-value="mapStore.selectedEnvironmentalClusterNumber"
                     :is-continuous="
-                      getLayerLegend(layer)?.type === 'continuous'
+                      getLayerLegend(layerinfo.layer as BaseLayer)?.type === 'continuous'
                     "
                   />
                   <MapLegend
                     v-else
-                    :classColorMap="getLayerLegend(layer)?.colorMap"
+                    :classColorMap="getLayerLegend(layerinfo.layer as BaseLayer)?.colorMap"
                     :is-continuous="
-                      getLayerLegend(layer)?.type === 'continuous'
+                      getLayerLegend(layerinfo.layer as BaseLayer)?.type === 'continuous'
                     "
                   />
                 </q-card>
@@ -128,7 +135,7 @@
                     <div class="checkbox-wrapper">
                       <template v-if="group.inputType === 'radio'">
                         <q-radio
-                          v-model="layer.visible"
+                          :model-value="layerinfo.layer.get('visible')"
                           :val="true"
                           @update:model-value="
                             () => setOverlayLayerRadio(groupIndex, layerIndex)
@@ -137,7 +144,7 @@
                       </template>
                       <template v-else>
                         <q-checkbox
-                          v-model="layer.visible"
+                          :model-value="layerinfo.layer.get('visible')"
                           @update:model-value="
                             (val) =>
                               toggleOverlayLayer(groupIndex, layerIndex, val)
@@ -145,7 +152,7 @@
                         />
                       </template>
                     </div>
-                    <div class="layer-title">{{ layer.title }}</div>
+                    <div class="layer-title">{{ layerinfo.title }}</div>
                   </div>
                 </template>
               </q-expansion-item>
@@ -175,12 +182,7 @@ import {
   samplingSiteByHardCoralCoverColorMap,
 } from '@/maps/config/layerColors';
 import { useMapStore } from '@/stores/mapStore';
-
-interface Layer {
-  title: string;
-  visible: boolean;
-}
-
+import BaseLayer from 'ol/layer/Base';
 const $q = useQuasar();
 const leftDrawerOpen = ref(true);
 
@@ -209,9 +211,9 @@ const getGroupIcon = (title: string) => {
   return icons[title] || icons['Default'];
 };
 
-const getLayerLegend = (layer: Layer) => {
+const getLayerLegend = (layer: BaseLayer) => {
   // Return the appropriate color map based on the layer title
-  switch (layer.title) {
+  switch (layer.get('title')) {
     case 'Geomorphic':
       return geomorphicColorMap;
     case 'Benthic':
