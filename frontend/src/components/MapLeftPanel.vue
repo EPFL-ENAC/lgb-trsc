@@ -98,6 +98,15 @@
                 </template>
                 <q-card class="legend-card">
                   <MapLegend
+                    v-if="layer.title === 'Reef clusters'"
+                    :classColorMap="getLayerLegend(layer)?.colorMap"
+                    :max-value="mapStore.selectedEnvironmentalClusterNumber"
+                    :is-continuous="
+                      getLayerLegend(layer)?.type === 'continuous'
+                    "
+                  />
+                  <MapLegend
+                    v-else
                     :classColorMap="getLayerLegend(layer)?.colorMap"
                     :is-continuous="
                       getLayerLegend(layer)?.type === 'continuous'

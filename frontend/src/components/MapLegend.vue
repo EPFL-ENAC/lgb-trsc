@@ -1,7 +1,7 @@
 <template>
   <div class="legend" :class="{ 'legend-absolute': isAbsolute }">
-    <ol v-if="classColorMap && !isContinuous">
-      <li v-for="(color, className) in classColorMap" :key="className">
+    <ol v-if="visibleColorClasses && !isContinuous">
+      <li v-for="(color, className) in visibleColorClasses" :key="className">
         <q-checkbox
           :model-value="visibleClasses[className]"
           @update:model-value="() => toggleClassVisibility(className as string)"
@@ -59,7 +59,19 @@ const props = defineProps<{
   classColorMap?: ClassColorMap;
   isContinuous?: boolean;
   isAbsolute?: boolean;
+  maxValue?: number;
 }>();
+
+
+const visibleColorClasses = computed(() => {
+  if (!props.maxValue) return props.classColorMap;
+  const keepers = Object.keys(props.classColorMap ?? {}).slice(0, props.maxValue);
+  const result = {} as ClassColorMap;
+  for (const key of keepers) {
+    result[key] = props.classColorMap?.[key] ?? 'rgba(0,0,0,0)';
+  }
+  return result;
+});
 
 const mapStore = useMapStore();
 // Use the store's visibleClasses directly instead of local state
