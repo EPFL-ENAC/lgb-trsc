@@ -1,5 +1,5 @@
 import { RouteRecordRaw } from 'vue-router';
-
+import ResearchProjectsPage from '@/pages/ResearchProjectsPage.vue';
 
 
 const routes: RouteRecordRaw[] = [
@@ -11,7 +11,7 @@ const routes: RouteRecordRaw[] = [
       { path: 'about', component: () => import('pages/AboutPage.vue') },
       { path: 'the-red-sea', component: () => import('pages/TheRedSeaPage.vue') },
       { path: 'community', component: () => import('pages/CommunityPage.vue') },
-      { path: 'research-projects', component: () => import('pages/ResearchProjectsPage.vue') },
+      { path: 'research-projects', component: ResearchProjectsPage },
       { path: 'resources', component: () => import('pages/ResourcesPage.vue') },
       { path: 'contact-us', component: () => import('pages/ContactUsPage.vue') },
     ],

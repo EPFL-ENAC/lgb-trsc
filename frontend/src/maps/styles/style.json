@@ -1,0 +1,47 @@
+{
+  "version": 8,
+  "name": "TRSC Map Style",
+  "sources": {
+    "arcgis": {
+      "type": "raster",
+      "tiles": [
+        "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+      ],
+      "tileSize": 256,
+      "attribution": "© ArcGIS"
+    },
+    "osm": {
+      "type": "raster",
+      "tiles": [
+        "https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      ],
+      "tileSize": 256,
+      "attribution": "© OpenStreetMap contributors"
+    }
+  },
+  "layers": [
+    {
+      "id": "arcgis-layer",
+      "type": "raster",
+      "source": "arcgis",
+      "layout": {
+        "visibility": "visible"
+      }
+    },
+    {
+      "id": "osm-layer",
+      "type": "raster",
+      "source": "osm",
+      "layout": {
+        "visibility": "none"
+      }
+    }
+  ],
+  "center": [
+    21.5,
+    39.0
+  ],
+  "zoom": 3,
+  "bearing": 0,
+  "pitch": 0
+}

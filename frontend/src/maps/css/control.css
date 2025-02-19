@@ -1,0 +1,5 @@
+:deep(.ol-rotate) {
+  top: 0.5em;
+  right: 2em;
+  transition: opacity 0.25s linear, visibility 0s linear;
+}
