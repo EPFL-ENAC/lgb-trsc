@@ -111,6 +111,8 @@ export class MapController {
       layers: [
         new LayerGroup({
           title: 'Environmental Layers',
+          visible: true,
+          showForcountryOnly: false,
           inputType: 'checkbox',
           layers: [
             createCHL_monthly_mean_1997_2024_MeanLayer(),
@@ -119,6 +121,8 @@ export class MapController {
         } as CustomBaseLayerOptions),
         new LayerGroup({
           title: 'Reef Layers',
+          visible: false,
+          showForcountryOnly: true,
           inputType: 'checkbox',
           layers: [
             createDjiboutiReefExtentLayer(),
@@ -130,6 +134,8 @@ export class MapController {
         } as CustomBaseLayerOptions),
         new LayerGroup({
           title: 'Environmental Clusters',
+          visible: false,
+          showForcountryOnly: true,
           layers: [createDjiboutiEnvironmentalClusterLayer()],
         } as CustomBaseLayerOptions),
         new LayerGroup({
@@ -204,7 +210,7 @@ export class MapController {
   }
 
   public getOverlayMaps() {
-    return this.overlayMaps?.getLayers().getArray() || [];
+    return this.overlayMaps?.getLayers().getArray()|| [];
   }
 
   public setLayerVisibility(
@@ -272,7 +278,7 @@ export class MapController {
   }
 
   public zoomOutOfCountry = () => {
-    const layerGroups = this.overlayMaps?.getLayers().getArray();
+    const layerGroups = this.overlayMaps?.getLayers();
     layerGroups?.forEach((layerGroup) => {
       if (layerGroup.get('showForcountryOnly')) {
         layerGroup.set('visible', false);

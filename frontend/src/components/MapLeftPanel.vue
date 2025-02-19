@@ -35,16 +35,12 @@
 
       <!-- Overlay groups section -->
       <q-expansion-item
-        v-for="(group, groupIndex) in overlayGroups"
+        v-for="(group, groupIndex) in computedOverlayGroups"
         :key="group.title"
         :group="`overlays${groupIndex}`"
         :icon="getGroupIcon(group.title)"
         :label="group.title"
-        :default-opened="
-          group.layers.some((layerinfo) => layerinfo.layer.getVisible())
-        "
-        :model-value="
-          group.layers.some((layerinfo) => layerinfo.layer.getVisible())
+        :model-value="group.layers.some((layerinfo) => layerinfo.layer.getVisible())
         "
       >
         <q-list padding>
@@ -165,7 +161,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed,watch } from 'vue';
 import { useQuasar } from 'quasar';
 import { useLayerManager } from '@/maps/composables/useLayerManager';
 import MapLegend from './MapLegend.vue';
@@ -183,6 +179,8 @@ import {
 } from '@/maps/config/layerColors';
 import { useMapStore } from '@/stores/mapStore';
 import BaseLayer from 'ol/layer/Base';
+import { storeToRefs } from 'pinia';
+
 const $q = useQuasar();
 const leftDrawerOpen = ref(true);
 
@@ -195,6 +193,14 @@ const {
 } = useLayerManager();
 
 const mapStore = useMapStore();
+const { selectedCountry } = storeToRefs(mapStore);
+const computedOverlayGroups = computed(() => {
+  if (selectedCountry.value === null) {
+    return overlayGroups?.value.filter((layerGroup) => layerGroup.group.get('visible'));
+  } else {
+    return overlayGroups?.value;
+  }
+})
 
 const computedActivedBaseMap = computed(() => {
   return baseMaps.value.find((baseMap) => baseMap.layer.get('visible'))?.title;

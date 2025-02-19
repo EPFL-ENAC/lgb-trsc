@@ -1,6 +1,7 @@
 import { ref, onMounted } from 'vue';
 import BaseLayer from 'ol/layer/Base';
 import LayerGroup from 'ol/layer/Group';
+import Collection from 'ol/Collection';
 import { useMapController } from './useMapController';
 
 export interface LayerInfo {
@@ -15,11 +16,22 @@ export interface LayerGroupInfo {
   showInLayerSwitcher?: boolean;
   visible: boolean;
   layers: LayerInfo[];
+  group: LayerGroup;
 }
 
 export function useLayerManager() {
   const baseMaps = ref<LayerInfo[]>([]);
   const overlayGroups = ref<LayerGroupInfo[]>([]);
+
+
+  const getOverlayMaps = (): never[] | BaseLayer[] => {
+    const controller = useMapController();
+    if (!controller) {
+      console.error('MapController is not available. Unable to initialize layers.');
+      return [];
+    }
+    return controller.getOverlayMaps();
+  }
 
   const initializeLayers = () => {
     const controller = useMapController();
@@ -60,7 +72,8 @@ export function useLayerManager() {
         inputType: group.get('inputType'),
         showInLayerSwitcher: group.get('showInLayerSwitcher'),
         visible: group.getVisible(),
-        layers
+        layers,
+        group,
       };
     });
   };
@@ -120,6 +133,7 @@ export function useLayerManager() {
     overlayGroups,
     setBaseMapVisible,
     toggleOverlayLayer,
+    getOverlayMaps,
     setOverlayLayerRadio,
     initializeLayers
   };
