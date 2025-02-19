@@ -12,6 +12,8 @@ export interface LayerInfo {
 export interface LayerGroupInfo {
   title: string;
   inputType?: 'radio' | 'checkbox';
+  showInLayerSwitcher?: boolean;
+  visible: boolean;
   layers: LayerInfo[];
 }
 

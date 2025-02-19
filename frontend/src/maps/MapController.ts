@@ -135,6 +135,8 @@ export class MapController {
         new LayerGroup({
           title: 'Sampling sites',
           inputType: 'radio',
+          visible: false,
+          showForcountryOnly: true,
           layers: [
             // layerController.getExpeditionLayer('unknown'),
             // option 1: "hard coral cover" (by default), described in [FEATURE] Classify expeditions (the marker) in color by the coral condition #8
@@ -242,6 +244,13 @@ export class MapController {
         'EPSG:4326',
         'EPSG:3857'
       );
+
+      const layerGroups = this.overlayMaps?.getLayers();
+      layerGroups?.forEach((layerGroup) => {
+        if (layerGroup.get('showForcountryOnly')) {
+          layerGroup.set('visible', true);
+        }
+      });
       this.map?.getView().fit(transformedExtent, { duration: 300 });
       const currentView = this.map?.getView().getProperties();
       if (currentView) {
@@ -263,6 +272,12 @@ export class MapController {
   }
 
   public zoomOutOfCountry = () => {
+    const layerGroups = this.overlayMaps?.getLayers().getArray();
+    layerGroups?.forEach((layerGroup) => {
+      if (layerGroup.get('showForcountryOnly')) {
+        layerGroup.set('visible', false);
+      }
+    });
     const currentView = this.map?.getView().getProperties();
     if (currentView) {
       currentView.zoom = defaultMinZoom;
@@ -271,7 +286,6 @@ export class MapController {
     }
       // visible: expeditionType === 'by year',
       this.map?.getAllLayers().forEach((layer) => {
-        // console.log("layer.get('title')", layer.get('title'))
         if (!['ArcGIS', 'OSM', 'Countries'].includes(layer.get('title'))) {
         layer.setVisible(false);
       }});

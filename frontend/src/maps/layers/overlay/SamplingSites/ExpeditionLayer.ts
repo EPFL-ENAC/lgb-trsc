@@ -89,7 +89,6 @@ export const createExpeditionLayer = (
     () => mapStore.selectedExpedition,
     (newValue) =>{
       if (newValue !== undefined) {
-        debugger;
         layer.changed();
       }
     },
