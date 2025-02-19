@@ -10,6 +10,9 @@ import 'echarts/lib/component/title'; // Import title component
 import 'echarts/lib/component/legend'; // Import legend component
 import { d3MappingColorSubstrate1 as colorPalette, d3MappingColorSubstrate2 as colorPalette2 } from '@/maps/config/layerColors';
 import { validSubstrates, validSubstrates2, validSubtrateMap } from '@/maps/config/substrateOrder';
+import { debounce } from 'lodash';
+
+const TIME_OUT = 150;
 
 const subtrateLevelMapColor = {
   'Substrate_coarse': colorPalette,
@@ -52,6 +55,8 @@ export default {
   data() {
     return {
       chart: null,
+      windowResizeInnerWidth: window.innerWidth,
+      windowResizeInnerHeight: window.innerHeight,
     };
   },
   watch: {
@@ -62,18 +67,45 @@ export default {
         this.chart.setOption(option);
       }
     },
+    windowResizeInnerWidth: {
+      handler(newValue) {
+        this.handleResize(newValue);
+      }
+    },
+    windowResizeInnerHeight: {
+      handler(newValue) {
+        this.handleResize(newValue);
+      }
+    },
   },
   mounted() {
     this.initChart();
+    addEventListener('resize', this.updateWidth);
+  },
+  umounted() {
+    this.chart?.dispose();
+    removeEventListener('resize', this.updateWidth);
+    this.handleResize.cancel();
   },
   methods: {
+    handleResize: debounce(function() {
+      if (this.chart) {
+        this.chart.dispose();
+        this.chart.clear();
+        this.chart = null;
+        this.chart = echarts.init(this.$refs.chart);
+        const option = this.getChartOption(this.rawData, this.substrateLevel);
+        this.chart.setOption(option);
+      }
+    }, TIME_OUT),
+    updateWidth(value) {
+      this.windowResizeInnerWidth = value.target.innerWidth;
+      this.windowResizeInnerHeight = value.target.innerHeight;
+    },
     initChart() {
         this.chart = echarts.init(this.$refs.chart);
         const option = this.getChartOption(this.rawData, this.substrateLevel);
         this.chart.setOption(option);
-        window.addEventListener('resize', () => {
-          this.chart?.resize();
-        });
     },
     getChartOption(data, substrateLevel) {
 
@@ -135,7 +167,29 @@ export default {
         Substrate_coarse: "main categories of coral reef benthic substrate",
         Substrate_intermediate: "main categories of coral reef benthic substrate and hard coral growth forms",
       }
+      let gridBottom = substrateLevel === 'Substrate_coarse' ? '10%': '18%';
+      let forceScrollLegend = false;
+      if (window.innerWidth < 1500) {
+        gridBottom = '23%';
+      }
+      if (window.innerWidth < 1100) {
+        gridBottom = '35%';
+      }
+      if (window.innerWidth < 800 || window.innerHeight < 700) {
+        gridBottom = '20%';
+        forceScrollLegend = true;
+      }
 
+      let legendType = undefined;
+
+      if (this.tooltip) {
+        legendType = undefined;
+      } else {
+        legendType = 'scroll';
+      }
+      if (forceScrollLegend) {
+        legendType = 'scroll';
+      }
       return {
         title: {
           text: titleMap[substrateLevel],
@@ -147,14 +201,14 @@ export default {
           formatter: function (name) {
             return validSubtrateMap[name];
           },
-          type: this.tooltip ? undefined: 'scroll',
+          type: legendType,
           orient: 'horizontal',
           bottom: 0,
         },
         grid: {
           left: '3%',
           right: '4%',
-          bottom: '13%',
+          bottom: gridBottom,
           containLabel: true
         },
         xAxis: {
