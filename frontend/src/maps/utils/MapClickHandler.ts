@@ -81,8 +81,8 @@ function onCountryClick(properties: any, options: MapClickHandlerOptions) {
 }
 
 function onExpeditionClick(properties: any, options: MapClickHandlerOptions) {
-  options.selectExpedition(properties);
   // TODO: fix me later
-  // const mapController = useMapController();
-  // mapController.zoomToExpedition();
+  // zoomToExpedition
+  options.selectExpedition(properties);
+
 }

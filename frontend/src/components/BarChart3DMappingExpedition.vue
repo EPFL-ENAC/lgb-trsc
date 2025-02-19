@@ -104,6 +104,7 @@ export default {
       return {
         title: {
           text: 'Benthic cover at coarse substrate level',
+          left: '-6px',
         },
         tooltip: localTooltip,
         legend: {
@@ -115,7 +116,7 @@ export default {
           bottom: 10
         },
         grid: {
-          left: '4%',
+          left: '2.4%',
           right: '4%',
           bottom: '130px',
           containLabel: true

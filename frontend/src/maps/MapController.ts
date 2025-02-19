@@ -286,11 +286,6 @@ export class MapController {
   }
 
   public zoomToExpedition = () => {
-    const mapStore = useMapStore();
-    const selectedExpedition = mapStore.selectedCountry;
-    if (selectedExpedition) {
-      const extent = (selectedExpedition?.geometry as Geometry).getExtent();
-      this.map?.getView().fit(extent, { duration: 300 });
-    }
+      console.log("NOT IMPLEMENTED YET")
   };
 }

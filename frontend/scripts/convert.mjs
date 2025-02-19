@@ -26,6 +26,7 @@ await csv({ checkType: true, ignoreEmpty: true, trim: true })
         date_iso: obj.date_iso,
         time: obj.time,
         country: obj.country,
+        depth: obj.depth,
         country_abbr: obj.country_abbr,
         latitude_start: obj.latitude_start,
         longitude_start: obj.longitude_start,
@@ -97,6 +98,8 @@ await csv({ checkType: true, ignoreEmpty: true, trim: true })
       const coralMatchingEntries = matchingEntries.filter(
         (e) => e.Substrate_coarse === 'coral_alive'
       );
+      const depth = matchingEntries[0]?.depth;
+      const length = matchingEntries[0]?.length;
       const totalMean = coralMatchingEntries.length
         ? coralMatchingEntries.reduce(
             (sum, entry) => sum + (parseFloat(entry.mean) || 0),
@@ -117,6 +120,8 @@ await csv({ checkType: true, ignoreEmpty: true, trim: true })
           year: obj.date_iso.split('-')[0],
           experiment: obj.experiment,
           hard_coral_cover: hardCoralCover,
+          depth,
+          length,
           time: obj.time,
           expe_name: obj.expe_name,
           region_name: obj.region_name,

@@ -1,12 +1,14 @@
 <template>
   <div class="popup" v-if="selectedExpedition">
     <button class="close-btn" @click="closeExpedition">Back</button>
+    <h2 class="first-expedition-header">{{ headerMap?.[selectedExpedition.experiment] ?? selectedExpedition.experiment }} project
+    </h2>
     <h3>
-      {{ selectedExpedition.region_name }} - {{ selectedExpedition.event_id }}
+      {{ selectedExpedition.reef_area }} - {{ selectedExpedition.sampling_site_name }}
     </h3>
     <p>
-      {{ selectedExpedition.reef_area }} -
-      {{ selectedExpedition.sampling_site_name }}
+      {{ selectedExpedition.region_name }} -
+      {{ selectedExpedition.event_id }}
     </p>
     <p>
       <span v-if="selectedExpedition.latitude_end">Start</span> Position:
@@ -21,7 +23,8 @@
       {{ formatCoordinate(selectedExpedition.longitude_end, 'E') }}
     </p>
     <p>{{ selectedExpedition.date_iso }}</p>
-    <p>experiment: {{ selectedExpedition.experiment }}</p>
+    <p v-if="selectedExpedition.experiment === '3D'">Length of the transect: {{ selectedExpedition.length }} m</p>
+    <p v-if="selectedExpedition.experiment === '3D'">Average depth: {{ selectedExpedition.depth ?? 5 }} m</p>
     <div v-if="selectedExpedition.experiment === '3D'">
       <div v-if="sampleSet.length > 0">
         <BarChart3DMappingExpedition
@@ -33,6 +36,9 @@
         />
       </div>
       <div v-else>No 3D Mapping data available</div>
+      <p>
+        Data generated with the <a href="https://josauder.github.io/deepreefmap/" target="_blank">Deep Reef Map</a> methodology
+      </p>
       <div class="card">
         <!-- <img src="/seacape-genomics.png" alt="Seascape Genomics" /> -->
         <p>In Collaboration with</p>
@@ -66,6 +72,12 @@ import { useMapStore } from '@/stores/mapStore';
 import BarChart3DMappingExpedition from '@/components/BarChart3DMappingExpedition.vue';
 import { storeToRefs } from 'pinia';
 import communities from '@/assets/communities';
+
+const headerMap = {
+  '3D': '3D Mapping',
+  'eDNA': 'eDNA',
+  'seascape_genomics': 'Seascape Genomics',
+};
 
 interface MappingData {
   id: number;
@@ -152,10 +164,21 @@ const handleGoToExpedition = () => {
 </script>
 
 <style scoped>
+h2 {
+  color: black;
+  font-size: 1.4rem;
+  line-height: 1.4rem;
+  font-weight: bold;
+  font-style: italic;
+  margin:0px;
+  margin-bottom: 0.1rem;
+  padding: 0;
+}
 h3 {
   color: red;
-  font-size: 1.5rem;
-  margin-bottom: 0.2rem;
+  font-size: 1.2rem;
+  margin: 0rem;
+  margin-bottom: 0.1rem;
 }
 p {
   margin: 0;
