@@ -61,6 +61,8 @@ export const useMapStore = defineStore('map', () => {
 
   function selectCountry(properties: CountryProperties) {
     selectedCountry.value = properties;
+    const layerController = useLayerController();
+    layerController.hideCountryLayer();
     drawer.value = true;
   }
 

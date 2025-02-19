@@ -42,7 +42,6 @@ import {
   createCHL_monthly_mean_1997_2024_SD,
 } from './layers/overlay/EnvironmentalLayers/DjiboutiLayer';
 import { BaseLayerOptions } from 'ol-layerswitcher';
-import { Geometry } from 'ol/geom';
 
 interface CustomBaseLayerOptions extends BaseLayerOptions {
   inputType?: 'base' | 'checkbox' | 'radio';

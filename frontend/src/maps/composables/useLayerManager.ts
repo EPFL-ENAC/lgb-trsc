@@ -103,7 +103,7 @@ export function useLayerManager() {
       // Set all layers in the group to invisible except the selected one
       group.layers.forEach((layerInfo, idx) => {
         const visible = idx === layerIndex;
-        layerInfo.visible = visible;
+        layerInfo.layer.setVisible(visible);
         controller.setLayerVisibility(groupIndex, idx, visible);
       });
     }
