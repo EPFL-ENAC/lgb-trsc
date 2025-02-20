@@ -1,6 +1,10 @@
 export interface ColorMap {
   type: 'categorical' | 'continuous';
   colorMap: Record<string, string>;
+  min?: number;
+  max?: number;
+  nodata?: number;
+  epsilon?: number;
 }
 
 export const geomorphicColorMap: ColorMap = {
@@ -58,10 +62,69 @@ export const CHL_monthly_mean: ColorMap = {
   },
 };
 
+export const SST_monthly_max_SD: ColorMap = {
+  type: 'continuous',
+  // colorMap: {
+  //   '0.10': '#fff5eb',
+  //   '1.00': '#fdbd83',
+  //   '2.00': '#ee6511',
+  //   '3.00': '#7f2704',
+  // },
+  // min: 0.1,
+  // max: 3,
+  colorMap: {
+    '1.10': '#fff5eb',
+    '2.00': '#fdbd83',
+    '3.00': '#ee6511',
+    '5.99': '#7f2704',
+    // '0': 'rgba(0, 0, 0, 0)',
+    // '0.164': 'rgba(54, 25, 63, 1)',
+    // '0.268': 'rgba(112, 31, 87, 1)',
+    // '0.425': 'rgba(174, 23, 89, 1)',
+    // '0.512': 'rgba(225, 51, 66, 1)',
+    // '0.673': 'rgba(243, 120, 82, 1)',
+    // '0.975': 'rgba(246, 181, 144, 1)',
+    // '5.196': 'rgba(250, 235, 221, 1)',
+    // '5.2': 'rgba(255, 255, 255, 1)',
+  },
+  min: 1.10,
+  max: 5.99,
+  nodata: -3.4e38,
+  epsilon: 1.0e35,
+};
+
+
+export const SST_monthly_max_Mean: ColorMap = {
+  type: 'continuous',
+  // colorMap: {
+  //   "15": "#2c7bb6",
+  //   "20": "#abd9e9",
+  //   "25": "#ffffbf",
+  //   "28": "#fdae61",
+  //   "30": "#d7191c",
+  //   "35": "#6f0005",
+  // },
+  // min: 15,
+  // max: 35,
+  colorMap: {
+    "23": "#2c7bb6",
+    "24": "#abd9e9",
+    "27": "#ffffbf",
+    "28": "#fdae61",
+    "30": "#d7191c",
+    "32": "#6f0005",
+  },
+  min: 22,
+  max: 33,
+  nodata: -3.4e38,
+  epsilon: 1.0e35,
+};
+
+
 export const defaultEnvironmentalColorMap: ColorMap = {
   type: 'continuous',
   colorMap: {
-    '0': 'rgba(0, 0, 0, 0)',
+    // '0': 'rgba(0, 0, 0, 0)',
     '0.164': 'rgba(54, 25, 63, 1)',
     '0.268': 'rgba(112, 31, 87, 1)',
     '0.425': 'rgba(174, 23, 89, 1)',
@@ -72,14 +135,6 @@ export const defaultEnvironmentalColorMap: ColorMap = {
     '5.2': 'rgba(255, 255, 255, 1)',
   },
 };
-
-// <item value="0" color="#ffffff" label="0" alpha="255"/>
-// <item value="0.1" color="#fad7dd" label="0,1" alpha="255"/>
-// <item value="0.25" color="#f58860" label="0,25" alpha="255"/>
-// <item value="0.5" color="#cb1b4f" label="0,5" alpha="255"/>
-// <item value="1" color="#611f53" label="1" alpha="255"/>
-// <item value="25" color="#0c146a" label="25" alpha="255"/>
-// <item value="50" color="#000000" label="50" alpha="255"/>
 
 export const boundaryColorMap: ColorMap = {
   type: 'categorical',

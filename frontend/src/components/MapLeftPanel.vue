@@ -260,6 +260,7 @@ import { useMapStore } from '@/stores/mapStore';
 import BaseLayer from 'ol/layer/Base';
 import { storeToRefs } from 'pinia';
 import { sourcesTitle } from '@/maps/sources/DjiboutiNOAASource';
+import { generateDefaultStyle } from '@/maps/layers/overlay/EnvironmentalLayers/DjiboutiLayer';
 
 const $q = useQuasar();
 const leftDrawerOpen = ref(true);
@@ -298,13 +299,20 @@ const updateMeanOrSD = (layer: BaseLayer) => {
   const meanOrSD = layer.get('meanOrSD');
   const newMeanOrSD = meanOrSD === 'Mean' ? 'SD' : 'Mean';
   // find appropriate source
-  const source = environmentalSources.find(
+  const environmentalSource = environmentalSources.find(
     (source) =>
       source.name === layer.get('title') && source.type === newMeanOrSD
   );
   // change the source of the layer!
-  if (source) {
-    layer.set('source', createGeoTIFFSource(source));
+  if (environmentalSource) {
+    const newStyle = generateDefaultStyle(environmentalSource?.colorScale || defaultEnvironmentalColorMap);
+    layer.set('colorScale', environmentalSource.colorScale);
+    layer.set('style', newStyle)
+    layer.set('properties', {
+      ...environmentalSource,
+    });
+    layer.set('source', createGeoTIFFSource(environmentalSource));
+    layer.changed
   }
   layer.set('meanOrSD', newMeanOrSD);
 };

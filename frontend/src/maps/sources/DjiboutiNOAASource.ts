@@ -3,8 +3,10 @@ import { attributions } from '@/maps/utils/attributions';
 import { Style } from 'ol/style';
 import {
   CHL_monthly_mean,
+  SST_monthly_max_SD,
+  SST_monthly_max_Mean,
   ColorMap,
-  defaultEnvironmentalColorMap
+  defaultEnvironmentalColorMap,
 } from '@/maps/config/layerColors';
 // ok source should be wrapped in a function
 // documentation here: https://openlayers.org/en/latest/apidoc/module-ol_source_GeoTIFF.html#~SourceInfo
@@ -28,7 +30,7 @@ const legendVariableCHL = {
   variable_title: 'Mass concentration of chlorophyll a in sea water CHL',
   variable: 'CHL',
   colorScale: CHL_monthly_mean,
-}
+};
 
 export const metadata = {
   CHL_monthly_mean: {
@@ -37,7 +39,8 @@ export const metadata = {
     short_title: 'Mass concentration of chlorophyll a in sea water CHL [mg/m3]',
     shorter_title: 'CHL [mg/m3]',
     identifier: 'OCEANCOLOUR_GLO_BGC_L4_MY_009_104',
-    dataset_description: 'Global Ocean Colour (Copernicus-GlobColour), Bio-Geo-Chemical, L4 (monthly and interpolated) from Satellite Observations (1997-ongoing)',
+    dataset_description:
+      'Global Ocean Colour (Copernicus-GlobColour), Bio-Geo-Chemical, L4 (monthly and interpolated) from Satellite Observations (1997-ongoing)',
     dataset: 'cmems_obs-oc_glo_bgc-plankton_my_l4-multi-4km_P1M',
     date: 'CHL_09-1997_05-2024',
     urls: [
@@ -51,7 +54,8 @@ export const metadata = {
       'SST sea surface Temperature : Sea water temperature analysed_sst [K] 0.05°',
     short_title: 'Sea water temperature analysed_sst [K]',
     identifier: 'SST_GLO_SST_L4_REP_OBSERVATIONS_010_024',
-    dataset_description: 'ESA SST CCI and C3S reprocessed sea surface temperature analyses',
+    dataset_description:
+      'ESA SST CCI and C3S reprocessed sea surface temperature analyses',
     dataset: [
       'Dataset 1 ESACCI-GLO-SST-L4-REP-OBS-SST 02/09/1981→31/12/2016',
       'Dataset 2 C3S-GLO-SST-L4-REP-OBS-SST 02/01/2017→30/09/2022',
@@ -107,7 +111,8 @@ export const metadata = {
     short_title:
       'Mass concentration of suspended matter in sea water SPM [g/m3]',
     identifier: 'OCEANCOLOUR_GLO_BGC_L4_MY_009_104',
-    dataset_description: 'Global Ocean Colour (Copernicus-GlobColour), Bio-Geo-Chemical, L4 (monthly and interpolated) from Satellite Observations (1997-ongoing)',
+    dataset_description:
+      'Global Ocean Colour (Copernicus-GlobColour), Bio-Geo-Chemical, L4 (monthly and interpolated) from Satellite Observations (1997-ongoing)',
     dataset: 'cmems_obs-oc_glo_bgc-transp_my_l4-multi-4km_P1M',
     resolution: '4km',
     date: 'SPM_09-1997_05-2024',
@@ -121,7 +126,8 @@ export const metadata = {
   DHW_annual_max: {
     short_title: 'Degree Heating Week [°C-weeks]',
     identifier: 'DWH_ct5km_dhw-max_v3.1',
-    dataset_description: 'Year-to-date Annual Composites of 5km Satellite Coral Bleaching Heat Stress Products',
+    dataset_description:
+      'Year-to-date Annual Composites of 5km Satellite Coral Bleaching Heat Stress Products',
     version: '3.1',
     resolution: '5km',
     date: '1985-2023',
@@ -134,7 +140,6 @@ export const metadata = {
     // ],
   },
 };
-
 
 export const sources: SourceInfo[] = [
   {
@@ -155,19 +160,22 @@ export const sources: SourceInfo[] = [
   {
     type: 'Mean',
     name: 'SST_monthly_max',
-    colorScale: defaultEnvironmentalColorMap,
+    colorScale: SST_monthly_max_Mean,
     attribution: attributions.copernicus,
     url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/processed_data/SG_MANON/env_rasters_cut/SST_monthly_max_Mean.tif',
   },
   {
     type: 'SD',
     name: 'SST_monthly_max',
+    // colorScale: SST_monthly_max_SD,
     attribution: attributions.copernicus,
-    url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/processed_data/SG_MANON/env_rasters_cut/SST_monthly_max_SD.tif',
+    // url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/processed_data/SG_MANON/env_rasters_cut/SST_monthly_max_SD.tif',
+    url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/SST_monthly_max_1985_2024_SD.tif'
   },
   {
     type: 'Mean',
     name: 'SST_monthly_mean',
+    colorScale: SST_monthly_max_Mean,
     attribution: attributions.copernicus,
     url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/processed_data/SG_MANON/env_rasters_cut/SST_monthly_mean_Mean.tif',
   },
@@ -180,6 +188,7 @@ export const sources: SourceInfo[] = [
   {
     type: 'Mean',
     name: 'SST_monthly_min',
+    colorScale: SST_monthly_max_Mean,
     attribution: attributions.copernicus,
     url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/processed_data/SG_MANON/env_rasters_cut/SST_monthly_min_Mean.tif',
   },
