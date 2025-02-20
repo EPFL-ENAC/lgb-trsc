@@ -131,6 +131,11 @@
                   <MapLegend
                     v-else
                     :classColorMap="getLayerLegend(layerinfo.layer as BaseLayer)?.colorMap"
+                    :metadata="{
+                      title: layerinfo.layer.get('title'),
+                      unit: layerinfo.layer.get('unit'),
+                      variable: layerinfo.layer.get('variable'),
+                    }"
                     :is-continuous="
                       getLayerLegend(layerinfo.layer as BaseLayer)?.type === 'continuous'
                     "
