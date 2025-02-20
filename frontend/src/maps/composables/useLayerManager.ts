@@ -119,11 +119,9 @@ export function useLayerManager() {
       group.layers.forEach((layerInfo, idx) => {
         const visible = idx === layerIndex;
         layerInfo.layer.setVisible(visible);
-        controller.setLayerVisibility(groupIndex, idx, visible);
       });
     }
   };
-
   onMounted(() => {
     initializeLayers();
   });
