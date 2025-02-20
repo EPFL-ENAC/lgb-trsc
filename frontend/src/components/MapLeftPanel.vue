@@ -299,7 +299,7 @@ const toggleOverlayLayer = (
 
   .layer-controls {
     display: grid;
-    grid-template-columns: auto 1fr 0.5fr;
+    grid-template-columns: auto 1fr;
     align-items: center;
     gap: 8px;
     width: 100%;
