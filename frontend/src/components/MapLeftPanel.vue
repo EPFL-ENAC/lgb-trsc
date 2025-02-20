@@ -107,7 +107,22 @@
                         />
                       </template>
                     </div>
-                    <div v-if="group.title === 'Environmental Layers'">
+                    <div v-if="group.title === 'Environmental Layers'" class="env-controls">
+                      <q-icon name="info" v-if="layerinfo.layer.get('description')">
+                        <q-tooltip>
+                          <q-card>
+                            <q-card-section>
+                              <q-card-title>
+                                <span style="color: black; height: 10px; width: 10px">
+
+                                  {{ layerinfo.layer.get('description') }}
+                                </span>
+                              </q-card-title>
+                            </q-card-section>
+                          </q-card>
+                        </q-tooltip>
+                      </q-icon>
+
                       <q-toggle
                         :label="layerinfo.layer.get('meanOrSD')"
                         color="pink"
@@ -184,7 +199,21 @@
                         />
                       </template>
                     </div>
-                    <div v-if="group.title === 'Environmental Layers'">
+                    <div v-if="group.title === 'Environmental Layers'" class="env-controls">
+                      <q-icon name="info" v-if="layerinfo.layer.get('description')">
+                        <q-tooltip>
+                          <q-card>
+                            <q-card-section>
+                              <q-card-title>
+                                <span style="color: black; height: 10px; width: 10px">
+
+                                  {{ layerinfo.layer.get('description') }}
+                                </span>
+                              </q-card-title>
+                            </q-card-section>
+                          </q-card>
+                        </q-tooltip>
+                      </q-icon>
                       <q-toggle
                         :label="layerinfo.layer.get('meanOrSD')"
                         color="pink"
@@ -223,7 +252,10 @@ import {
   samplingSiteByProjectColorMap,
   samplingSiteByHardCoralCoverColorMap,
 } from '@/maps/config/layerColors';
-import { sources as environmentalSources, createGeoTIFFSource } from '@/maps/sources/DjiboutiNOAASource';
+import {
+  sources as environmentalSources,
+  createGeoTIFFSource,
+} from '@/maps/sources/DjiboutiNOAASource';
 import { useMapStore } from '@/stores/mapStore';
 import BaseLayer from 'ol/layer/Base';
 import { storeToRefs } from 'pinia';
@@ -266,7 +298,10 @@ const updateMeanOrSD = (layer: BaseLayer) => {
   const meanOrSD = layer.get('meanOrSD');
   const newMeanOrSD = meanOrSD === 'Mean' ? 'SD' : 'Mean';
   // find appropriate source
-  const source = environmentalSources.find((source) => source.name === layer.get('title') && source.type === newMeanOrSD);
+  const source = environmentalSources.find(
+    (source) =>
+      source.name === layer.get('title') && source.type === newMeanOrSD
+  );
   // change the source of the layer!
   if (source) {
     layer.set('source', createGeoTIFFSource(source));
@@ -351,6 +386,11 @@ const toggleOverlayLayer = (
   top: 0px !important;
   bottom: 0px !important;
   width: 300px !important;
+}
+.env-controls {
+  display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .q-drawer--dark {
