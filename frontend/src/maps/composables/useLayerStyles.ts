@@ -89,16 +89,31 @@ const createCommonStyle = (
     }),
     'selectedExpedition': new Stroke({
       color: colorMap[featureClass] || 'red',
-      width: 10,
+      width: 7,
     }),
   } as const;
 
-  return new Style({
+  const outerStyle = new Style({});
+  const outerStroke = new Stroke({});
+
+  if (dottedStrokeType === 'selectedExpedition') {
+    outerStroke.setColor('white');
+    outerStroke.setWidth(15);
+    outerStyle.setStroke(outerStroke);
+  } else if (dottedStrokeType === '3D') {
+    outerStroke.setColor('white');
+    outerStroke.setWidth(5);
+    outerStyle.setStroke(outerStroke);
+  }
+
+  return [
+    outerStyle,
+    new Style({
     fill: new Fill({
       color: colorMap[featureClass] || 'rgba(128, 128, 128, 0.5)',
     }),
     image: new CircleStyle({
-      radius: dottedStrokeType === 'selectedExpedition' ? 10: 4,
+      radius: dottedStrokeType === 'selectedExpedition' ? 7: 4,
       fill: new Fill({
         color: colorMap[featureClass] || 'blue',
       }),
@@ -108,7 +123,7 @@ const createCommonStyle = (
       }),
     }),
     stroke: dottedStroke ? dottedStyle[dottedStrokeType] : dottedStyle.default,
-  });
+  })];
 };
 
 export const createFeatureStyle = (
