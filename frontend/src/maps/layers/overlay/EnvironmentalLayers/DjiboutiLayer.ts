@@ -1,10 +1,12 @@
 import {
-  createSourceCHL_monthly_mean_1997_2024_Mean,
-  createSourceCHL_monthly_mean_1997_2024_SD,
+  createGeoTIFFSource,
+  sources,
+  SourceInfo
 } from '@/maps/sources/DjiboutiNOAASource';
+import { BaseLayerOptions } from 'ol-layerswitcher';
+import BaseLayer from 'ol/layer/Base';
 
 import WebGLTileLayer from 'ol/layer/WebGLTile';
-
 // Define NoData value
 const NODATA_VALUE = -3.4e38;
 const EPSILON = 1.0e35; // This is quite large - might need adjustment
@@ -66,35 +68,22 @@ const noaaStyle4 = {
   opacity: 1,
 };
 
-// NOAA Layers
-export const createCHL_monthly_mean_1997_2024_MeanLayer = () => {
-  const title = 'CHL_monthly_mean_1997_2024_Mean';
-  const layer = new WebGLTileLayer({
-    source: createSourceCHL_monthly_mean_1997_2024_Mean(),
-    title,
-    visible: false,
-    baseLayer: false,
-    style: noaaStyle4,
-    bands: [1], // Explicitly specify which band to use
-    opacity: 1,
-    properties: {
-      name: title,
-      type: 'overlay',
-    },
+export const createEnvironmentalLayers = () => {
+  const layers = sources.map((source) => {
+    const layer = new WebGLTileLayer({
+      source: createGeoTIFFSource(source),
+      title: source.name,
+      visible: false,
+      baseLayer: false,
+      style: source.style || noaaStyle4,
+      bands: [1], // Explicitly specify which band to use
+      opacity: 1, // Default opacity
+      properties: {
+        title: source.name,
+        ...source,
+      },
+    } as BaseLayerOptions);
+    return layer;
   });
-  return layer;
+  return layers;
 };
-
-export const createCHL_monthly_mean_1997_2024_SD = () =>
-  new WebGLTileLayer({
-    source: createSourceCHL_monthly_mean_1997_2024_SD(),
-    title: 'monthly_mean_1997_2024_SD',
-    visible: false,
-    baseLayer: false,
-    style: noaaStyle4,
-    bands: [1], // Explicitly specify which band to use
-    properties: {
-      name: 'monthly_mean_1997_2024_SD',
-      type: 'overlay',
-    },
-  });
