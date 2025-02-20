@@ -1,6 +1,7 @@
 import { transformExtent } from 'ol/proj';
 
-const rawExtent = [12, 5, 68, 34];
+const rawExtent = [12, 0, 85, 40];
+
 export const defaultExtent = transformExtent(
   rawExtent,
   'EPSG:4326',
