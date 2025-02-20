@@ -1,4 +1,9 @@
-export const geomorphicColorMap = {
+export interface ColorMap {
+  type: 'categorical' | 'continuous';
+  colorMap: Record<string, string>;
+}
+
+export const geomorphicColorMap: ColorMap = {
   type: 'categorical',
   colorMap: {
     'Reef Slope': 'rgb(40, 132, 113)',
@@ -16,7 +21,7 @@ export const geomorphicColorMap = {
   },
 };
 
-export const benthicColorMap = {
+export const benthicColorMap: ColorMap = {
   type: 'categorical',
   colorMap: {
     'Coral/Algae': 'rgb(255, 97, 97)',
@@ -28,7 +33,7 @@ export const benthicColorMap = {
   },
 };
 
-export const bathymetricColorMap = {
+export const bathymetricColorMap: ColorMap = {
   type: 'categorical',
   colorMap: {
     '0-10m': 'rgb(0, 0, 255)',
@@ -39,52 +44,65 @@ export const bathymetricColorMap = {
   },
 };
 
-export const chlMonthlyMean1997_2024 = {
+export const CHL_monthly_mean: ColorMap = {
   type: 'continuous',
   colorMap: {
-    '0': 'rgb(0, 0, 255)',
-    '10': 'rgb(0, 255, 255)',
-    '20': 'rgb(0, 255, 0)',
-    '30': 'rgb(255, 255, 0)',
-    '40': 'rgb(255, 0, 0)',
+    // '0.001': 'rgba(0, 0, 0, 0)',
+    '0.01': 'rgba(255, 255, 255, 1)',
+    '0.10': '#fad7dd',
+    '0.25': '#f58860',
+    '0.50': '#cb1b4f',
+    '1.00': '#611f53',
+    '25.0': '#0c146a',
+    '50.0': '#000000',
   },
 };
 
-export const defaultEnvironmentalColorMap = {
+export const defaultEnvironmentalColorMap: ColorMap = {
   type: 'continuous',
   colorMap: {
-    '0.164': 'rgb(54, 25, 63)',
-    '0.268': 'rgb(112, 31, 87)',
-    '0.425': 'rgb(174, 23, 89)',
-    '0.512': 'rgb(225, 51, 66)',
-    '0.673': 'rgb(243, 120, 82)',
-    '0.975': 'rgb(246, 181, 144)',
-    '5.196': 'rgb(250, 235, 221)',
+    '0': 'rgba(0, 0, 0, 0)',
+    '0.164': 'rgba(54, 25, 63, 1)',
+    '0.268': 'rgba(112, 31, 87, 1)',
+    '0.425': 'rgba(174, 23, 89, 1)',
+    '0.512': 'rgba(225, 51, 66, 1)',
+    '0.673': 'rgba(243, 120, 82, 1)',
+    '0.975': 'rgba(246, 181, 144, 1)',
+    '5.196': 'rgba(250, 235, 221, 1)',
+    '5.2': 'rgba(255, 255, 255, 1)',
   },
 };
 
-export const boundaryColorMap = {
+// <item value="0" color="#ffffff" label="0" alpha="255"/>
+// <item value="0.1" color="#fad7dd" label="0,1" alpha="255"/>
+// <item value="0.25" color="#f58860" label="0,25" alpha="255"/>
+// <item value="0.5" color="#cb1b4f" label="0,5" alpha="255"/>
+// <item value="1" color="#611f53" label="1" alpha="255"/>
+// <item value="25" color="#0c146a" label="25" alpha="255"/>
+// <item value="50" color="#000000" label="50" alpha="255"/>
+
+export const boundaryColorMap: ColorMap = {
   type: 'categorical',
   colorMap: {
     boundary: 'rgba(125,201,201, 0.5)',
   },
 };
 
-export const marineProtectedAreaColorMap = {
+export const marineProtectedAreaColorMap: ColorMap = {
   type: 'categorical',
   colorMap: {
     'Protected Area': 'rgba(125,201,201, 0.5)',
   },
 };
 
-export const reefExtentColorMap = {
+export const reefExtentColorMap: ColorMap = {
   type: 'categorical',
   colorMap: {
     Reef: 'rgb(178, 8, 76)',
   },
 };
 
-export const samplingSiteByYearColorMap = {
+export const samplingSiteByYearColorMap: ColorMap = {
   type: 'categorical',
   colorMap: {
     '2022': 'rgb(225, 255, 0)', // Very dark grey-blue
@@ -92,7 +110,7 @@ export const samplingSiteByYearColorMap = {
   },
 };
 
-export const samplingSiteByProjectColorMap = {
+export const samplingSiteByProjectColorMap: ColorMap = {
   type: 'categorical',
   // all of the projects:
   // ['MP', '3D', 'SG', 'Sym', 'eDNA', 'echi']
@@ -106,7 +124,7 @@ export const samplingSiteByProjectColorMap = {
   },
 };
 
-export const samplingSiteByHardCoralCoverColorMap = {
+export const samplingSiteByHardCoralCoverColorMap: ColorMap = {
   type: 'categorical',
   colorMap: {
     '0-10%': 'rgba(255, 0, 0, 1)',
@@ -160,7 +178,7 @@ export const d3MappingColorSubstrate2 = [
   'rgb(79, 148, 205)', // steelblue3 - meandering_alive
   'rgb(54, 100, 139)', // steelblue4 - massive/meandering_alive
 ];
-export const environmentalClusterColorMap = {
+export const environmentalClusterColorMap: ColorMap = {
   type: 'categorical',
   colorMap: {
     '1': 'rgb(81, 115, 207)',

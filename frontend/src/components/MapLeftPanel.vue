@@ -323,7 +323,7 @@ const getGroupIcon = (title: string) => {
 const getLayerLegend = (layer: BaseLayer) => {
   // Return the appropriate color map based on the layer title
   if (sourcesTitle.includes(layer.get('title'))) {
-    return defaultEnvironmentalColorMap;
+    return layer?.get('colorScale') ?? defaultEnvironmentalColorMap;
   }
   switch (layer.get('title')) {
     case 'Geomorphic':

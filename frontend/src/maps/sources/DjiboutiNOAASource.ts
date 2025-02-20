@@ -1,6 +1,11 @@
 import GeoTIFF from 'ol/source/GeoTIFF.js';
 import { attributions } from '@/maps/utils/attributions';
 import { Style } from 'ol/style';
+import {
+  CHL_monthly_mean,
+  ColorMap,
+  defaultEnvironmentalColorMap
+} from '@/maps/config/layerColors';
 // ok source should be wrapped in a function
 // documentation here: https://openlayers.org/en/latest/apidoc/module-ol_source_GeoTIFF.html#~SourceInfo
 
@@ -14,6 +19,7 @@ export interface SourceInfo {
   attribution?: string;
   description?: string;
   fulleTitle?: string;
+  colorScale?: ColorMap;
   style?: Style;
 }
 
@@ -21,6 +27,7 @@ const legendVariableCHL = {
   unit: 'mg/m3',
   variable_title: 'Mass concentration of chlorophyll a in sea water CHL',
   variable: 'CHL',
+  colorScale: CHL_monthly_mean,
 }
 
 export const metadata = {
@@ -148,6 +155,7 @@ export const sources: SourceInfo[] = [
   {
     type: 'Mean',
     name: 'SST_monthly_max',
+    colorScale: defaultEnvironmentalColorMap,
     attribution: attributions.copernicus,
     url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/processed_data/SG_MANON/env_rasters_cut/SST_monthly_max_Mean.tif',
   },
