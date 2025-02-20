@@ -69,17 +69,17 @@ const noaaStyle4 = {
 };
 
 export const createEnvironmentalLayers = () => {
-  const layers = sources.map((source) => {
+  const layers = sources.filter(source => source.type === 'Mean').map((source) => {
     const layer = new WebGLTileLayer({
       source: createGeoTIFFSource(source),
-      title: source.name,
+      title: source.name ,
       visible: false,
       baseLayer: false,
+      meanOrSD: 'Mean',
       style: source.style || noaaStyle4,
       bands: [1], // Explicitly specify which band to use
       opacity: 1, // Default opacity
       properties: {
-        title: source.name,
         ...source,
       },
     } as BaseLayerOptions);

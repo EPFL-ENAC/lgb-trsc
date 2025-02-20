@@ -50,6 +50,19 @@ export const chlMonthlyMean1997_2024 = {
   },
 };
 
+export const defaultEnvironmentalColorMap = {
+  type: 'continuous',
+  colorMap: {
+    '0.164': 'rgb(54, 25, 63)',
+    '0.268': 'rgb(112, 31, 87)',
+    '0.425': 'rgb(174, 23, 89)',
+    '0.512': 'rgb(225, 51, 66)',
+    '0.673': 'rgb(243, 120, 82)',
+    '0.975': 'rgb(246, 181, 144)',
+    '5.196': 'rgb(250, 235, 221)',
+  },
+};
+
 export const boundaryColorMap = {
   type: 'categorical',
   colorMap: {

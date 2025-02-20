@@ -114,7 +114,7 @@ export class MapController {
           title: 'Environmental Layers',
           visible: true,
           showForcountryOnly: false,
-          inputType: 'radio',
+          inputType: 'checkbox',
           layers: createEnvironmentalLayers()
         } as CustomBaseLayerOptions),
         new LayerGroup({
