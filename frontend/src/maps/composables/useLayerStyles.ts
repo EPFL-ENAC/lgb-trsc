@@ -87,7 +87,7 @@ const createCommonStyle = (
       color: colorMap[featureClass] || 'blue',
       width: 4,
     }),
-    'selectedExpedition': new Stroke({
+    selectedExpedition: new Stroke({
       color: colorMap[featureClass] || 'red',
       width: 10,
     }),
@@ -98,7 +98,7 @@ const createCommonStyle = (
       color: colorMap[featureClass] || 'rgba(128, 128, 128, 0.5)',
     }),
     image: new CircleStyle({
-      radius: dottedStrokeType === 'selectedExpedition' ? 10: 4,
+      radius: dottedStrokeType === 'selectedExpedition' ? 10 : 4,
       fill: new Fill({
         color: colorMap[featureClass] || 'blue',
       }),
@@ -116,24 +116,43 @@ export const createFeatureStyle = (
   colorMap: Record<string, string>,
   dotted = false,
   featureName = 'class',
-  dottedStrokeType: 'dotted' | 'default' | '3D'| 'selectedExpedition' = 'default',
+  dottedStrokeType:
+    | 'dotted'
+    | 'default'
+    | '3D'
+    | 'selectedExpedition' = 'default',
   filter?: Record<string, string>
 ) => {
   const featureClass =
     feature.get(featureName) || (feature.get('name') as string);
-  
+
   // Add this line to the top of the function
   const propertyName = Object.keys(filter || {})[0];
   if (feature.get(propertyName) !== filter?.[propertyName]) {
     return new Style({});
   }
-  const { selectedExpedition } = useMapStore();
-  if (selectedExpedition && feature.get('event_id') === selectedExpedition.event_id) {
-    return createCommonStyle(colorMap, featureClass, dotted, 'selectedExpedition');
-  }
+  
   if (!visibleClasses.value[featureClass]) {
     return new Style({});
   }
+  const { selectedExpedition } = useMapStore();
+    if (
+      selectedExpedition &&
+      feature.get('event_id') === selectedExpedition.event_id
+    ) {
+      const isSameExperiment =
+        feature.get('experiment') === selectedExpedition.experiment;
+      if (isSameExperiment) {
+        return createCommonStyle(
+          colorMap,
+          featureClass,
+          dotted,
+          'selectedExpedition'
+        );
+      } else {
+        return createCommonStyle(colorMap, featureClass, dotted, dottedStrokeType);
+      }
+    }
   return createCommonStyle(colorMap, featureClass, dotted, dottedStrokeType);
 };
 
@@ -195,10 +214,10 @@ export function useLayerStyles() {
       feature.get(className) || (feature.get('name') as string);
 
     const colorMap = environmentalClusterColorMap.colorMap as Record<
-        string,
-        string
-      >;
-      
+      string,
+      string
+    >;
+
     if (!visibleClasses.value[featureClass]) {
       return new Style({});
     }
