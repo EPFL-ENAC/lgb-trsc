@@ -223,6 +223,7 @@ import {
   samplingSiteByProjectColorMap,
   samplingSiteByHardCoralCoverColorMap,
 } from '@/maps/config/layerColors';
+import { sources as environmentalSources, createGeoTIFFSource } from '@/maps/sources/DjiboutiNOAASource';
 import { useMapStore } from '@/stores/mapStore';
 import BaseLayer from 'ol/layer/Base';
 import { storeToRefs } from 'pinia';
@@ -264,6 +265,12 @@ const computedActivedBaseMap = computed(() => {
 const updateMeanOrSD = (layer: BaseLayer) => {
   const meanOrSD = layer.get('meanOrSD');
   const newMeanOrSD = meanOrSD === 'Mean' ? 'SD' : 'Mean';
+  // find appropriate source
+  const source = environmentalSources.find((source) => source.name === layer.get('title') && source.type === newMeanOrSD);
+  // change the source of the layer!
+  if (source) {
+    layer.set('source', createGeoTIFFSource(source));
+  }
   layer.set('meanOrSD', newMeanOrSD);
 };
 
