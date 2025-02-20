@@ -8,22 +8,34 @@ export interface SourceInfo {
   type: 'Mean' | 'SD';
   name: string;
   url: string;
+  unit?: string;
+  variable_title?: string;
+  variable?: string;
   attribution?: string;
   description?: string;
   fulleTitle?: string;
   style?: Style;
 }
 
+const legendVariableCHL = {
+  unit: 'mg/m3',
+  variable_title: 'Mass concentration of chlorophyll a in sea water CHL',
+  variable: 'CHL',
+}
+
+
 export const sources: SourceInfo[] = [
   {
     type: 'Mean',
     name: 'CHL_monthly_mean',
+    ...legendVariableCHL,
     attribution: attributions.copernicus,
     url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/processed_data/SG_MANON/env_rasters_cut/CHL_monthly_mean_Mean.tif',
   },
   {
     type: 'SD',
     name: 'CHL_monthly_mean',
+    ...legendVariableCHL,
     attribution: attributions.copernicus,
     url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/processed_data/SG_MANON/env_rasters_cut/CHL_monthly_mean_SD.tif',
   },
