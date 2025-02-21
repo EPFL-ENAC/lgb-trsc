@@ -30,7 +30,7 @@ export default [
       url: "https://x.com/momr_eritrea?lang=fr",
       name: "Ministry of Maritime Resources of Massawa, Eritrea",
       country: "Eritrea",
-      logo: "/community/MinistryMarineResources.png",
+      logo: "/community/MinistryMarineResources2.png",
     },
   
     {
