@@ -76,9 +76,9 @@
         <p>3D Mapping</p>
       </div>
       <div class="card">
-        <!-- <img src="/eDNA.png" alt="eDNA" /> -->
         <p>eDNA</p>
-        <p><i>Coming soon</i></p>
+        <img src="/eDNA.png" alt="eDNA" />
+        <!-- <p><i>Coming soon</i></p> -->
       </div>
       <div class="card">
         <!-- <img src="/seacape-genomics.png" alt="Seascape Genomics" /> -->
