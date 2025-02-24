@@ -26,11 +26,11 @@
     >
       <div class="color-ramp" :style="{ background: gradientCSS }"></div>
       <div class="ramp-labels">
-        <span>{{ colorLabels[0] }}</span>
+        <span>{{ colorLabels[0] }} {{ metadata?.unit}}</span>
         <span>
-          {{ colorLabels[Math.floor(colorLabels.length / 2)] }}
+          {{ colorLabels[Math.floor(colorLabels.length / 2)] }}  {{ metadata?.unit}}
         </span>
-        <span>{{ colorLabels[colorLabels.length - 1] }}</span>
+        <span>{{ colorLabels[colorLabels.length - 1] }}  {{ metadata?.unit}}</span>
       </div>
     </ol>
     <ol v-else>
@@ -53,10 +53,17 @@ interface ClassColorMap {
   [key: string]: string;
 }
 
+interface LegendInfo {
+  title ?:string;
+  unit?: string;
+  variable?: string;
+}
+
 const props = defineProps<{
   selectedCountry?: string;
   selectedExpedition?: string;
   classColorMap?: ClassColorMap;
+  metadata?: LegendInfo;
   isContinuous?: boolean;
   isAbsolute?: boolean;
   maxValue?: number;

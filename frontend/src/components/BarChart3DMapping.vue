@@ -164,8 +164,8 @@ export default {
 
 
       const titleMap = {
-        Substrate_coarse: "main categories of coral reef benthic substrate",
-        Substrate_intermediate: "main categories of coral reef benthic substrate and hard coral growth forms",
+        Substrate_coarse: "Main categories of coral reef benthic substrate",
+        Substrate_intermediate: "Main categories of coral reef benthic substrate and hard coral growth forms",
       }
       let gridBottom = substrateLevel === 'Substrate_coarse' ? '10%': '18%';
       let forceScrollLegend = false;
@@ -193,6 +193,11 @@ export default {
       return {
         title: {
           text: titleMap[substrateLevel],
+          textStyle: {
+            "fontSize": "1rem",
+            "fontFamily": "Apax, Helvetica, Arial, sans-serif",
+            "fontWeight": 900,
+          }
         },
         tooltip: this.tooltip ? getTooltip(data, substrateLevel) : undefined,
         legend: {
@@ -228,7 +233,7 @@ export default {
           min: 0
         },
         series: processData(data, substrateLevel),
-        color: subtrateLevelMapColor[substrateLevel]
+        color: subtrateLevelMapColor?.[substrateLevel]
       };
     }
   }

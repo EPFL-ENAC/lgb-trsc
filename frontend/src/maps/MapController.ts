@@ -38,8 +38,7 @@ import {
 } from '@/maps/layers/overlay/ReefLayers/DjiboutiLayer';
 import { createDjiboutiEnvironmentalClusterLayer } from '@/maps/layers/overlay/EnvironmentalClusters/DjiboutiLayer';
 import {
-  createCHL_monthly_mean_1997_2024_MeanLayer,
-  createCHL_monthly_mean_1997_2024_SD,
+  createEnvironmentalLayers,
 } from './layers/overlay/EnvironmentalLayers/DjiboutiLayer';
 import { BaseLayerOptions } from 'ol-layerswitcher';
 
@@ -114,10 +113,7 @@ export class MapController {
           visible: true,
           showForcountryOnly: false,
           inputType: 'checkbox',
-          layers: [
-            createCHL_monthly_mean_1997_2024_MeanLayer(),
-            createCHL_monthly_mean_1997_2024_SD(),
-          ],
+          layers: createEnvironmentalLayers()
         } as CustomBaseLayerOptions),
         new LayerGroup({
           title: 'Reef Layers',

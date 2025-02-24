@@ -40,7 +40,8 @@
         :group="`overlays${groupIndex}`"
         :icon="getGroupIcon(group.title)"
         :label="group.title"
-        :model-value="group.layers.some((layerinfo) => layerinfo.layer.getVisible())
+        :model-value="
+          group.layers.some((layerinfo) => layerinfo.layer.getVisible())
         "
       >
         <q-list padding>
@@ -73,12 +74,23 @@
                 class="layer-grid"
               >
                 <template #header>
-                  <div class="layer-controls">
+                  <div
+                    :class="
+                      group.title !== 'Environmental Layers'
+                        ? 'layer-controls'
+                        : 'layer-environmental-controls'
+                    "
+                  >
                     <div class="checkbox-wrapper">
                       <template v-if="group.inputType === 'radio'">
                         <q-radio
-                          :model-value="layerinfo.layer.get('visible')"
-                          :val="true"
+                          :model-value="
+                            layerinfo.layer.get('visible')
+                              ? layerinfo.layer.get('title')
+                              : null
+                          "
+                          :val="layerinfo.layer.get('title')"
+                          :label="layerinfo.layer.get('title')"
                           @update:model-value="
                             () => setOverlayLayerRadio(groupIndex, layerIndex)
                           "
@@ -87,6 +99,7 @@
                       <template v-else>
                         <q-checkbox
                           :model-value="layerinfo.layer.get('visible')"
+                          :label="layerinfo.layer.get('title')"
                           @update:model-value="
                             (val) =>
                               toggleOverlayLayer(groupIndex, layerIndex, val)
@@ -94,8 +107,30 @@
                         />
                       </template>
                     </div>
-                    <div class="layer-title">
-                      {{ layerinfo.layer.get('title') }}
+                    <div v-if="group.title === 'Environmental Layers'" class="env-controls">
+                      <q-icon name="info" v-if="layerinfo.layer.get('description')">
+                        <q-tooltip>
+                          <q-card>
+                            <q-card-section>
+                              <q-card-title>
+                                <span style="color: black; height: 10px; width: 10px">
+
+                                  {{ layerinfo.layer.get('description') }}
+                                </span>
+                              </q-card-title>
+                            </q-card-section>
+                          </q-card>
+                        </q-tooltip>
+                      </q-icon>
+
+                      <q-toggle
+                        :label="layerinfo.layer.get('meanOrSD')"
+                        color="pink"
+                        false-value="SD"
+                        true-value="Mean"
+                        :model-value="layerinfo.layer.get('meanOrSD')"
+                        @update:model-value="() => updateMeanOrSD(layerinfo.layer as BaseLayer)"
+                      />
                     </div>
                   </div>
                 </template>
@@ -111,13 +146,17 @@
                   <MapLegend
                     v-else
                     :classColorMap="getLayerLegend(layerinfo.layer as BaseLayer)?.colorMap"
+                    :metadata="{
+                      title: layerinfo.layer.get('title'),
+                      unit: layerinfo.layer.get('unit'),
+                      variable: layerinfo.layer.get('variable'),
+                    }"
                     :is-continuous="
                       getLayerLegend(layerinfo.layer as BaseLayer)?.type === 'continuous'
                     "
                   />
                 </q-card>
               </q-expansion-item>
-
               <!-- Non-expandable version when no legend is available -->
               <q-expansion-item
                 v-else
@@ -127,12 +166,23 @@
                 class="layer-grid no-expand"
               >
                 <template #header>
-                  <div class="layer-controls">
+                  <div
+                    :class="
+                      group.title !== 'Environmental Layers'
+                        ? 'layer-controls'
+                        : 'layer-environmental-controls'
+                    "
+                  >
                     <div class="checkbox-wrapper">
                       <template v-if="group.inputType === 'radio'">
                         <q-radio
-                          :model-value="layerinfo.layer.get('visible')"
-                          :val="true"
+                          :model-value="
+                            layerinfo.layer.get('visible')
+                              ? layerinfo.layer.get('title')
+                              : null
+                          "
+                          :val="layerinfo.layer.get('title')"
+                          :label="layerinfo.layer.get('title')"
                           @update:model-value="
                             () => setOverlayLayerRadio(groupIndex, layerIndex)
                           "
@@ -141,6 +191,7 @@
                       <template v-else>
                         <q-checkbox
                           :model-value="layerinfo.layer.get('visible')"
+                          :label="layerinfo.layer.get('title')"
                           @update:model-value="
                             (val) =>
                               toggleOverlayLayer(groupIndex, layerIndex, val)
@@ -148,7 +199,31 @@
                         />
                       </template>
                     </div>
-                    <div class="layer-title">{{ layerinfo.title }}</div>
+                    <div v-if="group.title === 'Environmental Layers'" class="env-controls">
+                      <q-icon name="info" v-if="layerinfo.layer.get('description')">
+                        <q-tooltip>
+                          <q-card>
+                            <q-card-section>
+                              <q-card-title>
+                                <span style="color: black; height: 10px; width: 10px">
+
+                                  {{ layerinfo.layer.get('description') }}
+                                </span>
+                              </q-card-title>
+                            </q-card-section>
+                          </q-card>
+                        </q-tooltip>
+                      </q-icon>
+                      <q-toggle
+                        :label="layerinfo.layer.get('meanOrSD')"
+                        color="pink"
+                        false-value="SD"
+                        true-value="Mean"
+                        :model-value="layerinfo.layer.get('meanOrSD')"
+                        @update:model-value="() => updateMeanOrSD(layerinfo.layer as BaseLayer)"
+                        @click:model-value="() => updateMeanOrSD(layerinfo.layer as BaseLayer)"
+                      />
+                    </div>
                   </div>
                 </template>
               </q-expansion-item>
@@ -161,7 +236,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed,watch } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useQuasar } from 'quasar';
 import { useLayerManager } from '@/maps/composables/useLayerManager';
 import MapLegend from './MapLegend.vue';
@@ -171,15 +246,21 @@ import {
   reefExtentColorMap,
   boundaryColorMap,
   marineProtectedAreaColorMap,
-  chlMonthlyMean1997_2024,
+  defaultEnvironmentalColorMap,
   environmentalClusterColorMap,
   samplingSiteByYearColorMap,
   samplingSiteByProjectColorMap,
   samplingSiteByHardCoralCoverColorMap,
 } from '@/maps/config/layerColors';
+import {
+  sources as environmentalSources,
+  createGeoTIFFSource,
+} from '@/maps/sources/DjiboutiNOAASource';
 import { useMapStore } from '@/stores/mapStore';
 import BaseLayer from 'ol/layer/Base';
 import { storeToRefs } from 'pinia';
+import { sourcesTitle } from '@/maps/sources/DjiboutiNOAASource';
+import { generateDefaultStyle } from '@/maps/layers/overlay/EnvironmentalLayers/DjiboutiLayer';
 
 const $q = useQuasar();
 const leftDrawerOpen = ref(true);
@@ -196,15 +277,45 @@ const mapStore = useMapStore();
 const { selectedCountry } = storeToRefs(mapStore);
 const computedOverlayGroups = computed(() => {
   if (selectedCountry.value === null) {
-    return overlayGroups?.value.filter((layerGroup) => layerGroup.group.get('visible'));
+    return overlayGroups?.value.filter((layerGroup) =>
+      layerGroup.group.get('visible')
+    );
   } else {
     return overlayGroups?.value;
   }
-})
+});
 
 const computedActivedBaseMap = computed(() => {
   return baseMaps.value.find((baseMap) => baseMap.layer.get('visible'))?.title;
 });
+
+// const computedActiveEnvLayer = computed(() => {
+//   const envGroup = computedOverlayGroups.value.find((group) => group.title === 'Environmental Layers')
+//   const visibleLayer = envGroup?.layers.find((layer) => layer.layer.get('visible'));
+//   return visibleLayer?.layer.get('title');
+// });
+
+const updateMeanOrSD = (layer: BaseLayer) => {
+  const meanOrSD = layer.get('meanOrSD');
+  const newMeanOrSD = meanOrSD === 'Mean' ? 'SD' : 'Mean';
+  // find appropriate source
+  const environmentalSource = environmentalSources.find(
+    (source) =>
+      source.name === layer.get('title') && source.type === newMeanOrSD
+  );
+  // change the source of the layer!
+  if (environmentalSource) {
+    const newStyle = generateDefaultStyle(environmentalSource?.colorScale || defaultEnvironmentalColorMap);
+    layer.set('colorScale', environmentalSource.colorScale);
+    layer.set('style', newStyle)
+    layer.set('properties', {
+      ...environmentalSource,
+    });
+    layer.set('source', createGeoTIFFSource(environmentalSource));
+    layer.changed
+  }
+  layer.set('meanOrSD', newMeanOrSD);
+};
 
 const getGroupIcon = (title: string) => {
   const icons: Record<string, string> = {
@@ -219,6 +330,9 @@ const getGroupIcon = (title: string) => {
 
 const getLayerLegend = (layer: BaseLayer) => {
   // Return the appropriate color map based on the layer title
+  if (sourcesTitle.includes(layer.get('title'))) {
+    return layer?.get('colorScale') ?? defaultEnvironmentalColorMap;
+  }
   switch (layer.get('title')) {
     case 'Geomorphic':
       return geomorphicColorMap;
@@ -232,8 +346,6 @@ const getLayerLegend = (layer: BaseLayer) => {
       return boundaryColorMap;
     case 'Protected Area':
       return marineProtectedAreaColorMap;
-    case 'CHL_monthly_mean_1997_2024_Mean':
-      return chlMonthlyMean1997_2024;
     case 'Reef clusters':
       return environmentalClusterColorMap;
     case 'by year':
@@ -283,6 +395,11 @@ const toggleOverlayLayer = (
   bottom: 0px !important;
   width: 300px !important;
 }
+.env-controls {
+  display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 .q-drawer--dark {
   background: rgba(33, 33, 33, 0.9) !important;
@@ -298,6 +415,13 @@ const toggleOverlayLayer = (
   }
 
   .layer-controls {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+  }
+  .layer-environmental-controls {
     display: grid;
     grid-template-columns: auto 1fr 0.5fr;
     align-items: center;
