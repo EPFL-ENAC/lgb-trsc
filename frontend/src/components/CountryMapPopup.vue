@@ -76,9 +76,10 @@
         <p>3D Mapping</p>
       </div>
       <div class="card">
-        <p>eDNA</p>
-        <img src="/eDNA.png" alt="eDNA" />
-        <!-- <p><i>Coming soon</i></p> -->
+        <h3 class="card_title">Number of detected species per family</h3>
+        <img src="/eDNANew.png" alt="eDNA" />
+        <p>Environmental DNA project</p>
+        <p><i>Temporary results</i></p>
       </div>
       <div class="card">
         <!-- <img src="/seacape-genomics.png" alt="Seascape Genomics" /> -->
@@ -140,6 +141,12 @@ const toggle3DZoomedChart = () => {
 </script>
 
 <style scoped>
+.card_title {
+  font-size: 1rem;
+  font-weight: 900;
+  margin: 0;
+  padding-left: 0.3rem;
+}
 .country-name {
   margin: 0px;
 }
