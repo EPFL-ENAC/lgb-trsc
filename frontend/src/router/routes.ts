@@ -1,5 +1,4 @@
 import { RouteRecordRaw } from 'vue-router';
-import ResearchProjectsPage from '@/pages/.vue';
 import MapPage from '@/pages/MapPage.vue';
 
 
