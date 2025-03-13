@@ -48,6 +48,7 @@
 <script setup lang="ts">
 import { computed, defineProps, ref, watch, onMounted } from 'vue';
 import { useMapStore } from '@/stores/mapStore';
+import { useMapController } from '@/maps/composables/useMapController';
 
 interface ClassColorMap {
   [key: string]: string;
