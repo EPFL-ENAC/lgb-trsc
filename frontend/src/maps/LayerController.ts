@@ -7,6 +7,8 @@ import { Style } from 'ol/style';
 import GeoJSON from 'ol/format/GeoJSON';
 import VectorTileLayer from 'ol/layer/VectorTile';
 import VectorTileSource from 'ol/source/VectorTile';
+import Feature from 'ol/Feature';
+import Geometry from 'ol/geom/Geometry';
 
 interface GeoJSONFeatureCollection {
   type: 'FeatureCollection';
@@ -34,12 +36,14 @@ export class LayerController {
     this.countryLayer = createCountryLayer();
     this.expeditionProjectLayer = createExpeditionLayer('by project');
     this.expeditionYearLayer = createExpeditionLayer('by year');
-    this.expeditionHardCoralCoverLayer =
-      createExpeditionLayer('hard coral cover', {experiment: '3D'});
+    this.expeditionHardCoralCoverLayer = createExpeditionLayer(
+      'hard coral cover',
+      { experiment: '3D' }
+    );
   }
 
   destroy() {
-    this.countryLayer.getSource()?.clear(); 
+    this.countryLayer.getSource()?.clear();
     this.expeditionProjectLayer.getSource()?.clear();
     this.expeditionYearLayer.getSource()?.clear();
     this.expeditionHardCoralCoverLayer.getSource()?.clear();
@@ -84,8 +88,9 @@ export class LayerController {
   }
 
   public resetLayers() {
-    // this.coastlineLayer?.getSource()?.clear();
-    this.countryLayer.setStyle(countryStyle); // Reset style to show yellow circles
+    this.countryLayer.setStyle((feature) =>
+      countryStyle(feature as Feature<Geometry>)
+    ); // Reset style to show yellow circles
   }
 
   public getLayers() {

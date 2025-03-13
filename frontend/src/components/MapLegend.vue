@@ -4,10 +4,10 @@
       <li v-for="(color, className) in visibleColorClasses" :key="className">
         <q-checkbox
           :model-value="visibleClasses[className]"
-          @update:model-value="() => toggleClassVisibility(className as string)"
           dense
+          @update:model-value="() => toggleClassVisibility(className as string)"
         >
-          <template v-slot:default>
+          <template #default>
             <span class="legend-item">
               <span
                 class="legend-color"
@@ -26,11 +26,14 @@
     >
       <div class="color-ramp" :style="{ background: gradientCSS }"></div>
       <div class="ramp-labels">
-        <span>{{ colorLabels[0] }} {{ metadata?.unit}}</span>
+        <span>{{ colorLabels[0] }} {{ metadata?.unit }}</span>
         <span>
-          {{ colorLabels[Math.floor(colorLabels.length / 2)] }}  {{ metadata?.unit}}
+          {{ colorLabels[Math.floor(colorLabels.length / 2)] }}
+          {{ metadata?.unit }}
         </span>
-        <span>{{ colorLabels[colorLabels.length - 1] }}  {{ metadata?.unit}}</span>
+        <span
+          >{{ colorLabels[colorLabels.length - 1] }} {{ metadata?.unit }}</span
+        >
       </div>
     </ol>
     <ol v-else>
@@ -42,20 +45,21 @@
         {{ legendText }}
       </li>
     </ol>
+
+    <div>Click on the flag to access country data</div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, defineProps, ref, watch, onMounted } from 'vue';
+import { computed, defineProps } from 'vue';
 import { useMapStore } from '@/stores/mapStore';
-import { useMapController } from '@/maps/composables/useMapController';
 
 interface ClassColorMap {
   [key: string]: string;
 }
 
 interface LegendInfo {
-  title ?:string;
+  title?: string;
   unit?: string;
   variable?: string;
 }
@@ -70,10 +74,12 @@ const props = defineProps<{
   maxValue?: number;
 }>();
 
-
 const visibleColorClasses = computed(() => {
   if (!props.maxValue) return props.classColorMap;
-  const keepers = Object.keys(props.classColorMap ?? {}).slice(0, props.maxValue);
+  const keepers = Object.keys(props.classColorMap ?? {}).slice(
+    0,
+    props.maxValue
+  );
   const result = {} as ClassColorMap;
   for (const key of keepers) {
     result[key] = props.classColorMap?.[key] ?? 'rgba(0,0,0,0)';

@@ -1,7 +1,7 @@
 <template>
   <q-drawer
-    side="left"
     v-model="leftDrawerOpen"
+    side="left"
     :width="300"
     :breakpoint="300"
     bordered
@@ -55,8 +55,8 @@
               class="q-px-xl"
             >
               <q-input
-                type="number"
                 v-model.number="mapStore.selectedEnvironmentalClusterNumber"
+                type="number"
                 label="Number of Reef Clusters"
                 dense
                 min="3"
@@ -107,14 +107,25 @@
                         />
                       </template>
                     </div>
-                    <div v-if="group.title === 'Environmental Layers'" class="env-controls">
-                      <q-icon name="info" v-if="layerinfo.layer.get('description')">
+                    <div
+                      v-if="group.title === 'Environmental Layers'"
+                      class="env-controls"
+                    >
+                      <q-icon
+                        v-if="layerinfo.layer.get('description')"
+                        name="info"
+                      >
                         <q-tooltip>
                           <q-card>
                             <q-card-section>
                               <q-card-title>
-                                <span style="color: black; height: 10px; width: 10px">
-
+                                <span
+                                  style="
+                                    color: black;
+                                    height: 10px;
+                                    width: 10px;
+                                  "
+                                >
                                   {{ layerinfo.layer.get('description') }}
                                 </span>
                               </q-card-title>
@@ -137,7 +148,7 @@
                 <q-card class="legend-card">
                   <MapLegend
                     v-if="layerinfo.layer.get('title') === 'Reef clusters'"
-                    :classColorMap="getLayerLegend(layerinfo.layer as BaseLayer)?.colorMap"
+                    :class-color-map="getLayerLegend(layerinfo.layer as BaseLayer)?.colorMap"
                     :max-value="mapStore.selectedEnvironmentalClusterNumber"
                     :is-continuous="
                       getLayerLegend(layerinfo.layer as BaseLayer)?.type === 'continuous'
@@ -145,7 +156,7 @@
                   />
                   <MapLegend
                     v-else
-                    :classColorMap="getLayerLegend(layerinfo.layer as BaseLayer)?.colorMap"
+                    :class-color-map="getLayerLegend(layerinfo.layer as BaseLayer)?.colorMap"
                     :metadata="{
                       title: layerinfo.layer.get('title'),
                       unit: layerinfo.layer.get('unit'),
@@ -199,14 +210,25 @@
                         />
                       </template>
                     </div>
-                    <div v-if="group.title === 'Environmental Layers'" class="env-controls">
-                      <q-icon name="info" v-if="layerinfo.layer.get('description')">
+                    <div
+                      v-if="group.title === 'Environmental Layers'"
+                      class="env-controls"
+                    >
+                      <q-icon
+                        v-if="layerinfo.layer.get('description')"
+                        name="info"
+                      >
                         <q-tooltip>
                           <q-card>
                             <q-card-section>
                               <q-card-title>
-                                <span style="color: black; height: 10px; width: 10px">
-
+                                <span
+                                  style="
+                                    color: black;
+                                    height: 10px;
+                                    width: 10px;
+                                  "
+                                >
                                   {{ layerinfo.layer.get('description') }}
                                 </span>
                               </q-card-title>
@@ -236,7 +258,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { ref, computed } from 'vue';
 import { useQuasar } from 'quasar';
 import { useLayerManager } from '@/maps/composables/useLayerManager';
 import MapLegend from './MapLegend.vue';
@@ -305,14 +327,16 @@ const updateMeanOrSD = (layer: BaseLayer) => {
   );
   // change the source of the layer!
   if (environmentalSource) {
-    const newStyle = generateDefaultStyle(environmentalSource?.colorScale || defaultEnvironmentalColorMap);
+    const newStyle = generateDefaultStyle(
+      environmentalSource?.colorScale || defaultEnvironmentalColorMap
+    );
     layer.set('colorScale', environmentalSource.colorScale);
-    layer.set('style', newStyle)
+    layer.set('style', newStyle);
     layer.set('properties', {
       ...environmentalSource,
     });
     layer.set('source', createGeoTIFFSource(environmentalSource));
-    layer.changed()
+    layer.changed();
   }
   layer.set('meanOrSD', newMeanOrSD);
 };
@@ -397,8 +421,8 @@ const toggleOverlayLayer = (
 }
 .env-controls {
   display: flex;
-    justify-content: center;
-    align-items: center;
+  justify-content: center;
+  align-items: center;
 }
 
 .q-drawer--dark {

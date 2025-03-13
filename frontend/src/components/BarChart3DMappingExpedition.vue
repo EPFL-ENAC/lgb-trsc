@@ -9,7 +9,10 @@ import 'echarts/lib/component/tooltip'; // Import tooltip component
 import 'echarts/lib/component/title'; // Import title component
 import 'echarts/lib/component/legend'; // Import legend component
 import { d3MappingColorSubstrate1 as colorPalette } from '@/maps/config/layerColors';
-import { validSubstrates, validSubtrateMap } from '@/maps/config/substrateOrder';
+import {
+  validSubstrates,
+  validSubtrateMap,
+} from '@/maps/config/substrateOrder';
 
 export default {
   name: 'BarChart3DMappingExpedition',
@@ -38,13 +41,6 @@ export default {
       windowResizeInnerHeight: window.innerHeight,
     };
   },
-  mounted() {
-    this.initChart();
-  },
-  unmounted() {
-    this.chart?.dispose();
-    this.chart = null;
-  },
   watch: {
     rawData: {
       handler(value) {
@@ -56,6 +52,13 @@ export default {
       deep: true,
     },
   },
+  mounted() {
+    this.initChart();
+  },
+  unmounted() {
+    this.chart?.dispose();
+    this.chart = null;
+  },
   methods: {
     initChart() {
       if (this.chart == null) {
@@ -64,8 +67,7 @@ export default {
       const option = this.getChartOption(this.rawData);
       this.chart.setOption(option);
     },
-    getChartOption(data) {;
-
+    getChartOption(data) {
       function processData(data) {
         const seriesData = {}; // init to 0
         // init to 0
@@ -83,38 +85,40 @@ export default {
           const _data = new Array(size).fill(0);
           _data[index] = seriesData[substrate];
 
-          return ({
-          name: substrate,
-          type: 'bar',
-          data: _data,
-          itemStyle: {
-            color: colorPalette[index]
-          },
-          barGap: '-100%',
-          barCategoryGap: '0%',
-          barWidth: '80%',
-        })
+          return {
+            name: substrate,
+            type: 'bar',
+            data: _data,
+            itemStyle: {
+              color: colorPalette[index],
+            },
+            barGap: '-100%',
+            barCategoryGap: '0%',
+            barWidth: '80%',
+          };
         });
       }
 
       let localTooltip = {
-          trigger: 'axis',
-          axisPointer: {
-            type: 'shadow'
-          },
-          formatter: function (params) {
-            let result = ``;
-            let param = params[params[0].dataIndex];
-            if (param === undefined) {
-              return '';
-            }
-            result+= `<span style="margin-right:1rem;background-color:${param.color};display: inline-block;width: 10px;height: 10px;"></span>`;
-            result+= `${param.axisValueLabel} ${(param.value *100).toFixed(2)}%<br/>`
-            
-            return result;
+        trigger: 'axis',
+        axisPointer: {
+          type: 'shadow',
+        },
+        formatter: function (params) {
+          let result = '';
+          let param = params[params[0].dataIndex];
+          if (param === undefined) {
+            return '';
           }
-        };
-      if (this.tooltip ===false) {
+          result += `<span style="margin-right:1rem;background-color:${param.color};display: inline-block;width: 10px;height: 10px;"></span>`;
+          result += `${param.axisValueLabel} ${(param.value * 100).toFixed(
+            2
+          )}%<br/>`;
+
+          return result;
+        },
+      };
+      if (this.tooltip === false) {
         localTooltip = false;
       }
       return {
@@ -129,20 +133,20 @@ export default {
             return validSubtrateMap[name];
           },
           orient: 'horizontal',
-          bottom: 10
+          bottom: 10,
         },
         grid: {
           left: '2.4%',
           right: '4%',
           bottom: '130px',
-          containLabel: true
+          containLabel: true,
         },
         xAxis: {
           type: 'category',
           data: validSubstrates,
-            axisLabel: { 
-            show: false
-            },
+          axisLabel: {
+            show: false,
+          },
           name: 'substrate',
         },
         yAxis: {
@@ -163,6 +167,4 @@ export default {
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

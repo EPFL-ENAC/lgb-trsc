@@ -4,6 +4,6 @@ import ar from './ar';
 
 export default {
   'en-US': enUS,
-  'fr': fr,
-  'ar': ar
+  fr: fr,
+  ar: ar,
 };

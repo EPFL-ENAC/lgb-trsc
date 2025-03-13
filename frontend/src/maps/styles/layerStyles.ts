@@ -1,6 +1,7 @@
+import Feature from 'ol/Feature';
 import { Style, Circle as CircleStyle, Fill, Stroke, Icon } from 'ol/style';
 
-export const countryStyle = function(feature) {
+export const countryStyle = function (feature: Feature) {
   const countryCode = feature.get('country_code') || 'unknown';
   return new Style({
     image: new Icon({
@@ -9,8 +10,8 @@ export const countryStyle = function(feature) {
       // Optional: you can adjust anchor if needed
       anchor: [0.5, 0.5],
       anchorXUnits: 'fraction',
-      anchorYUnits: 'fraction'
-    })
+      anchorYUnits: 'fraction',
+    }),
   });
 };
 

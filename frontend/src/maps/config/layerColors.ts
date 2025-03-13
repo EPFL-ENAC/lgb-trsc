@@ -87,12 +87,11 @@ export const SST_monthly_max_SD: ColorMap = {
     // '5.196': 'rgba(250, 235, 221, 1)',
     // '5.2': 'rgba(255, 255, 255, 1)',
   },
-  min: 1.10,
+  min: 1.1,
   max: 5.99,
   nodata: -3.4e38,
   epsilon: 1.0e35,
 };
-
 
 export const SST_monthly_max_Mean: ColorMap = {
   type: 'continuous',
@@ -107,19 +106,18 @@ export const SST_monthly_max_Mean: ColorMap = {
   // min: 15,
   // max: 35,
   colorMap: {
-    "23": "#2c7bb6",
-    "24": "#abd9e9",
-    "27": "#ffffbf",
-    "28": "#fdae61",
-    "30": "#d7191c",
-    "32": "#6f0005",
+    '23': '#2c7bb6',
+    '24': '#abd9e9',
+    '27': '#ffffbf',
+    '28': '#fdae61',
+    '30': '#d7191c',
+    '32': '#6f0005',
   },
   min: 22,
   max: 33,
   nodata: -3.4e38,
   epsilon: 1.0e35,
 };
-
 
 export const defaultEnvironmentalColorMap: ColorMap = {
   type: 'continuous',

@@ -23,7 +23,8 @@ const countries = {
         sites: '22 sites visited',
         monitoring: '4 permanent monitoring sites in service',
         training: '4 training workshops completed',
-        collaboration: 'University of Djibouti, Centre d\'étude et de recherche de Djibouti, Ministère de l\'Environnement et du Développement Durable de Djibouti',
+        collaboration:
+          "University of Djibouti, Centre d'étude et de recherche de Djibouti, Ministère de l'Environnement et du Développement Durable de Djibouti",
         contact: 'Dr. Guilhem Banc-Prandi, Dr. Ibrahim Souleiman Abdallah',
         enabled: true,
         coastline: {
@@ -137,7 +138,8 @@ const countries = {
         type: 'country',
         name: 'Jordan',
         country_code: 'JO',
-        description: 'Jordan is a country in Western Asia, located on the east bank of the Jordan River.',
+        description:
+          'Jordan is a country in Western Asia, located on the east bank of the Jordan River.',
         visited: 'Visited in 2023, 2024',
         projects: 'Coral reef restoration, Marine pollution',
         lead: 'Lead by Michael Cohen',
@@ -168,7 +170,7 @@ const countries = {
           ],
         },
         enabled: true,
-      }
+      },
     },
   ],
 };

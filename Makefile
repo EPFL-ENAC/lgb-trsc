@@ -1,5 +1,9 @@
 .PHONY: backup-dump
 
+
+lefthook-install:
+	npx lefthook install
+
 install:
 	$(MAKE) -C frontend install
 
@@ -17,15 +21,6 @@ lint-staged:
 
 convert:
 	$(MAKE) -C frontend convert
-
-run-db:
-	docker compose up -d --pull=always postgres
-
-stop-db:
-	docker compose stop postgres
-
-down-db:
-	docker compose down postgres
 
 # setup and run when deploying on server
 setup:

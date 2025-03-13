@@ -121,28 +121,33 @@ export const createFeatureStyle = (
   if (feature.get(propertyName) !== filter?.[propertyName]) {
     return new Style({});
   }
-  
+
   if (!visibleClasses.value[featureClass]) {
     return new Style({});
   }
   const { selectedExpedition } = useMapStore();
-    if (
-      selectedExpedition &&
-      feature.get('event_id') === selectedExpedition.event_id
-    ) {
-      const isSameExperiment =
-        feature.get('experiment') === selectedExpedition.experiment;
-      if (isSameExperiment) {
-        return createCommonStyle(
-          colorMap,
-          featureClass,
-          dotted,
-          'selectedExpedition'
-        );
-      } else {
-        return createCommonStyle(colorMap, featureClass, dotted, dottedStrokeType);
-      }
+  if (
+    selectedExpedition &&
+    feature.get('event_id') === selectedExpedition.event_id
+  ) {
+    const isSameExperiment =
+      feature.get('experiment') === selectedExpedition.experiment;
+    if (isSameExperiment) {
+      return createCommonStyle(
+        colorMap,
+        featureClass,
+        dotted,
+        'selectedExpedition'
+      );
+    } else {
+      return createCommonStyle(
+        colorMap,
+        featureClass,
+        dotted,
+        dottedStrokeType
+      );
     }
+  }
   return createCommonStyle(colorMap, featureClass, dotted, dottedStrokeType);
 };
 
@@ -171,7 +176,7 @@ export function useLayerStyles() {
     Object.keys(colorMap).forEach((className) => {
       visibleClasses.value[className] = isVisible;
     });
-    
+
     const mapController = useMapController();
     mapController?.getMap()?.renderSync();
   };

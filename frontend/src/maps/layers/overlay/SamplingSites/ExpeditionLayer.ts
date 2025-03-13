@@ -87,7 +87,7 @@ export const createExpeditionLayer = (
   );
   watch(
     () => mapStore.selectedExpedition,
-    (newValue) =>{
+    (newValue) => {
       if (newValue !== undefined) {
         layer.changed();
       }

@@ -1,9 +1,12 @@
 import {
   createGeoTIFFSource,
-  sources
+  sources,
 } from '@/maps/sources/DjiboutiNOAASource';
 import { BaseLayerOptions } from 'ol-layerswitcher';
-import { defaultEnvironmentalColorMap, ColorMap } from '@/maps/config/layerColors';
+import {
+  defaultEnvironmentalColorMap,
+  ColorMap,
+} from '@/maps/config/layerColors';
 import WebGLTileLayer from 'ol/layer/WebGLTile';
 // Define NoData value
 const NODATA_VALUE = -3.4e38;
@@ -12,7 +15,7 @@ const EPSILON = 1.0e35; // This is quite large - might need adjustment
 const convertColorMapToArray = (colorMap: Record<string, string>) => {
   const colorMapArray = [];
   for (const key in colorMap) {
-    if (colorMap.hasOwnProperty(key)) {
+    if (Object.hasOwn(colorMap, key)) {
       colorMapArray.push(parseFloat(key));
       colorMapArray.push(colorMap[key]);
     }
@@ -23,8 +26,10 @@ const convertColorMapToArray = (colorMap: Record<string, string>) => {
 export function generateDefaultStyle(colorScale: ColorMap) {
   const min = colorScale.min ?? 0.00001;
   const max = colorScale.max ?? 100;
-  const nodataMinEpsilon = colorScale.nodata ?? NODATA_VALUE - (colorScale?.epsilon ?? EPSILON);
-  const nodataMaxEpsilon = colorScale.nodata ?? NODATA_VALUE + (colorScale?.epsilon ?? EPSILON);
+  const nodataMinEpsilon =
+    colorScale.nodata ?? NODATA_VALUE - (colorScale?.epsilon ?? EPSILON);
+  const nodataMaxEpsilon =
+    colorScale.nodata ?? NODATA_VALUE + (colorScale?.epsilon ?? EPSILON);
   return {
     variables: {
       min,
@@ -59,25 +64,31 @@ export function generateDefaultStyle(colorScale: ColorMap) {
       ],
     ],
     opacity: 1,
-  }
+  };
 }
 
 export const createEnvironmentalLayers = () => {
-  const layers = sources.filter(source => source.type === 'Mean').map((source) => {
-    const layer = new WebGLTileLayer({
-      source: createGeoTIFFSource(source),
-      title: source.name ,
-      visible: false,
-      baseLayer: false,
-      meanOrSD: source.type,
-      style: source.style || generateDefaultStyle(source?.colorScale || defaultEnvironmentalColorMap),
-      bands: [1], // Explicitly specify which band to use
-      opacity: 1, // Default opacity
-      properties: {
-        ...source,
-      },
-    } as BaseLayerOptions);
-    return layer;
-  });
+  const layers = sources
+    .filter((source) => source.type === 'Mean')
+    .map((source) => {
+      const layer = new WebGLTileLayer({
+        source: createGeoTIFFSource(source),
+        title: source.name,
+        visible: false,
+        baseLayer: false,
+        meanOrSD: source.type,
+        style:
+          source.style ||
+          generateDefaultStyle(
+            source?.colorScale || defaultEnvironmentalColorMap
+          ),
+        bands: [1], // Explicitly specify which band to use
+        opacity: 1, // Default opacity
+        properties: {
+          ...source,
+        },
+      } as BaseLayerOptions);
+      return layer;
+    });
   return layers;
 };

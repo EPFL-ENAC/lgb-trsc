@@ -19,7 +19,7 @@
       science-based efforts to conserve coral reefs globally.
     </p>
     <div class="bottom-element">
-      <div class="card" v-for="person in people" :key="person.id">
+      <div v-for="person in people" :key="person.id" class="card">
         <a :href="person.epflPage" target="_blank">
           <q-img
             :ratio="1 / 1"
@@ -34,7 +34,7 @@
             <h3>{{ person.name }}</h3>
           </div>
         </a>
-        <p class="two-lines" v-if="person.function">
+        <p v-if="person.function" class="two-lines">
           <em>{{ person.function }}</em>
         </p>
         <!-- <p>{{ person.description }}</p> -->
