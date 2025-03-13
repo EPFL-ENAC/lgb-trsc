@@ -312,7 +312,7 @@ const updateMeanOrSD = (layer: BaseLayer) => {
       ...environmentalSource,
     });
     layer.set('source', createGeoTIFFSource(environmentalSource));
-    layer.changed
+    layer.changed()
   }
   layer.set('meanOrSD', newMeanOrSD);
 };

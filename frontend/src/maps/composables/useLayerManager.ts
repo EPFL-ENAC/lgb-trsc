@@ -1,4 +1,4 @@
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import BaseLayer from 'ol/layer/Base';
 import LayerGroup from 'ol/layer/Group';
 import Collection from 'ol/Collection';
@@ -124,6 +124,11 @@ export function useLayerManager() {
   };
   onMounted(() => {
     initializeLayers();
+  });
+
+  onUnmounted(() => {
+    baseMaps.value = [];
+    overlayGroups.value = [];
   });
 
   return {

@@ -14,7 +14,7 @@ import { debounce } from 'lodash';
 
 const TIME_OUT = 150;
 
-const subtrateLevelMapColor = {
+const substrateLevelMapColor = {
   'Substrate_coarse': colorPalette,
   'Substrate_intermediate': colorPalette2
 }
@@ -233,7 +233,7 @@ export default {
           min: 0
         },
         series: processData(data, substrateLevel),
-        color: subtrateLevelMapColor?.[substrateLevel]
+        color: substrateLevelMapColor?.[substrateLevel]
       };
     }
   }

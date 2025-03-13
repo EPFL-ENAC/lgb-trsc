@@ -10,3 +10,10 @@ export function useMapController() {
   }
   return mapController.value;
 }
+
+export function destroyMapController() {
+  if (mapController.value) {
+    mapController.value.destroy();
+    mapController.value = null;
+  }
+}

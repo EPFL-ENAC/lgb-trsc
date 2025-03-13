@@ -20,8 +20,9 @@ import { MapController } from '@/maps/MapController';
 import { storeToRefs } from 'pinia';
 import { useMapStore } from '@/stores/mapStore';
 import MapRightPanel from '@/components/MapRightPanel.vue';
-import { useMapController } from '@/maps/composables/useMapController';
+import { useMapController, destroyMapController } from '@/maps/composables/useMapController';
 import MapLeftPanel from '@/components/MapLeftPanel.vue';
+import { destroyLayerController } from '@/maps/composables/useLayerController';
 
 const mapStore = useMapStore();
 const mapElement = ref<HTMLElement | null>(null);
@@ -59,6 +60,11 @@ onMounted(() => {
 onUnmounted(() => {
   mapController.value?.destroy()
   mapController.value = null;
+
+  destroyMapController();
+  destroyLayerController();
+  // we should probably reset the store country selection here also
+  useMapStore().resetAll();
 });
 </script>
 

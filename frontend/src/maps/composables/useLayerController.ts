@@ -9,3 +9,10 @@ export function useLayerController() {
   }
   return layerController.value;
 }
+
+export function destroyLayerController() {
+  if (layerController.value) {
+    layerController.value.destroy();
+    layerController.value = null;
+  }
+}
