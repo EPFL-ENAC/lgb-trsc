@@ -17,22 +17,6 @@
     "
   >
     <q-list padding>
-      <!-- Base maps section -->
-      <q-expansion-item group="layers" icon="map" label="Base maps">
-        <q-list padding>
-          <q-item v-for="layerInfo in baseMaps" :key="layerInfo.title">
-            <q-item-section avatar>
-              <q-radio
-                :model-value="computedActivedBaseMap"
-                :val="layerInfo.title"
-                :label="layerInfo.title"
-                @update:model-value="() => setBaseMapVisible(layerInfo.title)"
-              />
-            </q-item-section>
-          </q-item>
-        </q-list>
-      </q-expansion-item>
-
       <!-- Overlay groups section -->
       <q-expansion-item
         v-for="(group, groupIndex) in computedOverlayGroups"
@@ -253,6 +237,23 @@
           </q-item>
         </q-list>
       </q-expansion-item>
+
+      <!-- Base maps section -->
+      <q-expansion-item group="layers" icon="map" label="Base maps">
+        <q-list padding>
+          <q-item v-for="layerInfo in baseMaps" :key="layerInfo.title">
+            <q-item-section avatar>
+              <q-radio
+                :model-value="computedActivedBaseMap"
+                :val="layerInfo.title"
+                :label="layerInfo.title"
+                @update:model-value="() => setBaseMapVisible(layerInfo.title)"
+              />
+            </q-item-section>
+          </q-item>
+        </q-list>
+      </q-expansion-item>
+
       <div v-if="!selectedCountry">Click on the flag to access country data</div>
     </q-list>
   </q-drawer>
