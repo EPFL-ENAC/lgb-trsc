@@ -1,6 +1,31 @@
+# Configuration for lefthook git hooks
+# https://github.com/evilmartians/lefthook
+
+pre-push:
+  parallel: true
+  commands:
+    eslint-audit:
+      root: frontend
+      tags: frontend eslint
+      run: npm run lint
+    typescript-audit:
+      root: frontend
+      tags: frontend typescript
+      run: npm run type-check
+
 pre-commit:
   parallel: true
   commands:
     eslint:
-      run: eslint .
-      glob: "*.js"
+      root: frontend
+      # glob: '*.{js,ts,jsx,tsx,css,scss,vue}'
+      glob: '*.{js,ts,jsx,tsx,css,vue}'
+      tags: frontend eslint
+      run: npx eslint {staged_files} --fix
+    typecheck:
+      root: frontend
+      glob: '*.{js,ts,vue}'
+      run: npm run type-check
+    test:
+      root: frontend
+      run: npm run test
