@@ -1,12 +1,9 @@
 <template>
   <div>
-    <p class="q-pa-md">Links to publications, reports, documentaries
-    </p>
+    <p class="q-pa-md">Links to publications, reports, documentaries</p>
   </div>
 </template>
 
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
 
-<style scoped>
-</style>
+<style scoped></style>

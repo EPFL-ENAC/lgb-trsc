@@ -1,4 +1,4 @@
 export default {
-  welcome: "Bienvenue",
+  welcome: 'Bienvenue',
   // Add more translations here
 };

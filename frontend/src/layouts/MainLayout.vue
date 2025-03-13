@@ -4,7 +4,7 @@
       style="height: var(--header-height); border-bottom: 1px solid red"
       class="bg-white text-red APax text-weight-thin"
     >
-      <q-toolbar @click="navigateToHome" class="clickable">
+      <q-toolbar class="clickable" @click="navigateToHome">
         <q-toolbar-title class="toolbar-title">
           <q-avatar class="toolbar-avatar">
             <!-- <img src="/trsc.svg"> -->
@@ -25,10 +25,16 @@
           class="q-ml-md research-projects-dropdown"
         >
           <q-list>
-            <q-item v-for="project in researchProjects" :key="project.page" @click="() => navigateToProject(project.page)">
+            <q-item
+              v-for="project in researchProjects"
+              :key="project.page"
+              @click="() => navigateToProject(project.page)"
+            >
               <q-item-section>
-
-                <q-route-tab :to="{name: project.page}" :label="project.name " />
+                <q-route-tab
+                  :to="{ name: project.page }"
+                  :label="project.name"
+                />
               </q-item-section>
             </q-item>
           </q-list>
@@ -114,10 +120,8 @@ const researchProjects = ref([
     page: 'echinoderm_population_genetics',
   },
   { name: 'marine pollution', page: 'marine_pollution' },
-  { name: 'socio economics', page: 'socio_economics' }
+  { name: 'socio economics', page: 'socio_economics' },
 ]);
-
-
 </script>
 
 <style lang="scss" scoped>

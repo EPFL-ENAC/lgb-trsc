@@ -1,7 +1,7 @@
 <template>
   <q-drawer
-    side="right"
     v-model="drawer"
+    side="right"
     :width="500"
     :breakpoint="500"
     overlay
@@ -16,11 +16,9 @@
     <CountryMapPopup
       v-if="selectedCountry && !selectedExpedition"
       :country="selectedCountry"
-      :closeDrawer="closeDrawer"
+      :close-drawer="closeDrawer"
     />
-    <ExpeditionMapPopup
-      v-if="selectedExpedition"
-    />
+    <ExpeditionMapPopup v-if="selectedExpedition" />
   </q-drawer>
 </template>
 
@@ -36,8 +34,7 @@ import ExpeditionMapPopup from './ExpeditionMapPopup.vue';
 const $q = useQuasar();
 const mapStore = useMapStore();
 const { selectedCountry, selectedExpedition, drawer } = storeToRefs(mapStore);
-const { closeDrawer, closeExpedition } =
-  mapStore;
+const { closeDrawer } = mapStore;
 
 // Removed props interface and defineProps, now using mapStore directly.
 </script>

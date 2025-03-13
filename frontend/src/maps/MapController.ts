@@ -37,9 +37,7 @@ import {
   createDjiboutiReefExtentLayer,
 } from '@/maps/layers/overlay/ReefLayers/DjiboutiLayer';
 import { createDjiboutiEnvironmentalClusterLayer } from '@/maps/layers/overlay/EnvironmentalClusters/DjiboutiLayer';
-import {
-  createEnvironmentalLayers,
-} from './layers/overlay/EnvironmentalLayers/DjiboutiLayer';
+import { createEnvironmentalLayers } from './layers/overlay/EnvironmentalLayers/DjiboutiLayer';
 import { BaseLayerOptions } from 'ol-layerswitcher';
 
 interface CustomBaseLayerOptions extends BaseLayerOptions {
@@ -74,7 +72,7 @@ export class MapController {
   public destroy() {
     // Remove all controls
     const controls = this.map?.getControls().getArray();
-    controls?.forEach(control => this.map?.removeControl(control));
+    controls?.forEach((control) => this.map?.removeControl(control));
 
     // // Remove all layers
     if (this.baseMaps) {
@@ -86,10 +84,12 @@ export class MapController {
 
     // // Remove all interactions
     const interactions = this.map?.getInteractions().getArray();
-    interactions?.forEach(interaction => this.map?.removeInteraction(interaction));
+    interactions?.forEach((interaction) =>
+      this.map?.removeInteraction(interaction)
+    );
 
     // Remove all event listeners
-    this.map?.setTarget("");
+    this.map?.setTarget('');
     this.map = null;
   }
 
@@ -113,7 +113,7 @@ export class MapController {
           visible: true,
           showForcountryOnly: false,
           inputType: 'checkbox',
-          layers: createEnvironmentalLayers()
+          layers: createEnvironmentalLayers(),
         } as CustomBaseLayerOptions),
         new LayerGroup({
           title: 'Reef Layers',
@@ -159,7 +159,7 @@ export class MapController {
     // Retrieve the store instance
     const mapStore = useMapStore();
 
-    const { selectCountry, selectExpedition, onHover } = mapStore;
+    const { selectCountry, selectExpedition } = mapStore;
 
     // Define any extra parameters (raw data, expedition GeoJSON, and a new style)
     const threeDMappingByCountry = {
@@ -181,14 +181,9 @@ export class MapController {
     };
 
     if (this.map) {
-       addMapClickHandler(
-        this.map,
-        clickHandlerOptions
-      );
-  
-      addMapPointerMoveHandler(this.map, {
-        onHover,
-      });
+      addMapClickHandler(this.map, clickHandlerOptions);
+
+      addMapPointerMoveHandler(this.map);
     }
   }
 
@@ -206,7 +201,7 @@ export class MapController {
   }
 
   public getOverlayMaps() {
-    return this.overlayMaps?.getLayers().getArray()|| [];
+    return this.overlayMaps?.getLayers().getArray() || [];
   }
 
   public setLayerVisibility(
@@ -227,7 +222,6 @@ export class MapController {
   }
 
   public zoomToCountry(): void {
-
     const mapStore = useMapStore();
     const selectedCountry = mapStore.selectedCountry;
     if (selectedCountry && selectedCountry.coastline) {
@@ -267,7 +261,7 @@ export class MapController {
         if (title === 'by year') {
           layer.setVisible(true);
         }
-      })
+      });
 
       this.map?.setView(new View(currentView));
     }
@@ -286,11 +280,12 @@ export class MapController {
       currentView.minZoom = defaultMinZoom;
       currentView.center = getCenter(defaultExtent);
     }
-      // visible: expeditionType === 'by year',
-      this.map?.getAllLayers().forEach((layer) => {
-        if (!['ArcGIS', 'OSM', 'Countries'].includes(layer.get('title'))) {
+    // visible: expeditionType === 'by year',
+    this.map?.getAllLayers().forEach((layer) => {
+      if (!['ArcGIS', 'OSM', 'Countries'].includes(layer.get('title'))) {
         layer.setVisible(false);
-      }});
+      }
+    });
 
     this.map?.setView(new View(currentView));
     this.map?.getView().animate({ zoom: 3, duration: 300 });
@@ -301,6 +296,6 @@ export class MapController {
   }
 
   public zoomToExpedition = () => {
-      console.log("NOT IMPLEMENTED YET")
+    console.log('NOT IMPLEMENTED YET');
   };
 }

@@ -38,7 +38,9 @@ export const createDjiboutiGeomorphicLayer = () => {
   });
 
   // Set up watcher for style changes
-  layer.setStyle((feature) => computedStyle.value(feature));
+  layer.setStyle((feature) =>
+    computedStyle.value(feature as Feature<Geometry>)
+  );
 
   // Watch for changes in visibleClasses and trigger a redraw
   watch(
@@ -73,7 +75,9 @@ export const createDjiboutiBenthicLayer = () => {
   });
 
   // Set up watcher for style changes
-  layer.setStyle((feature) => computedStyle.value(feature));
+  layer.setStyle((feature) =>
+    computedStyle.value(feature as Feature<Geometry>)
+  );
 
   // Watch for changes in visibleClasses and trigger a redraw
   watch(
@@ -119,7 +123,9 @@ export const createDjiboutiMarineProtectedAreaLayer = () => {
   });
 
   // Set up watcher for style changes
-  layer.setStyle((feature) => computedStyle.value(feature));
+  layer.setStyle((feature) =>
+    computedStyle.value(feature as Feature<Geometry>)
+  );
 
   // Watch for changes in visibleClasses and trigger a redraw
   watch(
@@ -176,7 +182,9 @@ export const createDjiboutiReefExtentLayer = () => {
   });
 
   // Set up watcher for style changes
-  layer.setStyle((feature) => computedStyle.value(feature));
+  layer.setStyle((feature) =>
+    computedStyle.value(feature as Feature<Geometry>)
+  );
 
   // Watch for changes in visibleClasses and trigger a redraw
   watch(

@@ -2,14 +2,13 @@ https://github.com/EPFL-ENAC/lgb-trsc/issues/16
 Add layers from
 https://allencoralatlas.org/atlas/#1.00/0.0000/-145.0000
 
+- Benthic Map
 
-+ Benthic Map
+- Geomorphic Map
 
-+ Geomorphic Map
+- MArine protected areas
 
-+ MArine protected areas
+- Maritime Boundaires (Source: Allen Coral Atlas)
 
-+ Maritime Boundaires (Source: Allen Coral Atlas)
-
-+ Reef extent
-(same colormap as on Allen Coral Atlas)
+- Reef extent
+  (same colormap as on Allen Coral Atlas)

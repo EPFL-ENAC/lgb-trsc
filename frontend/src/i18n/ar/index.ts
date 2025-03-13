@@ -1,4 +1,4 @@
 export default {
-  welcome: "أهلاً وسهلاً",
+  welcome: 'أهلاً وسهلاً',
   // Add more translations here
 };

@@ -8,6 +8,7 @@
   "scripts": {
     "lint": "eslint --ext .js,.ts,.vue ./",
     "format": "prettier --write \"**/*.{js,ts,vue,scss,html,md,json}\" --ignore-path .gitignore",
+    "type-check": "tsc --noEmit --skipLibCheck",
     "test": "echo \"No test specified\" && exit 0",
     "dev": "quasar dev",
     "build": "quasar build",
@@ -45,7 +46,7 @@
     "typescript": "^4.5.4"
   },
   "engines": {
-    "node": "^18 || ^16 || ^14.19",
+    "node": "^22.12.0",
     "npm": ">= 6.13.4",
     "yarn": ">= 1.21.1"
   }

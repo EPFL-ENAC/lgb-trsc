@@ -1,10 +1,16 @@
 <template>
-  <div class="popup" v-if="selectedExpedition">
+  <div v-if="selectedExpedition" class="popup">
     <button class="close-btn" @click="closeExpedition">Back</button>
-    <h2 class="first-expedition-header">{{ headerMap?.[selectedExpedition.experiment] ?? selectedExpedition.experiment }} project
+    <h2 class="first-expedition-header">
+      {{
+        headerMap?.[selectedExpedition.experiment] ??
+        selectedExpedition.experiment
+      }}
+      project
     </h2>
     <h3>
-      {{ selectedExpedition.reef_area }} - {{ selectedExpedition.sampling_site_name }}
+      {{ selectedExpedition.reef_area }} -
+      {{ selectedExpedition.sampling_site_name }}
     </h3>
     <p>
       {{ selectedExpedition.region_name }} -
@@ -23,13 +29,17 @@
       {{ formatCoordinate(selectedExpedition.longitude_end, 'E') }}
     </p>
     <p>{{ selectedExpedition.date_iso }}</p>
-    <p v-if="selectedExpedition.experiment === '3D'">Length of the transect: {{ selectedExpedition.length }} m</p>
-    <p v-if="selectedExpedition.experiment === '3D'">Average depth: {{ selectedExpedition.depth ?? 5 }} m</p>
+    <p v-if="selectedExpedition.experiment === '3D'">
+      Length of the transect: {{ selectedExpedition.length }} m
+    </p>
+    <p v-if="selectedExpedition.experiment === '3D'">
+      Average depth: {{ selectedExpedition.depth ?? 5 }} m
+    </p>
     <div v-if="selectedExpedition.experiment === '3D'">
       <div v-if="sampleSet.length > 0">
         <BarChart3DMappingExpedition
           v-if="isValidSampleSet"
-          :rawData="sampleSet"
+          :raw-data="sampleSet"
           height="400px"
           width="400px"
           :tooltip="true"
@@ -37,16 +47,20 @@
       </div>
       <div v-else>No 3D Mapping data available</div>
       <p>
-        Data generated with the <a href="https://josauder.github.io/deepreefmap/" target="_blank">Deep Reef Map</a> methodology
+        Data generated with the
+        <a href="https://josauder.github.io/deepreefmap/" target="_blank"
+          >Deep Reef Map</a
+        >
+        methodology
       </p>
       <div class="card">
         <!-- <img src="/seacape-genomics.png" alt="Seascape Genomics" /> -->
         <p>In Collaboration with</p>
         <div style="display: flex; gap: 1rem">
           <div
-            class="logo-item"
             v-for="community in computedCountryCommunities"
             :key="community.name"
+            class="logo-item"
           >
             <a :href="community.url" target="_blank" class="logo-item-link">
               <q-img
@@ -75,8 +89,8 @@ import communities from '@/assets/communities';
 
 const headerMap = {
   '3D': '3D Mapping',
-  'eDNA': 'eDNA',
-  'seascape_genomics': 'Seascape Genomics',
+  eDNA: 'eDNA',
+  seascape_genomics: 'Seascape Genomics',
 };
 
 interface MappingData {
@@ -93,18 +107,11 @@ interface MappingData {
   mean: number;
 }
 
-interface D3Mapping {
-  sampling_site_name: string;
-  event_id: string;
-  [key: string]: unknown;
-}
-
 const threedMappingByCountry: Record<string, MappingData[]> = {
   djibouti: Djibouti3DMapping as any,
 };
 
-
-const formatCoordinate = (decimal: number, direction: 'N' | 'E'): string => {
+const formatCoordinate = (decimal: number): string => {
   const absolute = Math.abs(decimal);
   const degrees = Math.floor(absolute);
   const minutes = (absolute - degrees) * 60;
@@ -113,34 +120,36 @@ const formatCoordinate = (decimal: number, direction: 'N' | 'E'): string => {
 };
 
 const mapStore = useMapStore();
-const {  selectedExpedition } = storeToRefs(mapStore);
-const {  closeExpedition } =
-  mapStore;
+const { selectedExpedition } = storeToRefs(mapStore);
+const { closeExpedition } = mapStore;
 
-const countryLower = computed(() =>
-  selectedExpedition.value?.country.toLowerCase().replaceAll(' ', '_') ?? ''
+const countryLower = computed(
+  () =>
+    selectedExpedition.value?.country.toLowerCase().replaceAll(' ', '_') ?? ''
 );
 
 const computedCountryCommunities = computed(() => {
   return communities.filter(
-    (community) => community.country.toLowerCase().replaceAll(' ', '_') === countryLower.value
+    (community) =>
+      community.country.toLowerCase().replaceAll(' ', '_') ===
+      countryLower.value
   );
 });
-
 
 const sampleSet = computed(() => {
   try {
     const eventID = selectedExpedition.value?.event_id;
-    const sampleByIds = threedMappingByCountry[countryLower.value]?.filter(
-      (d3Mapping) => d3Mapping.event_id === eventID
-    ) || [];
+    const sampleByIds =
+      threedMappingByCountry[countryLower.value]?.filter(
+        (d3Mapping) => d3Mapping.event_id === eventID
+      ) || [];
 
-    const result = sampleByIds.filter((d3Mapping) =>
-      d3Mapping.date_iso === selectedExpedition.value?.date_iso
+    const result = sampleByIds.filter(
+      (d3Mapping) => d3Mapping.date_iso === selectedExpedition.value?.date_iso
     );
-    return result.map(x => ({
+    return result.map((x) => ({
       Substrate_coarse: String(x.Substrate_coarse),
-      mean: Number(x.mean)
+      mean: Number(x.mean),
     }));
   } catch (error) {
     console.error('Error processing sample set:', error);
@@ -149,18 +158,15 @@ const sampleSet = computed(() => {
 });
 
 const isValidSampleSet = computed(() => {
-  return sampleSet.value.every(sample =>
-    typeof sample === 'object' &&
-    sample !== null &&
-    'Substrate_coarse' in sample &&
-    'mean' in sample &&
-    typeof sample.mean === 'number'
+  return sampleSet.value.every(
+    (sample) =>
+      typeof sample === 'object' &&
+      sample !== null &&
+      'Substrate_coarse' in sample &&
+      'mean' in sample &&
+      typeof sample.mean === 'number'
   );
 });
-
-const handleGoToExpedition = () => {
-  // props.zoomToExpedition();
-};
 </script>
 
 <style scoped>
@@ -170,7 +176,7 @@ h2 {
   line-height: 1.4rem;
   font-weight: bold;
   font-style: italic;
-  margin:0px;
+  margin: 0px;
   margin-bottom: 0.1rem;
   padding: 0;
 }

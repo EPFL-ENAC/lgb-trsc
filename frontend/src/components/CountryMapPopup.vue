@@ -33,27 +33,27 @@
           <div class="right-actions">
             <q-toggle
               v-model="substrateLevel"
-              trueValue="Substrate_coarse"
-              falseValue="Substrate_intermediate"
+              true-value="Substrate_coarse"
+              false-value="Substrate_intermediate"
               :label="substrateLevel"
             ></q-toggle>
             <q-btn
+              v-close-popup
               icon="close"
               class="close-btn"
               flat
               round
               dense
-              v-close-popup
             />
           </div>
         </q-card-section>
         <BarChart3DMapping
-          :rawData="country.rawData"
+          :raw-data="country.rawData"
           :style="{ margin: '0 auto' }"
           height="76%"
           width="90%"
           :tooltip="true"
-          :substrateLevel="substrateLevel"
+          :substrate-level="substrateLevel"
         />
 
         <q-card-actions align="right">
@@ -69,7 +69,7 @@
     <div class="images">
       <div class="card" @click="toggle3DZoomedChart">
         <BarChart3DMapping
-          :rawData="country.rawData"
+          :raw-data="country.rawData"
           :tooltip="false"
           width="90%"
         />
@@ -91,9 +91,9 @@
         <p>In Collaboration with</p>
         <div style="display: flex; gap: 1rem">
           <div
-            class="logo-item"
             v-for="community in computedCountryCommunities"
             :key="community.name"
+            class="logo-item"
           >
             <a :href="community.url" target="_blank" class="logo-item-link">
               <q-img

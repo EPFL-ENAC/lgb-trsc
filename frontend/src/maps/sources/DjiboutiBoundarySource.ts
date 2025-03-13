@@ -3,17 +3,17 @@ import { GeoJSON } from 'ol/format';
 import { attributions } from '@/maps/utils/attributions';
 
 const geoFeatures = {
-  "type": "FeatureCollection",
-  "features": [
+  type: 'FeatureCollection',
+  features: [
     {
-      "type": "Feature",
-      "properties": {
-        "name": "boundary",
-        "class": "boundary",
+      type: 'Feature',
+      properties: {
+        name: 'boundary',
+        class: 'boundary',
       },
-      "geometry": {
-        "type": "MultiPolygon",
-        "coordinates": [
+      geometry: {
+        type: 'MultiPolygon',
+        coordinates: [
           [
             [
               [43.056554, 12.784825],
@@ -33,22 +33,22 @@ const geoFeatures = {
               [43.034994, 11.89321],
               [43.286527, 12.058421],
               [43.315274, 12.272692],
-              [43.056554, 12.784825]
-            ]
-          ]
-        ]
-      }
-    }
-  ]
+              [43.056554, 12.784825],
+            ],
+          ],
+        ],
+      },
+    },
+  ],
 };
 
-
-export const createPMTilesSource = () => (new VectorSource({
+export const createPMTilesSource = () =>
+  new VectorSource({
     features: new GeoJSON().readFeatures(geoFeatures, {
       featureProjection: 'EPSG:3857',
     }),
     attributions: attributions.allenCoralAtlas,
-  }));
+  });
 
 // pmtiles is too big to be used in the frontend 33k vs 1.5k of the geojson above
 // new PMTilesVectorSource({

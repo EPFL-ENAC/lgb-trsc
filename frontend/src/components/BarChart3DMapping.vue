@@ -1,5 +1,5 @@
 <template>
-  <div ref="chart" :style="{  width: width, height: height, ...style}"></div>
+  <div ref="chart" :style="{ width: width, height: height, ...style }"></div>
 </template>
 
 <script>
@@ -8,49 +8,56 @@ import 'echarts/lib/chart/bar'; // Import bar chart
 import 'echarts/lib/component/tooltip'; // Import tooltip component
 import 'echarts/lib/component/title'; // Import title component
 import 'echarts/lib/component/legend'; // Import legend component
-import { d3MappingColorSubstrate1 as colorPalette, d3MappingColorSubstrate2 as colorPalette2 } from '@/maps/config/layerColors';
-import { validSubstrates, validSubstrates2, validSubtrateMap } from '@/maps/config/substrateOrder';
+import {
+  d3MappingColorSubstrate1 as colorPalette,
+  d3MappingColorSubstrate2 as colorPalette2,
+} from '@/maps/config/layerColors';
+import {
+  validSubstrates,
+  validSubstrates2,
+  validSubtrateMap,
+} from '@/maps/config/substrateOrder';
 import { debounce } from 'lodash';
 
 const TIME_OUT = 150;
 
 const substrateLevelMapColor = {
-  'Substrate_coarse': colorPalette,
-  'Substrate_intermediate': colorPalette2
-}
+  Substrate_coarse: colorPalette,
+  Substrate_intermediate: colorPalette2,
+};
 
 const validSubstratesMap = {
-  'Substrate_coarse': validSubstrates,
-  'Substrate_intermediate': validSubstrates2
-}
+  Substrate_coarse: validSubstrates,
+  Substrate_intermediate: validSubstrates2,
+};
 
 export default {
   name: 'BarChart3DMapping',
   props: {
     rawData: {
       type: Array,
-      required: true
+      required: true,
     },
     height: {
       type: String,
-      default: '250px'
+      default: '250px',
     },
     width: {
       type: String,
-      default: '100%'
+      default: '100%',
     },
     style: {
       type: Object,
-      default: () => ({})
+      default: () => ({}),
     },
     tooltip: {
       type: Boolean,
-      default: true
+      default: true,
     },
     substrateLevel: {
       type: String,
-      default: 'Substrate_coarse'
-    }
+      default: 'Substrate_coarse',
+    },
   },
   data() {
     return {
@@ -65,17 +72,17 @@ export default {
         this.chart.clear();
         const option = this.getChartOption(this.rawData, newValue);
         this.chart.setOption(option);
-      }
+      },
     },
     windowResizeInnerWidth: {
       handler(newValue) {
         this.handleResize(newValue);
-      }
+      },
     },
     windowResizeInnerHeight: {
       handler(newValue) {
         this.handleResize(newValue);
-      }
+      },
     },
   },
   mounted() {
@@ -88,7 +95,7 @@ export default {
     this.handleResize.cancel();
   },
   methods: {
-    handleResize: debounce(function() {
+    handleResize: debounce(function () {
       if (this.chart) {
         this.chart.dispose();
         this.chart.clear();
@@ -103,18 +110,20 @@ export default {
       this.windowResizeInnerHeight = value.target.innerHeight;
     },
     initChart() {
-        this.chart = echarts.init(this.$refs.chart);
-        const option = this.getChartOption(this.rawData, this.substrateLevel);
-        this.chart.setOption(option);
+      this.chart = echarts.init(this.$refs.chart);
+      const option = this.getChartOption(this.rawData, this.substrateLevel);
+      this.chart.setOption(option);
     },
     getChartOption(data, substrateLevel) {
-
-      const ids = Array.from(new Set(data.map(x => x.id)))
+      const ids = Array.from(new Set(data.map((x) => x.id)));
       function getSiteNameFromSiteId(data, SiteId) {
         if (data === undefined) {
           return '';
         }
-        return data.find((item) => item.id === parseInt(SiteId))?.sampling_site_name || '';
+        return (
+          data.find((item) => item.id === parseInt(SiteId))
+            ?.sampling_site_name || ''
+        );
       }
       function processData(data, substrateLevel) {
         const seriesData = {};
@@ -128,7 +137,9 @@ export default {
         }, {});
 
         data.forEach((item) => {
-          if (validSubstratesMap[substrateLevel].includes(item[substrateLevel])) {
+          if (
+            validSubstratesMap[substrateLevel].includes(item[substrateLevel])
+          ) {
             const index = idMapping[item.id];
             if (index !== undefined) {
               seriesData[item[substrateLevel]][index] += item.mean;
@@ -141,33 +152,40 @@ export default {
           type: 'bar',
           stack: 'total',
           emphasis: { focus: 'series' },
-          data: seriesData[substrate]
+          data: seriesData[substrate],
         }));
       }
 
-      function getTooltip(data, substrateLevel) {
+      function getTooltip(data) {
         return {
           trigger: 'axis',
           axisPointer: {
-            type: 'shadow'
+            type: 'shadow',
           },
           formatter: (params) => {
             let result = `ID: ${params[0].axisValue}<br/>`;
-            result += `Site Name: ${getSiteNameFromSiteId(data, params[0].axisValue)}<br/>`;
+            result += `Site Name: ${getSiteNameFromSiteId(
+              data,
+              params[0].axisValue
+            )}<br/>`;
             params.forEach((param) => {
-              result += `<span style="margin-right:1rem;background-color:${param.color};display: inline-block;width: 10px;height: 10px;"></span>${param.seriesName}: ${(param.value * 100).toFixed(2)}%<br/>`;
+              result += `<span style="margin-right:1rem;background-color:${
+                param.color
+              };display: inline-block;width: 10px;height: 10px;"></span>${
+                param.seriesName
+              }: ${(param.value * 100).toFixed(2)}%<br/>`;
             });
             return result;
-          }
-        }
+          },
+        };
       }
-
 
       const titleMap = {
-        Substrate_coarse: "Main categories of coral reef benthic substrate",
-        Substrate_intermediate: "Main categories of coral reef benthic substrate and hard coral growth forms",
-      }
-      let gridBottom = substrateLevel === 'Substrate_coarse' ? '10%': '18%';
+        Substrate_coarse: 'Main categories of coral reef benthic substrate',
+        Substrate_intermediate:
+          'Main categories of coral reef benthic substrate and hard coral growth forms',
+      };
+      let gridBottom = substrateLevel === 'Substrate_coarse' ? '10%' : '18%';
       let forceScrollLegend = false;
       if (window.innerWidth < 1500) {
         gridBottom = '23%';
@@ -194,15 +212,15 @@ export default {
         title: {
           text: titleMap[substrateLevel],
           textStyle: {
-            "fontSize": "1rem",
-            "fontFamily": "Apax, Helvetica, Arial, sans-serif",
-            "fontWeight": 900,
-          }
+            fontSize: '1rem',
+            fontFamily: 'Apax, Helvetica, Arial, sans-serif',
+            fontWeight: 900,
+          },
         },
-        tooltip: this.tooltip ? getTooltip(data, substrateLevel) : undefined,
+        tooltip: this.tooltip ? getTooltip(data) : undefined,
         legend: {
           data: validSubstratesMap[substrateLevel],
-          
+
           formatter: function (name) {
             return validSubtrateMap[name];
           },
@@ -214,31 +232,30 @@ export default {
           left: '3%',
           right: '4%',
           bottom: gridBottom,
-          containLabel: true
+          containLabel: true,
         },
         xAxis: {
           type: 'category',
           data: ids,
-          name: 'Location ID'
+          name: 'Location ID',
         },
         yAxis: {
           type: 'value',
           name: 'Percentage',
-            axisLabel: {
-            formatter: function(value) {
-              return (value * 100) + '%';
-            }
+          axisLabel: {
+            formatter: function (value) {
+              return value * 100 + '%';
             },
+          },
           max: 1,
-          min: 0
+          min: 0,
         },
         series: processData(data, substrateLevel),
-        color: substrateLevelMapColor?.[substrateLevel]
+        color: substrateLevelMapColor?.[substrateLevel],
       };
-    }
-  }
+    },
+  },
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

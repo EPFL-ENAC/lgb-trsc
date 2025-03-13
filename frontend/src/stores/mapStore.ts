@@ -1,4 +1,4 @@
-import { ref, computed, watch } from 'vue';
+import { ref, computed } from 'vue';
 import { defineStore } from 'pinia';
 import { useLayerController } from '@/maps/composables/useLayerController';
 import { useMapController } from '@/maps/composables/useMapController';

@@ -9,9 +9,9 @@
     </p>
     <div class="logo-row">
       <div
-        class="logo-item"
         v-for="community in communities"
         :key="community.name"
+        class="logo-item"
       >
         <a :href="community.url" target="_blank" class="logo-item-link">
           <q-img
@@ -21,7 +21,7 @@
             style="height: 150px; width: 150px"
           >
           </q-img>
-          <p>{{ community.name}}</p>
+          <p>{{ community.name }}</p>
         </a>
       </div>
     </div>
@@ -29,8 +29,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-
 import communities from '@/assets/communities';
 </script>
 

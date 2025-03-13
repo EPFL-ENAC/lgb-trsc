@@ -1,4 +1,3 @@
-import TileLayer from 'ol/layer/Tile';
 import XYZ from 'ol/source/XYZ';
 import { BaseLayerOptions } from 'ol-layerswitcher';
 import WebGLTileLayer from 'ol/layer/WebGLTile';

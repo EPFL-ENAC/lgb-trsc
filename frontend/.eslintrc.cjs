@@ -15,7 +15,7 @@ module.exports = {
   env: {
     browser: true,
     es2021: true,
-    node: false,
+    node: true,
     'vue/setup-compiler-macros': true
   },
 
@@ -34,7 +34,7 @@ module.exports = {
     'plugin:vue/vue3-recommended', // Priority A: Essential (Error Prevention)
     // 'plugin:vue/vue3-strongly-recommended', // Priority B: Strongly Recommended (Improving Readability)
     // 'plugin:vue/vue3-recommended', // Priority C: Recommended (Minimizing Arbitrary Choices and Cognitive Overhead)
-    "eslint:recommended",
+    'eslint:recommended',
     // https://github.com/prettier/eslint-config-prettier#installation
     // usage with Prettier, provided by 'eslint-config-prettier'.
     'prettier'

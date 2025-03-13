@@ -1,13 +1,29 @@
 <template>
   <div class="contact-form">
-
-    <p>Contact us at <a class="trsc-link" href="https://trsc.org" target="_blank">
-       The Transnational Red Sea
-      </a></p>
+    <p>
+      Contact us at
+      <a class="trsc-link" href="https://trsc.org" target="_blank">
+        The Transnational Red Sea
+      </a>
+    </p>
     <q-form @submit="onSubmit">
-      <q-input filled v-model="name" label="Name" class="q-pa-md" required />
-      <q-input filled v-model="email" label="Email" type="email" class="q-pa-md" required />
-      <q-input filled v-model="message" label="Message" type="textarea" class="q-pa-md" required />
+      <q-input v-model="name" filled label="Name" class="q-pa-md" required />
+      <q-input
+        v-model="email"
+        filled
+        label="Email"
+        type="email"
+        class="q-pa-md"
+        required
+      />
+      <q-input
+        v-model="message"
+        filled
+        label="Message"
+        type="textarea"
+        class="q-pa-md"
+        required
+      />
       <div class="button-container q-pl-md q-pr-md">
         <q-btn type="submit" label="Send" color="primary" @click="sendEmail" />
       </div>
@@ -24,12 +40,18 @@ const message = ref('');
 
 function onSubmit() {
   // Handle form submission
-  console.log('Form submitted:', { name: name.value, email: email.value, message: message.value });
+  console.log('Form submitted:', {
+    name: name.value,
+    email: email.value,
+    message: message.value,
+  });
 }
 
 function sendEmail() {
   const subject = encodeURIComponent(`Message from ${name.value}`);
-  const body = encodeURIComponent(`Name: ${name.value}\nEmail: ${email.value}\n\nMessage:\n${message.value}`);
+  const body = encodeURIComponent(
+    `Name: ${name.value}\nEmail: ${email.value}\n\nMessage:\n${message.value}`
+  );
   window.location.href = `mailto:contact@trsc.org?subject=${subject}&body=${body}`;
 }
 </script>

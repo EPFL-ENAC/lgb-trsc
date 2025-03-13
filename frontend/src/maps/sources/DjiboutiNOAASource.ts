@@ -3,10 +3,8 @@ import { attributions } from '@/maps/utils/attributions';
 import { Style } from 'ol/style';
 import {
   CHL_monthly_mean,
-  SST_monthly_max_SD,
   SST_monthly_max_Mean,
   ColorMap,
-  defaultEnvironmentalColorMap,
 } from '@/maps/config/layerColors';
 // ok source should be wrapped in a function
 // documentation here: https://openlayers.org/en/latest/apidoc/module-ol_source_GeoTIFF.html#~SourceInfo
@@ -170,7 +168,7 @@ export const sources: SourceInfo[] = [
     // colorScale: SST_monthly_max_SD,
     attribution: attributions.copernicus,
     // url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/processed_data/SG_MANON/env_rasters_cut/SST_monthly_max_SD.tif',
-    url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/SST_monthly_max_1985_2024_SD.tif'
+    url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/SST_monthly_max_1985_2024_SD.tif',
   },
   {
     type: 'Mean',
