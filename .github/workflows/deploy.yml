@@ -12,11 +12,11 @@ env:
   IMAGE_NAME: ${{github.repository}}
 jobs:
   deploy:
-    uses: EPFL-ENAC/epfl-enac-build-push-deploy-action/.github/workflows/deploy.yml@main
+    uses: EPFL-ENAC/epfl-enac-build-push-deploy-action/.github/workflows/deploy.yml@v2.3.0
     secrets:
-      TOKEN: ${{ secrets.CD_TOKEN }}
+      token: ${{ secrets.CD_TOKEN }}
     with:
       # Optional inputs can be passed here
       ORG: epfl-lgb
       REPO: lgb-trsc
-      build_context: '["./backend", "./frontend"]'
+      build_context: '[ "./frontend"]'

@@ -1,9 +1,6 @@
 pre-commit:
   parallel: true
   commands:
-    black:
-      run: black .
-      glob: "*.py"
-    flake8:
-      run: flake8 .
-      glob: "*.py"
+    eslint:
+      run: eslint .
+      glob: "*.js"
