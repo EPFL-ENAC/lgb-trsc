@@ -38,6 +38,13 @@ export class LayerController {
       createExpeditionLayer('hard coral cover', {experiment: '3D'});
   }
 
+  destroy() {
+    this.countryLayer.getSource()?.clear(); 
+    this.expeditionProjectLayer.getSource()?.clear();
+    this.expeditionYearLayer.getSource()?.clear();
+    this.expeditionHardCoralCoverLayer.getSource()?.clear();
+  }
+
   public showCountryLayer() {
     this.countryLayer.setVisible(true);
   }

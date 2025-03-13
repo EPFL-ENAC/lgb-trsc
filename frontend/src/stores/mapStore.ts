@@ -40,7 +40,11 @@ export const useMapStore = defineStore('map', () => {
       _drawer.value = value;
     },
   });
-  const { visibleClasses, setClassVisibility: setClassVisibilityStyle, setAllClassesVisibility: setAllClassesVisibilityStyle } = useLayerStyles();
+  const {
+    visibleClasses,
+    setClassVisibility: setClassVisibilityStyle,
+    setAllClassesVisibility: setAllClassesVisibilityStyle,
+  } = useLayerStyles();
 
   function closeDrawer() {
     drawer.value = false;
@@ -89,11 +93,24 @@ export const useMapStore = defineStore('map', () => {
     mapController?.refreshMap();
   }
 
-  function setAllClassesVisibility(layerType: 'Geomorphic' | 'Benthic', isVisible: boolean) {
+  function setAllClassesVisibility(
+    layerType: 'Geomorphic' | 'Benthic',
+    isVisible: boolean
+  ) {
     setAllClassesVisibilityStyle(layerType, isVisible);
     // Refresh the map
     const mapController = useMapController();
     mapController?.refreshMap();
+  }
+  function resetAll() {
+    selectedCountry.value = null;
+    selectedExpedition.value = null;
+    selectedEnvironmentalClusterNumber.value = 3;
+    hoveredExpedition.value = null;
+    hoveredExpeditionPixel.value = null;
+    rawTooltipContent.value = '';
+    tooltipPosition.value = { x: 0, y: 0 };
+    _drawer.value = false;
   }
 
   return {
@@ -114,5 +131,6 @@ export const useMapStore = defineStore('map', () => {
     selectExpedition,
     setClassVisibility,
     setAllClassesVisibility,
-  }
+    resetAll,
+  };
 });
