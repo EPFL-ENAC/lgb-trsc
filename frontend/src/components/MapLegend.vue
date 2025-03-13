@@ -82,14 +82,11 @@ const visibleColorClasses = computed(() => {
 });
 
 const mapStore = useMapStore();
-const mapController = useMapController();
 // Use the store's visibleClasses directly instead of local state
 const visibleClasses = computed(() => mapStore.visibleClasses);
 
 const toggleClassVisibility = (className: string) => {
   mapStore.setClassVisibility(className, !visibleClasses.value[className]);
-  // Refresh the map to immediately show the changes
-  mapController?.getMap()?.renderSync();
 };
 
 const legendColor = computed(() =>
