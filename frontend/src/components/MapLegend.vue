@@ -45,8 +45,6 @@
         {{ legendText }}
       </li>
     </ol>
-
-    <div>Click on the flag to access country data</div>
   </div>
 </template>
 
