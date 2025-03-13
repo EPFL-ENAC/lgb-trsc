@@ -40,9 +40,7 @@ export const useMapStore = defineStore('map', () => {
       _drawer.value = value;
     },
   });
-
-  const { visibleClasses, setClassVisibility, setAllClassesVisibility } =
-    useLayerStyles();
+  const { visibleClasses, setClassVisibility: setClassVisibilityStyle, setAllClassesVisibility: setAllClassesVisibilityStyle } = useLayerStyles();
 
   function closeDrawer() {
     drawer.value = false;
@@ -84,6 +82,20 @@ export const useMapStore = defineStore('map', () => {
     hoveredExpeditionPixel.value = pixel;
   }
 
+  function setClassVisibility(className: string, isVisible: boolean) {
+    setClassVisibilityStyle(className, isVisible);
+    // Refresh the map
+    const mapController = useMapController();
+    mapController?.refreshMap();
+  }
+
+  function setAllClassesVisibility(layerType: 'Geomorphic' | 'Benthic', isVisible: boolean) {
+    setAllClassesVisibilityStyle(layerType, isVisible);
+    // Refresh the map
+    const mapController = useMapController();
+    mapController?.refreshMap();
+  }
+
   return {
     selectedCountry,
     selectedExpedition,
@@ -102,5 +114,5 @@ export const useMapStore = defineStore('map', () => {
     selectExpedition,
     setClassVisibility,
     setAllClassesVisibility,
-  };
+  }
 });

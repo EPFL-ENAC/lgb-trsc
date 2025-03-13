@@ -15,38 +15,30 @@ import { Style, Fill, Stroke, Circle as CircleStyle } from 'ol/style';
 import { Feature } from 'ol';
 import { Geometry } from 'ol/geom';
 import { useMapStore } from '@/stores/mapStore';
+import { useMapController } from '@/maps/composables/useMapController';
 
-// Create a singleton state for layer styles
 const visibleClasses = ref<{ [key: string]: boolean }>({
-  // Initialize Geomorphic classes
   ...Object.fromEntries(
     Object.keys(geomorphicColorMap.colorMap).map((key) => [key, true])
   ),
-  // Initialize Benthic classes
   ...Object.fromEntries(
     Object.keys(benthicColorMap.colorMap).map((key) => [key, true])
   ),
-  // Initialize Bathymetric classes
   ...Object.fromEntries(
     Object.keys(bathymetricColorMap.colorMap).map((key) => [key, true])
   ),
-  // Initialize Reef Extent classes
   ...Object.fromEntries(
     Object.keys(reefExtentColorMap.colorMap).map((key) => [key, true])
   ),
-  // Initialize Boundary classes
   ...Object.fromEntries(
     Object.keys(boundaryColorMap.colorMap).map((key) => [key, true])
   ),
-  // Initialize Marine Protected Area classes
   ...Object.fromEntries(
     Object.keys(marineProtectedAreaColorMap.colorMap).map((key) => [key, true])
   ),
-  // Initialize Environmental Clusters classes
   ...Object.fromEntries(
     Object.keys(environmentalClusterColorMap.colorMap).map((key) => [key, true])
   ),
-  // Initialize Sampling Site classes
   ...Object.fromEntries(
     Object.keys(samplingSiteByYearColorMap.colorMap).map((key) => [key, true])
   ),
@@ -66,7 +58,6 @@ const visibleClasses = ref<{ [key: string]: boolean }>({
 
 export type dottedStroke = 'dotted' | 'default' | '3D' | 'selectedExpedition';
 
-// Add this helper function at the top level of the file
 const createCommonStyle = (
   colorMap: Record<string, string>,
   featureClass: string,
@@ -126,7 +117,6 @@ export const createFeatureStyle = (
   const featureClass =
     feature.get(featureName) || (feature.get('name') as string);
 
-  // Add this line to the top of the function
   const propertyName = Object.keys(filter || {})[0];
   if (feature.get(propertyName) !== filter?.[propertyName]) {
     return new Style({});
@@ -159,6 +149,8 @@ export const createFeatureStyle = (
 export function useLayerStyles() {
   const setClassVisibility = (className: string, isVisible: boolean) => {
     visibleClasses.value[className] = isVisible;
+    const mapController = useMapController();
+    mapController?.getMap()?.renderSync();
   };
 
   const setAllClassesVisibility = (
@@ -179,6 +171,9 @@ export function useLayerStyles() {
     Object.keys(colorMap).forEach((className) => {
       visibleClasses.value[className] = isVisible;
     });
+    
+    const mapController = useMapController();
+    mapController?.getMap()?.renderSync();
   };
 
   const createGeomorphicStyle = (feature: Feature<Geometry>) =>
