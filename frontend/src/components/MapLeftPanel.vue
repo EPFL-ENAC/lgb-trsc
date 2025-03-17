@@ -17,15 +17,20 @@
     "
   >
     <q-list padding>
+      <!-- Panel Title that changes based on selected country -->
+      <div class="panel-title q-py-md">
+        {{ selectedCountry ? selectedCountry.name : 'The Red Sea' }}
+      </div>
+
       <!-- Overlay groups section -->
       <q-expansion-item
-        v-for="(group, groupIndex) in computedOverlayGroups"
-        :key="group.title"
-        :group="`overlays${groupIndex}`"
-        :label="group.title"
-        :model-value="
+      v-for="(group, groupIndex) in computedOverlayGroups"
+      :key="group.title"
+      :group="`overlays${groupIndex}`"
+      :label="group.title"
+      :model-value="
           group.layers.some((layerinfo) => layerinfo.layer.getVisible())
-        "
+          "
       >
         <q-list padding>
           <q-item
@@ -256,9 +261,9 @@
         </q-list>
       </q-expansion-item>
 
-      <div v-if="!selectedCountry">
+      <div v-if="!selectedCountry" class="q-pa-md text-center">
         <hr />
-        Click on the flag to access country data
+        <p>Click on a country flag to access detailed country data</p>
       </div>
     </q-list>
   </q-drawer>
@@ -317,12 +322,6 @@ const computedOverlayGroups = computed(() => {
 const computedActiveBaseMap = computed(() => {
   return baseMaps.value.find((baseMap) => baseMap.layer.get('visible'))?.title;
 });
-
-// const computedActiveEnvLayer = computed(() => {
-//   const envGroup = computedOverlayGroups.value.find((group) => group.title === 'Environmental Layers')
-//   const visibleLayer = envGroup?.layers.find((layer) => layer.layer.get('visible'));
-//   return visibleLayer?.layer.get('title');
-// });
 
 const updateMeanOrSD = (layer: BaseLayer) => {
   const meanOrSD = layer.get('meanOrSD');
@@ -407,6 +406,15 @@ const toggleOverlayLayer = (
   --checkbox-cursor: default !important;
 }
 
+.panel-title {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #ff432c;
+  text-align: center;
+  border-bottom: 1px solid #ff432c;
+  margin-bottom: 10px;
+}
+
 :deep(.q-drawer--left.q-drawer--bordered.q-drawer--standard) {
   background: rgba(255, 255, 255, 0.9) !important;
   transform: translateX(-300px) !important;
@@ -460,7 +468,7 @@ const toggleOverlayLayer = (
     box-shadow: none;
     width: calc(100% - 32px);
   }
-  
+
   /* // Apply margin-left only to discrete legends, not continuous legends */
   :deep(.legend-card:has(.legend:not(:has(.gradient-ramp)))) {
     margin-left: calc(24px + 8px);
