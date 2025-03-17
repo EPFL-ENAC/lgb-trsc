@@ -2,6 +2,15 @@ import type { Map } from 'ol';
 import type { Pixel } from 'ol/pixel';
 import { FeatureLike } from 'ol/Feature';
 
+
+
+const updateCursorStyle = (map: Map, feature: FeatureLike | undefined) => {
+  const mapElement = map.getTargetElement();
+  if (mapElement) {
+    mapElement.style.cursor = feature ? 'pointer' : 'default';
+  }
+};
+
 export function addMapPointerMoveHandler(map: Map) {
   const info = document.getElementById('info');
 
@@ -25,6 +34,9 @@ export function addMapPointerMoveHandler(map: Map) {
               return validTooltipLayers.includes(layer.get('title'));
             },
           })[0];
+
+    updateCursorStyle(map, feature);
+
     if (info) {
       if (feature) {
         info.style.left = pixel[0] + 'px';
