@@ -47,24 +47,28 @@ interface CustomBaseLayerOptions extends BaseLayerOptions {
   showForcountryOnly?: boolean;
 }
 
-export class MapController {
-  private map: Map | null = null;
-  private overviewMapControl: OverviewMap | null = null;
-
-  constructor(target: string) {
+function createOverviewMap() {
     // Create base layers for overview map
     const overviewMapLayer = new TileLayer({
       source: new OSM(),
     });
 
-    // Create OverviewMap control
-    this.overviewMapControl = new OverviewMap({
-      className: 'ol-overviewmap red-sea-overview',
-      layers: [overviewMapLayer],
-      collapsed: false,
-      tipLabel: 'Red Sea Overview',
-    });
+  return new OverviewMap({
+    className: 'ol-overviewmap red-sea-overview',
+    layers: [overviewMapLayer],
+    collapsed: false,
+    tipLabel: 'Red Sea Overview',
+  });
+}
 
+export class MapController {
+  private map: Map | null = null;
+  private overviewMapControl: OverviewMap | null = null;
+
+  constructor(target: string) {
+
+    // Create OverviewMap control
+    this.overviewMapControl = createOverviewMap();
     this.map = new Map({
       target,
       view: new View({
@@ -124,8 +128,10 @@ export class MapController {
   public toggleOverviewMap(visible: boolean): void {
     if (!this.overviewMapControl || !this.map) return;
 
-    const element = this.overviewMapControl.element;
-    if (element) {
+    const overviewMap = this.overviewMapControl.getOverviewMap();
+    const element = overviewMap.getTargetElement();
+    if (element && element.parentElement) {
+      element.parentElement.style.display = visible ? 'block' : 'none';
       element.style.display = visible ? 'block' : 'none';
     }
   }
