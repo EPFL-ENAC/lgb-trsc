@@ -1,0 +1,78 @@
+// Common legend styles
+
+.legend {
+  position: relative;
+  background: inherit;
+  padding: 0.5rem;
+  margin: 0.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  
+  &.legend-absolute {
+    position: absolute;
+    top: 1.5em;
+    left: 3.5em;
+    background: white;
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin: 0;
+    
+    li {
+      color: #333;
+    }
+  }
+  
+  ol {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    
+    li {
+      display: flex;
+      align-items: center;
+      padding: 0.25rem 0;
+      font-size: 0.9rem;
+      color: #333;
+    }
+  }
+}
+
+.legend-color {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-right: 8px;
+  border-radius: 3px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.legend-text {
+  font-size: 0.9rem;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin-left: 8px;
+}
+
+.gradient-ramp {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 150px;
+}
+
+.color-ramp {
+  width: 40px;
+  height: 100%;
+}
+
+.ramp-labels {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  margin-left: 10px;
+}
