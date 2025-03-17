@@ -22,7 +22,6 @@
         v-for="(group, groupIndex) in computedOverlayGroups"
         :key="group.title"
         :group="`overlays${groupIndex}`"
-        :icon="getGroupIcon(group.title)"
         :label="group.title"
         :model-value="
           group.layers.some((layerinfo) => layerinfo.layer.getVisible())
@@ -239,7 +238,7 @@
       </q-expansion-item>
 
       <!-- Base maps section -->
-      <q-expansion-item group="layers" icon="map" label="Base maps">
+      <q-expansion-item group="layers" label="Base maps">
         <q-list padding>
           <q-item v-for="layerInfo in baseMaps" :key="layerInfo.title">
             <q-item-section avatar>
@@ -255,6 +254,7 @@
       </q-expansion-item>
 
       <div v-if="!selectedCountry">
+        <hr />
         Click on the flag to access country data
       </div>
     </q-list>
@@ -343,17 +343,6 @@ const updateMeanOrSD = (layer: BaseLayer) => {
     layer.changed();
   }
   layer.set('meanOrSD', newMeanOrSD);
-};
-
-const getGroupIcon = (title: string) => {
-  const icons: Record<string, string> = {
-    Environmental: 'eco',
-    Reef: 'water',
-    Sampling: 'location_on',
-    Default: 'layers',
-  };
-
-  return icons[title] || icons['Default'];
 };
 
 const getLayerLegend = (layer: BaseLayer) => {
