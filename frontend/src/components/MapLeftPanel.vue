@@ -246,7 +246,7 @@
           <q-item v-for="layerInfo in baseMaps" :key="layerInfo.title">
             <q-item-section avatar>
               <q-radio
-                :model-value="computedActivedBaseMap"
+                :model-value="computedActiveBaseMap"
                 :val="layerInfo.title"
                 :label="layerInfo.title"
                 @update:model-value="() => setBaseMapVisible(layerInfo.title)"
@@ -314,7 +314,7 @@ const computedOverlayGroups = computed(() => {
   }
 });
 
-const computedActivedBaseMap = computed(() => {
+const computedActiveBaseMap = computed(() => {
   return baseMaps.value.find((baseMap) => baseMap.layer.get('visible'))?.title;
 });
 
