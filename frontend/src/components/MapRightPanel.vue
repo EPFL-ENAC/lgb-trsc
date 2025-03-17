@@ -35,8 +35,6 @@ const $q = useQuasar();
 const mapStore = useMapStore();
 const { selectedCountry, selectedExpedition, drawer } = storeToRefs(mapStore);
 const { closeDrawer } = mapStore;
-
-// Removed props interface and defineProps, now using mapStore directly.
 </script>
 
 <style scoped>

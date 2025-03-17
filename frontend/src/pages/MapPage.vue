@@ -76,7 +76,6 @@ onUnmounted(() => {
 
 <style scoped lang="scss">
 @import '@/css/app.scss';
-@import '@/maps/css/control.css';
 
 .map {
   width: calc(100vw - var(--drawer-width) - var(--left-drawer-width));

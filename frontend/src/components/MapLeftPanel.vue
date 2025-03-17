@@ -17,28 +17,11 @@
     "
   >
     <q-list padding>
-      <!-- Base maps section -->
-      <q-expansion-item group="layers" icon="map" label="Base maps">
-        <q-list padding>
-          <q-item v-for="layerInfo in baseMaps" :key="layerInfo.title">
-            <q-item-section avatar>
-              <q-radio
-                :model-value="computedActivedBaseMap"
-                :val="layerInfo.title"
-                :label="layerInfo.title"
-                @update:model-value="() => setBaseMapVisible(layerInfo.title)"
-              />
-            </q-item-section>
-          </q-item>
-        </q-list>
-      </q-expansion-item>
-
       <!-- Overlay groups section -->
       <q-expansion-item
         v-for="(group, groupIndex) in computedOverlayGroups"
         :key="group.title"
         :group="`overlays${groupIndex}`"
-        :icon="getGroupIcon(group.title)"
         :label="group.title"
         :model-value="
           group.layers.some((layerinfo) => layerinfo.layer.getVisible())
@@ -146,10 +129,13 @@
                   </div>
                 </template>
                 <q-card class="legend-card">
+                  <!-- Duplicate MapLegend is complex, should simplify -->
                   <MapLegend
                     v-if="layerinfo.layer.get('title') === 'Reef clusters'"
+                    :is-simple="true"
                     :class-color-map="getLayerLegend(layerinfo.layer as BaseLayer)?.colorMap"
                     :max-value="mapStore.selectedEnvironmentalClusterNumber"
+                    :show-legend-text="false"
                     :is-continuous="
                       getLayerLegend(layerinfo.layer as BaseLayer)?.type === 'continuous'
                     "
@@ -253,6 +239,27 @@
           </q-item>
         </q-list>
       </q-expansion-item>
+
+      <!-- Base maps section -->
+      <q-expansion-item group="layers" label="Base maps">
+        <q-list padding>
+          <q-item v-for="layerInfo in baseMaps" :key="layerInfo.title">
+            <q-item-section avatar>
+              <q-radio
+                :model-value="computedActiveBaseMap"
+                :val="layerInfo.title"
+                :label="layerInfo.title"
+                @update:model-value="() => setBaseMapVisible(layerInfo.title)"
+              />
+            </q-item-section>
+          </q-item>
+        </q-list>
+      </q-expansion-item>
+
+      <div v-if="!selectedCountry">
+        <hr />
+        Click on the flag to access country data
+      </div>
     </q-list>
   </q-drawer>
 </template>
@@ -307,7 +314,7 @@ const computedOverlayGroups = computed(() => {
   }
 });
 
-const computedActivedBaseMap = computed(() => {
+const computedActiveBaseMap = computed(() => {
   return baseMaps.value.find((baseMap) => baseMap.layer.get('visible'))?.title;
 });
 
@@ -339,17 +346,6 @@ const updateMeanOrSD = (layer: BaseLayer) => {
     layer.changed();
   }
   layer.set('meanOrSD', newMeanOrSD);
-};
-
-const getGroupIcon = (title: string) => {
-  const icons: Record<string, string> = {
-    Environmental: 'eco',
-    Reef: 'water',
-    Sampling: 'location_on',
-    Default: 'layers',
-  };
-
-  return icons[title] || icons['Default'];
 };
 
 const getLayerLegend = (layer: BaseLayer) => {
@@ -460,10 +456,14 @@ const toggleOverlayLayer = (
 
   :deep(.legend-card) {
     margin-top: 8px;
-    margin-left: calc(24px + 8px);
     background: transparent;
     box-shadow: none;
     width: calc(100% - 32px);
+  }
+  
+  /* // Apply margin-left only to discrete legends, not continuous legends */
+  :deep(.legend-card:has(.legend:not(:has(.gradient-ramp)))) {
+    margin-left: calc(24px + 8px);
   }
 
   :deep(.q-expansion-item__content) {

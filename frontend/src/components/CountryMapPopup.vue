@@ -1,6 +1,6 @@
 <template>
   <div class="popup">
-    <button class="close-btn" @click="closeDrawer">Back</button>
+    <button class="close-btn" @click="() => closeDrawer()">Back</button>
     <h3 class="country-name">{{ country.name }}</h3>
     <div class="country-info">
       <p><strong>Date of past visits:</strong> {{ country.visited }}</p>
@@ -112,7 +112,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, ref, computed } from 'vue';
+import { ref, computed } from 'vue';
 import BarChart3DMapping from './BarChart3DMapping.vue';
 import communities from '@/assets/communities';
 

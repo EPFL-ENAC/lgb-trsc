@@ -6,7 +6,6 @@ import {
   ZoomSlider,
   Zoom,
   Attribution,
-  Rotate,
 } from 'ol/control';
 import { createOSMLayer } from './layers/base/OSMLayer';
 import { createArcGISLayer } from './layers/base/ArcGISLayer';
@@ -65,7 +64,6 @@ export class MapController {
         new Attribution({
           collapsible: false,
         }),
-        new Rotate({ autoHide: false, className: 'ol-rotate' }),
       ],
     });
   }
