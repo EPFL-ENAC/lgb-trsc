@@ -13,7 +13,9 @@
                 class="legend-color"
                 :style="{ 'background-color': color }"
               ></span>
-              {{ className }}
+              <span v-if="showLegendText" class="legend-text">
+                {{ className }}
+              </span>
             </span>
           </template>
         </q-checkbox>
@@ -42,14 +44,16 @@
           class="legend-color"
           :style="{ 'background-color': legendColor }"
         ></span>
-        {{ legendText }}
+        <span v-if="showLegendText" class="legend-text">
+          {{ legendText }}
+        </span>
       </li>
     </ol>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, withDefaults } from 'vue';
 import { useMapStore } from '@/stores/mapStore';
 
 interface ClassColorMap {
@@ -62,15 +66,28 @@ interface LegendInfo {
   variable?: string;
 }
 
-const props = defineProps<{
-  selectedCountry?: string;
-  selectedExpedition?: string;
-  classColorMap?: ClassColorMap;
-  metadata?: LegendInfo;
-  isContinuous?: boolean;
-  isAbsolute?: boolean;
-  maxValue?: number;
-}>();
+const props = withDefaults(
+  defineProps<{
+    selectedCountry?: string;
+    selectedExpedition?: string;
+    classColorMap?: ClassColorMap;
+    showLegendText?: boolean;
+    metadata?: LegendInfo;
+    isContinuous?: boolean;
+    isAbsolute?: boolean;
+    maxValue?: number;
+  }>(),
+  {
+    selectedCountry: '',
+    selectedExpedition: '',
+    classColorMap: () => ({}),
+    showLegendText: true,
+    metadata: () => ({}),
+    isContinuous: false,
+    isAbsolute: false,
+    maxValue: 0,
+  }
+);
 
 const visibleColorClasses = computed(() => {
   if (!props.maxValue) return props.classColorMap;

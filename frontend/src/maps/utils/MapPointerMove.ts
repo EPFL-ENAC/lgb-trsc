@@ -2,8 +2,6 @@ import type { Map } from 'ol';
 import type { Pixel } from 'ol/pixel';
 import { FeatureLike } from 'ol/Feature';
 
-
-
 const updateCursorStyle = (map: Map, feature: FeatureLike | undefined) => {
   const mapElement = map.getTargetElement();
   if (mapElement) {

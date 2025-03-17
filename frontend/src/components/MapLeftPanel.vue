@@ -129,10 +129,12 @@
                   </div>
                 </template>
                 <q-card class="legend-card">
+                  <!-- Duplicate MapLegend is complex, should simplify -->
                   <MapLegend
                     v-if="layerinfo.layer.get('title') === 'Reef clusters'"
                     :class-color-map="getLayerLegend(layerinfo.layer as BaseLayer)?.colorMap"
                     :max-value="mapStore.selectedEnvironmentalClusterNumber"
+                    :show-legend-text="false"
                     :is-continuous="
                       getLayerLegend(layerinfo.layer as BaseLayer)?.type === 'continuous'
                     "
