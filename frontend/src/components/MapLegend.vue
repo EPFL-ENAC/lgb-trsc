@@ -49,21 +49,27 @@ const componentProps = computed(() => {
     showLegendText: props.showLegendText
   };
 
-  switch (legendComponent.value) {
-    case DiscreteLegend:
-      return {
-        ...commonProps,
-        maxValue: props.maxValue
-      };
-    case ContinuousLegend:
-      return commonProps;
-    default:
-      return {
-        ...commonProps,
-        color: props.selectedCountry || props.selectedExpedition ? 'blue' : 'yellow',
-        text: props.selectedCountry || props.selectedExpedition ? 'Expedition 2023' : 'Countries',
-        isSimple: props.isSimple
-      };
+  if (props.isSimple) {
+    return {
+      ...commonProps,
+      color: props.selectedCountry || props.selectedExpedition ? 'blue' : 'yellow',
+      text: props.selectedCountry || props.selectedExpedition ? 'Expedition 2023' : 'Countries',
+      isSimple: props.isSimple
+    };
+  } else if (props.isContinuous && props.classColorMap && Object.keys(props.classColorMap).length > 0) {
+    return commonProps;
+  } else if (props.classColorMap && Object.keys(props.classColorMap).length > 0) {
+    return {
+      ...commonProps,
+      maxValue: props.maxValue
+    };
+  } else {
+    return {
+      ...commonProps,
+      color: props.selectedCountry || props.selectedExpedition ? 'blue' : 'yellow',
+      text: props.selectedCountry || props.selectedExpedition ? 'Expedition 2023' : 'Countries',
+      isSimple: props.isSimple
+    };
   }
 });
 </script>
