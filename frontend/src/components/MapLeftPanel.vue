@@ -254,7 +254,9 @@
         </q-list>
       </q-expansion-item>
 
-      <div v-if="!selectedCountry">Click on the flag to access country data</div>
+      <div v-if="!selectedCountry">
+        Click on the flag to access country data
+      </div>
     </q-list>
   </q-drawer>
 </template>

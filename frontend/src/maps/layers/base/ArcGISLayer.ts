@@ -11,22 +11,37 @@ export function createArcGISLayer(saturationFactor = 0.3) {
       color: [
         'array',
         // Blend original R with grayscale
-        ['+', 
-          ['*', ['band', 1], saturationFactor], 
-          ['*', ['/', ['+', ['+', ['band', 1], ['band', 2]], ['band', 3]], 3], (1 - saturationFactor)]
+        [
+          '+',
+          ['*', ['band', 1], saturationFactor],
+          [
+            '*',
+            ['/', ['+', ['+', ['band', 1], ['band', 2]], ['band', 3]], 3],
+            1 - saturationFactor,
+          ],
         ],
         // Blend original G with grayscale
-        ['+', 
-          ['*', ['band', 2], saturationFactor], 
-          ['*', ['/', ['+', ['+', ['band', 1], ['band', 2]], ['band', 3]], 3], (1 - saturationFactor)]
+        [
+          '+',
+          ['*', ['band', 2], saturationFactor],
+          [
+            '*',
+            ['/', ['+', ['+', ['band', 1], ['band', 2]], ['band', 3]], 3],
+            1 - saturationFactor,
+          ],
         ],
         // Blend original B with grayscale
-        ['+', 
-          ['*', ['band', 3], saturationFactor], 
-          ['*', ['/', ['+', ['+', ['band', 1], ['band', 2]], ['band', 3]], 3], (1 - saturationFactor)]
+        [
+          '+',
+          ['*', ['band', 3], saturationFactor],
+          [
+            '*',
+            ['/', ['+', ['+', ['band', 1], ['band', 2]], ['band', 3]], 3],
+            1 - saturationFactor,
+          ],
         ],
-        ['band', 4]  // Alpha channel remains unchanged
-      ]
+        ['band', 4], // Alpha channel remains unchanged
+      ],
     },
     base: true,
     type: 'base',

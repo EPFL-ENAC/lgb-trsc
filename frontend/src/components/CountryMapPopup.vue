@@ -112,7 +112,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, ref, computed } from 'vue';
+import { ref, computed } from 'vue';
 import BarChart3DMapping from './BarChart3DMapping.vue';
 import communities from '@/assets/communities';
 
