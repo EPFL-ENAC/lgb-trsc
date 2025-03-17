@@ -18,3 +18,51 @@ body {
   font-size: 18px;
   text-rendering: geometricPrecision;
 }
+
+// Custom styles for OverviewMap control
+.ol-overviewmap {
+  position: absolute !important; /* Add !important to override OpenLayers default styles */
+  bottom: 20px !important;
+  right: 20px !important;
+  left: auto !important; /* Override any left positioning */
+  top: auto !important; /* Override any top positioning */
+  z-index: 100;
+  padding: 2px;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  pointer-events: none; /* Make overview map non-interactive */
+}
+
+.red-sea-overview {
+  width: 150px;
+  height: 150px;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.ol-overviewmap .ol-overviewmap-map {
+  height: 100%;
+  margin: 0;
+  border: none;
+}
+
+.ol-overviewmap .ol-overviewmap-box {
+  border: 2px solid var(--warning-color);
+}
+
+.ol-overviewmap:not(.ol-collapsed) button {
+  bottom: auto;
+  left: auto;
+  right: 2px;
+  top: 2px;
+  display: none; /* Hide the collapse button since we don't want interaction */
+}
+
+.ol-overviewmap-box {
+  background-color: rgba(
+    255,
+    67,
+    44,
+    0.3
+  ); /* Using warning-color with transparency */
+}

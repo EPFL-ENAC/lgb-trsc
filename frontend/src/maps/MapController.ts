@@ -6,6 +6,7 @@ import {
   ZoomSlider,
   Zoom,
   Attribution,
+  OverviewMap,
 } from 'ol/control';
 import { createOSMLayer } from './layers/base/OSMLayer';
 import { createArcGISLayer } from './layers/base/ArcGISLayer';
@@ -38,15 +39,32 @@ import {
 import { createDjiboutiEnvironmentalClusterLayer } from '@/maps/layers/overlay/EnvironmentalClusters/DjiboutiLayer';
 import { createEnvironmentalLayers } from './layers/overlay/EnvironmentalLayers/DjiboutiLayer';
 import { BaseLayerOptions } from 'ol-layerswitcher';
+import TileLayer from 'ol/layer/Tile';
+import OSM from 'ol/source/OSM';
 
 interface CustomBaseLayerOptions extends BaseLayerOptions {
   inputType?: 'base' | 'checkbox' | 'radio';
+  showForcountryOnly?: boolean;
 }
 
 export class MapController {
   private map: Map | null = null;
+  private overviewMapControl: OverviewMap | null = null;
 
   constructor(target: string) {
+    // Create base layers for overview map
+    const overviewMapLayer = new TileLayer({
+      source: new OSM(),
+    });
+
+    // Create OverviewMap control
+    this.overviewMapControl = new OverviewMap({
+      className: 'ol-overviewmap red-sea-overview',
+      layers: [overviewMapLayer],
+      collapsed: false,
+      tipLabel: 'Red Sea Overview',
+    });
+
     this.map = new Map({
       target,
       view: new View({
@@ -64,9 +82,11 @@ export class MapController {
         new Attribution({
           collapsible: false,
         }),
+        this.overviewMapControl,
       ],
     });
   }
+
   public destroy() {
     // Remove all controls
     const controls = this.map?.getControls().getArray();
@@ -86,6 +106,9 @@ export class MapController {
       this.map?.removeInteraction(interaction)
     );
 
+    // Clear references to controls
+    this.overviewMapControl = null;
+
     // Remove all event listeners
     this.map?.setTarget('');
     this.map = null;
@@ -96,6 +119,16 @@ export class MapController {
   }
   private baseMaps: LayerGroup | null = null;
   private overlayMaps: LayerGroup | null = null;
+
+  // Toggle overview map visibility based on country selection
+  public toggleOverviewMap(visible: boolean): void {
+    if (!this.overviewMapControl || !this.map) return;
+
+    const element = this.overviewMapControl.element;
+    if (element) {
+      element.style.display = visible ? 'block' : 'none';
+    }
+  }
 
   public init(): void {
     this.baseMaps = new LayerGroup({
@@ -153,6 +186,9 @@ export class MapController {
 
     this.map?.addLayer(this.baseMaps);
     this.map?.addLayer(this.overlayMaps);
+
+    // Initialize overview map to be visible only in Red Sea scope
+    this.toggleOverviewMap(true);
 
     // Retrieve the store instance
     const mapStore = useMapStore();
@@ -253,6 +289,9 @@ export class MapController {
         currentView.center = getCenter(transformedExtent);
       }
 
+      // Hide overview map in country scope
+      this.toggleOverviewMap(false);
+
       // visible: expeditionType === 'by year',
       this.map?.getAllLayers().forEach((layer) => {
         const title = layer.get('title');
@@ -278,6 +317,10 @@ export class MapController {
       currentView.minZoom = defaultMinZoom;
       currentView.center = getCenter(defaultExtent);
     }
+
+    // Show overview map in Red Sea scope
+    this.toggleOverviewMap(true);
+
     // visible: expeditionType === 'by year',
     this.map?.getAllLayers().forEach((layer) => {
       if (!['ArcGIS', 'OSM', 'Countries'].includes(layer.get('title'))) {
