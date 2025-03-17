@@ -5,7 +5,7 @@
         <q-checkbox
           :model-value="visibleClasses[className]"
           dense
-          @update:model-value="() => toggleClassVisibility(className)"
+          @update:model-value="() => toggleClassVisibility(String(className))"
         >
           <template #default>
             <span class="legend-item">
@@ -46,7 +46,7 @@ const visibleColorClasses = computed(() => {
     0,
     props.maxValue
   );
-  const result = {};
+  const result: { [key: string]: string } = {};
   for (const key of keepers) {
     result[key] = props.classColorMap?.[key] ?? 'rgba(0,0,0,0)';
   }

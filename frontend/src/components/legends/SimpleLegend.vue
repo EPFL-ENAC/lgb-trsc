@@ -15,7 +15,7 @@
 import { withDefaults } from 'vue';
 import { SimpleLegendProps } from '@/types/legend';
 
-const props = withDefaults(
+withDefaults(
   defineProps<SimpleLegendProps>(),
   {
     color: 'yellow',
