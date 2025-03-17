@@ -455,10 +455,14 @@ const toggleOverlayLayer = (
 
   :deep(.legend-card) {
     margin-top: 8px;
-    margin-left: calc(24px + 8px);
     background: transparent;
     box-shadow: none;
     width: calc(100% - 32px);
+  }
+  
+  /* // Apply margin-left only to discrete legends, not continuous legends */
+  :deep(.legend-card:has(.legend:not(:has(.gradient-ramp)))) {
+    margin-left: calc(24px + 8px);
   }
 
   :deep(.q-expansion-item__content) {
