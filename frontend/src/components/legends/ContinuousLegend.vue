@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, withDefaults } from 'vue';
+import { computed } from 'vue';
 import { ContinuousLegendProps } from '@/types/legend';
 const props = withDefaults(
   defineProps<ContinuousLegendProps>(),

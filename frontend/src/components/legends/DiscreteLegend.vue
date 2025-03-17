@@ -25,7 +25,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, withDefaults } from 'vue';
+import { computed } from 'vue';
 import { useMapStore } from '@/stores/mapStore';
 import { DiscreteLegendProps } from '@/types/legend';
 

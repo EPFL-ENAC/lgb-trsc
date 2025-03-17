@@ -58,5 +58,7 @@ export interface MapLegendProps extends BaseLegendProps {
   selectedExpedition?: string;
   classColorMap?: ClassColorMap;
   isContinuous?: boolean;
+  isSimple?: boolean;
+  isDiscrete?: boolean;
   maxValue?: number;
 }

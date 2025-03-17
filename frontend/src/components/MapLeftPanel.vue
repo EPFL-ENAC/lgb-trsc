@@ -132,6 +132,7 @@
                   <!-- Duplicate MapLegend is complex, should simplify -->
                   <MapLegend
                     v-if="layerinfo.layer.get('title') === 'Reef clusters'"
+                    :is-simple="true"
                     :class-color-map="getLayerLegend(layerinfo.layer as BaseLayer)?.colorMap"
                     :max-value="mapStore.selectedEnvironmentalClusterNumber"
                     :show-legend-text="false"

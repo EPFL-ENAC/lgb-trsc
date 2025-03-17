@@ -69,10 +69,18 @@
   height: 100%;
 }
 
-// .ramp-labels {
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: space-between;
-//   height: 100%;
-// //   margin-left: 10px;
-// }
+.legend-list-simple {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 0;
+  margin: 0;
+  
+  li {
+    display: flex;
+    align-items: center;
+    padding: 0.25rem 0;
+    font-size: 0.9rem;
+    color: #333;
+  }
+}

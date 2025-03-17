@@ -6,7 +6,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, withDefaults } from 'vue';
+import { computed } from 'vue';
 import DiscreteLegend from './legends/DiscreteLegend.vue';
 import ContinuousLegend from './legends/ContinuousLegend.vue';
 import SimpleLegend from './legends/SimpleLegend.vue';
@@ -20,6 +20,7 @@ const props = withDefaults(
     classColorMap: () => ({}),
     showLegendText: true,
     metadata: () => ({}),
+    isSimple: false,
     isContinuous: false,
     isAbsolute: false,
     maxValue: 0,
@@ -28,7 +29,9 @@ const props = withDefaults(
 
 // Determine which legend component to use based on props
 const legendComponent = computed(() => {
-  if (props.isContinuous && props.classColorMap && Object.keys(props.classColorMap).length > 0) {
+  if (props.isSimple) {
+    return SimpleLegend;
+  } else if (props.isContinuous && props.classColorMap && Object.keys(props.classColorMap).length > 0) {
     return ContinuousLegend;
   } else if (props.classColorMap && Object.keys(props.classColorMap).length > 0) {
     return DiscreteLegend;
@@ -39,28 +42,28 @@ const legendComponent = computed(() => {
 
 // Determine the appropriate props for the chosen component
 const componentProps = computed(() => {
-  if (legendComponent.value === DiscreteLegend) {
-    return {
-      classColorMap: props.classColorMap,
-      showLegendText: props.showLegendText,
-      metadata: props.metadata,
-      isAbsolute: props.isAbsolute,
-      maxValue: props.maxValue
-    };
-  } else if (legendComponent.value === ContinuousLegend) {
-    return {
-      classColorMap: props.classColorMap,
-      metadata: props.metadata,
-      isAbsolute: props.isAbsolute
-    };
-  } else {
-    return {
-      color: props.selectedCountry || props.selectedExpedition ? 'blue' : 'yellow',
-      text: props.selectedCountry || props.selectedExpedition ? 'Expedition 2023' : 'Countries',
-      showLegendText: props.showLegendText,
-      isAbsolute: props.isAbsolute,
-      metadata: props.metadata
-    };
+  const commonProps = {
+    classColorMap: props.classColorMap,
+    metadata: props.metadata,
+    isAbsolute: props.isAbsolute,
+    showLegendText: props.showLegendText
+  };
+
+  switch (legendComponent.value) {
+    case DiscreteLegend:
+      return {
+        ...commonProps,
+        maxValue: props.maxValue
+      };
+    case ContinuousLegend:
+      return commonProps;
+    default:
+      return {
+        ...commonProps,
+        color: props.selectedCountry || props.selectedExpedition ? 'blue' : 'yellow',
+        text: props.selectedCountry || props.selectedExpedition ? 'Expedition 2023' : 'Countries',
+        isSimple: props.isSimple
+      };
   }
 });
 </script>
