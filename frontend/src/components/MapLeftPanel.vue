@@ -263,7 +263,7 @@
 
       <div v-if="!selectedCountry" class="q-pa-md text-center">
         <hr />
-        <p>Click on a country flag to access detailed country data</p>
+        <i>Click on a country flag to access detailed country data</i>
       </div>
     </q-list>
   </q-drawer>
