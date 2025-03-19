@@ -29,16 +29,13 @@ import { computed } from 'vue';
 import { useMapStore } from '@/stores/mapStore';
 import { DiscreteLegendProps } from '@/types/legend';
 
-const props = withDefaults(
-  defineProps<DiscreteLegendProps>(),
-  {
-    classColorMap: () => ({}),
-    showLegendText: true,
-    metadata: () => ({}),
-    isAbsolute: false,
-    maxValue: 0,
-  }
-);
+const props = withDefaults(defineProps<DiscreteLegendProps>(), {
+  classColorMap: () => ({}),
+  showLegendText: true,
+  metadata: () => ({}),
+  isAbsolute: false,
+  maxValue: 0,
+});
 
 const visibleColorClasses = computed(() => {
   if (!props.maxValue) return props.classColorMap;

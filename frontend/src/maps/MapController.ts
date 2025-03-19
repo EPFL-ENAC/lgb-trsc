@@ -6,6 +6,7 @@ import {
   ZoomSlider,
   Zoom,
   Attribution,
+  OverviewMap,
 } from 'ol/control';
 import { createOSMLayer } from './layers/base/OSMLayer';
 import { createArcGISLayer } from './layers/base/ArcGISLayer';
@@ -13,13 +14,20 @@ import { Feature } from 'ol';
 import {
   defaultCenter,
   defaultMinZoom,
+  defaultMaxZoom,
   defaultExtent,
+  defaultZoomCountry,
   defaultMinZoomCountry,
+  defaultMaxZoomCountry,
+  defaultMinZoomExpedition,
+  defaultMaxZoomExpedition,
+  defaultZoomExpedition,
 } from './config';
 import {
   addMapClickHandler,
   MapClickHandlerOptions,
 } from '@/maps/utils/MapClickHandler';
+import Point from 'ol/geom/Point';
 import { addMapPointerMoveHandler } from '@/maps/utils/MapPointerMove';
 import { useMapStore } from '@/stores/mapStore';
 import DjiboutiExpeditions from '@/assets/data/Expeditions.json';
@@ -38,22 +46,42 @@ import {
 import { createDjiboutiEnvironmentalClusterLayer } from '@/maps/layers/overlay/EnvironmentalClusters/DjiboutiLayer';
 import { createEnvironmentalLayers } from './layers/overlay/EnvironmentalLayers/DjiboutiLayer';
 import { BaseLayerOptions } from 'ol-layerswitcher';
+import TileLayer from 'ol/layer/Tile';
+import OSM from 'ol/source/OSM';
 
 interface CustomBaseLayerOptions extends BaseLayerOptions {
   inputType?: 'base' | 'checkbox' | 'radio';
+  showForcountryOnly?: boolean;
+}
+
+function createOverviewMap() {
+  // Create base layers for overview map
+  const overviewMapLayer = new TileLayer({
+    source: new OSM(),
+  });
+
+  return new OverviewMap({
+    className: 'ol-overviewmap red-sea-overview',
+    layers: [overviewMapLayer],
+    collapsed: false,
+    tipLabel: 'Red Sea Overview',
+  });
 }
 
 export class MapController {
   private map: Map | null = null;
+  private overviewMapControl: OverviewMap | null = null;
 
   constructor(target: string) {
+    // Create OverviewMap control
+    this.overviewMapControl = createOverviewMap();
     this.map = new Map({
       target,
       view: new View({
         center: defaultCenter,
         zoom: defaultMinZoom,
         minZoom: defaultMinZoom,
-        maxZoom: 17,
+        maxZoom: defaultMaxZoom,
         extent: defaultExtent,
       }),
       controls: [
@@ -64,9 +92,11 @@ export class MapController {
         new Attribution({
           collapsible: false,
         }),
+        this.overviewMapControl,
       ],
     });
   }
+
   public destroy() {
     // Remove all controls
     const controls = this.map?.getControls().getArray();
@@ -86,6 +116,9 @@ export class MapController {
       this.map?.removeInteraction(interaction)
     );
 
+    // Clear references to controls
+    this.overviewMapControl = null;
+
     // Remove all event listeners
     this.map?.setTarget('');
     this.map = null;
@@ -96,6 +129,18 @@ export class MapController {
   }
   private baseMaps: LayerGroup | null = null;
   private overlayMaps: LayerGroup | null = null;
+
+  // Toggle overview map visibility based on country selection
+  public toggleOverviewMap(visible: boolean): void {
+    if (!this.overviewMapControl || !this.map) return;
+
+    const overviewMap = this.overviewMapControl.getOverviewMap();
+    const element = overviewMap.getTargetElement();
+    if (element && element.parentElement) {
+      element.parentElement.style.display = visible ? 'block' : 'none';
+      element.style.display = visible ? 'block' : 'none';
+    }
+  }
 
   public init(): void {
     this.baseMaps = new LayerGroup({
@@ -153,6 +198,9 @@ export class MapController {
 
     this.map?.addLayer(this.baseMaps);
     this.map?.addLayer(this.overlayMaps);
+
+    // Initialize overview map to be visible only in Red Sea scope
+    this.toggleOverviewMap(true);
 
     // Retrieve the store instance
     const mapStore = useMapStore();
@@ -219,8 +267,9 @@ export class MapController {
     }
   }
 
-  public zoomToCountry(): void {
+  public zoomToCountry(properties: any): void {
     const mapStore = useMapStore();
+    mapStore.selectCountry(properties);
     const selectedCountry = mapStore.selectedCountry;
     if (selectedCountry && selectedCountry.coastline) {
       const coastlineFeature = new GeoJSON().readFeature(
@@ -245,15 +294,18 @@ export class MapController {
           layerGroup.set('visible', true);
         }
       });
-      this.map?.getView().fit(transformedExtent, { duration: 300 });
       const currentView = this.map?.getView().getProperties();
       if (currentView) {
-        currentView.zoom = defaultMinZoomCountry;
+        currentView.zoom = defaultZoomCountry;
         currentView.minZoom = defaultMinZoomCountry;
+        currentView.maxZoom = defaultMaxZoomCountry;
         currentView.center = getCenter(transformedExtent);
+        currentView.extent = transformedExtent;
       }
 
-      // visible: expeditionType === 'by year',
+      // Hide overview map in country scope
+      this.toggleOverviewMap(false);
+
       this.map?.getAllLayers().forEach((layer) => {
         const title = layer.get('title');
         if (title === 'by year') {
@@ -262,6 +314,10 @@ export class MapController {
       });
 
       this.map?.setView(new View(currentView));
+      this.map?.getView().fit(transformedExtent, { duration: 300 });
+      this.map
+        ?.getView()
+        .animate({ zoom: defaultMinZoomCountry, duration: 300 });
     }
   }
 
@@ -276,8 +332,14 @@ export class MapController {
     if (currentView) {
       currentView.zoom = defaultMinZoom;
       currentView.minZoom = defaultMinZoom;
-      currentView.center = getCenter(defaultExtent);
+      currentView.extent = defaultExtent;
+      currentView.center = defaultCenter;
+      currentView.maxZoom = defaultMaxZoom;
     }
+
+    // Show overview map in Red Sea scope
+    this.toggleOverviewMap(true);
+
     // visible: expeditionType === 'by year',
     this.map?.getAllLayers().forEach((layer) => {
       if (!['ArcGIS', 'OSM', 'Countries'].includes(layer.get('title'))) {
@@ -286,14 +348,80 @@ export class MapController {
     });
 
     this.map?.setView(new View(currentView));
-    this.map?.getView().animate({ zoom: 3, duration: 300 });
+    this.map?.getView().animate({ zoom: defaultMinZoom, duration: 300 });
   };
 
   public refreshMap() {
     this.map?.renderSync();
   }
 
-  public zoomToExpedition = () => {
-    console.log('NOT IMPLEMENTED YET');
+  public zoomToExpedition = (properties: any) => {
+    const mapStore = useMapStore();
+    mapStore.selectExpedition(properties);
+    const selectedExpedition = mapStore.selectedExpedition;
+    if (selectedExpedition && selectedExpedition.geometry) {
+      const expeditionFeature = new Feature({
+        geometry: new Point([
+          selectedExpedition.longitude_start,
+          selectedExpedition.latitude_start,
+        ]).transform('EPSG:4326', 'EPSG:3857'),
+      });
+
+      // in case of transect
+      const transformedExtent = expeditionFeature?.getGeometry()?.getExtent();
+
+      const currentView = this.map?.getView().getProperties();
+      if (currentView) {
+        currentView.zoom = defaultZoomExpedition;
+        currentView.minZoom = defaultMinZoomExpedition;
+        currentView.maxZoom = defaultMaxZoomExpedition;
+        currentView.center = transformedExtent
+          ? getCenter(transformedExtent)
+          : defaultCenter;
+      }
+
+      this.map?.setView(new View(currentView));
+      this.map?.getView().animate({
+        zoom: 14,
+        duration: 300,
+        center: transformedExtent
+          ? getCenter(transformedExtent)
+          : defaultCenter,
+      });
+    }
+  };
+
+  public zoomOutOfExpedition = () => {
+    const mapStore = useMapStore();
+    const selectedCountry = mapStore.selectedCountry;
+    if (selectedCountry && selectedCountry.coastline) {
+      const coastlineFeature = new GeoJSON().readFeature(
+        selectedCountry.coastline,
+        {
+          featureProjection: 'EPSG:4326',
+        }
+      ) as Feature;
+
+      const extent = coastlineFeature.getGeometry()?.getExtent();
+      if (!extent) return;
+
+      const transformedExtent = transformExtent(
+        extent,
+        'EPSG:4326',
+        'EPSG:3857'
+      );
+
+      this.map?.getView().fit(transformedExtent, { duration: 300 });
+      const currentView = this.map?.getView().getProperties();
+      if (currentView) {
+        currentView.zoom = defaultZoomCountry;
+        currentView.minZoom = defaultMinZoomCountry;
+        currentView.maxZoom = defaultMaxZoomCountry;
+        currentView.center = getCenter(transformedExtent);
+        currentView.extent = transformedExtent;
+      }
+
+      this.map?.setView(new View(currentView));
+    }
   };
 }

@@ -1,8 +1,5 @@
 <template>
-  <component 
-    :is="legendComponent" 
-    v-bind="componentProps"
-  />
+  <component :is="legendComponent" v-bind="componentProps" />
 </template>
 
 <script setup lang="ts">
@@ -12,28 +9,32 @@ import ContinuousLegend from './legends/ContinuousLegend.vue';
 import SimpleLegend from './legends/SimpleLegend.vue';
 import { MapLegendProps } from '@/types/legend';
 
-const props = withDefaults(
-  defineProps<MapLegendProps>(),
-  {
-    selectedCountry: '',
-    selectedExpedition: '',
-    classColorMap: () => ({}),
-    showLegendText: true,
-    metadata: () => ({}),
-    isSimple: false,
-    isContinuous: false,
-    isAbsolute: false,
-    maxValue: 0,
-  }
-);
+const props = withDefaults(defineProps<MapLegendProps>(), {
+  selectedCountry: '',
+  selectedExpedition: '',
+  classColorMap: () => ({}),
+  showLegendText: true,
+  metadata: () => ({}),
+  isSimple: false,
+  isContinuous: false,
+  isAbsolute: false,
+  maxValue: 0,
+});
 
 // Determine which legend component to use based on props
 const legendComponent = computed(() => {
   if (props.isSimple) {
     return SimpleLegend;
-  } else if (props.isContinuous && props.classColorMap && Object.keys(props.classColorMap).length > 0) {
+  } else if (
+    props.isContinuous &&
+    props.classColorMap &&
+    Object.keys(props.classColorMap).length > 0
+  ) {
     return ContinuousLegend;
-  } else if (props.classColorMap && Object.keys(props.classColorMap).length > 0) {
+  } else if (
+    props.classColorMap &&
+    Object.keys(props.classColorMap).length > 0
+  ) {
     return DiscreteLegend;
   } else {
     return SimpleLegend;
@@ -46,29 +47,44 @@ const componentProps = computed(() => {
     classColorMap: props.classColorMap,
     metadata: props.metadata,
     isAbsolute: props.isAbsolute,
-    showLegendText: props.showLegendText
+    showLegendText: props.showLegendText,
   };
 
   if (props.isSimple) {
     return {
       ...commonProps,
-      color: props.selectedCountry || props.selectedExpedition ? 'blue' : 'yellow',
-      text: props.selectedCountry || props.selectedExpedition ? 'Expedition 2023' : 'Countries',
-      isSimple: props.isSimple
+      color:
+        props.selectedCountry || props.selectedExpedition ? 'blue' : 'yellow',
+      text:
+        props.selectedCountry || props.selectedExpedition
+          ? 'Expedition 2023'
+          : 'Countries',
+      isSimple: props.isSimple,
     };
-  } else if (props.isContinuous && props.classColorMap && Object.keys(props.classColorMap).length > 0) {
+  } else if (
+    props.isContinuous &&
+    props.classColorMap &&
+    Object.keys(props.classColorMap).length > 0
+  ) {
     return commonProps;
-  } else if (props.classColorMap && Object.keys(props.classColorMap).length > 0) {
+  } else if (
+    props.classColorMap &&
+    Object.keys(props.classColorMap).length > 0
+  ) {
     return {
       ...commonProps,
-      maxValue: props.maxValue
+      maxValue: props.maxValue,
     };
   } else {
     return {
       ...commonProps,
-      color: props.selectedCountry || props.selectedExpedition ? 'blue' : 'yellow',
-      text: props.selectedCountry || props.selectedExpedition ? 'Expedition 2023' : 'Countries',
-      isSimple: props.isSimple
+      color:
+        props.selectedCountry || props.selectedExpedition ? 'blue' : 'yellow',
+      text:
+        props.selectedCountry || props.selectedExpedition
+          ? 'Expedition 2023'
+          : 'Countries',
+      isSimple: props.isSimple,
     };
   }
 });
