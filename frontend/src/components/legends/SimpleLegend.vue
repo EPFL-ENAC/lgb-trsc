@@ -3,14 +3,14 @@
     <ol class="legend-list-simple">
       <li v-for="(color, className) in visibleColorClasses" :key="className">
         <span class="legend-item">
-              <span
-                class="legend-color"
-                :style="{ 'background-color': color }"
-              ></span>
-              <span v-if="showLegendText" class="legend-text">
-                {{ className }}
-              </span>
-            </span>
+          <span
+            class="legend-color"
+            :style="{ 'background-color': color }"
+          ></span>
+          <span v-if="showLegendText" class="legend-text">
+            {{ className }}
+          </span>
+        </span>
       </li>
     </ol>
   </div>
@@ -20,16 +20,13 @@
 import { computed } from 'vue';
 import { DiscreteLegendProps } from '@/types/legend';
 
-const props = withDefaults(
-  defineProps<DiscreteLegendProps>(),
-  {
-    classColorMap: () => ({}),
-    showLegendText: true,
-    metadata: () => ({}),
-    isAbsolute: false,
-    maxValue: 0,
-  }
-);
+const props = withDefaults(defineProps<DiscreteLegendProps>(), {
+  classColorMap: () => ({}),
+  showLegendText: true,
+  metadata: () => ({}),
+  isAbsolute: false,
+  maxValue: 0,
+});
 
 const visibleColorClasses = computed(() => {
   if (!props.maxValue) return props.classColorMap;
@@ -43,7 +40,6 @@ const visibleColorClasses = computed(() => {
   }
   return result;
 });
-
 </script>
 
 <style scoped lang="scss">

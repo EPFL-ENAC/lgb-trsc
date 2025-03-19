@@ -48,7 +48,7 @@ export const clickHandlerFn =
       onCountryClick(properties, options);
     } else if (validExpeditons.includes(properties?.type)) {
       // Update the store via callback
-      onExpeditionClick(properties, options);
+      onExpeditionClick(properties);
     }
   };
 
@@ -63,16 +63,16 @@ export function addMapClickHandler(
 function onCountryClick(properties: any, options: MapClickHandlerOptions) {
   const layerController = useLayerController();
   if (properties.name === 'Djibouti') {
+    // use mapStore to zoom to country
     layerController.updateExpeditions(options.expeditionsByCountry['Djibouti']);
     properties.rawData = options.threeDMappingByCountry['Djibouti'];
-    options.selectCountry(properties);
+
     const mapController = useMapController();
-    mapController.zoomToCountry();
+    mapController.zoomToCountry(properties);
   }
 }
 
-function onExpeditionClick(properties: any, options: MapClickHandlerOptions) {
-  // TODO: fix me later
-  // zoomToExpedition
-  options.selectExpedition(properties);
+function onExpeditionClick(properties: any) {
+  const mapController = useMapController();
+  mapController.zoomToExpedition(properties);
 }

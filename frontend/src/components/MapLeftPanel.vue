@@ -24,13 +24,13 @@
 
       <!-- Overlay groups section -->
       <q-expansion-item
-      v-for="(group, groupIndex) in computedOverlayGroups"
-      :key="group.title"
-      :group="`overlays${groupIndex}`"
-      :label="group.title"
-      :model-value="
+        v-for="(group, groupIndex) in computedOverlayGroups"
+        :key="group.title"
+        :group="`overlays${groupIndex}`"
+        :label="group.title"
+        :model-value="
           group.layers.some((layerinfo) => layerinfo.layer.getVisible())
-          "
+        "
       >
         <q-list padding>
           <q-item

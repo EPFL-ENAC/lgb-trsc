@@ -12,10 +12,21 @@ interface CountryProperties {
 
 interface ExpeditionProperties {
   country: string;
+  country_abbr: string;
   date_iso: string;
-  reef_area: string;
-  sampling_site_name: string;
   event_id: string;
+  expe_name: string;
+  experiment: string;
+  geometry: object;
+  hard_coral_cover: string;
+  latitude_start: number;
+  length: number;
+  longitude_start: number;
+  reef_area: string;
+  region_name: string;
+  sampling_site_name: string;
+  type: string;
+  year: string;
   [key: string]: unknown;
 }
 
