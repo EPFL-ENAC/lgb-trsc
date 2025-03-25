@@ -88,6 +88,16 @@ await csv({ checkType: true, ignoreEmpty: true, trim: true })
         .createHash('sha256')
         .update(objectString)
         .digest('hex');
+      const locationHash = crypto
+        .createHash('sha256')
+        .update(
+          `${obj.latitude_start}${obj.longitude_start}${obj.latitude_end}${obj.longitude_end}`
+        )
+        .digest('hex');
+      const locationNameHash = crypto
+        .createHash('sha256')
+        .update(`${obj.region_name}${obj.reef_area}${obj.sampling_site_name}`)
+        .digest('hex');
 
       // Find all entries in dji3d with matching event_id and sum their mean values
       const matchingEntries = dji3d.filter((d) => d.event_id === obj.event_id);
@@ -107,6 +117,8 @@ await csv({ checkType: true, ignoreEmpty: true, trim: true })
       result.features.push({
         id: hash,
         event_id: obj.event_id,
+        locationHash,
+        locationNameHash,
         ...featureGeometry,
         properties: {
           type: obj.Exploration_or_Monitoring,
