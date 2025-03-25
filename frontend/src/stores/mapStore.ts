@@ -70,6 +70,8 @@ export const useMapStore = defineStore('map', () => {
 
   function closeExpedition() {
     selectedExpedition.value = null;
+    const mapController = useMapController();
+    mapController.zoomToCountry(selectedCountry.value);
   }
 
   function selectCountry(properties: CountryProperties) {

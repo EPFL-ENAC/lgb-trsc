@@ -25,6 +25,7 @@ export const clickHandlerFn =
     // const hit = map.hasFeatureAtPixel(pixel);
     const validExpeditons = [
       'Expedition',
+      'Monitoring',
       'by year',
       'by project',
       'hard coral cover',
