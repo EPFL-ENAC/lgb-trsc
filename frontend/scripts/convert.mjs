@@ -21,7 +21,7 @@ await csv({ checkType: true, ignoreEmpty: true, trim: true })
         reef_area: obj.reef_area,
         sampling_site_name: obj.sampling_site_name,
         event_id: obj.event_id,
-        experiment: obj.experiment,
+        experiments: obj.experiment,
         year: obj.date_iso.split('-')[0],
         date_iso: obj.date_iso,
         time: obj.time,
@@ -47,6 +47,17 @@ await csv({ checkType: true, ignoreEmpty: true, trim: true })
 
 const expeditions = 'Expeditions';
 
+// Function to get hard_coral_cover category based on mean value
+const getHardCoralCoverCategory = (mean) => {
+  if (!mean === null || mean === undefined) return undefined;
+  const percentage = mean * 100;
+  if (percentage <= 10) return '0-10%';
+  if (percentage <= 30) return '10-30%';
+  if (percentage <= 50) return '30-50%';
+  if (percentage <= 75) return '50-75%';
+  return '75-100%';
+};
+
 await csv({ checkType: true, ignoreEmpty: true, trim: true })
   .fromFile(`./src/assets/data/${expeditions}.csv`)
   .then((jsonObj) => {
@@ -60,21 +71,16 @@ await csv({ checkType: true, ignoreEmpty: true, trim: true })
       const featureGeometry = {
         type: 'Feature',
         geometry: {
-          type: 'LineString',
-          coordinates: [
-            [obj.longitude_start, obj.latitude_start], // Starting point: [longitude, latitude]
-            [obj.longitude_end, obj.latitude_end], // Ending point: [longitude, latitude]
-          ],
+          type: obj.longitude_end && obj.latitude_end ? 'LineString' : 'Point',
+          coordinates:
+            obj.longitude_end && obj.latitude_end
+              ? [
+                  [obj.longitude_start, obj.latitude_start],
+                  [obj.longitude_end, obj.latitude_end],
+                ]
+              : [obj.longitude_start, obj.latitude_start],
         },
       };
-
-      if (obj.longitude_end == null || obj.latitude_end == null) {
-        featureGeometry.geometry.type = 'Point';
-        featureGeometry.geometry.coordinates = [
-          obj.longitude_start,
-          obj.latitude_start,
-        ];
-      }
 
       // Create a unique ID based on the SHA256 hash of the object
       const objectString = JSON.stringify(obj);
@@ -82,16 +88,6 @@ await csv({ checkType: true, ignoreEmpty: true, trim: true })
         .createHash('sha256')
         .update(objectString)
         .digest('hex');
-      // Function to get hard_coral_cover category based on mean value
-      const getHardCoralCoverCategory = (mean) => {
-        if (!mean === null || mean === undefined) return undefined;
-        const percentage = mean * 100;
-        if (percentage <= 10) return '0-10%';
-        if (percentage <= 30) return '10-30%';
-        if (percentage <= 50) return '30-50%';
-        if (percentage <= 75) return '50-75%';
-        return '75-100%';
-      };
 
       // Find all entries in dji3d with matching event_id and sum their mean values
       const matchingEntries = dji3d.filter((d) => d.event_id === obj.event_id);
@@ -113,7 +109,7 @@ await csv({ checkType: true, ignoreEmpty: true, trim: true })
         event_id: obj.event_id,
         ...featureGeometry,
         properties: {
-          type: 'Expedition',
+          type: obj.Exploration_or_Monitoring,
           country: obj.country,
           country_abbr: obj.country_abbr,
           date_iso: obj.date_iso,
