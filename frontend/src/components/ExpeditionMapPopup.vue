@@ -15,10 +15,12 @@
             </div>
             <div class="debug-item">
               <span class="debug-label">Location Hash:</span>
-              <span class="debug-value">{{ selectedExpedition.locationNameHash }}</span>
+              <span class="debug-value">{{
+                selectedExpedition.locationNameHash
+              }}</span>
             </div>
           </div>
-          
+
           <div class="debug-section">
             <h4 class="debug-title">Selected Filters</h4>
             <div class="debug-item">
@@ -31,10 +33,12 @@
             </div>
             <div class="debug-item">
               <span class="debug-label">Experiment:</span>
-              <span class="debug-value">{{ selectedExpeditionExperiment }}</span>
+              <span class="debug-value">{{
+                selectedExpeditionExperiment
+              }}</span>
             </div>
           </div>
-          
+
           <div class="debug-section">
             <h4 class="debug-title">Available Options</h4>
             <div class="debug-item">
@@ -47,28 +51,34 @@
             </div>
             <div class="debug-item">
               <span class="debug-label">Experiments:</span>
-              <span class="debug-value">{{ selectedExpeditionsExperiments }}</span>
+              <span class="debug-value">{{
+                selectedExpeditionsExperiments
+              }}</span>
             </div>
           </div>
-          
+
           <div class="debug-section">
             <h4 class="debug-title">Relationships</h4>
             <div class="debug-item">
               <span class="debug-label">Years by Experiment:</span>
-              <pre class="debug-json">{{ JSON.stringify(selectedExpeditionsYearsByExperiment, null, 2) }}</pre>
+              <pre class="debug-json">{{
+                JSON.stringify(selectedExpeditionsYearsByExperiment, null, 2)
+              }}</pre>
             </div>
             <div class="debug-item">
               <span class="debug-label">Dates by Experiment:</span>
-              <pre class="debug-json">{{ JSON.stringify(selectedExpeditionsDatesByExperiment, null, 2) }}</pre>
+              <pre class="debug-json">{{
+                JSON.stringify(selectedExpeditionsDatesByExperiment, null, 2)
+              }}</pre>
             </div>
             <div class="debug-item">
               <span class="debug-label">Experiments by Years:</span>
-              <pre class="debug-json">{{ JSON.stringify(selectedExpeditionsExperimentsByYears, null, 2) }}</pre>
+              <pre class="debug-json">{{
+                JSON.stringify(selectedExpeditionsExperimentsByYears, null, 2)
+              }}</pre>
             </div>
           </div>
         </div>
-
-        
       </div>
     </div>
     <h2 class="first-expedition-header">
@@ -105,14 +115,39 @@
     <p v-if="selectedExpedition.experiment === '3D'">
       Average depth: {{ selectedExpedition.depth ?? 5 }} m
     </p>
+
+    <!-- Add this where you want the date slider to appear -->
+    <div
+      v-if="
+        selectedExpeditionExperiment &&
+        selectedExpeditionsDatesByExperiment.length > 0
+      "
+      class="date-slider-container"
+    >
+      <div class="date-label">
+        {{ selectedExpeditionsDatesByExperiment[dateSliderIndex] }}
+      </div>
+      <q-slider
+        v-model="dateSliderIndex"
+        :min="0"
+        :max="selectedExpeditionsDatesByExperiment.length - 1"
+        :step="1"
+        label
+        :label-value="selectedExpeditionsDatesByExperiment[dateSliderIndex]"
+        @update:model-value="
+          (newValue) =>
+            console.log(newValue)
+        "
+      />
+    </div>
     <div v-if="selectedExpedition.experiment === '3D'">
       <div v-if="sampleSet.length > 0">
         <q-toggle
-              v-model="selectedExpeditionSubstrateLevel"
-              true-value="Substrate_coarse"
-              false-value="Substrate_intermediate"
-              :label="selectedExpeditionSubstrateLevel"
-            ></q-toggle>
+          v-model="selectedExpeditionSubstrateLevel"
+          true-value="Substrate_coarse"
+          false-value="Substrate_intermediate"
+          :label="selectedExpeditionSubstrateLevel"
+        ></q-toggle>
         <BarChart3DMappingExpedition
           v-if="isValidSampleSet"
           :raw-data="sampleSet"
@@ -208,6 +243,7 @@ const {
   selectedExpeditionsDatesByExperiment,
   selectedExpeditionsExperimentsByYears,
   selectedExpeditionSubstrateLevel,
+  dateSliderIndex,
   isValidSampleSet,
   sampleSet,
 } = storeToRefs(mapStore);
@@ -225,7 +261,6 @@ const computedCountryCommunities = computed(() => {
       countryLower.value
   );
 });
-
 </script>
 
 <style scoped>
@@ -281,59 +316,59 @@ button {
 }
 </style>
 <style scoped>
-        .debug-panel {
-          background-color: #f8f9fa;
-          border-radius: 6px;
-          padding: 12px;
-          margin-bottom: 16px;
-          font-family: monospace;
-          font-size: 0.9rem;
-          box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.1);
-        }
+.debug-panel {
+  background-color: #f8f9fa;
+  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 16px;
+  font-family: monospace;
+  font-size: 0.9rem;
+  box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.1);
+}
 
-        .debug-section {
-          margin-bottom: 12px;
-          padding-bottom: 10px;
-          border-bottom: 1px solid #e0e0e0;
-        }
+.debug-section {
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e0e0e0;
+}
 
-        .debug-section:last-child {
-          border-bottom: none;
-          margin-bottom: 0;
-        }
+.debug-section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
 
-        .debug-title {
-          margin: 0 0 8px 0;
-          font-size: 1rem;
-          color: #333;
-          font-weight: bold;
-        }
+.debug-title {
+  margin: 0 0 8px 0;
+  font-size: 1rem;
+  color: #333;
+  font-weight: bold;
+}
 
-        .debug-item {
-          display: flex;
-          flex-direction: column;
-          margin-bottom: 6px;
-        }
+.debug-item {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 6px;
+}
 
-        .debug-label {
-          color: #666;
-          margin-right: 8px;
-          font-weight: bold;
-        }
+.debug-label {
+  color: #666;
+  margin-right: 8px;
+  font-weight: bold;
+}
 
-        .debug-value {
-          color: #0066cc;
-          word-break: break-word;
-        }
+.debug-value {
+  color: #0066cc;
+  word-break: break-word;
+}
 
-        .debug-json {
-          background-color: #f0f0f0;
-          padding: 8px;
-          border-radius: 4px;
-          margin: 4px 0;
-          max-height: 120px;
-          overflow: auto;
-          font-size: 0.85rem;
-          white-space: pre-wrap;
-        }
-        </style>
+.debug-json {
+  background-color: #f0f0f0;
+  padding: 8px;
+  border-radius: 4px;
+  margin: 4px 0;
+  max-height: 120px;
+  overflow: auto;
+  font-size: 0.85rem;
+  white-space: pre-wrap;
+}
+</style>

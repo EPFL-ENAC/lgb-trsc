@@ -7,6 +7,35 @@ const djibouti_2023_3d = 'dji_3d_mapping_all_results';
 
 let dji3d = [];
 
+function formatExpeditionDateTime(
+  dateIso, // ISO date string (format: "2023-01-01")
+  timeStr = '12:00:00 AM'
+) {
+  let hours = 0,
+    minutes = 0,
+    seconds = 0;
+
+  // Parse the time string (format: "2:00:00 PM")
+  const timeParts = timeStr.match(/(\d+):(\d+):(\d+)\s*(AM|PM)/i);
+  if (timeParts) {
+    hours = parseInt(timeParts[1], 10);
+    minutes = parseInt(timeParts[2], 10);
+    seconds = parseInt(timeParts[3], 10);
+    const isPM = timeParts[4].toUpperCase() === 'PM';
+
+    // Convert 12-hour to 24-hour format
+    if (isPM && hours < 12) hours += 12;
+    if (!isPM && hours === 12) hours = 0;
+  }
+
+  // Format as ISO time component
+  const time = `T${hours.toString().padStart(2, '0')}:${minutes
+    .toString()
+    .padStart(2, '0')}:${seconds.toString().padStart(2, '0')}Z`;
+  const date = new Date(dateIso + time);
+  return date.toISOString();
+}
+
 await csv({ checkType: true, ignoreEmpty: true, trim: true })
   .fromFile(`./src/assets/data/${djibouti_2023_3d}.csv`)
   .then((jsonObj) => {
@@ -25,6 +54,7 @@ await csv({ checkType: true, ignoreEmpty: true, trim: true })
         year: obj.date_iso.split('-')[0],
         date_iso: obj.date_iso,
         time: obj.time,
+        full_date_iso: formatExpeditionDateTime(obj.date_iso, obj.time),
         country: obj.country,
         depth: obj.depth,
         country_abbr: obj.country_abbr,
@@ -128,6 +158,7 @@ await csv({ checkType: true, ignoreEmpty: true, trim: true })
           country_abbr: obj.country_abbr,
           date_iso: obj.date_iso,
           year: obj.date_iso.split('-')[0],
+          full_date_iso: formatExpeditionDateTime(obj.date_iso, obj.time),
           experiment: obj.experiment,
           hard_coral_cover: hardCoralCover,
           depth,

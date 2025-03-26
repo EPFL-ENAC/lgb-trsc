@@ -15,11 +15,9 @@ interface CountryProperties {
 interface ExpeditionProperties {
   country: string;
   country_abbr: string;
-  date_iso: string;
   event_id: string;
   expe_name: string;
   experiment: string;
-  geometry: object;
   hard_coral_cover: string;
   locationNameHash: string;
   latitude_start: number;
@@ -30,7 +28,9 @@ interface ExpeditionProperties {
   sampling_site_name: string;
   type: string;
   year: string;
-  time: string;
+  time?: string | undefined;
+  date_iso: string;
+  full_date_iso: string;
   [key: string]: unknown;
 }
 
@@ -131,12 +131,7 @@ export const useMapStore = defineStore('map', () => {
           expedition.properties.experiment ===
           selectedExpeditionExperiment.value
       )
-      .map((expedition: any) =>
-        formatExpeditionDateTime(
-          expedition.properties.date_iso,
-          expedition.properties.time || '12:00:00 AM'
-        )
-      );
+      .map((expedition: any) => expedition.properties.full_date_iso);
     return [...new Set(dates)];
   });
 
@@ -153,46 +148,11 @@ export const useMapStore = defineStore('map', () => {
     return [...new Set(experiments)];
   });
 
-  function formatExpeditionDateTime(
-    dateIso: string,
-    timeStr = '12:00:00 AM'
-  ): string {
-    let hours = 0,
-      minutes = 0,
-      seconds = 0;
-
-    // Parse the time string (format: "2:00:00 PM")
-    const timeParts = timeStr.match(/(\d+):(\d+):(\d+)\s*(AM|PM)/i);
-    if (timeParts) {
-      hours = parseInt(timeParts[1], 10);
-      minutes = parseInt(timeParts[2], 10);
-      seconds = parseInt(timeParts[3], 10);
-      const isPM = timeParts[4].toUpperCase() === 'PM';
-
-      // Convert 12-hour to 24-hour format
-      if (isPM && hours < 12) hours += 12;
-      if (!isPM && hours === 12) hours = 0;
-    }
-
-    // Format as ISO time component
-    const time = `T${hours.toString().padStart(2, '0')}:${minutes
-      .toString()
-      .padStart(2, '0')}:${seconds.toString().padStart(2, '0')}Z`;
-    const date = new Date(dateIso + time);
-    return date.toISOString();
-  }
-
   const selectedExpeditionsDates = computed(() => {
     // should be unique years
     if (!selectedExpeditions.value) return [];
 
-    const dates = selectedExpeditions.value.map((expedition: any) => {
-      return formatExpeditionDateTime(
-        expedition.properties.date_iso,
-        expedition.properties.time || '12:00:00 AM'
-      );
-    });
-    return [...new Set(dates)];
+    return [...new Set(selectedExpeditions.value.map((expedition: any) => expedition.properties.full_date_iso))];
   });
 
   const selectedExpeditionsExperiments = computed(() => {
@@ -229,14 +189,43 @@ export const useMapStore = defineStore('map', () => {
     drawer.value = true;
   }
 
+  // function updateSelectedExpeditionDate(index: number, properties: ExpeditionProperties) {
+  //   const date = selectedExpeditionsDatesByExperiment.value[index]
+  //   selectedExpeditionDate.value = date;
+  //   // find the expedition with the same date and properties experiment
+  //   const selectedExpedition = DjiboutiExpeditions.features.find(
+  //     (expedition: any) =>
+  //       expedition.properties.full_date_iso === date &&
+  //       expedition.properties.experiment === properties.experiment
+  //   );
+  //   if (selectedExpedition) {
+  //     selectExpedition(selectedExpedition.properties as ExpeditionProperties);
+  //   }
+  // };
+
+  const dateSliderIndex = computed({
+    get: () =>  selectedExpeditionsDatesByExperiment.value.indexOf(selectedExpeditionDate.value),
+    set: (index: number) => {
+      const date = selectedExpeditionsDatesByExperiment.value[index]
+      selectedExpeditionDate.value = date;
+      // find the expedition with the same date and properties experiment
+      const selectedExpedition = DjiboutiExpeditions.features.find(
+        (expedition: any) =>
+          expedition.properties.full_date_iso === date &&
+          expedition.properties.experiment === selectedExpeditionExperiment.value
+      );
+      if (selectedExpedition) {
+        selectExpedition(selectedExpedition.properties as ExpeditionProperties);
+      }
+    },
+  });
+
   function selectExpedition(properties: ExpeditionProperties) {
     selectedExpedition.value = properties;
     // setup selectedExpeditionYear and selectedExpeditionExperiment
     setSelectedExpeditionYear(properties.year);
     setSelectedExpeditionExperiment(properties.experiment);
-    setSelectedExpeditionDate(
-      formatExpeditionDateTime(properties.date_iso, properties.time)
-    );
+    setSelectedExpeditionDate(properties.full_date_iso);
     drawer.value = true;
   }
 
@@ -331,6 +320,7 @@ export const useMapStore = defineStore('map', () => {
     selectedExpeditionsExperiments,
     selectedExpeditionsYearsByExperiment,
     selectedExpeditionsDatesByExperiment,
+    // updateSelectedExpeditionDate,
     selectedExpeditionsExperimentsByYears,
     selectedExpeditionYear,
     setSelectedExpeditionYear,
@@ -350,5 +340,6 @@ export const useMapStore = defineStore('map', () => {
     resetAll,
     selectedExpeditionSubstrateLevel,
     setSelectedExpeditionSubstrateLevel,
+    dateSliderIndex,
   };
 });
