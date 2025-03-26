@@ -24,7 +24,7 @@ export const clickHandlerFn =
     const target = mapBrowserEvent.originalEvent.target;
     // const hit = map.hasFeatureAtPixel(pixel);
     const validExpeditons = [
-      'Expedition',
+      'Exploration',
       'Monitoring',
       'by year',
       'by project',

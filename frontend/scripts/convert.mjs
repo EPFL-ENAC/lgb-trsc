@@ -123,7 +123,7 @@ await csv({ checkType: true, ignoreEmpty: true, trim: true })
         properties: {
           locationHash,
           locationNameHash,
-          type: obj.Exploration_or_Monitoring,
+          type: obj.Exploration_or_Monitoring ?? 'Exploration',
           country: obj.country,
           country_abbr: obj.country_abbr,
           date_iso: obj.date_iso,

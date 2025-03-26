@@ -29,6 +29,7 @@ interface ExpeditionProperties {
   sampling_site_name: string;
   type: string;
   year: string;
+  time: string;
   [key: string]: unknown;
 }
 
@@ -57,6 +58,11 @@ export const useMapStore = defineStore('map', () => {
   const selectedExpeditionYear = ref<string | null>(null);
   function setSelectedExpeditionYear(year: string) {
     selectedExpeditionYear.value = year;
+  }
+
+  const selectedExpeditionDate = ref<string | null>(null);
+  function setSelectedExpeditionDate(date: string) {
+    selectedExpeditionDate.value = date;
   }
 
   const selectedExpeditionExperiment = ref<string | null>(null);
@@ -95,37 +101,39 @@ export const useMapStore = defineStore('map', () => {
     return [...new Set(years)];
   });
 
+
+  function formatExpeditionDateTime(dateIso: string, timeStr = '12:00:00 AM'): string {
+    let hours = 0, minutes = 0, seconds = 0;
+
+    // Parse the time string (format: "2:00:00 PM")
+    const timeParts = timeStr.match(/(\d+):(\d+):(\d+)\s*(AM|PM)/i);
+    if (timeParts) {
+      hours = parseInt(timeParts[1], 10);
+      minutes = parseInt(timeParts[2], 10);
+      seconds = parseInt(timeParts[3], 10);
+      const isPM = timeParts[4].toUpperCase() === 'PM';
+      
+      // Convert 12-hour to 24-hour format
+      if (isPM && hours < 12) hours += 12;
+      if (!isPM && hours === 12) hours = 0;
+    }
+
+    // Format as ISO time component
+    const time = `T${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}Z`;
+    const date = new Date(dateIso + time);
+    return date.toISOString();
+  }
+
   const selectedExpeditionsDates = computed(() => {
     // should be unique years
     if (!selectedExpeditions.value) return [];
 
     const dates = selectedExpeditions.value.map(
       (expedition: any) => {
-        const timeStr = expedition.properties.time || '12:00:00 AM';
-        let hours = 0, minutes = 0, seconds = 0;
-
-        // Parse the time string (format: "2:00:00 PM")
-        const timeParts = timeStr.match(/(\d+):(\d+):(\d+)\s*(AM|PM)/i);
-        if (timeParts) {
-          hours = parseInt(timeParts[1], 10);
-          minutes = parseInt(timeParts[2], 10);
-          seconds = parseInt(timeParts[3], 10);
-          const isPM = timeParts[4].toUpperCase() === 'PM';
-          
-          // Convert 12-hour to 24-hour format
-          if (isPM && hours < 12) hours += 12;
-          if (!isPM && hours === 12) hours = 0;
-        } else {
-          // default to 12:00:00 AM
-          hours = 0;
-          minutes = 0;
-          seconds = 0;
-        }
-
-        // Format as ISO time component
-        const time = `T${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}Z`;
-        const date = new Date(expedition.properties.date_iso + time);
-        return date.toISOString()
+        return formatExpeditionDateTime(
+          expedition.properties.date_iso, 
+          expedition.properties.time || '12:00:00 AM'
+        );
       }
     );
     return [...new Set(dates)];
@@ -170,6 +178,13 @@ export const useMapStore = defineStore('map', () => {
 
   function selectExpedition(properties: ExpeditionProperties) {
     selectedExpedition.value = properties;
+    // setup selectedExpeditionYear and selectedExpeditionExperiment
+    setSelectedExpeditionYear(properties.year);
+    setSelectedExpeditionExperiment(properties.experiment);
+    setSelectedExpeditionDate(formatExpeditionDateTime(
+      properties.date_iso, 
+      properties.time,
+    ));
     drawer.value = true;
   }
 
@@ -228,6 +243,8 @@ export const useMapStore = defineStore('map', () => {
     selectedExpeditionsExperiments,
     selectedExpeditionYear,
     setSelectedExpeditionYear,
+    selectedExpeditionDate,
+    setSelectedExpeditionDate,
     selectedExpeditionExperiment,
     setSelectedExpeditionExperiment,
     rawTooltipContent,
