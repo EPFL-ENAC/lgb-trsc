@@ -16,12 +16,14 @@ export class DateFormatter {
         dateStyle?: 'full' | 'long' | 'medium' | 'short';
         timeStyle?: 'full' | 'long' | 'medium' | 'short';
         timeZoneDisplay?: boolean;
+        dateOnly?: boolean;
     } = {}): string {
         const {
             locale = 'en-US',
             dateStyle = 'medium',
             timeStyle = 'medium',
-            timeZoneDisplay = false
+            timeZoneDisplay = false,
+            dateOnly = false
         } = options;
 
         // Ensure the date is parsed correctly
@@ -30,7 +32,7 @@ export class DateFormatter {
         // Create Intl.DateTimeFormat instance
         const formatter = new Intl.DateTimeFormat(locale, {
             dateStyle: dateStyle,
-            timeStyle: timeStyle,
+            ...(dateOnly ? {} : { timeStyle: timeStyle }),
             timeZone: 'UTC', // Default to UTC, can be overridden
             formatMatcher: 'best fit',
             ...(timeZoneDisplay && { timeZoneName: 'short' })

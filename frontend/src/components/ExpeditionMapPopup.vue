@@ -1,88 +1,90 @@
 <template>
-  <div v-if="selectedExpedition" class="popup" id="expedition-popup">
+  <div v-if="selectedExpedition" id="expedition-popup" class="popup">
     <div class="btn-group">
       <button class="close-btn" @click="closeExpedition">Back</button>
       <button class="download-btn" @click="() => downloadExpedition()">
-        {{  `Download ${selectedExpedition.sampling_site_name} Summary` }}
+        {{ `Download ${selectedExpedition.sampling_site_name} Summary` }}
       </button>
-      <div v-if="isDev" class="debug-dropdown" >
+      <div v-if="isDev" class="debug-dropdown">
         <button class="debug-toggle" @click="isDebugOpen = !isDebugOpen">
-        {{ isDebugOpen ? 'Hide Debug Info' : 'Show Debug Info' }}
+          {{ isDebugOpen ? 'Hide Debug Info' : 'Show Debug Info' }}
         </button>
         <div v-if="isDebugOpen" class="debug-content">
-        <div class="debug-panel">
-          <div class="debug-section">
-          <h4 class="debug-title">Collection Data</h4>
-          <div class="debug-item">
-            <span class="debug-label">Expeditions:</span>
-            <span class="debug-value">{{ selectedExpeditions.length }}</span>
+          <div class="debug-panel">
+            <div class="debug-section">
+              <h4 class="debug-title">Collection Data</h4>
+              <div class="debug-item">
+                <span class="debug-label">Expeditions:</span>
+                <span class="debug-value">{{
+                  selectedExpeditions.length
+                }}</span>
+              </div>
+              <div class="debug-item">
+                <span class="debug-label">Location Hash:</span>
+                <span class="debug-value">{{
+                  selectedExpedition.locationNameHash
+                }}</span>
+              </div>
+            </div>
+
+            <div class="debug-section">
+              <h4 class="debug-title">Selected Filters</h4>
+              <div class="debug-item">
+                <span class="debug-label">Date:</span>
+                <span class="debug-value">{{ selectedExpeditionDate }}</span>
+              </div>
+              <div class="debug-item">
+                <span class="debug-label">Year:</span>
+                <span class="debug-value">{{ selectedExpeditionYear }}</span>
+              </div>
+              <div class="debug-item">
+                <span class="debug-label">Experiment:</span>
+                <span class="debug-value">{{
+                  selectedExpeditionExperiment
+                }}</span>
+              </div>
+            </div>
+
+            <div class="debug-section">
+              <h4 class="debug-title">Available Options</h4>
+              <div class="debug-item">
+                <span class="debug-label">Years:</span>
+                <span class="debug-value">{{ selectedExpeditionsYears }}</span>
+              </div>
+              <div class="debug-item">
+                <span class="debug-label">Dates:</span>
+                <span class="debug-value">{{ selectedExpeditionsDates }}</span>
+              </div>
+              <div class="debug-item">
+                <span class="debug-label">Experiments:</span>
+                <span class="debug-value">{{
+                  selectedExpeditionsExperiments
+                }}</span>
+              </div>
+            </div>
+
+            <div class="debug-section">
+              <h4 class="debug-title">Relationships</h4>
+              <div class="debug-item">
+                <span class="debug-label">Years by Experiment:</span>
+                <pre class="debug-json">{{
+                  JSON.stringify(selectedExpeditionsYearsByExperiment, null, 2)
+                }}</pre>
+              </div>
+              <div class="debug-item">
+                <span class="debug-label">Dates by Experiment:</span>
+                <pre class="debug-json">{{
+                  JSON.stringify(selectedExpeditionsDatesByExperiment, null, 2)
+                }}</pre>
+              </div>
+              <div class="debug-item">
+                <span class="debug-label">Experiments by Years:</span>
+                <pre class="debug-json">{{
+                  JSON.stringify(selectedExpeditionsExperimentsByYears, null, 2)
+                }}</pre>
+              </div>
+            </div>
           </div>
-          <div class="debug-item">
-            <span class="debug-label">Location Hash:</span>
-            <span class="debug-value">{{
-            selectedExpedition.locationNameHash
-            }}</span>
-          </div>
-          </div>
-  
-          <div class="debug-section">
-          <h4 class="debug-title">Selected Filters</h4>
-          <div class="debug-item">
-            <span class="debug-label">Date:</span>
-            <span class="debug-value">{{ selectedExpeditionDate }}</span>
-          </div>
-          <div class="debug-item">
-            <span class="debug-label">Year:</span>
-            <span class="debug-value">{{ selectedExpeditionYear }}</span>
-          </div>
-          <div class="debug-item">
-            <span class="debug-label">Experiment:</span>
-            <span class="debug-value">{{
-            selectedExpeditionExperiment
-            }}</span>
-          </div>
-          </div>
-  
-          <div class="debug-section">
-          <h4 class="debug-title">Available Options</h4>
-          <div class="debug-item">
-            <span class="debug-label">Years:</span>
-            <span class="debug-value">{{ selectedExpeditionsYears }}</span>
-          </div>
-          <div class="debug-item">
-            <span class="debug-label">Dates:</span>
-            <span class="debug-value">{{ selectedExpeditionsDates }}</span>
-          </div>
-          <div class="debug-item">
-            <span class="debug-label">Experiments:</span>
-            <span class="debug-value">{{
-            selectedExpeditionsExperiments
-            }}</span>
-          </div>
-          </div>
-  
-          <div class="debug-section">
-          <h4 class="debug-title">Relationships</h4>
-          <div class="debug-item">
-            <span class="debug-label">Years by Experiment:</span>
-            <pre class="debug-json">{{
-            JSON.stringify(selectedExpeditionsYearsByExperiment, null, 2)
-            }}</pre>
-          </div>
-          <div class="debug-item">
-            <span class="debug-label">Dates by Experiment:</span>
-            <pre class="debug-json">{{
-            JSON.stringify(selectedExpeditionsDatesByExperiment, null, 2)
-            }}</pre>
-          </div>
-          <div class="debug-item">
-            <span class="debug-label">Experiments by Years:</span>
-            <pre class="debug-json">{{
-            JSON.stringify(selectedExpeditionsExperimentsByYears, null, 2)
-            }}</pre>
-          </div>
-          </div>
-        </div>
         </div>
       </div>
     </div>
@@ -133,6 +135,8 @@
     </p>
 
     <!-- Add this where you want the date slider to appear -->
+    <hr class="expedition-separation-bar" />
+
     <div
       v-if="
         selectedExpeditionExperiment &&
@@ -140,17 +144,28 @@
       "
       class="date-slider-container"
     >
+      <p class="date-slider-label">
+        Select a date to view expedition data from different time periods
+      </p>
       <q-slider
         v-model="dateSliderIndex"
         :min="0"
         :max="selectedExpeditionsDatesByExperiment.length - 1"
         :step="1"
+        markers
+        :marker-labels="markerFormatter"
+        marker-labels-class="marker-label"
         label
-        :label-value="DateFormatter.formatDate(selectedExpeditionsDatesByExperiment[dateSliderIndex])"
+        :label-value="
+          DateFormatter.formatDate(
+            selectedExpeditionsDatesByExperiment[dateSliderIndex]
+          )
+        "
         @update:model-value="(newValue) => console.log(newValue)"
       />
     </div>
     <div v-if="selectedExpedition.experiment === '3D'">
+      <hr class="expedition-separation-bar" />
       <div v-if="sampleSet.length > 0">
         <q-toggle
           v-model="selectedExpeditionSubstrateLevel"
@@ -235,6 +250,17 @@ interface MappingData {
   mean: number;
 }
 
+function markerFormatter(index: number): string {
+  return DateFormatter.formatDate(
+    selectedExpeditionsDatesByExperiment.value[index],
+    {
+      locale,
+      dateStyle: 'short',
+      dateOnly: true,
+    }
+  );
+}
+
 const formatCoordinate = (decimal: number): string => {
   const absolute = Math.abs(decimal);
   const degrees = Math.floor(absolute);
@@ -280,10 +306,37 @@ const computedCountryCommunities = computed(() => {
 </script>
 
 <style scoped lang="scss">
+.expedition-separation-bar {
+  border: 1px solid #e0e0e0;
+}
 .btn-group {
   display: flex;
   justify-content: space-between;
   margin-bottom: 1rem;
+  gap: 1rem;
+  margin-right: 60px;
+}
+.date-slider-container {
+  margin-top: 1rem;
+  // Ensure container has enough padding
+  padding: 0 20px;
+}
+:deep(.marker-label) {
+  font-size: 0.8rem;
+  // Prevent overflow
+  overflow: visible;
+  white-space: nowrap;
+
+  // Adjust positioning
+  &.q-slider__marker-label {
+    // Add some space between labels and slider
+    margin-top: 8px;
+
+    // Handle text overflow
+    max-width: 100px; // Adjust as needed
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
 }
 h2 {
   color: black;
