@@ -121,6 +121,8 @@ await csv({ checkType: true, ignoreEmpty: true, trim: true })
         locationNameHash,
         ...featureGeometry,
         properties: {
+          locationHash,
+          locationNameHash,
           type: obj.Exploration_or_Monitoring,
           country: obj.country,
           country_abbr: obj.country_abbr,

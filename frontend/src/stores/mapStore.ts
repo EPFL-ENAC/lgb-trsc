@@ -3,6 +3,7 @@ import { defineStore } from 'pinia';
 import { useLayerController } from '@/maps/composables/useLayerController';
 import { useMapController } from '@/maps/composables/useMapController';
 import { useLayerStyles } from '@/maps/composables/useLayerStyles';
+import DjiboutiExpeditions from '@/assets/data/Expeditions.json';
 
 interface CountryProperties {
   name: string;
@@ -19,6 +20,7 @@ interface ExpeditionProperties {
   experiment: string;
   geometry: object;
   hard_coral_cover: string;
+  locationNameHash: string;
   latitude_start: number;
   length: number;
   longitude_start: number;
@@ -51,11 +53,96 @@ export const useMapStore = defineStore('map', () => {
       _drawer.value = value;
     },
   });
+
+  const selectedExpeditionYear = ref<string | null>(null);
+  function setSelectedExpeditionYear(year: string) {
+    selectedExpeditionYear.value = year;
+  }
+
+  const selectedExpeditionExperiment = ref<string | null>(null);
+  function setSelectedExpeditionExperiment(experiment: string) {
+    selectedExpeditionExperiment.value = experiment;
+  }
+
   const {
     visibleClasses,
     setClassVisibility: setClassVisibilityStyle,
     setAllClassesVisibility: setAllClassesVisibilityStyle,
   } = useLayerStyles();
+
+  const selectedExpeditions = computed(() => {
+    // If no expedition is selected, return an empty array
+    // if expedition selected, find all expedition with same locationNameHash
+    let result: any[] = [];
+    if (!selectedExpedition.value) return result;
+    const selectedExpeditionLocationNameHash =
+      selectedExpedition.value.locationNameHash;
+    result = DjiboutiExpeditions.features.filter(
+      (expedition: any) =>
+        expedition.properties.locationNameHash ===
+        selectedExpeditionLocationNameHash
+    );
+    return result;
+  });
+
+  const selectedExpeditionsYears = computed(() => {
+    // should be unique years
+    if (!selectedExpeditions.value) return [];
+
+    const years = selectedExpeditions.value.map(
+      (expedition: any) => expedition.properties.year
+    );
+    return [...new Set(years)];
+  });
+
+  const selectedExpeditionsDates = computed(() => {
+    // should be unique years
+    if (!selectedExpeditions.value) return [];
+
+    const dates = selectedExpeditions.value.map(
+      (expedition: any) => {
+        const timeStr = expedition.properties.time || '12:00:00 AM';
+        let hours = 0, minutes = 0, seconds = 0;
+
+        // Parse the time string (format: "2:00:00 PM")
+        const timeParts = timeStr.match(/(\d+):(\d+):(\d+)\s*(AM|PM)/i);
+        if (timeParts) {
+          hours = parseInt(timeParts[1], 10);
+          minutes = parseInt(timeParts[2], 10);
+          seconds = parseInt(timeParts[3], 10);
+          const isPM = timeParts[4].toUpperCase() === 'PM';
+          
+          // Convert 12-hour to 24-hour format
+          if (isPM && hours < 12) hours += 12;
+          if (!isPM && hours === 12) hours = 0;
+        } else {
+          // default to 12:00:00 AM
+          hours = 0;
+          minutes = 0;
+          seconds = 0;
+        }
+
+        // Format as ISO time component
+        const time = `T${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}Z`;
+        const date = new Date(expedition.properties.date_iso + time);
+        return date.toISOString()
+      }
+    );
+    return [...new Set(dates)];
+  });
+
+
+
+  const selectedExpeditionsExperiments = computed(() => {
+    // should be unique years
+    if (!selectedExpeditions.value) return [];
+
+    const experiments = selectedExpeditions.value.map(
+      (expedition: any) => expedition.properties.experiment
+    );
+    return [...new Set(experiments)];
+  });
+
 
   function closeDrawer() {
     drawer.value = false;
@@ -135,6 +222,14 @@ export const useMapStore = defineStore('map', () => {
     hoveredExpeditionPixel,
     onHover,
     drawer,
+    selectedExpeditions,
+    selectedExpeditionsYears,
+    selectedExpeditionsDates,
+    selectedExpeditionsExperiments,
+    selectedExpeditionYear,
+    setSelectedExpeditionYear,
+    selectedExpeditionExperiment,
+    setSelectedExpeditionExperiment,
     rawTooltipContent,
     tooltipPosition,
     visibleClasses,
