@@ -1,6 +1,76 @@
 <template>
   <div v-if="selectedExpedition" class="popup">
     <button class="close-btn" @click="closeExpedition">Back</button>
+    <div class="debug-dropdown">
+      <button class="debug-toggle" @click="isDebugOpen = !isDebugOpen">
+        {{ isDebugOpen ? 'Hide Debug Info' : 'Show Debug Info' }}
+      </button>
+      <div v-if="isDebugOpen" class="debug-content">
+        <div class="debug-panel">
+          <div class="debug-section">
+            <h4 class="debug-title">Collection Data</h4>
+            <div class="debug-item">
+              <span class="debug-label">Expeditions:</span>
+              <span class="debug-value">{{ selectedExpeditions.length }}</span>
+            </div>
+            <div class="debug-item">
+              <span class="debug-label">Location Hash:</span>
+              <span class="debug-value">{{ selectedExpedition.locationNameHash }}</span>
+            </div>
+          </div>
+          
+          <div class="debug-section">
+            <h4 class="debug-title">Selected Filters</h4>
+            <div class="debug-item">
+              <span class="debug-label">Date:</span>
+              <span class="debug-value">{{ selectedExpeditionDate }}</span>
+            </div>
+            <div class="debug-item">
+              <span class="debug-label">Year:</span>
+              <span class="debug-value">{{ selectedExpeditionYear }}</span>
+            </div>
+            <div class="debug-item">
+              <span class="debug-label">Experiment:</span>
+              <span class="debug-value">{{ selectedExpeditionExperiment }}</span>
+            </div>
+          </div>
+          
+          <div class="debug-section">
+            <h4 class="debug-title">Available Options</h4>
+            <div class="debug-item">
+              <span class="debug-label">Years:</span>
+              <span class="debug-value">{{ selectedExpeditionsYears }}</span>
+            </div>
+            <div class="debug-item">
+              <span class="debug-label">Dates:</span>
+              <span class="debug-value">{{ selectedExpeditionsDates }}</span>
+            </div>
+            <div class="debug-item">
+              <span class="debug-label">Experiments:</span>
+              <span class="debug-value">{{ selectedExpeditionsExperiments }}</span>
+            </div>
+          </div>
+          
+          <div class="debug-section">
+            <h4 class="debug-title">Relationships</h4>
+            <div class="debug-item">
+              <span class="debug-label">Years by Experiment:</span>
+              <pre class="debug-json">{{ JSON.stringify(selectedExpeditionsYearsByExperiment, null, 2) }}</pre>
+            </div>
+            <div class="debug-item">
+              <span class="debug-label">Dates by Experiment:</span>
+              <pre class="debug-json">{{ JSON.stringify(selectedExpeditionsDatesByExperiment, null, 2) }}</pre>
+            </div>
+            <div class="debug-item">
+              <span class="debug-label">Experiments by Years:</span>
+              <pre class="debug-json">{{ JSON.stringify(selectedExpeditionsExperimentsByYears, null, 2) }}</pre>
+            </div>
+          </div>
+        </div>
+
+        
+      </div>
+    </div>
     <h2 class="first-expedition-header">
       {{
         headerMap?.[selectedExpedition.experiment] ??
@@ -79,7 +149,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 // for now we hard code the data for Djibouti 3D Mapping
 import Djibouti3DMapping from '@/assets/data/dji_3d_mapping_all_results.json';
 import { useMapStore } from '@/stores/mapStore';
@@ -119,8 +189,22 @@ const formatCoordinate = (decimal: number): string => {
   return `${degrees.toString().padStart(2, '0')}º${minutes.toFixed(3)}'`;
 };
 
+const isDebugOpen = ref(false);
+
 const mapStore = useMapStore();
-const { selectedExpedition } = storeToRefs(mapStore);
+const {
+  selectedExpedition,
+  selectedExpeditions,
+  selectedExpeditionsYears,
+  selectedExpeditionsExperiments,
+  selectedExpeditionsDates,
+  selectedExpeditionYear,
+  selectedExpeditionExperiment,
+  selectedExpeditionDate,
+  selectedExpeditionsYearsByExperiment,
+selectedExpeditionsDatesByExperiment,
+selectedExpeditionsExperimentsByYears,
+} = storeToRefs(mapStore);
 const { closeExpedition } = mapStore;
 
 const countryLower = computed(
@@ -221,3 +305,60 @@ button {
   cursor: pointer;
 }
 </style>
+<style scoped>
+        .debug-panel {
+          background-color: #f8f9fa;
+          border-radius: 6px;
+          padding: 12px;
+          margin-bottom: 16px;
+          font-family: monospace;
+          font-size: 0.9rem;
+          box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .debug-section {
+          margin-bottom: 12px;
+          padding-bottom: 10px;
+          border-bottom: 1px solid #e0e0e0;
+        }
+
+        .debug-section:last-child {
+          border-bottom: none;
+          margin-bottom: 0;
+        }
+
+        .debug-title {
+          margin: 0 0 8px 0;
+          font-size: 1rem;
+          color: #333;
+          font-weight: bold;
+        }
+
+        .debug-item {
+          display: flex;
+          flex-direction: column;
+          margin-bottom: 6px;
+        }
+
+        .debug-label {
+          color: #666;
+          margin-right: 8px;
+          font-weight: bold;
+        }
+
+        .debug-value {
+          color: #0066cc;
+          word-break: break-word;
+        }
+
+        .debug-json {
+          background-color: #f0f0f0;
+          padding: 8px;
+          border-radius: 4px;
+          margin: 4px 0;
+          max-height: 120px;
+          overflow: auto;
+          font-size: 0.85rem;
+          white-space: pre-wrap;
+        }
+        </style>
