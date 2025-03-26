@@ -303,6 +303,73 @@ export const useMapStore = defineStore('map', () => {
     );
   });
 
+  function downloadExpedition(): void {
+    // create a pdf report via print using css print styles
+    // print the expedition page
+    // download the pdf
+    const expedition = selectedExpedition.value;
+    if (!expedition) return;
+    
+    const expeditionElement = document.getElementById('expedition-popup');
+    if (!expeditionElement) return;
+    
+    // Create a new window for printing
+    const printWindow = window.open('', '_blank');
+    if (!printWindow) {
+      alert('Please allow popups for this website to print the expedition report.');
+      return;
+    }
+    
+    // Get any stylesheets from the current page
+    const styleSheets = Array.from(document.styleSheets)
+      .map(styleSheet => {
+        try {
+          return styleSheet.href ? `<link rel="stylesheet" href="${styleSheet.href}">` : '';
+        } catch (e) {
+          return '';
+        }
+      })
+      .join('');
+    
+    // Add custom print styles
+    const printStyles = `
+      <style>
+        body { margin: 0; padding: 20px; }
+        @media print {
+          body { font-size: 12pt; }
+          button, .no-print { display: none !important; }
+        }
+      </style>
+    `;
+    
+    // Create the new document with content
+    printWindow.document.write(`
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Expedition Report - ${expedition.expe_name || 'Details'}</title>
+          ${styleSheets}
+          ${printStyles}
+        </head>
+        <body>
+          ${expeditionElement.outerHTML}
+        </body>
+      </html>
+    `);
+    
+    printWindow.document.close();
+    
+    // Wait for resources to load before printing
+    printWindow.onload = function() {
+      setTimeout(() => {
+        printWindow.print();
+        // Close the window after print dialog is closed (optional)
+        printWindow.onafterprint = function() {
+          printWindow.close();
+        };
+      }, 500);
+    };
+  }
   return {
     isValidSampleSet,
     sampleSet,
@@ -333,6 +400,7 @@ export const useMapStore = defineStore('map', () => {
     visibleClasses,
     closeDrawer,
     closeExpedition,
+    downloadExpedition,
     selectCountry,
     selectExpedition,
     setClassVisibility,
