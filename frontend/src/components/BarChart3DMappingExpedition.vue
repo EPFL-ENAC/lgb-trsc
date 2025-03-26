@@ -8,11 +8,28 @@ import 'echarts/lib/chart/bar'; // Import bar chart
 import 'echarts/lib/component/tooltip'; // Import tooltip component
 import 'echarts/lib/component/title'; // Import title component
 import 'echarts/lib/component/legend'; // Import legend component
-import { d3MappingColorSubstrate1 as colorPalette } from '@/maps/config/layerColors';
 import {
   validSubstrates,
+  validSubstrates2,
   validSubtrateMap,
 } from '@/maps/config/substrateOrder';
+import {
+  d3MappingColorSubstrate1 as colorPalette,
+  d3MappingColorSubstrate2 as colorPalette2,
+} from '@/maps/config/layerColors';
+import { debounce } from 'lodash';
+
+const TIME_OUT = 150;
+
+const substrateLevelMapColor = {
+  Substrate_coarse: colorPalette,
+  Substrate_intermediate: colorPalette2,
+};
+
+const validSubstratesMap = {
+  Substrate_coarse: validSubstrates,
+  Substrate_intermediate: validSubstrates2,
+};
 
 export default {
   name: 'BarChart3DMappingExpedition',
@@ -33,6 +50,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    substrateLevel: {
+      type: String,
+      default: 'Substrate_coarse',
+    },
   },
   data() {
     return {
@@ -51,37 +72,72 @@ export default {
       },
       deep: true,
     },
+
+    substrateLevel: {
+      handler(newValue) {
+        this.chart.clear();
+        const option = this.getChartOption(this.rawData, newValue);
+        this.chart.setOption(option);
+      },
+    },
+    windowResizeInnerWidth: {
+      handler(newValue) {
+        this.handleResize(newValue);
+      },
+    },
+    windowResizeInnerHeight: {
+      handler(newValue) {
+        this.handleResize(newValue);
+      },
+    },
   },
   mounted() {
     this.initChart();
+    addEventListener('resize', this.updateWidth);
   },
-  unmounted() {
+  umounted() {
     this.chart?.dispose();
-    this.chart = null;
+    removeEventListener('resize', this.updateWidth);
+    this.handleResize.cancel();
   },
   methods: {
+    handleResize: debounce(function () {
+      if (this.chart) {
+        this.chart.dispose();
+        this.chart.clear();
+        this.chart = null;
+        this.chart = echarts.init(this.$refs.chart);
+        const option = this.getChartOption(this.rawData, this.substrateLevel);
+        this.chart.setOption(option);
+      }
+    }, TIME_OUT),
+    updateWidth(value) {
+      this.windowResizeInnerWidth = value.target.innerWidth;
+      this.windowResizeInnerHeight = value.target.innerHeight;
+    },
     initChart() {
       if (this.chart == null) {
         this.chart = echarts.init(this.$refs.chart);
       }
-      const option = this.getChartOption(this.rawData);
+      const option = this.getChartOption(this.rawData, this.substrateLevel);
       this.chart.setOption(option);
     },
     getChartOption(data) {
-      function processData(data) {
+      function processData(data, substrateLevel) {
         const seriesData = {}; // init to 0
+        const currentSubstrates = validSubstratesMap[substrateLevel];
         // init to 0
-        validSubstrates.forEach((substrate) => {
+        currentSubstrates.forEach((substrate) => {
           seriesData[substrate] = 0;
         });
 
         data.forEach((item) => {
-          if (validSubstrates.includes(item.Substrate_coarse)) {
-            seriesData[item.Substrate_coarse] += item.mean;
+          if (currentSubstrates.includes(item[substrateLevel])) {
+            seriesData[item[substrateLevel]] += item.mean;
           }
         });
-        return validSubstrates.map((substrate, index) => {
-          const size = validSubstrates.length;
+        const size = currentSubstrates.length;
+        return currentSubstrates.map((substrate, index) => {
           const _data = new Array(size).fill(0);
           _data[index] = seriesData[substrate];
 
@@ -90,7 +146,7 @@ export default {
             type: 'bar',
             data: _data,
             itemStyle: {
-              color: colorPalette[index],
+              color: substrateLevelMapColor?.[substrateLevel][index],
             },
             barGap: '-100%',
             barCategoryGap: '0%',
@@ -123,27 +179,26 @@ export default {
       }
       return {
         title: {
-          text: 'Benthic cover at coarse substrate level',
+          text: `Benthic cover at ${this.substrateLevel} level`,
           left: '-6px',
         },
         tooltip: localTooltip,
         legend: {
-          data: validSubstrates,
           formatter: function (name) {
             return validSubtrateMap[name];
           },
           orient: 'horizontal',
-          bottom: 10,
+          bottom: this.substrateLevel === 'Substrate_coarse' ? 0 : 0,
         },
         grid: {
           left: '2.4%',
           right: '4%',
-          bottom: '130px',
+          bottom: this.substrateLevel === 'Substrate_coarse' ? '100px' : '250px',
           containLabel: true,
         },
         xAxis: {
           type: 'category',
-          data: validSubstrates,
+          data: validSubstratesMap[this.substrateLevel],
           axisLabel: {
             show: false,
           },
@@ -160,7 +215,7 @@ export default {
           max: 1,
           min: 0,
         },
-        series: processData(data),
+        series: processData(data, this.substrateLevel),
       };
     },
   },

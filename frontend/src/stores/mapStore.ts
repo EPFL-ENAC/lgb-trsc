@@ -4,6 +4,7 @@ import { useLayerController } from '@/maps/composables/useLayerController';
 import { useMapController } from '@/maps/composables/useMapController';
 import { useLayerStyles } from '@/maps/composables/useLayerStyles';
 import DjiboutiExpeditions from '@/assets/data/Expeditions.json';
+import Djibouti3DMapping from '@/assets/data/dji_3d_mapping_all_results.json';
 
 interface CountryProperties {
   name: string;
@@ -68,6 +69,11 @@ export const useMapStore = defineStore('map', () => {
   const selectedExpeditionExperiment = ref<string | null>(null);
   function setSelectedExpeditionExperiment(experiment: string) {
     selectedExpeditionExperiment.value = experiment;
+  }
+
+  const selectedExpeditionSubstrateLevel = ref<string>('Substrate_coarse');
+  function setSelectedExpeditionSubstrateLevel(substrateLevel: string) {
+    selectedExpeditionSubstrateLevel.value = substrateLevel;
   }
 
   const {
@@ -274,7 +280,43 @@ export const useMapStore = defineStore('map', () => {
     _drawer.value = false;
   }
 
+
+
+  const sampleSet = computed(() => {
+    try {
+      const eventID = selectedExpedition.value?.event_id;
+      const sampleByIds =
+        Djibouti3DMapping?.filter(
+          (d3Mapping) => d3Mapping.event_id === eventID
+        ) || [];
+  
+      const result = sampleByIds.filter(
+        (d3Mapping) => d3Mapping.date_iso === selectedExpedition.value?.date_iso
+      );
+      return result.map((x) => ({
+        [selectedExpeditionSubstrateLevel.value]: String((x as any)[selectedExpeditionSubstrateLevel.value]),
+        mean: Number(x.mean),
+      }));
+    } catch (error) {
+      console.error('Error processing sample set:', error);
+      return [];
+    }
+  });
+  
+  const isValidSampleSet = computed(() => {
+    return sampleSet.value.every(
+      (sample) =>
+        typeof sample === 'object' &&
+        sample !== null &&
+        selectedExpeditionSubstrateLevel.value in sample &&
+        'mean' in sample &&
+        typeof sample.mean === 'number'
+    );
+  });
+
   return {
+    isValidSampleSet,
+    sampleSet,
     selectedCountry,
     selectedExpedition,
     selectedEnvironmentalClusterNumber,
@@ -306,5 +348,7 @@ export const useMapStore = defineStore('map', () => {
     setClassVisibility,
     setAllClassesVisibility,
     resetAll,
+    selectedExpeditionSubstrateLevel,
+    setSelectedExpeditionSubstrateLevel,
   };
 });

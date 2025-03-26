@@ -107,12 +107,20 @@
     </p>
     <div v-if="selectedExpedition.experiment === '3D'">
       <div v-if="sampleSet.length > 0">
+        <q-toggle
+              v-model="selectedExpeditionSubstrateLevel"
+              true-value="Substrate_coarse"
+              false-value="Substrate_intermediate"
+              :label="selectedExpeditionSubstrateLevel"
+            ></q-toggle>
         <BarChart3DMappingExpedition
           v-if="isValidSampleSet"
           :raw-data="sampleSet"
           height="400px"
           width="400px"
+          :substrate-level="selectedExpeditionSubstrateLevel"
           :tooltip="true"
+          :scroll-legend="true"
         />
       </div>
       <div v-else>No 3D Mapping data available</div>
@@ -151,7 +159,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 // for now we hard code the data for Djibouti 3D Mapping
-import Djibouti3DMapping from '@/assets/data/dji_3d_mapping_all_results.json';
 import { useMapStore } from '@/stores/mapStore';
 import BarChart3DMappingExpedition from '@/components/BarChart3DMappingExpedition.vue';
 import { storeToRefs } from 'pinia';
@@ -177,10 +184,6 @@ interface MappingData {
   mean: number;
 }
 
-const threedMappingByCountry: Record<string, MappingData[]> = {
-  djibouti: Djibouti3DMapping as any,
-};
-
 const formatCoordinate = (decimal: number): string => {
   const absolute = Math.abs(decimal);
   const degrees = Math.floor(absolute);
@@ -202,8 +205,11 @@ const {
   selectedExpeditionExperiment,
   selectedExpeditionDate,
   selectedExpeditionsYearsByExperiment,
-selectedExpeditionsDatesByExperiment,
-selectedExpeditionsExperimentsByYears,
+  selectedExpeditionsDatesByExperiment,
+  selectedExpeditionsExperimentsByYears,
+  selectedExpeditionSubstrateLevel,
+  isValidSampleSet,
+  sampleSet,
 } = storeToRefs(mapStore);
 const { closeExpedition } = mapStore;
 
@@ -220,37 +226,6 @@ const computedCountryCommunities = computed(() => {
   );
 });
 
-const sampleSet = computed(() => {
-  try {
-    const eventID = selectedExpedition.value?.event_id;
-    const sampleByIds =
-      threedMappingByCountry[countryLower.value]?.filter(
-        (d3Mapping) => d3Mapping.event_id === eventID
-      ) || [];
-
-    const result = sampleByIds.filter(
-      (d3Mapping) => d3Mapping.date_iso === selectedExpedition.value?.date_iso
-    );
-    return result.map((x) => ({
-      Substrate_coarse: String(x.Substrate_coarse),
-      mean: Number(x.mean),
-    }));
-  } catch (error) {
-    console.error('Error processing sample set:', error);
-    return [];
-  }
-});
-
-const isValidSampleSet = computed(() => {
-  return sampleSet.value.every(
-    (sample) =>
-      typeof sample === 'object' &&
-      sample !== null &&
-      'Substrate_coarse' in sample &&
-      'mean' in sample &&
-      typeof sample.mean === 'number'
-  );
-});
 </script>
 
 <style scoped>

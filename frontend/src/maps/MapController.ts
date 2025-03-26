@@ -207,6 +207,7 @@ export class MapController {
 
     const { selectCountry, selectExpedition } = mapStore;
 
+    // should be moved to the store
     // Define any extra parameters (raw data, expedition GeoJSON, and a new style)
     const threeDMappingByCountry = {
       /* your raw country data here */
