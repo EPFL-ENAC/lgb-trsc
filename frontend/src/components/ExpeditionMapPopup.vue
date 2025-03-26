@@ -108,7 +108,18 @@
       {{ formatCoordinate(selectedExpedition.latitude_end, 'N') }} E
       {{ formatCoordinate(selectedExpedition.longitude_end, 'E') }}
     </p>
-    <p>{{ selectedExpedition.date_iso }}</p>
+    <p>
+      {{
+        DateFormatter.formatDate(
+          selectedExpeditionsDatesByExperiment[dateSliderIndex],
+          {
+            locale,
+            dateStyle: 'long',
+            timeStyle: 'long',
+          }
+        )
+      }}
+    </p>
     <p v-if="selectedExpedition.experiment === '3D'">
       Length of the transect: {{ selectedExpedition.length }} m
     </p>
@@ -124,20 +135,14 @@
       "
       class="date-slider-container"
     >
-      <div class="date-label">
-        {{ selectedExpeditionsDatesByExperiment[dateSliderIndex] }}
-      </div>
       <q-slider
         v-model="dateSliderIndex"
         :min="0"
         :max="selectedExpeditionsDatesByExperiment.length - 1"
         :step="1"
         label
-        :label-value="selectedExpeditionsDatesByExperiment[dateSliderIndex]"
-        @update:model-value="
-          (newValue) =>
-            console.log(newValue)
-        "
+        :label-value="DateFormatter.formatDate(selectedExpeditionsDatesByExperiment[dateSliderIndex])"
+        @update:model-value="(newValue) => console.log(newValue)"
       />
     </div>
     <div v-if="selectedExpedition.experiment === '3D'">
@@ -198,7 +203,12 @@ import { useMapStore } from '@/stores/mapStore';
 import BarChart3DMappingExpedition from '@/components/BarChart3DMappingExpedition.vue';
 import { storeToRefs } from 'pinia';
 import communities from '@/assets/communities';
+import { DateFormatter } from '@/dateFormatter';
+// import i18n from '@/';
 
+// const vueI18n = i18n.global;
+
+const locale = 'en-US';
 const headerMap = {
   '3D': '3D Mapping',
   eDNA: 'eDNA',
