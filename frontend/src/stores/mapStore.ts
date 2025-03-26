@@ -101,9 +101,59 @@ export const useMapStore = defineStore('map', () => {
     return [...new Set(years)];
   });
 
+  const selectedExpeditionsYearsByExperiment = computed(() => {
+    // should be unique years
+    if (!selectedExpeditions.value) return [];
 
-  function formatExpeditionDateTime(dateIso: string, timeStr = '12:00:00 AM'): string {
-    let hours = 0, minutes = 0, seconds = 0;
+    const years = selectedExpeditions.value
+      .filter(
+        (expedition: any) =>
+          expedition.properties.experiment ===
+          selectedExpeditionExperiment.value
+      )
+      .map((expedition: any) => expedition.properties.year);
+    return [...new Set(years)];
+  });
+
+  const selectedExpeditionsDatesByExperiment = computed(() => {
+    // should be unique years
+    if (!selectedExpeditions.value) return [];
+
+    const dates = selectedExpeditions.value
+      .filter(
+        (expedition: any) =>
+          expedition.properties.experiment ===
+          selectedExpeditionExperiment.value
+      )
+      .map((expedition: any) =>
+        formatExpeditionDateTime(
+          expedition.properties.date_iso,
+          expedition.properties.time || '12:00:00 AM'
+        )
+      );
+    return [...new Set(dates)];
+  });
+
+  const selectedExpeditionsExperimentsByYears = computed(() => {
+    // should be unique years
+    if (!selectedExpeditions.value) return [];
+
+    const experiments = selectedExpeditions.value
+      .filter(
+        (expedition: any) =>
+          expedition.properties.year === selectedExpeditionYear.value
+      )
+      .map((expedition: any) => expedition.properties.experiment);
+    return [...new Set(experiments)];
+  });
+
+  function formatExpeditionDateTime(
+    dateIso: string,
+    timeStr = '12:00:00 AM'
+  ): string {
+    let hours = 0,
+      minutes = 0,
+      seconds = 0;
 
     // Parse the time string (format: "2:00:00 PM")
     const timeParts = timeStr.match(/(\d+):(\d+):(\d+)\s*(AM|PM)/i);
@@ -112,14 +162,16 @@ export const useMapStore = defineStore('map', () => {
       minutes = parseInt(timeParts[2], 10);
       seconds = parseInt(timeParts[3], 10);
       const isPM = timeParts[4].toUpperCase() === 'PM';
-      
+
       // Convert 12-hour to 24-hour format
       if (isPM && hours < 12) hours += 12;
       if (!isPM && hours === 12) hours = 0;
     }
 
     // Format as ISO time component
-    const time = `T${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}Z`;
+    const time = `T${hours.toString().padStart(2, '0')}:${minutes
+      .toString()
+      .padStart(2, '0')}:${seconds.toString().padStart(2, '0')}Z`;
     const date = new Date(dateIso + time);
     return date.toISOString();
   }
@@ -128,18 +180,14 @@ export const useMapStore = defineStore('map', () => {
     // should be unique years
     if (!selectedExpeditions.value) return [];
 
-    const dates = selectedExpeditions.value.map(
-      (expedition: any) => {
-        return formatExpeditionDateTime(
-          expedition.properties.date_iso, 
-          expedition.properties.time || '12:00:00 AM'
-        );
-      }
-    );
+    const dates = selectedExpeditions.value.map((expedition: any) => {
+      return formatExpeditionDateTime(
+        expedition.properties.date_iso,
+        expedition.properties.time || '12:00:00 AM'
+      );
+    });
     return [...new Set(dates)];
   });
-
-
 
   const selectedExpeditionsExperiments = computed(() => {
     // should be unique years
@@ -150,7 +198,6 @@ export const useMapStore = defineStore('map', () => {
     );
     return [...new Set(experiments)];
   });
-
 
   function closeDrawer() {
     drawer.value = false;
@@ -181,10 +228,9 @@ export const useMapStore = defineStore('map', () => {
     // setup selectedExpeditionYear and selectedExpeditionExperiment
     setSelectedExpeditionYear(properties.year);
     setSelectedExpeditionExperiment(properties.experiment);
-    setSelectedExpeditionDate(formatExpeditionDateTime(
-      properties.date_iso, 
-      properties.time,
-    ));
+    setSelectedExpeditionDate(
+      formatExpeditionDateTime(properties.date_iso, properties.time)
+    );
     drawer.value = true;
   }
 
@@ -241,6 +287,9 @@ export const useMapStore = defineStore('map', () => {
     selectedExpeditionsYears,
     selectedExpeditionsDates,
     selectedExpeditionsExperiments,
+    selectedExpeditionsYearsByExperiment,
+    selectedExpeditionsDatesByExperiment,
+    selectedExpeditionsExperimentsByYears,
     selectedExpeditionYear,
     setSelectedExpeditionYear,
     selectedExpeditionDate,
