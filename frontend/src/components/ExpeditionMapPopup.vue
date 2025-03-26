@@ -182,8 +182,20 @@
           :tooltip="true"
           :scroll-legend="true"
         />
+        </div>
+        <hr class="expedition-separation-bar" />
+        <StackedLine3DMappingExpeditions
+          v-if="isValidSampleSet"
+          :raw-data="demoTimeSeries"
+          height="400px"
+          width="400px"
+          :substrate-level="selectedExpeditionSubstrateLevel"
+          :tooltip="true"
+          :scroll-legend="true"
+        />
       </div>
       <div v-else>No 3D Mapping data available</div>
+      <hr class="expedition-separation-bar" />
       <p>
         Data generated with the
         <a href="https://josauder.github.io/deepreefmap/" target="_blank"
@@ -213,7 +225,6 @@
         </div>
       </div>
     </div>
-  </div>
 </template>
 
 <script setup lang="ts">
@@ -221,6 +232,7 @@ import { computed, ref } from 'vue';
 // for now we hard code the data for Djibouti 3D Mapping
 import { useMapStore } from '@/stores/mapStore';
 import BarChart3DMappingExpedition from '@/components/BarChart3DMappingExpedition.vue';
+import StackedLine3DMappingExpeditions from '@/components/StackedLine3DMappingExpeditions.vue';
 import { storeToRefs } from 'pinia';
 import communities from '@/assets/communities';
 import { DateFormatter } from '@/dateFormatter';
@@ -235,6 +247,39 @@ const headerMap: Record<string, string> = {
   eDNA: 'eDNA',
   seascape_genomics: 'Seascape Genomics',
 };
+
+const demoTimeSeries = [
+    {
+      name: 'Email',
+      type: 'line',
+      stack: 'Total',
+      data: [120, 132, 101, 134, 90, 230, 210]
+    },
+    {
+      name: 'Union Ads',
+      type: 'line',
+      stack: 'Total',
+      data: [220, 182, 191, 234, 290, 330, 310]
+    },
+    {
+      name: 'Video Ads',
+      type: 'line',
+      stack: 'Total',
+      data: [150, 232, 201, 154, 190, 330, 410]
+    },
+    {
+      name: 'Direct',
+      type: 'line',
+      stack: 'Total',
+      data: [320, 332, 301, 334, 390, 330, 320]
+    },
+    {
+      name: 'Search Engine',
+      type: 'line',
+      stack: 'Total',
+      data: [820, 932, 901, 934, 1290, 1330, 1320]
+    }
+  ];
 
 interface MappingData {
   id: number;
