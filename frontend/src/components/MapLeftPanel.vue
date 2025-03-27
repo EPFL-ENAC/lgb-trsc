@@ -106,7 +106,7 @@
                         <q-tooltip>
                           <q-card>
                             <q-card-section>
-                              <q-card-title>
+                              <h3>
                                 <span
                                   style="
                                     color: black;
@@ -116,7 +116,7 @@
                                 >
                                   {{ layerinfo.layer.get('description') }}
                                 </span>
-                              </q-card-title>
+                              </h3>
                             </q-card-section>
                           </q-card>
                         </q-tooltip>

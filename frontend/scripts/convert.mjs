@@ -7,6 +7,35 @@ const djibouti_2023_3d = 'dji_3d_mapping_all_results';
 
 let dji3d = [];
 
+function formatExpeditionDateTime(
+  dateIso, // ISO date string (format: "2023-01-01")
+  timeStr = '12:00:00 AM'
+) {
+  let hours = 0,
+    minutes = 0,
+    seconds = 0;
+
+  // Parse the time string (format: "2:00:00 PM")
+  const timeParts = timeStr.match(/(\d+):(\d+):(\d+)\s*(AM|PM)/i);
+  if (timeParts) {
+    hours = parseInt(timeParts[1], 10);
+    minutes = parseInt(timeParts[2], 10);
+    seconds = parseInt(timeParts[3], 10);
+    const isPM = timeParts[4].toUpperCase() === 'PM';
+
+    // Convert 12-hour to 24-hour format
+    if (isPM && hours < 12) hours += 12;
+    if (!isPM && hours === 12) hours = 0;
+  }
+
+  // Format as ISO time component
+  const time = `T${hours.toString().padStart(2, '0')}:${minutes
+    .toString()
+    .padStart(2, '0')}:${seconds.toString().padStart(2, '0')}Z`;
+  const date = new Date(dateIso + time);
+  return date.toISOString();
+}
+
 await csv({ checkType: true, ignoreEmpty: true, trim: true })
   .fromFile(`./src/assets/data/${djibouti_2023_3d}.csv`)
   .then((jsonObj) => {
@@ -21,10 +50,11 @@ await csv({ checkType: true, ignoreEmpty: true, trim: true })
         reef_area: obj.reef_area,
         sampling_site_name: obj.sampling_site_name,
         event_id: obj.event_id,
-        experiment: obj.experiment,
+        experiments: obj.experiment,
         year: obj.date_iso.split('-')[0],
         date_iso: obj.date_iso,
         time: obj.time,
+        full_date_iso: formatExpeditionDateTime(obj.date_iso, obj.time),
         country: obj.country,
         depth: obj.depth,
         country_abbr: obj.country_abbr,
@@ -47,6 +77,17 @@ await csv({ checkType: true, ignoreEmpty: true, trim: true })
 
 const expeditions = 'Expeditions';
 
+// Function to get hard_coral_cover category based on mean value
+const getHardCoralCoverCategory = (mean) => {
+  if (!mean === null || mean === undefined) return undefined;
+  const percentage = mean * 100;
+  if (percentage <= 10) return '0-10%';
+  if (percentage <= 30) return '10-30%';
+  if (percentage <= 50) return '30-50%';
+  if (percentage <= 75) return '50-75%';
+  return '75-100%';
+};
+
 await csv({ checkType: true, ignoreEmpty: true, trim: true })
   .fromFile(`./src/assets/data/${expeditions}.csv`)
   .then((jsonObj) => {
@@ -60,21 +101,16 @@ await csv({ checkType: true, ignoreEmpty: true, trim: true })
       const featureGeometry = {
         type: 'Feature',
         geometry: {
-          type: 'LineString',
-          coordinates: [
-            [obj.longitude_start, obj.latitude_start], // Starting point: [longitude, latitude]
-            [obj.longitude_end, obj.latitude_end], // Ending point: [longitude, latitude]
-          ],
+          type: obj.longitude_end && obj.latitude_end ? 'LineString' : 'Point',
+          coordinates:
+            obj.longitude_end && obj.latitude_end
+              ? [
+                  [obj.longitude_start, obj.latitude_start],
+                  [obj.longitude_end, obj.latitude_end],
+                ]
+              : [obj.longitude_start, obj.latitude_start],
         },
       };
-
-      if (obj.longitude_end == null || obj.latitude_end == null) {
-        featureGeometry.geometry.type = 'Point';
-        featureGeometry.geometry.coordinates = [
-          obj.longitude_start,
-          obj.latitude_start,
-        ];
-      }
 
       // Create a unique ID based on the SHA256 hash of the object
       const objectString = JSON.stringify(obj);
@@ -82,16 +118,16 @@ await csv({ checkType: true, ignoreEmpty: true, trim: true })
         .createHash('sha256')
         .update(objectString)
         .digest('hex');
-      // Function to get hard_coral_cover category based on mean value
-      const getHardCoralCoverCategory = (mean) => {
-        if (!mean === null || mean === undefined) return undefined;
-        const percentage = mean * 100;
-        if (percentage <= 10) return '0-10%';
-        if (percentage <= 30) return '10-30%';
-        if (percentage <= 50) return '30-50%';
-        if (percentage <= 75) return '50-75%';
-        return '75-100%';
-      };
+      const locationHash = crypto
+        .createHash('sha256')
+        .update(
+          `${obj.latitude_start}${obj.longitude_start}${obj.latitude_end}${obj.longitude_end}`
+        )
+        .digest('hex');
+      const locationNameHash = crypto
+        .createHash('sha256')
+        .update(`${obj.region_name}${obj.reef_area}${obj.sampling_site_name}`)
+        .digest('hex');
 
       // Find all entries in dji3d with matching event_id and sum their mean values
       const matchingEntries = dji3d.filter((d) => d.event_id === obj.event_id);
@@ -111,13 +147,18 @@ await csv({ checkType: true, ignoreEmpty: true, trim: true })
       result.features.push({
         id: hash,
         event_id: obj.event_id,
+        locationHash,
+        locationNameHash,
         ...featureGeometry,
         properties: {
-          type: 'Expedition',
+          locationHash,
+          locationNameHash,
+          type: obj.Exploration_or_Monitoring ?? 'Exploration',
           country: obj.country,
           country_abbr: obj.country_abbr,
           date_iso: obj.date_iso,
           year: obj.date_iso.split('-')[0],
+          full_date_iso: formatExpeditionDateTime(obj.date_iso, obj.time),
           experiment: obj.experiment,
           hard_coral_cover: hardCoralCover,
           depth,

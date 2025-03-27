@@ -12,14 +12,14 @@ export const validSubstrates = [
   'trash',
 ];
 
-export const validSubtrateMap = {
+export const validSubtrateMapKeyText: Record<string, string> = {
   sand: 'sand',
   rubble: 'rubble',
   unknown_hard_substrate: 'unknown hard substrate',
   algae_covered_substrate: 'algae covered substrate',
   coral_bleached: 'bleached coral',
   coral_dead: 'dead coral',
-  coral_alive: 'live coral',
+  coral_alive: 'alive coral',
   other_invertebrates: 'other invertebrates',
   anemone: 'anemone',
   other_animal: 'other animal',
@@ -69,3 +69,9 @@ export const validSubstrates2 = [
   'meandering_alive',
   'massive/meandering_dead',
 ];
+
+
+export const validSubstratesMap: Record<string, string[]> = {
+  Substrate_coarse: validSubstrates,
+  Substrate_intermediate: validSubstrates2,
+};

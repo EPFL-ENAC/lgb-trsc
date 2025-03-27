@@ -207,6 +207,7 @@ export class MapController {
 
     const { selectCountry, selectExpedition } = mapStore;
 
+    // should be moved to the store
     // Define any extra parameters (raw data, expedition GeoJSON, and a new style)
     const threeDMappingByCountry = {
       /* your raw country data here */
@@ -267,9 +268,8 @@ export class MapController {
     }
   }
 
-  public zoomToCountry(properties: any): void {
+  public getCountryExtent = () => {
     const mapStore = useMapStore();
-    mapStore.selectCountry(properties);
     const selectedCountry = mapStore.selectedCountry;
     if (selectedCountry && selectedCountry.coastline) {
       const coastlineFeature = new GeoJSON().readFeature(
@@ -278,16 +278,25 @@ export class MapController {
           featureProjection: 'EPSG:4326',
         }
       ) as Feature;
-
       const extent = coastlineFeature.getGeometry()?.getExtent();
-      if (!extent) return;
+      if (extent) {
+        const transformedExtent = transformExtent(
+          extent,
+          'EPSG:4326',
+          'EPSG:3857'
+        );
+        return transformedExtent;
+      }
+    }
+    return null;
+  };
 
-      const transformedExtent = transformExtent(
-        extent,
-        'EPSG:4326',
-        'EPSG:3857'
-      );
+  public zoomToCountry(properties: any): void {
+    const mapStore = useMapStore();
+    mapStore.selectCountry(properties);
 
+    const extent = this.getCountryExtent();
+    if (extent) {
       const layerGroups = this.overlayMaps?.getLayers();
       layerGroups?.forEach((layerGroup) => {
         if (layerGroup.get('showForcountryOnly')) {
@@ -299,8 +308,8 @@ export class MapController {
         currentView.zoom = defaultZoomCountry;
         currentView.minZoom = defaultMinZoomCountry;
         currentView.maxZoom = defaultMaxZoomCountry;
-        currentView.center = getCenter(transformedExtent);
-        currentView.extent = transformedExtent;
+        currentView.center = getCenter(extent);
+        currentView.extent = extent;
       }
 
       // Hide overview map in country scope
@@ -314,7 +323,7 @@ export class MapController {
       });
 
       this.map?.setView(new View(currentView));
-      this.map?.getView().fit(transformedExtent, { duration: 300 });
+      this.map?.getView().fit(extent, { duration: 300 });
       this.map
         ?.getView()
         .animate({ zoom: defaultMinZoomCountry, duration: 300 });
@@ -379,7 +388,6 @@ export class MapController {
           ? getCenter(transformedExtent)
           : defaultCenter;
       }
-
       this.map?.setView(new View(currentView));
       this.map?.getView().animate({
         zoom: 14,
@@ -388,40 +396,6 @@ export class MapController {
           ? getCenter(transformedExtent)
           : defaultCenter,
       });
-    }
-  };
-
-  public zoomOutOfExpedition = () => {
-    const mapStore = useMapStore();
-    const selectedCountry = mapStore.selectedCountry;
-    if (selectedCountry && selectedCountry.coastline) {
-      const coastlineFeature = new GeoJSON().readFeature(
-        selectedCountry.coastline,
-        {
-          featureProjection: 'EPSG:4326',
-        }
-      ) as Feature;
-
-      const extent = coastlineFeature.getGeometry()?.getExtent();
-      if (!extent) return;
-
-      const transformedExtent = transformExtent(
-        extent,
-        'EPSG:4326',
-        'EPSG:3857'
-      );
-
-      this.map?.getView().fit(transformedExtent, { duration: 300 });
-      const currentView = this.map?.getView().getProperties();
-      if (currentView) {
-        currentView.zoom = defaultZoomCountry;
-        currentView.minZoom = defaultMinZoomCountry;
-        currentView.maxZoom = defaultMaxZoomCountry;
-        currentView.center = getCenter(transformedExtent);
-        currentView.extent = transformedExtent;
-      }
-
-      this.map?.setView(new View(currentView));
     }
   };
 }

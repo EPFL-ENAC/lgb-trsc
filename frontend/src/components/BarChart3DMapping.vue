@@ -9,27 +9,15 @@ import 'echarts/lib/component/tooltip'; // Import tooltip component
 import 'echarts/lib/component/title'; // Import title component
 import 'echarts/lib/component/legend'; // Import legend component
 import {
-  d3MappingColorSubstrate1 as colorPalette,
-  d3MappingColorSubstrate2 as colorPalette2,
+  substrateLevelMapColor
 } from '@/maps/config/layerColors';
 import {
-  validSubstrates,
-  validSubstrates2,
-  validSubtrateMap,
+  validSubstratesMap,
+  validSubtrateMapKeyText,
 } from '@/maps/config/substrateOrder';
 import { debounce } from 'lodash';
 
 const TIME_OUT = 150;
-
-const substrateLevelMapColor = {
-  Substrate_coarse: colorPalette,
-  Substrate_intermediate: colorPalette2,
-};
-
-const validSubstratesMap = {
-  Substrate_coarse: validSubstrates,
-  Substrate_intermediate: validSubstrates2,
-};
 
 export default {
   name: 'BarChart3DMapping',
@@ -222,7 +210,7 @@ export default {
           data: validSubstratesMap[substrateLevel],
 
           formatter: function (name) {
-            return validSubtrateMap[name];
+            return validSubtrateMapKeyText[name];
           },
           type: legendType,
           orient: 'horizontal',
