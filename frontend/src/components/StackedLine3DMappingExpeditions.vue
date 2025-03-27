@@ -42,33 +42,67 @@ const chartRef = ref<HTMLElement | null>(null);
 const chart = ref<echarts.ECharts | null>(null);
 
 // Methods
-const preselectedLegend = ['live coral', 'dead coral', 'bleached coral'];
+const preselectedLegendCoarse = ['bleached coral', 'dead coral', 'alive coral'];
+
+const preselectedLegendIntermediate = [
+    'massive/meandering_alive',
+'other_coral_alive',
+'branching_alive',
+'meandering_alive',
+'other_coral_dead',
+'branching_dead',
+'meandering_dead',
+'branching_bleached',
+'meandering_bleached',
+'massive/meandering_bleached',
+'other_coral_bleached',
+'massive/meandering_dead',
+].map(legend => validSubtrateMapKeyText[legend]);
+
+const substrateLevelPresetMap: Record<string, string[]> = {
+  Substrate_coarse: preselectedLegendCoarse,
+  Substrate_intermediate: preselectedLegendIntermediate,
+};
+
 const locale = 'en-US';
 
-const getChartOption = (data: any[]) => {
+const getChartOption = (data: any[], substrateLevel: string) => {
+  const selected = validSubstratesMap[substrateLevel].reduce(
+    (acc, substrate) => {
+      const name = validSubtrateMapKeyText[substrate];
+      acc[name] = substrateLevelPresetMap[substrateLevel].includes(name);
+      return acc;
+    },
+    {} as Record<string, boolean>
+  );
   return {
     title: {
-      text: 'Stacked Line',
+      text: 'Timeseries',
     },
     tooltip: {
       trigger: 'axis',
     },
     legend: {
-      data: data.map((item) => item.name),
-      selected: validSubstratesMap[props.substrateLevel].reduce(
-        (acc, substrate) => {
-          acc[validSubtrateMapKeyText[substrate]] = preselectedLegend.includes(
-            validSubtrateMapKeyText[substrate]
-          );
+      // Simplify legend data to just be an array of strings matching series names
+      data: data.map(item => item.name),
+      orient: 'horizontal',
+      selectedMode: 'multiple',
+      bottom: substrateLevel === 'Substrate_coarse' ? 0 : 0,
+      selected,
+      // Apply colors to legend items through textStyle
+      textStyle: {
+        rich: data.reduce((acc, item, index) => {
+          acc[item.name] = {
+            color: substrateLevelMapColor?.[substrateLevel][index]
+          };
           return acc;
-        },
-        {} as Record<string, boolean>
-      ),
+        }, {})
+      }
     },
     grid: {
       left: '3%',
       right: '4%',
-      bottom: '3%',
+      bottom: substrateLevel === 'Substrate_coarse' ? '100px' : '250px',
       containLabel: true,
     },
     toolbox: {
@@ -90,11 +124,24 @@ const getChartOption = (data: any[]) => {
     yAxis: {
       type: 'value',
     },
-    series: data.map((item) => ({
+    series: data.map((item, index) => ({
       name: item.name,
       type: 'line',
+      lineStyle: {
+        width: 2,
+        color: substrateLevelMapColor?.[substrateLevel][index],
+      },
       stack: 'Total',
       data: item.data,
+      color: substrateLevelMapColor?.[substrateLevel][index],
+      // Add itemStyle to ensure legend interactions work properly
+      itemStyle: {
+        color: substrateLevelMapColor?.[substrateLevel][index]
+      },
+      // Add specific emphasis settings
+      emphasis: {
+        focus: 'series'
+      }
     })),
   };
 };
@@ -103,22 +150,43 @@ const initChart = () => {
   if (chart.value == null && chartRef.value) {
     chart.value = echarts.init(chartRef.value);
   }
-  const option = getChartOption(props.rawData);
+  const option = getChartOption(props.rawData, props.substrateLevel);
   chart.value?.setOption(option);
 };
 
 // Lifecycle hooks
 onMounted(() => {
   initChart();
+  
+  // Add window resize handler
+  const resizeHandler = () => {
+    chart.value?.resize();
+  };
+  
+  window.addEventListener('resize', resizeHandler);
+  
+  // Store the handler reference for proper cleanup
+  onUnmounted(() => {
+    window.removeEventListener('resize', resizeHandler);
+    chart.value?.dispose();
+  });
 });
 
-onUnmounted(() => {
-  chart.value?.dispose();
-});
 
 // Watchers
 watch(
   () => props.rawData,
+  (value) => {
+    if (value.length === 0) {
+      return;
+    }
+    initChart();
+  },
+  { deep: true }
+);
+
+watch(
+  () => props.substrateLevel,
   (value) => {
     if (value.length === 0) {
       return;

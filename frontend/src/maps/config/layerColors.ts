@@ -232,7 +232,7 @@ export const d3MappingColorSubstrate2 = [
   'rgb(54, 100, 139)', // steelblue4 - massive/meandering_alive
 ];
 
-export const substrateLevelMapColor = {
+export const substrateLevelMapColor: Record<string, string[]> = {
   Substrate_coarse: d3MappingColorSubstrate1,
   Substrate_intermediate: d3MappingColorSubstrate2,
 };
