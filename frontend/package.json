@@ -17,6 +17,7 @@
     "convert": "node scripts/convert.mjs"
   },
   "dependencies": {
+    "@mdi/js": "^7.4.47",
     "@quasar/extras": "^1.16.4",
     "echarts": "^5.6.0",
     "lodash": "^4.17.21",
