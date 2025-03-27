@@ -231,6 +231,13 @@ export const d3MappingColorSubstrate2 = [
   'rgb(79, 148, 205)', // steelblue3 - meandering_alive
   'rgb(54, 100, 139)', // steelblue4 - massive/meandering_alive
 ];
+
+export const substrateLevelMapColor = {
+  Substrate_coarse: d3MappingColorSubstrate1,
+  Substrate_intermediate: d3MappingColorSubstrate2,
+};
+
+
 export const environmentalClusterColorMap: ColorMap = {
   type: 'categorical',
   colorMap: {

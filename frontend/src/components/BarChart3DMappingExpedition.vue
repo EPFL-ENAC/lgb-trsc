@@ -10,27 +10,13 @@ import 'echarts/lib/component/tooltip'; // Import tooltip component
 import 'echarts/lib/component/title'; // Import title component
 import 'echarts/lib/component/legend'; // Import legend component
 import {
-  validSubstrates,
-  validSubstrates2,
-  validSubtrateMap,
+  validSubstratesMap,
+  validSubtrateMapKeyText,
 } from '@/maps/config/substrateOrder';
-import {
-  d3MappingColorSubstrate1 as colorPalette,
-  d3MappingColorSubstrate2 as colorPalette2,
-} from '@/maps/config/layerColors';
+import { substrateLevelMapColor } from '@/maps/config/layerColors';
 import { debounce } from 'lodash';
 
 const TIME_OUT = 150;
-
-const substrateLevelMapColor = {
-  Substrate_coarse: colorPalette,
-  Substrate_intermediate: colorPalette2,
-};
-
-const validSubstratesMap = {
-  Substrate_coarse: validSubstrates,
-  Substrate_intermediate: validSubstrates2,
-};
 
 // Props definition
 const props = defineProps({
@@ -66,7 +52,7 @@ const windowResizeInnerHeight = ref(window.innerHeight);
 const processData = (data: any[], substrateLevel: string) => {
   const seriesData: Record<string, number> = {}; // init to 0
   const currentSubstrates = validSubstratesMap[substrateLevel];
-  
+
   // init to 0
   currentSubstrates.forEach((substrate) => {
     seriesData[substrate] = 0;
@@ -77,7 +63,7 @@ const processData = (data: any[], substrateLevel: string) => {
       seriesData[item[substrateLevel]] += item.mean;
     }
   });
-  
+
   const size = currentSubstrates.length;
   return currentSubstrates.map((substrate, index) => {
     const _data = new Array(size).fill(0);
@@ -110,16 +96,18 @@ const getChartOption = (data: any[]) => {
         return '';
       }
       result += `<span style="margin-right:1rem;background-color:${param.color};display: inline-block;width: 10px;height: 10px;"></span>`;
-      result += `${param.axisValueLabel} ${(param.value * 100).toFixed(2)}%<br/>`;
+      result += `${param.axisValueLabel} ${(param.value * 100).toFixed(
+        2
+      )}%<br/>`;
 
       return result;
     },
   };
-  
+
   if (props.tooltip === false) {
     localTooltip = false;
   }
-  
+
   return {
     title: {
       text: `Benthic cover at ${props.substrateLevel} level`,
@@ -128,7 +116,7 @@ const getChartOption = (data: any[]) => {
     tooltip: localTooltip,
     legend: {
       formatter: function (name: string) {
-        return validSubtrateMap[name];
+        return validSubtrateMapKeyText[name];
       },
       orient: 'horizontal',
       bottom: props.substrateLevel === 'Substrate_coarse' ? 0 : 0,
@@ -197,20 +185,27 @@ onUnmounted(() => {
 });
 
 // Watchers
-watch(() => props.rawData, (value) => {
-  if (value.length === 0) {
-    return;
-  }
-  initChart();
-}, { deep: true });
+watch(
+  () => props.rawData,
+  (value) => {
+    if (value.length === 0) {
+      return;
+    }
+    initChart();
+  },
+  { deep: true }
+);
 
-watch(() => props.substrateLevel, () => {
-  if (chart.value) {
-    chart.value.clear();
-    const option = getChartOption(props.rawData);
-    chart.value.setOption(option);
+watch(
+  () => props.substrateLevel,
+  () => {
+    if (chart.value) {
+      chart.value.clear();
+      const option = getChartOption(props.rawData);
+      chart.value.setOption(option);
+    }
   }
-});
+);
 
 watch([windowResizeInnerWidth, windowResizeInnerHeight], () => {
   handleResize();

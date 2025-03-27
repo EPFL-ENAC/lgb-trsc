@@ -186,7 +186,7 @@
         <hr class="expedition-separation-bar" />
         <StackedLine3DMappingExpeditions
           v-if="isValidSampleSet"
-          :raw-data="demoTimeSeries"
+          :raw-data="timeSeriesSet"
           height="400px"
           width="400px"
           :substrate-level="selectedExpeditionSubstrateLevel"
@@ -333,6 +333,7 @@ const {
   dateSliderIndex,
   isValidSampleSet,
   sampleSet,
+  timeSeriesSet,
 } = storeToRefs(mapStore);
 const { closeExpedition, downloadExpedition } = mapStore;
 

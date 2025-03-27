@@ -10,6 +10,11 @@ import 'echarts/lib/component/tooltip'; // Import tooltip component
 import 'echarts/lib/component/title'; // Import title component
 import 'echarts/lib/component/legend'; // Import legend component
 import 'echarts/lib/component/toolbox'; // Import toolbox component
+import {
+  validSubstratesMap,
+  validSubtrateMapKeyText,
+} from '@/maps/config/substrateOrder';
+import { substrateLevelMapColor } from '@/maps/config/layerColors';
 
 // Props definition
 const props = defineProps({
@@ -25,6 +30,10 @@ const props = defineProps({
     type: String,
     default: '100%',
   },
+  substrateLevel: {
+    type: String,
+    default: 'Substrate_coarse',
+  },
 });
 
 // Reactive state
@@ -32,6 +41,7 @@ const chartRef = ref<HTMLElement | null>(null);
 const chart = ref<echarts.ECharts | null>(null);
 
 // Methods
+const preselectedLegend = ['live coral', 'dead coral', 'bleached coral'];
 const getChartOption = (data: any[]) => {
   return {
     title: {
@@ -42,6 +52,13 @@ const getChartOption = (data: any[]) => {
     },
     legend: {
       data: data.map((item) => item.name),
+      selected: validSubstratesMap[props.substrateLevel].reduce(
+        (acc, substrate) => {
+          acc[validSubtrateMapKeyText[substrate]] = preselectedLegend.includes(validSubtrateMapKeyText[substrate]);
+          return acc;
+        },
+        {} as Record<string, boolean>
+      ),
     },
     grid: {
       left: '3%',
@@ -57,7 +74,7 @@ const getChartOption = (data: any[]) => {
     xAxis: {
       type: 'category',
       boundaryGap: false,
-      data: data[0]?.data.map((_: unknown, index: number) => `Day ${index + 1}`) || [],
+      data: data[0].dates,
     },
     yAxis: {
       type: 'value',

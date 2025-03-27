@@ -12,7 +12,7 @@ export const validSubstrates = [
   'trash',
 ];
 
-export const validSubtrateMap = {
+export const validSubtrateMapKeyText: Record<string, string> = {
   sand: 'sand',
   rubble: 'rubble',
   unknown_hard_substrate: 'unknown hard substrate',
@@ -69,3 +69,8 @@ export const validSubstrates2 = [
   'meandering_alive',
   'massive/meandering_dead',
 ];
+
+export const validSubstratesMap: Record<string, string[]> = {
+  Substrate_coarse: validSubstrates,
+  Substrate_intermediate: validSubstrates2,
+};

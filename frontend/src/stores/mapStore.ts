@@ -5,6 +5,10 @@ import { useMapController } from '@/maps/composables/useMapController';
 import { useLayerStyles } from '@/maps/composables/useLayerStyles';
 import DjiboutiExpeditions from '@/assets/data/Expeditions.json';
 import Djibouti3DMapping from '@/assets/data/dji_3d_mapping_all_results.json';
+import {
+  validSubstratesMap,
+  validSubtrateMapKeyText,
+} from '@/maps/config/substrateOrder';
 
 interface CountryProperties {
   name: string;
@@ -136,7 +140,6 @@ export const useMapStore = defineStore('map', () => {
   });
 
   const selectedExpeditionsExperimentsByYears = computed(() => {
-    // should be unique years
     if (!selectedExpeditions.value) return [];
 
     const experiments = selectedExpeditions.value
@@ -152,7 +155,13 @@ export const useMapStore = defineStore('map', () => {
     // should be unique years
     if (!selectedExpeditions.value) return [];
 
-    return [...new Set(selectedExpeditions.value.map((expedition: any) => expedition.properties.full_date_iso))];
+    return [
+      ...new Set(
+        selectedExpeditions.value.map(
+          (expedition: any) => expedition.properties.full_date_iso
+        )
+      ),
+    ];
   });
 
   const selectedExpeditionsExperiments = computed(() => {
@@ -164,6 +173,14 @@ export const useMapStore = defineStore('map', () => {
     );
     return [...new Set(experiments)];
   });
+
+  function getSelectedExpeditionsByExperiment(experiment: string) {
+    if (!selectedExpeditions.value) return [];
+
+    return selectedExpeditions.value.filter(
+      (expedition: any) => expedition.properties.experiment === experiment
+    );
+  }
 
   function closeDrawer() {
     drawer.value = false;
@@ -204,15 +221,19 @@ export const useMapStore = defineStore('map', () => {
   // };
 
   const dateSliderIndex = computed({
-    get: () =>  selectedExpeditionsDatesByExperiment.value.indexOf(selectedExpeditionDate.value),
+    get: () =>
+      selectedExpeditionsDatesByExperiment.value.indexOf(
+        selectedExpeditionDate.value
+      ),
     set: (index: number) => {
-      const date = selectedExpeditionsDatesByExperiment.value[index]
+      const date = selectedExpeditionsDatesByExperiment.value[index];
       selectedExpeditionDate.value = date;
       // find the expedition with the same date and properties experiment
       const selectedExpedition = DjiboutiExpeditions.features.find(
         (expedition: any) =>
           expedition.properties.full_date_iso === date &&
-          expedition.properties.experiment === selectedExpeditionExperiment.value
+          expedition.properties.experiment ===
+            selectedExpeditionExperiment.value
       );
       if (selectedExpedition) {
         selectExpedition(selectedExpedition.properties as ExpeditionProperties);
@@ -269,8 +290,6 @@ export const useMapStore = defineStore('map', () => {
     _drawer.value = false;
   }
 
-
-
   const sampleSet = computed(() => {
     try {
       const eventID = selectedExpedition.value?.event_id;
@@ -278,12 +297,14 @@ export const useMapStore = defineStore('map', () => {
         Djibouti3DMapping?.filter(
           (d3Mapping) => d3Mapping.event_id === eventID
         ) || [];
-  
+
       const result = sampleByIds.filter(
         (d3Mapping) => d3Mapping.date_iso === selectedExpedition.value?.date_iso
       );
       return result.map((x) => ({
-        [selectedExpeditionSubstrateLevel.value]: String((x as any)[selectedExpeditionSubstrateLevel.value]),
+        [selectedExpeditionSubstrateLevel.value]: String(
+          (x as any)[selectedExpeditionSubstrateLevel.value]
+        ),
         mean: Number(x.mean),
       }));
     } catch (error) {
@@ -291,7 +312,86 @@ export const useMapStore = defineStore('map', () => {
       return [];
     }
   });
-  
+
+  function initSubstrateForEventId() {
+    const results = validSubstratesMap[
+      selectedExpeditionSubstrateLevel.value
+    ].map((substrateLevel: string) => ({
+      key: substrateLevel,
+      name: validSubtrateMapKeyText[substrateLevel],
+      type: 'line',
+      stack: 'Total',
+      dates: [] as string[],
+      data: [] as number[],
+    }));
+    return results;
+  }
+
+  const timeSeriesSet = computed(() => {
+    try {
+
+
+      // init the results array with correct validSubtrateMapKeyText level
+      // {
+      //   name: (sampleById as any)[selectedExpeditionSubstrateLevel.value],
+      //   type: 'line',
+      //   stack: 'Total',
+      //   data: [],
+      // }
+      const results = initSubstrateForEventId();
+      const threeDExpeditions = getSelectedExpeditionsByExperiment('3D');
+      const dates = threeDExpeditions.map(expedition =>
+        expedition.properties.full_date_iso
+      );
+      // it should be sorted by dates already
+      // iterate through each eventIds to get the mean value of the selectedExpeditionSubstrateLevel
+      threeDExpeditions.forEach((expedition) => {
+        try {
+          const sampleByIds =
+            Djibouti3DMapping?.filter(
+              (d3Mapping) => d3Mapping.full_date_iso === expedition.full_date_iso ||
+              d3Mapping.event_id === expedition.event_id
+            ) || [];
+          // {
+          //   name: 'Union Ads',
+          //   type: 'line',
+          //   stack: 'Total',
+          //   data: [220, 182, 191, 234, 290, 330, 310]
+          // },
+          const temporaryResults = initSubstrateForEventId();
+          sampleByIds.forEach((sampleById) => {
+            temporaryResults.forEach((result) => {
+              if (
+                result.key ===
+                sampleById[
+                  selectedExpeditionSubstrateLevel.value as keyof typeof sampleById
+                ]
+              ) {
+                if (result.data.length === 0) {
+                  result.data.push(0); // Initialize with 0
+                }
+                result.data[0] += sampleById.mean; // Add to the sum
+              }
+            });
+          });
+
+          // and now, we can add the temporaryResults to the results
+          temporaryResults.forEach((result, index) => {
+            // hopefully it's the same key
+            results[index].dates = dates;
+            results[index].data.push(result.data[0]);
+          });
+        } catch (error) {
+          console.error('Error processing time series set:', error);
+        }
+      });
+      return results;
+    } catch (error) {
+      console.error('Error processing time series set:', error);
+      return [];
+    }
+  });
+
   const isValidSampleSet = computed(() => {
     return sampleSet.value.every(
       (sample) =>
@@ -309,28 +409,32 @@ export const useMapStore = defineStore('map', () => {
     // download the pdf
     const expedition = selectedExpedition.value;
     if (!expedition) return;
-    
+
     const expeditionElement = document.getElementById('expedition-popup');
     if (!expeditionElement) return;
-    
+
     // Create a new window for printing
     const printWindow = window.open('', '_blank');
     if (!printWindow) {
-      alert('Please allow popups for this website to print the expedition report.');
+      alert(
+        'Please allow popups for this website to print the expedition report.'
+      );
       return;
     }
-    
+
     // Get any stylesheets from the current page
     const styleSheets = Array.from(document.styleSheets)
-      .map(styleSheet => {
+      .map((styleSheet) => {
         try {
-          return styleSheet.href ? `<link rel="stylesheet" href="${styleSheet.href}">` : '';
+          return styleSheet.href
+            ? `<link rel="stylesheet" href="${styleSheet.href}">`
+            : '';
         } catch (e) {
           return '';
         }
       })
       .join('');
-    
+
     // Add custom print styles
     const printStyles = `
       <style>
@@ -341,13 +445,15 @@ export const useMapStore = defineStore('map', () => {
         }
       </style>
     `;
-    
+
     // Create the new document with content
     printWindow.document.write(`
       <!DOCTYPE html>
       <html>
         <head>
-          <title>Expedition Report - ${expedition.expe_name || 'Details'}</title>
+          <title>Expedition Report - ${
+            expedition.expe_name || 'Details'
+          }</title>
           ${styleSheets}
           ${printStyles}
         </head>
@@ -356,15 +462,15 @@ export const useMapStore = defineStore('map', () => {
         </body>
       </html>
     `);
-    
+
     printWindow.document.close();
-    
+
     // Wait for resources to load before printing
-    printWindow.onload = function() {
+    printWindow.onload = function () {
       setTimeout(() => {
         printWindow.print();
         // Close the window after print dialog is closed (optional)
-        printWindow.onafterprint = function() {
+        printWindow.onafterprint = function () {
           printWindow.close();
         };
       }, 500);
@@ -388,6 +494,7 @@ export const useMapStore = defineStore('map', () => {
     selectedExpeditionsYearsByExperiment,
     selectedExpeditionsDatesByExperiment,
     // updateSelectedExpeditionDate,
+    getSelectedExpeditionsByExperiment,
     selectedExpeditionsExperimentsByYears,
     selectedExpeditionYear,
     setSelectedExpeditionYear,
@@ -409,5 +516,6 @@ export const useMapStore = defineStore('map', () => {
     selectedExpeditionSubstrateLevel,
     setSelectedExpeditionSubstrateLevel,
     dateSliderIndex,
+    timeSeriesSet,
   };
 });
