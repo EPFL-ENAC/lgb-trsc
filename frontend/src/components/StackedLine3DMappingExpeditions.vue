@@ -15,6 +15,7 @@ import {
   validSubtrateMapKeyText,
 } from '@/maps/config/substrateOrder';
 import { substrateLevelMapColor } from '@/maps/config/layerColors';
+import { DateFormatter } from '@/dateFormatter';
 
 // Props definition
 const props = defineProps({
@@ -42,6 +43,8 @@ const chart = ref<echarts.ECharts | null>(null);
 
 // Methods
 const preselectedLegend = ['live coral', 'dead coral', 'bleached coral'];
+const locale = 'en-US';
+
 const getChartOption = (data: any[]) => {
   return {
     title: {
@@ -54,7 +57,9 @@ const getChartOption = (data: any[]) => {
       data: data.map((item) => item.name),
       selected: validSubstratesMap[props.substrateLevel].reduce(
         (acc, substrate) => {
-          acc[validSubtrateMapKeyText[substrate]] = preselectedLegend.includes(validSubtrateMapKeyText[substrate]);
+          acc[validSubtrateMapKeyText[substrate]] = preselectedLegend.includes(
+            validSubtrateMapKeyText[substrate]
+          );
           return acc;
         },
         {} as Record<string, boolean>
@@ -74,7 +79,13 @@ const getChartOption = (data: any[]) => {
     xAxis: {
       type: 'category',
       boundaryGap: false,
-      data: data[0].dates,
+      data: data[0].dates.map((date: string) =>
+        DateFormatter.formatDate(date, {
+          locale,
+          dateStyle: 'short',
+          dateOnly: true,
+        })
+      ),
     },
     yAxis: {
       type: 'value',
@@ -106,12 +117,16 @@ onUnmounted(() => {
 });
 
 // Watchers
-watch(() => props.rawData, (value) => {
-  if (value.length === 0) {
-    return;
-  }
-  initChart();
-}, { deep: true });
+watch(
+  () => props.rawData,
+  (value) => {
+    if (value.length === 0) {
+      return;
+    }
+    initChart();
+  },
+  { deep: true }
+);
 </script>
 
 <style scoped></style>
