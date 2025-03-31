@@ -69,7 +69,7 @@ export function generateDefaultStyle(colorScale: ColorMap) {
 
 export const createEnvironmentalLayers = () => {
   const layers = sources
-    .filter((source) => source.type === 'Mean')
+    // .filter((source) => source.type === 'Mean')
     .map((source) => {
       const layer = new WebGLTileLayer({
         source: createGeoTIFFSource(source),

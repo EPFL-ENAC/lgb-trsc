@@ -221,7 +221,6 @@
                         true-value="Mean"
                         :model-value="layerinfo.layer.get('meanOrSD')"
                         @update:model-value="() => updateMeanOrSD(layerinfo.layer as BaseLayer)"
-                        @click:model-value="() => updateMeanOrSD(layerinfo.layer as BaseLayer)"
                       />
                     </div>
                   </div>
@@ -315,12 +314,14 @@ const computedActiveBaseMap = computed(() => {
 const updateMeanOrSD = (layer: BaseLayer) => {
   const meanOrSD = layer.get('meanOrSD');
   const newMeanOrSD = meanOrSD === 'Mean' ? 'SD' : 'Mean';
+  
   // find appropriate source
   const environmentalSource = environmentalSources.find(
-    (source) =>
+    (source) => 
       source.name === layer.get('title') && source.type === newMeanOrSD
   );
-  // change the source of the layer!
+  
+  // Only update if we found a matching source
   if (environmentalSource) {
     const newStyle = generateDefaultStyle(
       environmentalSource?.colorScale || defaultEnvironmentalColorMap
@@ -333,13 +334,18 @@ const updateMeanOrSD = (layer: BaseLayer) => {
     layer.set('meanOrSD', newMeanOrSD);
     layer.set('source', createGeoTIFFSource(environmentalSource));
     layer.changed();
+    
+    const layerControls = useLayerController();
+    layerControls.setEnvironmentalLayer(layer as WebGLTileLayer);
+  } else {
+    // Show notification that this type isn't available
+    $q.notify({
+      color: 'warning',
+      message: `${newMeanOrSD} data not available for ${layer.get('title')}`,
+      timeout: 2000
+    });
   }
-  layer.set('meanOrSD', newMeanOrSD);
-  layer.changed();
-  const layerControls = useLayerController();
-  layerControls.setEnvironmentalLayer(layer as WebGLTileLayer);
 };
-
 const getLayerLegend = (layer: BaseLayer) => {
   // Return the appropriate color map based on the layer title
   if (sourcesTitle.includes(layer.get('title'))) {
