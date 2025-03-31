@@ -28,10 +28,11 @@
         :key="group.title"
         :group="`overlays${groupIndex}`"
         :label="group.title"
-        :model-value="
-          group.layers.some((layerinfo) => layerinfo.layer.getVisible())
-        "
+        
       >
+      <!-- :model-value="
+          group.layers.some((layerinfo) => layerinfo.layer.getVisible())
+        " -->
         <q-list padding>
           <q-item
             v-for="(layerinfo, layerIndex) in group.layers"
@@ -209,22 +210,7 @@
                         name="info"
                       >
                         <q-tooltip>
-                          <q-card>
-                            <q-card-section>
-                              <q-card-title>
-                                <span
-                                  style="
-                                    color: black;
-                                    height: 10px;
-                                    width: 10px;
-                                  "
-                                >
-                                  {{ layerinfo.layer.get('description') }}
-                                  
-                                </span>
-                              </q-card-title>
-                            </q-card-section>
-                          </q-card>
+                          {{ layerinfo.layer.get('description') }}
                         </q-tooltip>
                       </q-icon>
                       
@@ -489,7 +475,8 @@ const toggleOverlayLayer = (
 .layer-grid.no-expand {
   pointer-events: none;
 
-  .checkbox-wrapper {
+  .checkbox-wrapper, 
+  .env-controls {
     pointer-events: all;
   }
 
