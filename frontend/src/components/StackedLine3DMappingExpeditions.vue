@@ -13,6 +13,7 @@ import 'echarts/lib/component/toolbox'; // Import toolbox component
 import {
   validSubstratesMap,
   validSubtrateMapKeyText,
+  substrateLevelPresetMap,
 } from '@/maps/config/substrateOrder';
 import { substrateLevelMapColor } from '@/maps/config/layerColors';
 import { DateFormatter } from '@/dateFormatter';
@@ -41,36 +42,15 @@ const props = defineProps({
 const chartRef = ref<HTMLElement | null>(null);
 const chart = ref<echarts.ECharts | null>(null);
 
-// Methods
-const preselectedLegendCoarse = ['bleached coral', 'dead coral', 'alive coral'];
-
-const preselectedLegendIntermediate = [
-    'massive/meandering_alive',
-'other_coral_alive',
-'branching_alive',
-'meandering_alive',
-'other_coral_dead',
-'branching_dead',
-'meandering_dead',
-'branching_bleached',
-'meandering_bleached',
-'massive/meandering_bleached',
-'other_coral_bleached',
-'massive/meandering_dead',
-].map(legend => validSubtrateMapKeyText[legend]);
-
-const substrateLevelPresetMap: Record<string, string[]> = {
-  Substrate_coarse: preselectedLegendCoarse,
-  Substrate_intermediate: preselectedLegendIntermediate,
-};
-
 const locale = 'en-US';
 
 const getChartOption = (data: any[], substrateLevel: string) => {
   const selected = validSubstratesMap[substrateLevel].reduce(
     (acc, substrate) => {
       const name = validSubtrateMapKeyText[substrate];
-      acc[name] = substrateLevelPresetMap[substrateLevel].includes(name);
+      if (substrateLevelPresetMap[substrateLevel].includes(name)){
+        acc[name] = true;
+      }
       return acc;
     },
     {} as Record<string, boolean>
@@ -84,11 +64,14 @@ const getChartOption = (data: any[], substrateLevel: string) => {
     },
     legend: {
       // Simplify legend data to just be an array of strings matching series names
-      data: data.map(item => item.name),
+      data: substrateLevelPresetMap[substrateLevel],
       orient: 'horizontal',
       selectedMode: 'multiple',
       bottom: substrateLevel === 'Substrate_coarse' ? 0 : 0,
-      selected,
+      selected: substrateLevelPresetMap[substrateLevel].reduce((acc, item) => {
+        acc[item] = selected[item];
+        return acc;
+      }, {} as Record<string, boolean>),
       // Apply colors to legend items through textStyle
       textStyle: {
         rich: data.reduce((acc, item, index) => {
@@ -102,7 +85,7 @@ const getChartOption = (data: any[], substrateLevel: string) => {
     grid: {
       left: '3%',
       right: '4%',
-      bottom: substrateLevel === 'Substrate_coarse' ? '100px' : '250px',
+      bottom: substrateLevel === 'Substrate_coarse' ? '100px' : '150px',
       containLabel: true,
     },
     toolbox: {
@@ -124,7 +107,7 @@ const getChartOption = (data: any[], substrateLevel: string) => {
     yAxis: {
       type: 'value',
     },
-    series: data.map((item, index) => ({
+    series: data.filter(data => substrateLevelPresetMap[substrateLevel].includes(data.name)).map((item, index) => ({
       name: item.name,
       type: 'line',
       lineStyle: {

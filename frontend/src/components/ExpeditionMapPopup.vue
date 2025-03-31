@@ -168,7 +168,8 @@
       <hr class="expedition-separation-bar" />
       <div v-if="sampleSet.length > 0">
         <q-toggle
-          v-model="selectedExpeditionSubstrateLevel"
+          :model-value="selectedExpeditionSubstrateLevel"
+          @update:model-value="setSelectedExpeditionSubstrateLevel"
           true-value="Substrate_coarse"
           false-value="Substrate_intermediate"
           :label="selectedExpeditionSubstrateLevel"
@@ -194,39 +195,27 @@
         :scroll-legend="true"
       />
       <p>Change in Coral cover since</p>
-    <!-- Note: Using random placeholder values. Will be replaced with actual data. -->
-    <div class="coral-changes">
-      <div class="coral-change-item">
-        <div class="coral-type">Alive coral</div>
-        <div class="change-indicator">
-          <q-icon :name="summaryStats.aliveCoral.icon" :color="summaryStats.aliveCoral.color" size="md" />
-          <span class="percentage" :class="summaryStats.aliveCoral.color">{{ summaryStats.aliveCoral.value }}%</span>
-          
+      <!-- Note: Using random placeholder values. Will be replaced with actual data. -->
+      <div class="coral-changes">
+        <div class="coral-change-item" v-for="(value, key) in summaryStats" :key="key">
+          <div class="coral-type">{{ key }}</div>
+          <div class="change-indicator">
+            <q-icon
+              :name="value.icon as string"
+              :color="value.color as string"
+              size="md"
+            />
+            <span class="percentage" :class="value.color"
+              >{{ value.value }}%</span
+            >
+          </div>
         </div>
       </div>
-
-      <div class="coral-change-item">
-        <div class="coral-type">Bleached coral</div>
-        <div class="change-indicator">
-          <q-icon :name="summaryStats.bleachedCoral.icon" :color="summaryStats.bleachedCoral.color" size="md" />
-          <span class="percentage" :class="summaryStats.bleachedCoral.color">{{ summaryStats.bleachedCoral.value }}%</span>
-        </div>
-      </div>
-
-      <div class="coral-change-item">
-        <div class="coral-type">Dead coral</div>
-        <div class="change-indicator">
-          <q-icon :name="summaryStats.deadCoral.icon" :color="summaryStats.deadCoral.color" size="md" />
-          <span class="percentage" :class="summaryStats.deadCoral.color">{{ summaryStats.deadCoral.value }}%</span>
-          
-        </div>
-      </div>
-    </div>
-    <hr class="expedition-separation-bar" />
+      <hr class="expedition-separation-bar" />
     </div>
     <div v-else>No 3D Mapping data available</div>
     <hr class="expedition-separation-bar" />
-    
+
     <p>
       Data generated with the
       <a href="https://josauder.github.io/deepreefmap/" target="_blank"
@@ -267,7 +256,11 @@ import StackedLine3DMappingExpeditions from '@/components/StackedLine3DMappingEx
 import { storeToRefs } from 'pinia';
 import communities from '@/assets/communities';
 import { DateFormatter } from '@/dateFormatter';
-import { mdiTriangleSmallDown, mdiTriangleSmallUp } from '@quasar/extras/mdi-v7'
+import { substrateLevelPresetMap } from '@/maps/config/substrateOrder';
+import {
+  mdiTriangleSmallDown,
+  mdiTriangleSmallUp,
+} from '@quasar/extras/mdi-v7';
 
 const isDev = ref(import.meta.env.DEV);
 const locale = 'en-US';
@@ -317,10 +310,13 @@ const {
   sampleSet,
   timeSeriesSet,
 } = storeToRefs(mapStore);
-const { closeExpedition, downloadExpedition } = mapStore;
+const {
+  closeExpedition,
+  downloadExpedition,
+  setSelectedExpeditionSubstrateLevel,
+} = mapStore;
 
 const summaryStats = computed(() => {
-
   function calculatePercentageChange(
     currentValue: number,
     previousValue: number
@@ -335,38 +331,42 @@ const summaryStats = computed(() => {
       return 0;
     }
     const lastLastIndex = 0;
-    return calculatePercentageChange(dataSerie[lastIndex], dataSerie[lastLastIndex]);
+    return calculatePercentageChange(
+      dataSerie[lastIndex],
+      dataSerie[lastLastIndex]
+    );
   }
-
-  const results = {
-    aliveCoral: calculatePercentageChangeFromDataSeries(timeSeriesSet.value.filter((item) => item.name === 'alive coral')[0].data),
-    bleachedCoral: calculatePercentageChangeFromDataSeries(timeSeriesSet.value.filter((item) => item.name === 'bleached coral')[0].data),
-    deadCoral: calculatePercentageChangeFromDataSeries(timeSeriesSet.value.filter((item) => item.name === 'dead coral')[0].data),
-  };
+  const authorized_ids = substrateLevelPresetMap[selectedExpeditionSubstrateLevel.value];
+  const results = authorized_ids.reduce((acc, authorized_id, index) => {
+    acc[authorized_id] = calculatePercentageChangeFromDataSeries(
+      timeSeriesSet.value.filter((item) => item.name === authorized_id)[0].data
+    );
+    return acc;
+  }, {} as Record<string, number>);
   // we should ceil the values to 2 decimal places
-  results.aliveCoral = Math.ceil(results.aliveCoral * 100) / 100;
-  results.bleachedCoral = Math.ceil(results.bleachedCoral * 100) / 100;
-  results.deadCoral = Math.ceil(results.deadCoral * 100) / 100;
-
-  const resultsWithColorAndIcons = {
-    aliveCoral: {
-      value: results.aliveCoral,
-      icon: results.aliveCoral >= 0 ? mdiTriangleSmallUp : mdiTriangleSmallDown,
-      color: results.aliveCoral >= 0 ? 'positive' : 'negative',
-    },
-    bleachedCoral: {
-      value: results.bleachedCoral,
-      icon: results.bleachedCoral >= 0 ? mdiTriangleSmallUp : mdiTriangleSmallDown,
-      color: results.bleachedCoral <= 0 ? 'positive' : 'negative',
-    },
-    deadCoral: {
-      value: results.deadCoral,
-      icon: results.deadCoral >= 0 ? mdiTriangleSmallUp : mdiTriangleSmallDown,
-      color: results.deadCoral <= 0 ? 'positive' : 'negative',
-    },
-  }
-  return resultsWithColorAndIcons;
-}); 
+  authorized_ids.forEach((authorized_id) => {
+    results[authorized_id] = Math.ceil(results[authorized_id] * 100) / 100;
+  });
+  return authorized_ids.reduce((acc, authorized_id) => {
+    if (!results[authorized_id]) {
+      return acc;
+    }
+    if (authorized_id.includes('alive')) {
+      acc[authorized_id] = {
+        value: results[authorized_id],
+        icon: results[authorized_id] >= 0 ? mdiTriangleSmallUp : mdiTriangleSmallDown,
+        color: results[authorized_id] >= 0 ? 'positive' : 'negative',
+      };
+    } else {
+      acc[authorized_id] = {
+        value: results[authorized_id],
+        icon: results[authorized_id] >= 0 ? mdiTriangleSmallUp : mdiTriangleSmallDown,
+        color: results[authorized_id] <= 0 ? 'positive' : 'negative',
+      };
+    }
+    return acc;
+  }, {} as Record<string, Record<string, string | number>>);
+});
 
 const countryLower = computed(
   () =>
