@@ -75,8 +75,9 @@ export const useMapStore = defineStore('map', () => {
     selectedExpeditionExperiment.value = experiment;
   }
 
-  const selectedExpeditionSubstrateLevel = ref<string>('Substrate_coarse');
-  function setSelectedExpeditionSubstrateLevel(substrateLevel: string) {
+  type SubstrateLevel = 'Substrate_coarse' | 'Substrate_intermediate';
+  const selectedExpeditionSubstrateLevel = ref<SubstrateLevel>('Substrate_coarse');
+  function setSelectedExpeditionSubstrateLevel(substrateLevel: SubstrateLevel) {
     selectedExpeditionSubstrateLevel.value = substrateLevel;
   }
 

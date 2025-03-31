@@ -168,10 +168,11 @@
       <hr class="expedition-separation-bar" />
       <div v-if="sampleSet.length > 0">
         <q-toggle
-          v-model="selectedExpeditionSubstrateLevel"
+          :model-value="selectedExpeditionSubstrateLevel"
           true-value="Substrate_coarse"
           false-value="Substrate_intermediate"
           :label="selectedExpeditionSubstrateLevel"
+          @update:model-value="setSelectedExpeditionSubstrateLevel"
         ></q-toggle>
         <BarChart3DMappingExpedition
           v-if="isValidSampleSet"
@@ -182,49 +183,68 @@
           :tooltip="true"
           :scroll-legend="true"
         />
-        </div>
-        <hr class="expedition-separation-bar" />
-        <StackedLine3DMappingExpeditions
-          v-if="isValidSampleSet"
-          :raw-data="timeSeriesSet"
-          height="400px"
-          width="400px"
-          :substrate-level="selectedExpeditionSubstrateLevel"
-          :tooltip="true"
-          :scroll-legend="true"
-        />
       </div>
-      <div v-else>No 3D Mapping data available</div>
       <hr class="expedition-separation-bar" />
-      <p>
-        Data generated with the
-        <a href="https://josauder.github.io/deepreefmap/" target="_blank"
-          >Deep Reef Map</a
-        >
-        methodology
-      </p>
-      <div class="card">
-        <!-- <img src="/seacape-genomics.png" alt="Seascape Genomics" /> -->
-        <p>In Collaboration with</p>
-        <div style="display: flex; gap: 1rem">
-          <div
-            v-for="community in computedCountryCommunities"
-            :key="community.name"
-            class="logo-item"
-          >
-            <a :href="community.url" target="_blank" class="logo-item-link">
-              <q-img
-                :src="community.logo"
-                :alt="community.name"
-                fit="contain"
-                style="height: 150px; width: 150px"
-              >
-              </q-img>
-            </a>
+      <StackedLine3DMappingExpeditions
+        v-if="isValidSampleSet"
+        :raw-data="timeSeriesSet"
+        height="400px"
+        width="400px"
+        :substrate-level="selectedExpeditionSubstrateLevel"
+        :tooltip="true"
+        :scroll-legend="true"
+      />
+      <p>Change in Coral cover since</p>
+      <!-- Note: Using random placeholder values. Will be replaced with actual data. -->
+      <div class="coral-changes">
+        <div v-for="(value, key) in summaryStats" :key="key" class="coral-change-item">
+          <div class="coral-type">{{ key }}</div>
+          <div class="change-indicator">
+            <q-icon
+              :name="value.icon as string"
+              :color="value.color as string"
+              size="md"
+            />
+            <span class="percentage" :class="value.color"
+              >{{ value.value }}%</span
+            >
           </div>
         </div>
       </div>
+      <hr class="expedition-separation-bar" />
     </div>
+    <div v-else>No 3D Mapping data available</div>
+    <hr class="expedition-separation-bar" />
+
+    <p>
+      Data generated with the
+      <a href="https://josauder.github.io/deepreefmap/" target="_blank"
+        >Deep Reef Map</a
+      >
+      methodology
+    </p>
+    <div class="card">
+      <!-- <img src="/seacape-genomics.png" alt="Seascape Genomics" /> -->
+      <p>In Collaboration with</p>
+      <div style="display: flex; gap: 1rem">
+        <div
+          v-for="community in computedCountryCommunities"
+          :key="community.name"
+          class="logo-item"
+        >
+          <a :href="community.url" target="_blank" class="logo-item-link">
+            <q-img
+              :src="community.logo"
+              :alt="community.name"
+              fit="contain"
+              style="height: 150px; width: 150px"
+            >
+            </q-img>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -236,9 +256,11 @@ import StackedLine3DMappingExpeditions from '@/components/StackedLine3DMappingEx
 import { storeToRefs } from 'pinia';
 import communities from '@/assets/communities';
 import { DateFormatter } from '@/dateFormatter';
-// import i18n from '@/';
-
-// const vueI18n = i18n.global;
+import { substrateLevelPresetMap } from '@/maps/config/substrateOrder';
+import {
+  mdiTriangleSmallDown,
+  mdiTriangleSmallUp,
+} from '@quasar/extras/mdi-v7';
 
 const isDev = ref(import.meta.env.DEV);
 const locale = 'en-US';
@@ -247,53 +269,6 @@ const headerMap: Record<string, string> = {
   eDNA: 'eDNA',
   seascape_genomics: 'Seascape Genomics',
 };
-
-const demoTimeSeries = [
-    {
-      name: 'Email',
-      type: 'line',
-      stack: 'Total',
-      data: [120, 132, 101, 134, 90, 230, 210]
-    },
-    {
-      name: 'Union Ads',
-      type: 'line',
-      stack: 'Total',
-      data: [220, 182, 191, 234, 290, 330, 310]
-    },
-    {
-      name: 'Video Ads',
-      type: 'line',
-      stack: 'Total',
-      data: [150, 232, 201, 154, 190, 330, 410]
-    },
-    {
-      name: 'Direct',
-      type: 'line',
-      stack: 'Total',
-      data: [320, 332, 301, 334, 390, 330, 320]
-    },
-    {
-      name: 'Search Engine',
-      type: 'line',
-      stack: 'Total',
-      data: [820, 932, 901, 934, 1290, 1330, 1320]
-    }
-  ];
-
-interface MappingData {
-  id: number;
-  sampling_site_name: string;
-  event_id: string;
-  year: number;
-  date_iso: string;
-  country: string;
-  latitude_start: number;
-  longitude_start: number;
-  latitude_end: number;
-  Substrate_coarse: string;
-  mean: number;
-}
 
 function markerFormatter(index: number): string {
   return DateFormatter.formatDate(
@@ -335,7 +310,63 @@ const {
   sampleSet,
   timeSeriesSet,
 } = storeToRefs(mapStore);
-const { closeExpedition, downloadExpedition } = mapStore;
+const {
+  closeExpedition,
+  downloadExpedition,
+  setSelectedExpeditionSubstrateLevel,
+} = mapStore;
+
+const summaryStats = computed(() => {
+  function calculatePercentageChange(
+    currentValue: number,
+    previousValue: number
+  ): number {
+    return ((currentValue - previousValue) / previousValue) * 100;
+  }
+
+  function calculatePercentageChangeFromDataSeries(dataSerie: number[]) {
+    // should be latest elements first
+    const lastIndex = dataSerie.length - 1;
+    if (lastIndex < 1) {
+      return 0;
+    }
+    const lastLastIndex = 0;
+    return calculatePercentageChange(
+      dataSerie[lastIndex],
+      dataSerie[lastLastIndex]
+    );
+  }
+  const authorized_ids = substrateLevelPresetMap[selectedExpeditionSubstrateLevel.value];
+  const results = authorized_ids.reduce((acc, authorized_id, index) => {
+    acc[authorized_id] = calculatePercentageChangeFromDataSeries(
+      timeSeriesSet.value.filter((item) => item.name === authorized_id)[0].data
+    );
+    return acc;
+  }, {} as Record<string, number>);
+  // we should ceil the values to 2 decimal places
+  authorized_ids.forEach((authorized_id) => {
+    results[authorized_id] = Math.ceil(results[authorized_id] * 100) / 100;
+  });
+  return authorized_ids.reduce((acc, authorized_id) => {
+    if (!results[authorized_id]) {
+      return acc;
+    }
+    if (authorized_id.includes('alive')) {
+      acc[authorized_id] = {
+        value: results[authorized_id],
+        icon: results[authorized_id] >= 0 ? mdiTriangleSmallUp : mdiTriangleSmallDown,
+        color: results[authorized_id] >= 0 ? 'positive' : 'negative',
+      };
+    } else {
+      acc[authorized_id] = {
+        value: results[authorized_id],
+        icon: results[authorized_id] >= 0 ? mdiTriangleSmallUp : mdiTriangleSmallDown,
+        color: results[authorized_id] <= 0 ? 'positive' : 'negative',
+      };
+    }
+    return acc;
+  }, {} as Record<string, Record<string, string | number>>);
+});
 
 const countryLower = computed(
   () =>
@@ -498,5 +529,49 @@ button {
   overflow: auto;
   font-size: 0.85rem;
   white-space: pre-wrap;
+}
+
+.coral-changes {
+  display: flex;
+  justify-content: space-around;
+  margin: 20px 0;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.coral-change-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 15px;
+  background: #f5f5f5;
+  border-radius: 8px;
+  min-width: 120px;
+}
+
+.coral-type {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.change-indicator {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.percentage {
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.positive {
+  color: #21ba45;
+}
+.negative {
+  color: #c10015;
+}
+.warning {
+  color: #f2c037;
 }
 </style>
