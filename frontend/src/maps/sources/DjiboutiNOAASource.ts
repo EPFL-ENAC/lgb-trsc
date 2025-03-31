@@ -7,6 +7,18 @@ import {
   SST_monthly_max_Mean,
   SST_monthly_max_SD,
   ColorMap,
+  SST_monthly_mean_Mean,
+  SPM_monthly_mean_Mean,
+  DHW_annual_max_Mean,
+  SCV_monthly_mean_Mean,
+  SWS_monthly_mean_Mean,
+  SST_monthly_mean_SD,
+  SPM_monthly_mean_SD,
+  DHW_annual_max_SD,
+  SCV_monthly_mean_SD,
+  SWS_monthly_mean_SD,
+  SST_monthly_min_Mean,
+  SST_monthly_min_SD,
 } from '@/maps/config/layerColors';
 // ok source should be wrapped in a function
 // documentation here: https://openlayers.org/en/latest/apidoc/module-ol_source_GeoTIFF.html#~SourceInfo
@@ -187,50 +199,56 @@ export const sources: SourceInfo[] = [
   {
     type: 'Mean',
     name: 'SST_monthly_mean',
-    colorScale: SST_monthly_max_Mean,
+    colorScale: SST_monthly_mean_Mean,
     attribution: attributions.copernicus,
     url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/processed_data/SG_MANON/env_rasters_cut/SST_monthly_mean_Mean.tif',
   },
   {
     type: 'SD',
     name: 'SST_monthly_mean',
+    colorScale: SST_monthly_mean_SD,
     attribution: attributions.copernicus,
     url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/processed_data/SG_MANON/env_rasters_cut/SST_monthly_mean_SD.tif',
   },
   {
     type: 'Mean',
     name: 'SST_monthly_min',
-    colorScale: SST_monthly_max_Mean,
+    colorScale: SST_monthly_min_Mean,
     attribution: attributions.copernicus,
     url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/processed_data/SG_MANON/env_rasters_cut/SST_monthly_min_Mean.tif',
   },
   {
     type: 'SD',
     name: 'SST_monthly_min',
+    colorScale: SST_monthly_min_SD,
     attribution: attributions.copernicus,
     url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/processed_data/SG_MANON/env_rasters_cut/SST_monthly_min_SD.tif',
   },
   {
     name: 'SPM_monthly_mean',
     attribution: attributions.copernicus,
+    colorScale: SPM_monthly_mean_Mean,
     type: 'Mean',
     url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/SPM_monthly_mean_1997_2024_Mean.tif',
   },
   {
     name: 'SPM_monthly_mean',
     attribution: attributions.copernicus,
+    colorScale: SPM_monthly_mean_SD,
     type: 'SD',
     url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/SPM_monthly_mean_1997_2024_SD.tif',
   },
 
   {
     name: 'DHW_annual_max',
+    colorScale: DHW_annual_max_Mean,
     attribution: attributions.copernicus,
     type: 'Mean',
     url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/DHW_annual_max_1985_2024_Mean.tif',
   },
   {
     name: 'DHW_annual_max',
+    colorScale: DHW_annual_max_SD,
     attribution: attributions.copernicus,
     type: 'SD',
     url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/DHW_annual_max_1985_2024_SD.tif',
@@ -238,12 +256,14 @@ export const sources: SourceInfo[] = [
 
   {
     name: 'SCV_monthly_mean',
+    colorScale: SCV_monthly_mean_Mean,
     attribution: attributions.copernicus,
     type: 'Mean',
     url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/SCV_monthly_mean_1993_2021_Mean.tif',
   },
   {
     name: 'SCV_monthly_mean',
+    colorScale: SCV_monthly_mean_SD,
     attribution: attributions.copernicus,
     type: 'SD',
     url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/SCV_monthly_mean_1993_2021_SD.tif',
@@ -251,12 +271,14 @@ export const sources: SourceInfo[] = [
 
   {
     name: 'SWS_monthly_mean',
+    colorScale: SWS_monthly_mean_Mean,
     attribution: attributions.noaa,
     type: 'Mean',
     url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/SWS_monthly_mean_1993_2021_Mean.tif',
   },
   {
     name: 'SWS_monthly_mean',
+    colorScale: SWS_monthly_mean_SD,
     attribution: attributions.noaa,
     type: 'SD',
     url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/SWS_monthly_mean_1993_2021_SD.tif',
