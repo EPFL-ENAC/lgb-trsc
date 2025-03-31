@@ -62,59 +62,69 @@ export const CHL_monthly_mean: ColorMap = {
   },
 };
 
-export const SST_monthly_max_SD: ColorMap = {
+export const CHL_monthly_mean_Mean: ColorMap = {
   type: 'continuous',
-  // colorMap: {
-  //   '0.10': '#fff5eb',
-  //   '1.00': '#fdbd83',
-  //   '2.00': '#ee6511',
-  //   '3.00': '#7f2704',
-  // },
-  // min: 0.1,
-  // max: 3,
   colorMap: {
-    '1.10': '#fff5eb',
-    '2.00': '#fdbd83',
-    '3.00': '#ee6511',
-    '5.99': '#7f2704',
-    // '0': 'rgba(0, 0, 0, 0)',
-    // '0.164': 'rgba(54, 25, 63, 1)',
-    // '0.268': 'rgba(112, 31, 87, 1)',
-    // '0.425': 'rgba(174, 23, 89, 1)',
-    // '0.512': 'rgba(225, 51, 66, 1)',
-    // '0.673': 'rgba(243, 120, 82, 1)',
-    // '0.975': 'rgba(246, 181, 144, 1)',
-    // '5.196': 'rgba(250, 235, 221, 1)',
-    // '5.2': 'rgba(255, 255, 255, 1)',
+    '0.1310': '#f7fcf5',
+    '0.7895': '#c5e8be',
+    '1.4481': '#9ed899',
+    '2.1066': '#73c476',
+    '2.7651': '#4cb062',
+    '3.4236': '#329b51',
+    '4.0821': '#1b8540',
+    '4.6900': '#05712f',
+    '5.1965': '#00441b'
   },
-  min: 1.1,
-  max: 5.99,
+  min: 0.13,
+  max: 5.20,
   nodata: -3.4e38,
   epsilon: 1.0e35,
 };
 
+export const CHL_monthly_mean_SD: ColorMap = {
+  type: 'continuous',
+  colorMap: {
+    '0.035': '#ffffff',
+    '0.978': '#28bceb',
+    '1.921': '#a4fc3c',
+    '2.865': '#fb7e21',
+    '3.808': '#7a0403'
+  },
+  min: 0.035,
+  max: 3.81,
+  nodata: -3.4e38,
+  epsilon: 1.0e35,
+};
+
+export const SST_monthly_max_SD: ColorMap = {
+  type: 'continuous',
+  colorMap: {
+    '1.2436': '#ffffff',
+    '1.8333': '#28bceb',
+    '2.4229': '#a4fc3c',
+    '3.0126': '#fb7e21',
+    '3.6023': '#7a0403'
+  },
+  min: 1.24,
+  max: 3.60,
+  nodata: -3.4e38,
+  epsilon: 1.0e35,
+};
+
+
 export const SST_monthly_max_Mean: ColorMap = {
   type: 'continuous',
-  // colorMap: {
-  //   "15": "#2c7bb6",
-  //   "20": "#abd9e9",
-  //   "25": "#ffffbf",
-  //   "28": "#fdae61",
-  //   "30": "#d7191c",
-  //   "35": "#6f0005",
-  // },
-  // min: 15,
-  // max: 35,
+
   colorMap: {
-    '23': '#2c7bb6',
-    '24': '#abd9e9',
-    '27': '#ffffbf',
-    '28': '#fdae61',
-    '30': '#d7191c',
-    '32': '#6f0005',
+    '21.3': '#2c7bb6',
+    '23.75': '#abd9e9',
+    '26.20': '#ffffbf',
+    '28.65': '#fdae61',
+    '31.1': '#d7191c',
+    // '32': '#6f0005',
   },
-  min: 22,
-  max: 33,
+  min: 21.3,
+  max: 31.1,
   nodata: -3.4e38,
   epsilon: 1.0e35,
 };
