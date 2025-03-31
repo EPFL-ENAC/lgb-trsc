@@ -169,10 +169,10 @@
       <div v-if="sampleSet.length > 0">
         <q-toggle
           :model-value="selectedExpeditionSubstrateLevel"
-          @update:model-value="setSelectedExpeditionSubstrateLevel"
           true-value="Substrate_coarse"
           false-value="Substrate_intermediate"
           :label="selectedExpeditionSubstrateLevel"
+          @update:model-value="setSelectedExpeditionSubstrateLevel"
         ></q-toggle>
         <BarChart3DMappingExpedition
           v-if="isValidSampleSet"
@@ -197,7 +197,7 @@
       <p>Change in Coral cover since</p>
       <!-- Note: Using random placeholder values. Will be replaced with actual data. -->
       <div class="coral-changes">
-        <div class="coral-change-item" v-for="(value, key) in summaryStats" :key="key">
+        <div v-for="(value, key) in summaryStats" :key="key" class="coral-change-item">
           <div class="coral-type">{{ key }}</div>
           <div class="change-indicator">
             <q-icon
