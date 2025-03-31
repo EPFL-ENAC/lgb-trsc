@@ -2,8 +2,10 @@ import GeoTIFF from 'ol/source/GeoTIFF.js';
 import { attributions } from '@/maps/utils/attributions';
 import { Style } from 'ol/style';
 import {
-  CHL_monthly_mean,
+  CHL_monthly_mean_Mean,
+  CHL_monthly_mean_SD,
   SST_monthly_max_Mean,
+  SST_monthly_max_SD,
   ColorMap,
 } from '@/maps/config/layerColors';
 // ok source should be wrapped in a function
@@ -27,8 +29,14 @@ const legendVariableCHL = {
   unit: 'mg/m3',
   variable_title: 'Mass concentration of chlorophyll a in sea water CHL',
   variable: 'CHL',
-  colorScale: CHL_monthly_mean,
 };
+
+const legendVariableSST = {
+  unit: 'mg/m3',
+  variable_title: 'Mass concentration of chlorophyll a in sea water CHL',
+  variable: 'SST',
+};
+
 
 export const metadata = {
   CHL_monthly_mean: {
@@ -145,30 +153,36 @@ export const sources: SourceInfo[] = [
     name: 'CHL_monthly_mean',
     ...metadata.CHL_monthly_mean,
     ...legendVariableCHL,
+    colorScale: CHL_monthly_mean_Mean,
     attribution: attributions.copernicus,
     url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/processed_data/SG_MANON/env_rasters_cut/CHL_monthly_mean_Mean.tif',
   },
   {
     type: 'SD',
     name: 'CHL_monthly_mean',
+    ...metadata.CHL_monthly_mean,
     ...legendVariableCHL,
+    colorScale: CHL_monthly_mean_SD,
     attribution: attributions.copernicus,
     url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/processed_data/SG_MANON/env_rasters_cut/CHL_monthly_mean_SD.tif',
   },
   {
     type: 'Mean',
     name: 'SST_monthly_max',
+    ...metadata.SST_monthly,
+    ...legendVariableSST,
     colorScale: SST_monthly_max_Mean,
     attribution: attributions.copernicus,
     url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/processed_data/SG_MANON/env_rasters_cut/SST_monthly_max_Mean.tif',
   },
   {
     type: 'SD',
-    name: 'SST_monthly_max',
-    // colorScale: SST_monthly_max_SD,
+    name: 'SST_monthly_max',    
+    ...metadata.SST_monthly,
+    ...legendVariableSST,
+    colorScale: SST_monthly_max_SD,
     attribution: attributions.copernicus,
-    // url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/processed_data/SG_MANON/env_rasters_cut/SST_monthly_max_SD.tif',
-    url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/SST_monthly_max_1985_2024_SD.tif',
+    url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/processed_data/SG_MANON/env_rasters_cut/SST_monthly_max_SD.tif',
   },
   {
     type: 'Mean',
