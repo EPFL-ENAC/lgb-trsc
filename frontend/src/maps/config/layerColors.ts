@@ -47,54 +47,7 @@ export const bathymetricColorMap: ColorMap = {
     '40-50m': 'rgb(255, 0, 0)',
   },
 };
-
-export const CHL_monthly_mean: ColorMap = {
-  type: 'continuous',
-  colorMap: {
-    // '0.001': 'rgba(0, 0, 0, 0)',
-    '0.01': 'rgba(255, 255, 255, 1)',
-    '0.10': '#fad7dd',
-    '0.25': '#f58860',
-    '0.50': '#cb1b4f',
-    '1.00': '#611f53',
-    '25.0': '#0c146a',
-    '50.0': '#000000',
-  },
-};
-
-export const CHL_monthly_mean_Mean: ColorMap = {
-  type: 'continuous',
-  colorMap: {
-    '0.1310': '#f7fcf5',
-    '0.7895': '#c5e8be',
-    '1.4481': '#9ed899',
-    '2.1066': '#73c476',
-    '2.7651': '#4cb062',
-    '3.4236': '#329b51',
-    '4.0821': '#1b8540',
-    '4.6900': '#05712f',
-    '5.1965': '#00441b'
-  },
-  min: 0.13,
-  max: 5.20,
-  nodata: -3.4e38,
-  epsilon: 1.0e35,
-};
-
-export const CHL_monthly_mean_SD: ColorMap = {
-  type: 'continuous',
-  colorMap: {
-    '0.035': '#ffffff',
-    '0.978': '#28bceb',
-    '1.921': '#a4fc3c',
-    '2.865': '#fb7e21',
-    '3.808': '#7a0403'
-  },
-  min: 0.035,
-  max: 3.81,
-  nodata: -3.4e38,
-  epsilon: 1.0e35,
-};
+// START OF ENVIRONMENTAL LAYERS
 
 export const SST_monthly_max_SD: ColorMap = {
   type: 'continuous',
@@ -103,15 +56,13 @@ export const SST_monthly_max_SD: ColorMap = {
     '1.8333': '#28bceb',
     '2.4229': '#a4fc3c',
     '3.0126': '#fb7e21',
-    '3.6023': '#7a0403'
+    '3.6023': '#7a0403',
   },
   min: 1.24,
-  max: 3.60,
+  max: 3.6,
   nodata: -3.4e38,
   epsilon: 1.0e35,
 };
-
-
 export const SST_monthly_max_Mean: ColorMap = {
   type: 'continuous',
 
@@ -129,6 +80,232 @@ export const SST_monthly_max_Mean: ColorMap = {
   epsilon: 1.0e35,
 };
 
+export const SST_monthly_min_Mean: ColorMap = {
+  type: 'continuous',
+  colorMap: {
+    '21.3': '#2c7bb6',
+    '23.75': '#abd9e9',
+    '26.20': '#ffffbf',
+    '28.65': '#fdae61',
+    '31.1': '#d7191c',
+  },
+  min: 21.3,
+  max: 31.1,
+  nodata: -3.4e38,
+  epsilon: 1.0e35,
+};
+
+export const SST_monthly_min_SD: ColorMap = {
+  type: 'continuous',
+  colorMap: {
+    '1.03': '#ffffff',
+    '1.68': '#28bceb',
+    '2.33': '#a4fc3c',
+    '2.98': '#fb7e21',
+    '3.63': '#7a0403',
+  },
+  min: 1.03,
+  max: 3.63,
+  nodata: -3.4e38,
+  epsilon: 1.0e35,
+};
+
+export const SST_monthly_mean_Mean: ColorMap = {
+  type: 'continuous',
+  colorMap: {
+    '21.3': '#2c7bb6',
+    '23.75': '#abd9e9',
+    '26.20': '#ffffbf',
+    '28.65': '#fdae61',
+    '31.1': '#d7191c',
+  },
+  min: 21.3,
+  max: 31.1,
+  nodata: -3.4e38,
+  epsilon: 1.0e35,
+};
+
+export const SST_monthly_mean_SD: ColorMap = {
+  type: 'continuous',
+  colorMap: {
+    '1.10': '#ffffff',
+    '1.73': '#28bceb',
+    '2.36': '#a4fc3c',
+    '2.99': '#fb7e21',
+    '3.62': '#7a0403',
+  },
+  min: 1.1,
+  max: 3.62,
+  nodata: -3.4e38,
+  epsilon: 1.0e35,
+};
+
+export const CHL_monthly_mean_Mean: ColorMap = {
+  type: 'continuous',
+  colorMap: {
+    '0.13': '#f7fcf5',
+    '0.79': '#c5e8be',
+    '1.45': '#9ed899',
+    '2.11': '#73c476',
+    '2.77': '#4cb062',
+    '3.42': '#329b51',
+    '4.08': '#1b8540',
+    '4.69': '#05712f',
+    '5.20': '#00441b',
+  },
+  min: 0.13,
+  max: 5.2,
+  nodata: -3.4e38,
+  epsilon: 1.0e35,
+};
+
+export const CHL_monthly_mean_SD: ColorMap = {
+  type: 'continuous',
+  colorMap: {
+    '0.04': '#ffffff',
+    '0.98': '#28bceb',
+    '1.92': '#a4fc3c',
+    '2.86': '#fb7e21',
+    '3.81': '#7a0403',
+  },
+  min: 0.04,
+  max: 3.81,
+  nodata: -3.4e38,
+  epsilon: 1.0e35,
+};
+
+export const SPM_monthly_mean_Mean: ColorMap = {
+  type: 'continuous',
+  colorMap: {
+    '0.25': '#fffff4',
+    '2.23': '#9bd8b5',
+    '11.57': '#4cbac2',
+    '22.07': '#2c7db7',
+    '42.53': '#253494',
+  },
+  min: 0.25,
+  max: 42.53,
+  nodata: -3.4e38,
+  epsilon: 1.0e35,
+};
+
+export const SPM_monthly_mean_SD: ColorMap = {
+  type: 'continuous',
+  colorMap: {
+    '0.04': '#ffffff',
+    '5.92': '#28bceb',
+    '11.81': '#a4fc3c',
+    '17.69': '#fb7e21',
+    '23.57': '#7a0403',
+  },
+  min: 0.04,
+  max: 23.57,
+  nodata: -3.4e38,
+  epsilon: 1.0e35,
+};
+
+export const SCV_monthly_mean_Mean: ColorMap = {
+  type: 'continuous',
+  colorMap: {
+    '0.02': '#fcfbfd',
+    '0.10': '#e5e4f0',
+    '0.18': '#cccce4',
+    '0.26': '#afaed3',
+    '0.34': '#918dc2',
+    '0.42': '#786db1',
+    '0.50': '#66499f',
+    '0.57': '#54278f',
+    '0.63': '#3f007d',
+  },
+  min: 0.02,
+  max: 0.63,
+  nodata: -3.4e38,
+  epsilon: 1.0e35,
+};
+
+export const SCV_monthly_mean_SD: ColorMap = {
+  type: 'continuous',
+  colorMap: {
+    '0.01': '#ffffff',
+    '0.10': '#28bceb',
+    '0.18': '#a4fc3c',
+    '0.27': '#fb7e21',
+    '0.36': '#7a0403',
+  },
+  min: 0.01,
+  max: 0.36,
+  nodata: -3.4e38,
+  epsilon: 1.0e35,
+};
+
+export const SWS_monthly_mean_Mean: ColorMap = {
+  type: 'continuous',
+  colorMap: {
+    '34.40': '#f7fbff',
+    '35.31': '#d5e5f4',
+    '36.21': '#c6dbef',
+    '37.12': '#7eb3d9',
+    '38.02': '#3f8fc4',
+    '38.93': '#2c7cbb',
+    '39.84': '#1b6aaf',
+    '40.67': '#0e58a2',
+    '41.37': '#08306b',
+  },
+  min: 34.4,
+  max: 41.37,
+  nodata: -3.4e38,
+  epsilon: 1.0e35,
+};
+
+export const SWS_monthly_mean_SD: ColorMap = {
+  type: 'continuous',
+  colorMap: {
+    '0.20': '#ffffff',
+    '0.80': '#28bceb',
+    '1.39': '#a4fc3c',
+    '1.98': '#fb7e21',
+    '2.58': '#7a0403',
+  },
+  min: 0.2,
+  max: 2.58,
+  nodata: -3.4e38,
+  epsilon: 1.0e35,
+};
+
+export const DHW_annual_max_Mean: ColorMap = {
+  type: 'continuous',
+  colorMap: {
+    '0.10': '#fff5f0',
+    '0.23': '#fee0d2',
+    '0.57': '#fcbba1',
+    '1.68': '#fb6a4a',
+    '3.03': '#ef3b2c',
+    '4.19': '#cb181d',
+    '5.62': '#75030f',
+    '6.35': '#67000d',
+  },
+  min: 0.1,
+  max: 6.35,
+  nodata: -3.4e38,
+  epsilon: 1.0e35,
+};
+
+export const DHW_annual_max_SD: ColorMap = {
+  type: 'continuous',
+  colorMap: {
+    '0.19': '#ffffff',
+    '2.08': '#28bceb',
+    '3.98': '#a4fc3c',
+    '5.87': '#fb7e21',
+    '7.76': '#7a0403',
+  },
+  min: 0.19,
+  max: 7.76,
+  nodata: -3.4e38,
+  epsilon: 1.0e35,
+};
+
+// END OF ENVIRONMENTAL LAYERS
 export const defaultEnvironmentalColorMap: ColorMap = {
   type: 'continuous',
   colorMap: {
@@ -246,7 +423,6 @@ export const substrateLevelMapColor: Record<string, string[]> = {
   Substrate_coarse: d3MappingColorSubstrate1,
   Substrate_intermediate: d3MappingColorSubstrate2,
 };
-
 
 export const environmentalClusterColorMap: ColorMap = {
   type: 'categorical',
