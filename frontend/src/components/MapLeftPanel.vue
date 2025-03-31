@@ -121,7 +121,6 @@
                           </q-card>
                         </q-tooltip>
                       </q-icon>
-
                       <q-toggle
                         :label="layerinfo.layer.get('meanOrSD')"
                         color="pink"
@@ -221,12 +220,14 @@
                                   "
                                 >
                                   {{ layerinfo.layer.get('description') }}
+                                  
                                 </span>
                               </q-card-title>
                             </q-card-section>
                           </q-card>
                         </q-tooltip>
                       </q-icon>
+                      
                       <q-toggle
                         :label="layerinfo.layer.get('meanOrSD')"
                         color="pink"
@@ -295,6 +296,8 @@ import BaseLayer from 'ol/layer/Base';
 import { storeToRefs } from 'pinia';
 import { sourcesTitle } from '@/maps/sources/DjiboutiNOAASource';
 import { generateDefaultStyle } from '@/maps/layers/overlay/EnvironmentalLayers/DjiboutiLayer';
+import { useLayerController } from '@/maps/composables/useLayerController';
+import WebGLTileLayer from 'ol/layer/WebGLTile';
 
 const $q = useQuasar();
 const leftDrawerOpen = ref(true);
@@ -341,10 +344,14 @@ const updateMeanOrSD = (layer: BaseLayer) => {
     layer.set('properties', {
       ...environmentalSource,
     });
+    layer.set('meanOrSD', newMeanOrSD);
     layer.set('source', createGeoTIFFSource(environmentalSource));
     layer.changed();
   }
   layer.set('meanOrSD', newMeanOrSD);
+  layer.changed();
+  const layerControls = useLayerController();
+  layerControls.setEnvironmentalLayer(layer as WebGLTileLayer);
 };
 
 const getLayerLegend = (layer: BaseLayer) => {
