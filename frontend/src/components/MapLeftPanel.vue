@@ -28,11 +28,7 @@
         :key="group.title"
         :group="`overlays${groupIndex}`"
         :label="group.title"
-        
       >
-      <!-- :model-value="
-          group.layers.some((layerinfo) => layerinfo.layer.getVisible())
-        " -->
         <q-list padding>
           <q-item
             v-for="(layerinfo, layerIndex) in group.layers"
@@ -55,12 +51,14 @@
             </q-item-section>
             <q-item-section>
               <q-expansion-item
-                v-if="layerinfo.layer.get('visible') && getLayerLegend(layerinfo.layer as BaseLayer)"
                 dense
                 dense-toggle
-                :default-opened="layerinfo.layer.get('visible') && !!getLayerLegend(layerinfo.layer as BaseLayer)"
+                :default-opened="isLayerVisibleWithLegend(layerinfo.layer as BaseLayer)"
                 header-class="text-caption text-grey-7"
-                class="layer-grid"
+                :class="{
+                  'layer-grid': true,
+                  'no-expand': !isLayerVisibleWithLegend(layerinfo.layer as BaseLayer),
+                }"
               >
                 <template #header>
                   <div
@@ -105,21 +103,8 @@
                         name="info"
                       >
                         <q-tooltip>
-                          <q-card>
-                            <q-card-section>
-                              <h3>
-                                <span
-                                  style="
-                                    color: black;
-                                    height: 10px;
-                                    width: 10px;
-                                  "
-                                >
                                   {{ layerinfo.layer.get('description') }}
-                                </span>
-                              </h3>
-                            </q-card-section>
-                          </q-card>
+                 
                         </q-tooltip>
                       </q-icon>
                       <q-toggle
@@ -133,97 +118,31 @@
                     </div>
                   </div>
                 </template>
-                <q-card class="legend-card">
-                  <!-- Duplicate MapLegend is complex, should simplify -->
-                  <MapLegend
-                    v-if="layerinfo.layer.get('title') === 'Reef clusters'"
-                    :is-simple="true"
-                    :class-color-map="getLayerLegend(layerinfo.layer as BaseLayer)?.colorMap"
-                    :max-value="mapStore.selectedEnvironmentalClusterNumber"
-                    :show-legend-text="false"
-                    :is-continuous="
-                      getLayerLegend(layerinfo.layer as BaseLayer)?.type === 'continuous'
-                    "
-                  />
-                  <MapLegend
-                    v-else
-                    :class-color-map="getLayerLegend(layerinfo.layer as BaseLayer)?.colorMap"
-                    :metadata="{
-                      title: layerinfo.layer.get('title'),
-                      unit: layerinfo.layer.get('unit'),
-                      variable: layerinfo.layer.get('variable'),
-                    }"
-                    :is-continuous="
-                      getLayerLegend(layerinfo.layer as BaseLayer)?.type === 'continuous'
-                    "
-                  />
-                </q-card>
-              </q-expansion-item>
-              <!-- Non-expandable version when no legend is available -->
-              <q-expansion-item
-                v-else
-                dense
-                dense-toggle
-                header-class="text-caption text-grey-7"
-                class="layer-grid no-expand"
-              >
-                <template #header>
-                  <div
-                    :class="
-                      group.title !== 'Environmental Layers'
-                        ? 'layer-controls'
-                        : 'layer-environmental-controls'
-                    "
-                  >
-                    <div class="checkbox-wrapper">
-                      <template v-if="group.inputType === 'radio'">
-                        <q-radio
-                          :model-value="
-                            layerinfo.layer.get('visible')
-                              ? layerinfo.layer.get('title')
-                              : null
-                          "
-                          :val="layerinfo.layer.get('title')"
-                          :label="layerinfo.layer.get('title')"
-                          @update:model-value="
-                            () => setOverlayLayerRadio(groupIndex, layerIndex)
-                          "
-                        />
-                      </template>
-                      <template v-else>
-                        <q-checkbox
-                          :model-value="layerinfo.layer.get('visible')"
-                          :label="layerinfo.layer.get('title')"
-                          @update:model-value="
-                            (val) =>
-                              toggleOverlayLayer(groupIndex, layerIndex, val)
-                          "
-                        />
-                      </template>
-                    </div>
-                    <div
-                      v-if="group.title === 'Environmental Layers'"
-                      class="env-controls"
-                    >
-                      <q-icon
-                        v-if="layerinfo.layer.get('description')"
-                        name="info"
-                      >
-                        <q-tooltip>
-                          {{ layerinfo.layer.get('description') }}
-                        </q-tooltip>
-                      </q-icon>
-                      
-                      <q-toggle
-                        :label="layerinfo.layer.get('meanOrSD')"
-                        color="pink"
-                        false-value="SD"
-                        true-value="Mean"
-                        :model-value="layerinfo.layer.get('meanOrSD')"
-                        @update:model-value="() => updateMeanOrSD(layerinfo.layer as BaseLayer)"
-                      />
-                    </div>
-                  </div>
+                <template v-if="isLayerVisibleWithLegend(layerinfo.layer as BaseLayer)">
+                  <q-card class="legend-card">
+                    <MapLegend
+                      v-if="layerinfo.layer.get('title') === 'Reef clusters'"
+                      :is-simple="true"
+                      :class-color-map="getLayerLegend(layerinfo.layer as BaseLayer)?.colorMap"
+                      :max-value="mapStore.selectedEnvironmentalClusterNumber"
+                      :show-legend-text="false"
+                      :is-continuous="
+                        getLayerLegend(layerinfo.layer as BaseLayer)?.type === 'continuous'
+                      "
+                    />
+                    <MapLegend
+                      v-else
+                      :class-color-map="getLayerLegend(layerinfo.layer as BaseLayer)?.colorMap"
+                      :metadata="{
+                        title: layerinfo.layer.get('title'),
+                        unit: layerinfo.layer.get('unit'),
+                        variable: layerinfo.layer.get('variable'),
+                      }"
+                      :is-continuous="
+                        getLayerLegend(layerinfo.layer as BaseLayer)?.type === 'continuous'
+                      "
+                    />
+                  </q-card>
                 </template>
               </q-expansion-item>
             </q-item-section>
@@ -283,6 +202,11 @@ import { sourcesTitle } from '@/maps/sources/DjiboutiNOAASource';
 import { generateDefaultStyle } from '@/maps/layers/overlay/EnvironmentalLayers/DjiboutiLayer';
 import { useLayerController } from '@/maps/composables/useLayerController';
 import WebGLTileLayer from 'ol/layer/WebGLTile';
+
+// Utility function to check layer visibility and legend availability
+const isLayerVisibleWithLegend = (layer: BaseLayer) => {
+  return layer.get('visible') && getLayerLegend(layer);
+};
 
 const $q = useQuasar();
 const leftDrawerOpen = ref(true);
