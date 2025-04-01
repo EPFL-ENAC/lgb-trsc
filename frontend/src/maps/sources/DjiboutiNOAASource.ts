@@ -83,6 +83,26 @@ const legendVariables = {
     variableTitle: 'Sea surface temperature',
     variable: 'SST',
   },
+  SPM: {
+    unit: 'g/m3',
+    variableTitle: 'Mass concentration of suspended matter in sea water',
+    variable: 'SPM',
+  },
+  DHW: {
+    unit: '°C-weeks',
+    variableTitle: 'Degree Heating Week',
+    variable: 'DHW',
+  },
+  SCV: {
+    unit: 'm/s',
+    variableTitle: 'Sea Current Velocity',
+    variable: 'SCV',
+  },
+  SWS: {
+    unit: '10-3',
+    variableTitle: 'Sea water salinity',
+    variable: 'SWS',
+  },
 };
 
 export const tiffsUrls = [
@@ -143,56 +163,63 @@ export const metadata = {
     attributions: attributions.copernicus,
   },
   SPM_monthly_mean: {
-    description: 'SPM suspended particulate matter: Mass concentration of suspended matter in sea water SPM [g/m3]',
+    description: 'SPM suspended particulate matter',
     shortTitle: 'Mass concentration of suspended matter in sea water SPM [g/m3]',
     identifier: 'OCEANCOLOUR_GLO_BGC_L4_MY_009_104',
-    datasetDescription: 'Global Ocean Colour (Copernicus-GlobColour), Bio-Geo-Chemical, L4 (monthly and interpolated) from Satellite Observations (1997-ongoing)',
+    datasetDescription:
+      'Global Ocean Colour (Copernicus-GlobColour), Bio-Geo-Chemical, L4 (monthly and interpolated) from Satellite Observations (1997-ongoing)',
     dataset: 'cmems_obs-oc_glo_bgc-transp_my_l4-multi-4km_P1M',
+    resolution: '4km',
     date: 'SPM_09-1997_05-2024',
-    urls: [
-      tiffsUrls[6], // SPM_monthly_mean_Mean
-      tiffsUrls[7], // SPM_monthly_mean_SD
-    ],
     attributions: attributions.copernicus,
+    urls: [
+      tiffsUrls[2], // SPM_monthly_mean_Mean
+      tiffsUrls[3], // SPM_monthly_mean_SD
+    ],
   },
   DHW_annual_max: {
-    description: 'DHW Degree Heating Week: The accumulation of thermal stress (i.e. temperature >1°C above the monthly maximal mean temperature) over the previous 12 weeks',
     shortTitle: 'Degree Heating Week [°C-weeks]',
-    identifier: 'ct5km_dhw-max_v3.1',
-    datasetDescription: 'Year-to-date Annual Composites of 5km Satellite Coral Bleaching Heat Stress Products (Version 3.1)',
-    dataset: 'ct5km_dhw-max_v3.1',
+    identifier: 'DWH_ct5km_dhw-max_v3.1',
+    datasetDescription:
+      'Year-to-date Annual Composites of 5km Satellite Coral Bleaching Heat Stress Products',
+    version: '3.1',
+    resolution: '5km',
     date: '1985-2023',
-    urls: [
-      tiffsUrls[2], // DHW_annual_max_Mean
-      tiffsUrls[3], // DHW_annual_max_SD
-    ],
+    description:
+      'DHW is calculated as the accumulation of thermal stress (temperature >1°C above the monthly maximal mean temperature) over the previous 12 weeks',
     attributions: attributions.noaa,
+    urls: [
+      tiffsUrls[4], // DHW_annual_max_Mean
+      tiffsUrls[5], // DHW_annual_max_SD
+    ],
   },
   SCV_monthly_mean: {
-    description: 'SCV sea current velocity calculated from NWV Northward sea water velocity and EWV Eastern sea water velocity',
-    shortTitle: 'Sea current velocity [m/s]',
+    description: 'Sea Current Velocity calculated from Northward and Eastern velocities',
+    shortTitle: 'Sea Current Velocity [m/s]',
     identifier: 'GLOBAL_MULTIYEAR_PHY_001_030',
     datasetDescription: 'Global Ocean Physics Reanalysis',
     dataset: 'cmems_mod_glo_phy_my_0.083_P1D-m',
+    resolution: '0.083°',
     date: '01-1993_06-2021',
-    urls: [
-      tiffsUrls[4], // SCV_monthly_mean_Mean
-      tiffsUrls[5], // SCV_monthly_mean_SD
-    ],
     attributions: attributions.copernicus,
+    urls: [
+      tiffsUrls[6], // SCV_monthly_mean_Mean
+      tiffsUrls[7], // SCV_monthly_mean_SD
+    ],
   },
   SWS_monthly_mean: {
-    description: 'SWS Sea water salinity [10-3]',
+    description: 'Sea water salinity measurement',
     shortTitle: 'Sea water salinity [10-3]',
     identifier: 'GLOBAL_MULTIYEAR_PHY_001_030',
     datasetDescription: 'Global Ocean Physics Reanalysis',
     dataset: 'cmems_mod_glo_phy_my_0.083_P1D-m',
-    date: 'SWS_01-1993_06-2021',
+    resolution: '0.083°',
+    date: '01-1993_06-2021',
+    attributions: attributions.noaa,
     urls: [
       tiffsUrls[14], // SWS_monthly_mean_Mean
       tiffsUrls[15], // SWS_monthly_mean_SD
     ],
-    attributions: attributions.noaa,
   },
 };
 
@@ -237,6 +264,8 @@ export const sources: SourceInfo[] = [
   {
     type: SourceType.MEAN,
     name: 'SST_monthly_mean',
+    ...metadata.SST_monthly,
+    ...legendVariables.SST,
     colorScale: SST_monthly_mean_Mean,
     attribution: attributions.copernicus,
     url: metadata.SST_monthly.url[2],
@@ -244,6 +273,8 @@ export const sources: SourceInfo[] = [
   {
     type: SourceType.SD,
     name: 'SST_monthly_mean',
+    ...metadata.SST_monthly,
+    ...legendVariables.SST,
     colorScale: SST_monthly_mean_SD,
     attribution: attributions.copernicus,
     url: metadata.SST_monthly.url[3],
@@ -251,6 +282,8 @@ export const sources: SourceInfo[] = [
   {
     type: SourceType.MEAN,
     name: 'SST_monthly_min',
+    ...metadata.SST_monthly,
+    ...legendVariables.SST,
     colorScale: SST_monthly_min_Mean,
     attribution: attributions.copernicus,
     url: metadata.SST_monthly.url[4],
@@ -258,67 +291,85 @@ export const sources: SourceInfo[] = [
   {
     type: SourceType.SD,
     name: 'SST_monthly_min',
+    ...metadata.SST_monthly,
+    ...legendVariables.SST,
     colorScale: SST_monthly_min_SD,
     attribution: attributions.copernicus,
     url: metadata.SST_monthly.url[5],
   },
   {
     name: 'SPM_monthly_mean',
-    attribution: attributions.copernicus,
-    colorScale: SPM_monthly_mean_Mean,
     type: SourceType.MEAN,
+    ...metadata.SPM_monthly_mean,
+    ...legendVariables.SPM,
+    colorScale: SPM_monthly_mean_Mean,
+    attribution: attributions.copernicus,
     url: metadata.SPM_monthly_mean.urls[0],
   },
   {
     name: 'SPM_monthly_mean',
-    attribution: attributions.copernicus,
-    colorScale: SPM_monthly_mean_SD,
     type: SourceType.SD,
+    ...metadata.SPM_monthly_mean,
+    ...legendVariables.SPM,
+    colorScale: SPM_monthly_mean_SD,
+    attribution: attributions.copernicus,
     url: metadata.SPM_monthly_mean.urls[1],
   },
 
   {
     name: 'DHW_annual_max',
+    type: SourceType.MEAN,
+    ...metadata.DHW_annual_max,
+    ...legendVariables.DHW,
     colorScale: DHW_annual_max_Mean,
     attribution: attributions.copernicus,
-    type: SourceType.MEAN,
     url: metadata.DHW_annual_max.urls[0],
   },
   {
     name: 'DHW_annual_max',
+    type: SourceType.SD,
+    ...metadata.DHW_annual_max,
+    ...legendVariables.DHW,
     colorScale: DHW_annual_max_SD,
     attribution: attributions.copernicus,
-    type: SourceType.SD,
     url: metadata.DHW_annual_max.urls[1],
   },
 
   {
     name: 'SCV_monthly_mean',
+    type: SourceType.MEAN,
+    ...metadata.SCV_monthly_mean,
+    ...legendVariables.SCV,
     colorScale: SCV_monthly_mean_Mean,
     attribution: attributions.copernicus,
-    type: SourceType.MEAN,
-    url: metadata.SCV_monthly_mean.urls[0],
+    url: metadata.SCV_monthly_mean.urls[0], 
   },
   {
     name: 'SCV_monthly_mean',
+    type: SourceType.SD,
+    ...metadata.SCV_monthly_mean,
+    ...legendVariables.SCV,
     colorScale: SCV_monthly_mean_SD,
     attribution: attributions.copernicus,
-    type: SourceType.SD,
     url: metadata.SCV_monthly_mean.urls[1],
   },
 
   {
     name: 'SWS_monthly_mean',
+    type: SourceType.MEAN,
+    ...metadata.SWS_monthly_mean,
+    ...legendVariables.SWS,
     colorScale: SWS_monthly_mean_Mean,
     attribution: attributions.noaa,
-    type: SourceType.MEAN,
     url: metadata.SWS_monthly_mean.urls[0],
   },
   {
     name: 'SWS_monthly_mean',
+    type: SourceType.SD,
+    ...metadata.SWS_monthly_mean,
+    ...legendVariables.SWS,
     colorScale: SWS_monthly_mean_SD,
     attribution: attributions.noaa,
-    type: SourceType.SD,
     url: metadata.SWS_monthly_mean.urls[1],
   },
 ];
