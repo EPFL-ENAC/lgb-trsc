@@ -22,19 +22,68 @@ import {
 } from '@/maps/config/layerColors';
 // ok source should be wrapped in a function
 // documentation here: https://openlayers.org/en/latest/apidoc/module-ol_source_GeoTIFF.html#~SourceInfo
+/**
+ * Interface for components within metadata that describe specific aspects of a dataset
+ */
+interface MetadataComponent {
+  short_title: string;
+  description: string;
+}
 
+/**
+ * Metadata structure for environmental data source groups
+ */
+// export interface SourceMetadata {
+//   description: string;
+//   short_title: string;
+//   shorter_title?: string;
+//   identifier: string;
+//   dataset_description: string;
+//   dataset: string | string[];
+//   date: string | string[];
+//   urls?: string[];
+//   attributions: string;
+//   resolution?: string;
+//   version?: string;
+//   components?: Record<string, MetadataComponent>;
+// }
+
+/**
+ * Variable information for legend display
+ */
+export interface VariableInfo {
+  unit: string;
+  variable_title: string;
+  variable: string;
+}
+
+/**
+ * Configuration for an individual GeoTIFF source layer
+ * Can include properties from both metadata and variable information
+ */
 export interface SourceInfo {
   type: 'Mean' | 'SD';
   name: string;
   url: string;
+  colorScale: ColorMap;
+  attribution: string;
+  // Optional properties that may be spread from metadata or variable info
   unit?: string;
   variable_title?: string;
   variable?: string;
-  attribution?: string;
   description?: string;
-  fulleTitle?: string;
-  colorScale?: ColorMap;
+  short_title?: string;
+  shorter_title?: string;
+  identifier?: string;
+  dataset_description?: string;
+  dataset?: string | string[];
+  date?: string | string[];
+  resolution?: string;
+  version?: string;
+  components?: Record<string, MetadataComponent>;
+  // Additional rendering properties
   style?: Style;
+  bands?: number[];
 }
 
 const legendVariableCHL = {
