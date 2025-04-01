@@ -6,7 +6,6 @@ import {
   CHL_monthly_mean_SD,
   SST_monthly_max_Mean,
   SST_monthly_max_SD,
-  ColorMap,
   SST_monthly_mean_Mean,
   SPM_monthly_mean_Mean,
   DHW_annual_max_Mean,
@@ -19,41 +18,31 @@ import {
   SWS_monthly_mean_SD,
   SST_monthly_min_Mean,
   SST_monthly_min_SD,
+  ColorMap,
 } from '@/maps/config/layerColors';
-// ok source should be wrapped in a function
-// documentation here: https://openlayers.org/en/latest/apidoc/module-ol_source_GeoTIFF.html#~SourceInfo
+
+/**
+ * Enum for source types
+ */
+export enum SourceType {
+  MEAN = 'Mean',
+  SD = 'SD',
+}
+
 /**
  * Interface for components within metadata that describe specific aspects of a dataset
  */
 interface MetadataComponent {
-  short_title: string;
+  shortTitle: string;
   description: string;
 }
-
-/**
- * Metadata structure for environmental data source groups
- */
-// export interface SourceMetadata {
-//   description: string;
-//   short_title: string;
-//   shorter_title?: string;
-//   identifier: string;
-//   dataset_description: string;
-//   dataset: string | string[];
-//   date: string | string[];
-//   urls?: string[];
-//   attributions: string;
-//   resolution?: string;
-//   version?: string;
-//   components?: Record<string, MetadataComponent>;
-// }
 
 /**
  * Variable information for legend display
  */
 export interface VariableInfo {
   unit: string;
-  variable_title: string;
+  variableTitle: string;
   variable: string;
 }
 
@@ -62,51 +51,47 @@ export interface VariableInfo {
  * Can include properties from both metadata and variable information
  */
 export interface SourceInfo {
-  type: 'Mean' | 'SD';
+  type: SourceType;
   name: string;
   url: string;
   colorScale: ColorMap;
   attribution: string;
-  // Optional properties that may be spread from metadata or variable info
   unit?: string;
-  variable_title?: string;
+  variableTitle?: string;
   variable?: string;
   description?: string;
-  short_title?: string;
-  shorter_title?: string;
+  shortTitle?: string;
   identifier?: string;
-  dataset_description?: string;
+  datasetDescription?: string;
   dataset?: string | string[];
   date?: string | string[];
   resolution?: string;
   version?: string;
   components?: Record<string, MetadataComponent>;
-  // Additional rendering properties
   style?: Style;
   bands?: number[];
 }
 
-const legendVariableCHL = {
-  unit: 'mg/m3',
-  variable_title: 'Mass concentration of chlorophyll a in sea water CHL',
-  variable: 'CHL',
+const legendVariables = {
+  CHL: {
+    unit: 'mg/m3',
+    variableTitle: 'Mass concentration of chlorophyll a in sea water CHL',
+    variable: 'CHL',
+  },
+  SST: {
+    unit: 'K',
+    variableTitle: 'Sea surface temperature',
+    variable: 'SST',
+  },
 };
-
-const legendVariableSST = {
-  unit: 'mg/m3',
-  variable_title: 'Mass concentration of chlorophyll a in sea water CHL',
-  variable: 'SST',
-};
-
 
 export const metadata = {
   CHL_monthly_mean: {
     description:
       'CHL chlorophyll concentration : Mass concentration of chlorophyll a in sea water CHL [mg/m3]',
-    short_title: 'Mass concentration of chlorophyll a in sea water CHL [mg/m3]',
-    shorter_title: 'CHL [mg/m3]',
+    shortTitle: 'Mass concentration of chlorophyll a in sea water CHL [mg/m3]',
     identifier: 'OCEANCOLOUR_GLO_BGC_L4_MY_009_104',
-    dataset_description:
+    datasetDescription:
       'Global Ocean Colour (Copernicus-GlobColour), Bio-Geo-Chemical, L4 (monthly and interpolated) from Satellite Observations (1997-ongoing)',
     dataset: 'cmems_obs-oc_glo_bgc-plankton_my_l4-multi-4km_P1M',
     date: 'CHL_09-1997_05-2024',
@@ -114,14 +99,14 @@ export const metadata = {
       'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/CHL_monthly_mean_1997_2024_Mean.tif',
       'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/CHL_monthly_mean_1997_2024_SD.tif',
     ],
-    attributions: 'copernicus',
+    attributions: attributions.copernicus,
   },
   SST_monthly: {
     description:
       'SST sea surface Temperature : Sea water temperature analysed_sst [K] 0.05°',
-    short_title: 'Sea water temperature analysed_sst [K]',
+    shortTitle: 'Sea water temperature analysed_sst [K]',
     identifier: 'SST_GLO_SST_L4_REP_OBSERVATIONS_010_024',
-    dataset_description:
+    datasetDescription:
       'ESA SST CCI and C3S reprocessed sea surface temperature analyses',
     dataset: [
       'Dataset 1 ESACCI-GLO-SST-L4-REP-OBS-SST 02/09/1981→31/12/2016',
@@ -136,138 +121,70 @@ export const metadata = {
       'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/SST_monthly_min_1985_2024_Mean.tif',
       'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/SST_monthly_min_1985_2024_SD.tif',
     ],
-    attributions: 'copernicus',
-  },
-  GLOBAL_MULTIYEAR_PHY_001_030: {
-    description: 'Sea Current Velocity, Water Salinity, and Water Velocity',
-    identifier: 'GLOBAL_MULTIYEAR_PHY_001_030',
-    dataset_description: 'Global Ocean Physics Reanalysis',
-    dataset: 'cmems_mod_glo_phy_my_0.083_P1D-m',
-    resolution: '0.083°',
-    date: '01-1993_06-2021',
-    attributions: 'copernicus',
-    // sources: [
-    //   createSourceSCV_monthly_mean_1993_2021_Mean,
-    //   createSourceSCV_monthly_mean_1993_2021_SD,
-    //   createSourceSWS_monthly_mean_1993_2021_Mean,
-    //   createSourceSWS_monthly_mean_1993_2021_SD,
-    // ],
-    components: {
-      SCV: {
-        short_title: 'Sea Current Velocity [m/s]',
-        description:
-          'Calculated from NWV (Northward) and EWV (Eastern) velocities',
-      },
-      NWV: {
-        short_title: 'Northward sea water velocity [m/s]',
-        description: 'Northward component of sea water velocity (vo)',
-      },
-      EWV: {
-        short_title: 'Eastern sea water velocity [m/s]',
-        description: 'Eastern component of sea water velocity (uo)',
-      },
-      SWS: {
-        short_title: 'Sea water salinity [10-3]',
-        description: 'Sea water salinity measurement',
-      },
-    },
-  },
-
-  SPM_monthly_mean: {
-    description: 'SPM suspended particulate matter',
-    short_title:
-      'Mass concentration of suspended matter in sea water SPM [g/m3]',
-    identifier: 'OCEANCOLOUR_GLO_BGC_L4_MY_009_104',
-    dataset_description:
-      'Global Ocean Colour (Copernicus-GlobColour), Bio-Geo-Chemical, L4 (monthly and interpolated) from Satellite Observations (1997-ongoing)',
-    dataset: 'cmems_obs-oc_glo_bgc-transp_my_l4-multi-4km_P1M',
-    resolution: '4km',
-    date: 'SPM_09-1997_05-2024',
-    attributions: 'copernicus',
-    // sources: [
-    //   createSourceSPM_monthly_mean_1997_2024_Mean,
-    //   createSourceSPM_monthly_mean_1997_2024_SD,
-    // ],
-  },
-
-  DHW_annual_max: {
-    short_title: 'Degree Heating Week [°C-weeks]',
-    identifier: 'DWH_ct5km_dhw-max_v3.1',
-    dataset_description:
-      'Year-to-date Annual Composites of 5km Satellite Coral Bleaching Heat Stress Products',
-    version: '3.1',
-    resolution: '5km',
-    date: '1985-2023',
-    description:
-      'DHW is calculated as the accumulation of thermal stress (temperature >1°C above the monthly maximal mean temperature) over the previous 12 weeks',
-    attributions: 'noaa',
-    // sources: [
-    //   createSourceDHW_annual_max_1985_2024_Mean,
-    //   createSourceDHW_annual_max_1985_2024_SD,
-    // ],
+    attributions: attributions.copernicus,
   },
 };
 
 export const sources: SourceInfo[] = [
   {
-    type: 'Mean',
+    type: SourceType.MEAN,
     name: 'CHL_monthly_mean',
     ...metadata.CHL_monthly_mean,
-    ...legendVariableCHL,
+    ...legendVariables.CHL,
     colorScale: CHL_monthly_mean_Mean,
     attribution: attributions.copernicus,
-    url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/processed_data/SG_MANON/env_rasters_cut/CHL_monthly_mean_Mean.tif',
+    url: metadata.CHL_monthly_mean.urls[0],
   },
   {
-    type: 'SD',
+    type: SourceType.SD,
     name: 'CHL_monthly_mean',
     ...metadata.CHL_monthly_mean,
-    ...legendVariableCHL,
+    ...legendVariables.CHL,
     colorScale: CHL_monthly_mean_SD,
     attribution: attributions.copernicus,
-    url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/processed_data/SG_MANON/env_rasters_cut/CHL_monthly_mean_SD.tif',
+    url: metadata.CHL_monthly_mean.urls[1],
   },
   {
-    type: 'Mean',
+    type: SourceType.MEAN,
     name: 'SST_monthly_max',
     ...metadata.SST_monthly,
-    ...legendVariableSST,
+    ...legendVariables.SST,
     colorScale: SST_monthly_max_Mean,
     attribution: attributions.copernicus,
     url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/processed_data/SG_MANON/env_rasters_cut/SST_monthly_max_Mean.tif',
   },
   {
-    type: 'SD',
-    name: 'SST_monthly_max',    
+    type: SourceType.SD,
+    name: 'SST_monthly_max',
     ...metadata.SST_monthly,
-    ...legendVariableSST,
+    ...legendVariables.SST,
     colorScale: SST_monthly_max_SD,
     attribution: attributions.copernicus,
     url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/processed_data/SG_MANON/env_rasters_cut/SST_monthly_max_SD.tif',
   },
   {
-    type: 'Mean',
+    type: SourceType.MEAN,
     name: 'SST_monthly_mean',
     colorScale: SST_monthly_mean_Mean,
     attribution: attributions.copernicus,
     url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/processed_data/SG_MANON/env_rasters_cut/SST_monthly_mean_Mean.tif',
   },
   {
-    type: 'SD',
+    type: SourceType.SD,
     name: 'SST_monthly_mean',
     colorScale: SST_monthly_mean_SD,
     attribution: attributions.copernicus,
     url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/processed_data/SG_MANON/env_rasters_cut/SST_monthly_mean_SD.tif',
   },
   {
-    type: 'Mean',
+    type: SourceType.MEAN,
     name: 'SST_monthly_min',
     colorScale: SST_monthly_min_Mean,
     attribution: attributions.copernicus,
     url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/processed_data/SG_MANON/env_rasters_cut/SST_monthly_min_Mean.tif',
   },
   {
-    type: 'SD',
+    type: SourceType.SD,
     name: 'SST_monthly_min',
     colorScale: SST_monthly_min_SD,
     attribution: attributions.copernicus,
@@ -277,14 +194,14 @@ export const sources: SourceInfo[] = [
     name: 'SPM_monthly_mean',
     attribution: attributions.copernicus,
     colorScale: SPM_monthly_mean_Mean,
-    type: 'Mean',
+    type: SourceType.MEAN,
     url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/SPM_monthly_mean_1997_2024_Mean.tif',
   },
   {
     name: 'SPM_monthly_mean',
     attribution: attributions.copernicus,
     colorScale: SPM_monthly_mean_SD,
-    type: 'SD',
+    type: SourceType.SD,
     url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/SPM_monthly_mean_1997_2024_SD.tif',
   },
 
@@ -292,14 +209,14 @@ export const sources: SourceInfo[] = [
     name: 'DHW_annual_max',
     colorScale: DHW_annual_max_Mean,
     attribution: attributions.copernicus,
-    type: 'Mean',
+    type: SourceType.MEAN,
     url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/DHW_annual_max_1985_2024_Mean.tif',
   },
   {
     name: 'DHW_annual_max',
     colorScale: DHW_annual_max_SD,
     attribution: attributions.copernicus,
-    type: 'SD',
+    type: SourceType.SD,
     url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/DHW_annual_max_1985_2024_SD.tif',
   },
 
@@ -307,14 +224,14 @@ export const sources: SourceInfo[] = [
     name: 'SCV_monthly_mean',
     colorScale: SCV_monthly_mean_Mean,
     attribution: attributions.copernicus,
-    type: 'Mean',
+    type: SourceType.MEAN,
     url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/SCV_monthly_mean_1993_2021_Mean.tif',
   },
   {
     name: 'SCV_monthly_mean',
     colorScale: SCV_monthly_mean_SD,
     attribution: attributions.copernicus,
-    type: 'SD',
+    type: SourceType.SD,
     url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/SCV_monthly_mean_1993_2021_SD.tif',
   },
 
@@ -322,14 +239,14 @@ export const sources: SourceInfo[] = [
     name: 'SWS_monthly_mean',
     colorScale: SWS_monthly_mean_Mean,
     attribution: attributions.noaa,
-    type: 'Mean',
+    type: SourceType.MEAN,
     url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/SWS_monthly_mean_1993_2021_Mean.tif',
   },
   {
     name: 'SWS_monthly_mean',
     colorScale: SWS_monthly_mean_SD,
     attribution: attributions.noaa,
-    type: 'SD',
+    type: SourceType.SD,
     url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/ENV_RASTERS/SWS_monthly_mean_1993_2021_SD.tif',
   },
 ];
