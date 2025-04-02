@@ -196,19 +196,37 @@
         :scroll-legend="true"
       />
       <p>Change in Coral cover since</p>
-      <!-- Note: Using random placeholder values. Will be replaced with actual data. -->
-      <div class="coral-changes">
-        <div v-for="(value, key) in summaryStats" :key="key" class="coral-change-item">
-          <div class="coral-type">{{ key }}</div>
-          <div class="change-indicator">
-            <q-icon
-              :name="value.icon as string"
-              :color="value.color as string"
-              size="md"
-            />
-            <span class="percentage" :class="value.color"
-              >{{ value.value }}%</span
+      <div
+        class="coral-changes"
+        :class="{
+          'horizontal-groups':
+            selectedExpeditionSubstrateLevel === 'Substrate_coarse',
+        }"
+      >
+        <div
+          v-for="(group, groupName) in summaryStats"
+          :key="groupName"
+          class="coral-change-group"
+        >
+          <h4 class="group-title">{{ groupName }}</h4>
+          <div class="group-items">
+            <div
+              v-for="(value, key) in group"
+              :key="key"
+              class="coral-change-item"
             >
+              <div class="coral-type">{{ key }}</div>
+              <div class="change-indicator">
+                <q-icon
+                  :name="value.icon as string"
+                  :color="value.color as string"
+                  size="md"
+                />
+                <span class="percentage" :class="value.color"
+                  >{{ value.value }}%</span
+                >
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -326,7 +344,6 @@ const summaryStats = computed(() => {
   }
 
   function calculatePercentageChangeFromDataSeries(dataSerie: number[]) {
-    // should be latest elements first
     const lastIndex = dataSerie.length - 1;
     if (lastIndex < 1) {
       return 0;
@@ -337,36 +354,71 @@ const summaryStats = computed(() => {
       dataSerie[lastLastIndex]
     );
   }
-  const authorized_ids = substrateLevelPresetMap[selectedExpeditionSubstrateLevel.value];
+  const authorized_ids =
+    substrateLevelPresetMap[selectedExpeditionSubstrateLevel.value];
+
+  // Calculate all percentage changes
   const results = authorized_ids.reduce((acc, authorized_id, index) => {
-    acc[authorized_id] = calculatePercentageChangeFromDataSeries(
-      timeSeriesSet.value.filter((item) => item.name === authorized_id)[0].data
+    const timeSeries = timeSeriesSet.value.find(
+      (item) => item.name === authorized_id
     );
+    if (timeSeries) {
+      acc[authorized_id] = calculatePercentageChangeFromDataSeries(
+        timeSeries.data
+      );
+      acc[authorized_id] = Math.ceil(acc[authorized_id] * 100) / 100;
+    }
     return acc;
   }, {} as Record<string, number>);
-  // we should ceil the values to 2 decimal places
-  authorized_ids.forEach((authorized_id) => {
-    results[authorized_id] = Math.ceil(results[authorized_id] * 100) / 100;
-  });
-  return authorized_ids.reduce((acc, authorized_id) => {
-    if (!results[authorized_id]) {
-      return acc;
-    }
-    if (authorized_id.includes('alive')) {
-      acc[authorized_id] = {
-        value: results[authorized_id],
-        icon: results[authorized_id] >= 0 ? mdiTriangleSmallUp : mdiTriangleSmallDown,
-        color: results[authorized_id] >= 0 ? 'positive' : 'negative',
-      };
+
+  // Group by categories
+  const grouped: Record<
+    string,
+    Record<string, { value: number; icon: string; color: string }>
+  > = {
+    Alive: {} as Record<string, { value: number; icon: string; color: string }>,
+    Dead: {} as Record<string, { value: number; icon: string; color: string }>,
+    Bleached: {} as Record<
+      string,
+      { value: number; icon: string; color: string }
+    >,
+    Other: {} as Record<string, { value: number; icon: string; color: string }>,
+  };
+
+  // Sort items into groups
+  authorized_ids.forEach((id) => {
+    if (!results[id]) return;
+
+    const value = results[id];
+    const item = {
+      value,
+      icon: value >= 0 ? mdiTriangleSmallUp : mdiTriangleSmallDown,
+      color: '',
+    };
+
+    if (id.toLowerCase().includes('alive')) {
+      item.color = value >= 0 ? 'positive' : 'negative';
+      grouped.Alive[id] = item;
+    } else if (id.toLowerCase().includes('dead')) {
+      item.color = value <= 0 ? 'positive' : 'negative';
+      grouped.Dead[id] = item;
+    } else if (id.toLowerCase().includes('bleach')) {
+      item.color = value <= 0 ? 'positive' : 'negative';
+      grouped.Bleached[id] = item;
     } else {
-      acc[authorized_id] = {
-        value: results[authorized_id],
-        icon: results[authorized_id] >= 0 ? mdiTriangleSmallUp : mdiTriangleSmallDown,
-        color: results[authorized_id] <= 0 ? 'positive' : 'negative',
-      };
+      item.color = value <= 0 ? 'positive' : 'negative';
+      grouped.Other[id] = item;
     }
-    return acc;
-  }, {} as Record<string, Record<string, string | number>>);
+  });
+
+  // Remove empty categories
+  Object.keys(grouped).forEach((key) => {
+    if (Object.keys(grouped[key]).length === 0) {
+      delete grouped[key];
+    }
+  });
+
+  return grouped;
 });
 
 const countryLower = computed(
@@ -384,6 +436,42 @@ const computedCountryCommunities = computed(() => {
 </script>
 
 <style scoped lang="scss">
+.group-title {
+  font-size: 1.125rem;
+  font-weight: 400;
+  line-height: 2.5rem;
+  letter-spacing: 0.00735em;
+  margin: 0;
+  margin-bottom: 7px;
+}
+.coral-changes {
+  display: flex;
+  flex-direction: column; // Default is vertical layout
+  margin: 20px 0;
+  flex-wrap: wrap;
+  gap: 15px;
+
+  // Horizontal layout for Substrate_coarse
+  &.horizontal-groups {
+    flex-direction: row; // Groups in same row
+    justify-content: space-around;
+
+    .coral-change-group {
+      // width: auto; // Instead of 100%
+      // min-width: 200px; // Ensure minimum width for readability
+      // max-width: 30%; // Prevent groups from getting too wide
+      width: fit-content;
+      min-width: 100px;
+      max-width: 33%;
+      font-size: 0.9rem;
+    }
+  }
+}
+
+.coral-change-group {
+  margin-bottom: 20px;
+  width: 100%;
+}
 .expedition-separation-bar {
   border: 1px solid #e0e0e0;
   width: 100%;
@@ -563,7 +651,7 @@ button {
 }
 
 .percentage {
-  font-size: 1.1rem;
+  font-size: 0.9rem;
   font-weight: bold;
 }
 
