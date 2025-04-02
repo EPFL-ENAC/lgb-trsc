@@ -79,7 +79,7 @@ const legendVariables = {
     variable: 'CHL',
   },
   SST: {
-    unit: 'K',
+    unit: '°C',
     variableTitle: 'Sea surface temperature',
     variable: 'SST',
   },
@@ -99,7 +99,8 @@ const legendVariables = {
     variable: 'SCV',
   },
   SWS: {
-    unit: '10-3',
+    unit: '‰',
+    unitDescription: 'grams of dissolved salts in 1 kilogram of seawater',
     variableTitle: 'Sea water salinity',
     variable: 'SWS',
   },
