@@ -63,26 +63,33 @@ const getChartOption = (data: any[], substrateLevel: string) => {
     // currentSubstrates.forEach((substrate) => {
     //   seriesData[substrate] = [];
     // });
-
-    return data.filter(data => substrateLevelPresetMap[substrateLevel].includes(data.name)).map((item, index) => ({
+    const offsetColor: Record<string, number> = {
+      'Substrate_coarse': 4,
+      'Substrate_intermediate': 12,
+    }
+    return data
+      .filter(data => substrateLevelPresetMap[substrateLevel].includes(data.name))
+      .map((item, index) => {
+        return ({
       name: item.name,
       type: 'line',
       lineStyle: {
         width: 2,
-        color: substrateLevelMapColor?.[substrateLevel][index],
+        color: substrateLevelMapColor?.[substrateLevel][index + offsetColor[substrateLevel]],
       },
       stack: 'Total',
       data: item.data,
-      color: substrateLevelMapColor?.[substrateLevel][index],
+      color: substrateLevelMapColor?.[substrateLevel][index + offsetColor[substrateLevel]],
       // Add itemStyle to ensure legend interactions work properly
       itemStyle: {
-        color: substrateLevelMapColor?.[substrateLevel][index]
+        color: substrateLevelMapColor?.[substrateLevel][index + offsetColor[substrateLevel]]
       },
       // Add specific emphasis settings
       emphasis: {
         focus: 'series'
       }
-    }))
+    })
+      })
     // return seriesData;
   }
   const series = computeSeriesData(data, substrateLevel);
@@ -104,14 +111,14 @@ const getChartOption = (data: any[], substrateLevel: string) => {
         return acc;
       }, {} as Record<string, boolean>),
       // Apply colors to legend items through textStyle
-      textStyle: {
-        rich: data.reduce((acc, item, index) => {
-          acc[item.name] = {
-            color: substrateLevelMapColor?.[substrateLevel][index]
-          };
-          return acc;
-        }, {})
-      }
+      // textStyle: {
+      //   rich: data.reduce((acc, item, index) => {
+      //     acc[item.name] = {
+      //       color: substrateLevelMapColor?.[substrateLevel][index]
+      //     };
+      //     return acc;
+      //   }, {})
+      // }
     },
     grid: {
       left: '3%',
