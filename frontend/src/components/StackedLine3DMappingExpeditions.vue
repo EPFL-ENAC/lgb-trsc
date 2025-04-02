@@ -56,13 +56,6 @@ const getChartOption = (data: any[], substrateLevel: string) => {
     {} as Record<string, boolean>
   );
   function computeSeriesData(data: any[], substrateLevel: string) {
-    // const seriesData: Record<string, number[]> = {};
-    // const currentSubstrates = validSubstratesMap[substrateLevel];
-
-    // // Initialize series data
-    // currentSubstrates.forEach((substrate) => {
-    //   seriesData[substrate] = [];
-    // });
     const offsetColor: Record<string, number> = {
       'Substrate_coarse': 4,
       'Substrate_intermediate': 12,
@@ -90,7 +83,6 @@ const getChartOption = (data: any[], substrateLevel: string) => {
       }
     })
       })
-    // return seriesData;
   }
   const series = computeSeriesData(data, substrateLevel);
   return {
@@ -168,6 +160,11 @@ const initChart = () => {
   chart.value?.setOption(option);
 };
 
+const closeChart = () => {
+  chart.value?.dispose();
+  chart.value = null;
+};
+
 // Lifecycle hooks
 onMounted(() => {
   initChart();
@@ -194,17 +191,7 @@ watch(
     if (value.length === 0) {
       return;
     }
-    initChart();
-  },
-  { deep: true }
-);
-
-watch(
-  () => props.substrateLevel,
-  (value) => {
-    if (value.length === 0) {
-      return;
-    }
+    closeChart()
     initChart();
   },
   { deep: true }
