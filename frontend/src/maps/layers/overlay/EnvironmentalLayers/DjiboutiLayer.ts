@@ -82,6 +82,7 @@ export function generateDefaultStyle(colorScale: ColorMap): any { // Consider de
 
 export const createEnvironmentalLayers = (): WebGLTileLayer[] => {
   const layers = sources
+    .filter((source) => source.type === 'Mean') // Filter sources for environmental layers
     .map((source) => {
       try {
         let effectiveColorScale = source.colorScale;

@@ -250,7 +250,6 @@ import BaseLayer from 'ol/layer/Base';
 import { storeToRefs } from 'pinia';
 import { sourcesTitle } from '@/maps/sources/DjiboutiNOAASource';
 import { generateDefaultStyle } from '@/maps/layers/overlay/EnvironmentalLayers/DjiboutiLayer';
-import { useLayerController } from '@/maps/composables/useLayerController';
 import WebGLTileLayer from 'ol/layer/WebGLTile';
 
 // Utility function to check layer visibility and legend availability
@@ -279,14 +278,13 @@ const computedOverlayGroups = computed(() => {
       (layerGroup.group.get('showForcountryOnly') && selectedCountry.value)
     );
   });
-  // return overlayGroups?.value;
 });
 
 const computedActiveBaseMap = computed(() => {
   return baseMaps.value.find((baseMap) => baseMap.layer.get('visible'))?.title;
 });
 
-const updateMeanOrSD = (layer: BaseLayer) => {
+const updateMeanOrSD = (layer: WebGLTileLayer) => {
   const meanOrSD = layer.get('meanOrSD');
   const newMeanOrSD = meanOrSD === 'Mean' ? 'SD' : 'Mean';
 
@@ -295,23 +293,15 @@ const updateMeanOrSD = (layer: BaseLayer) => {
     (source) =>
       source.name === layer.get('title') && source.type === newMeanOrSD
   );
-
   // Only update if we found a matching source
   if (environmentalSource) {
     const newStyle = generateDefaultStyle(
-      environmentalSource?.colorScale || defaultEnvironmentalColorMap
+      environmentalSource?.colorScale
     );
-    layer.set('colorScale', environmentalSource.colorScale);
-    layer.set('style', newStyle);
-    layer.set('properties', {
-      ...environmentalSource,
-    });
+    layer.setStyle(newStyle);
     layer.set('meanOrSD', newMeanOrSD);
     layer.set('source', createGeoTIFFSource(environmentalSource));
-    layer.changed();
-
-    const layerControls = useLayerController();
-    layerControls.setEnvironmentalLayer(layer as WebGLTileLayer);
+    layer.set('colorScale', environmentalSource?.colorScale);
   } else {
     // Show notification that this type isn't available
     $q.notify({

@@ -162,6 +162,7 @@ export class LayerController {
     return this.environmentalLayers;
   }
 
+  // deprecated for now
   public setEnvironmentalLayer(
     environmentalLayer: WebGLTileLayer | null
   ) {
