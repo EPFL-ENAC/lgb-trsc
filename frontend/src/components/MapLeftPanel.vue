@@ -35,8 +35,7 @@
           <div class="layer-group">
             <div class="layer-group__title">
               {{ group.title }}
-            </div>
-            <q-icon
+              <q-icon
               v-if="group.title === 'Environmental Layers'"
               name="info"
               class="q-mr-sm"
@@ -47,6 +46,7 @@
                 Djibouti's Ministry of Fisheries and Blue Economy.
               </q-tooltip>
             </q-icon>
+            </div>
             <q-icon
               :name="group.group.getVisible() ? mdiEyeOutline : 'mdi-eye-off'"
               flat
@@ -188,6 +188,19 @@
         switch-toggle-side
         expand-separator
       >
+        <template #header>
+          <div class="layer-group">
+            <div class="layer-group__title">
+              Base maps
+            </div>
+            <q-icon
+              name="map"
+              flat
+              round
+              class="q-ml-xs visibility-toggle"
+            />
+          </div>
+        </template>
         <q-list padding>
           <q-item v-for="layerInfo in baseMaps" :key="layerInfo.title">
             <q-item-section avatar>
@@ -481,6 +494,8 @@ const toggleOverlayLayer = (
   align-items: center;
   width: 100%;
   padding: 0 8px;
+  padding-left: 0px;
+  margin-left: -32px;
 }
 .layer-group__title:hover {
   cursor: pointer;
