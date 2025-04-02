@@ -138,6 +138,11 @@ const getChartOption = (data: any[], substrateLevel: string) => {
     yAxis: {
       type: 'value',
       name: 'Percentage cover',
+      nameTextStyle: {
+        color: '#000',
+        fontSize: '9px',
+        padding: [0, 0, 0, 5],
+      },
       axisLabel: {
         formatter: function (value: number) {
           return value * 100 + '%';

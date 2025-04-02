@@ -125,7 +125,7 @@ const getChartOption = (data: any[]) => {
       bottom: props.substrateLevel === 'Substrate_coarse' ? 0 : 0,
     },
     grid: {
-      left: '2.4%',
+      left: '5px',
       right: '4%',
       bottom: props.substrateLevel === 'Substrate_coarse' ? '100px' : '250px',
       containLabel: true,
@@ -141,6 +141,11 @@ const getChartOption = (data: any[]) => {
     yAxis: {
       type: 'value',
       name: 'Percentage cover',
+      nameTextStyle: {
+        color: '#000',
+        fontSize: '9px',
+        padding: [0, 0, 0, 5],
+      },
       axisLabel: {
         formatter: function (value: number) {
           return value * 100 + '%';
