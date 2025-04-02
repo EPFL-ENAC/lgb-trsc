@@ -88,13 +88,6 @@
         </div>
       </div>
     </div>
-    <h2 class="first-expedition-header">
-      {{
-        headerMap?.[selectedExpedition.experiment] ??
-        selectedExpedition.experiment
-      }}
-      project
-    </h2>
     <h3>
       {{ selectedExpedition.reef_area }} -
       {{ selectedExpedition.sampling_site_name }}
@@ -164,8 +157,16 @@
         @update:model-value="(newValue) => console.log(newValue)"
       />
     </div>
+
+    <hr class="expedition-separation-bar" />
+    <h2 class="first-expedition-header">
+      {{
+        headerMap?.[selectedExpedition.experiment] ??
+        selectedExpedition.experiment
+      }}
+      project
+    </h2>
     <div v-if="selectedExpedition.experiment === '3D'">
-      <hr class="expedition-separation-bar" />
       <div v-if="sampleSet.length > 0">
         <q-toggle
           :model-value="selectedExpeditionSubstrateLevel"
@@ -385,6 +386,7 @@ const computedCountryCommunities = computed(() => {
 <style scoped lang="scss">
 .expedition-separation-bar {
   border: 1px solid #e0e0e0;
+  width: 100%;
 }
 .btn-group {
   display: flex;
