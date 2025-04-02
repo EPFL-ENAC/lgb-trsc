@@ -213,7 +213,7 @@
       </div>
       <hr class="expedition-separation-bar" />
     </div>
-    <div v-else>No 3D Mapping data available</div>
+    <div v-else>No data available</div>
     <hr class="expedition-separation-bar" />
 
     <p>
