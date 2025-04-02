@@ -161,6 +161,8 @@ export const tiffsUrls: TiffsUrls = {
 
 export const metadata = {
   CHL_monthly_mean: {
+    ...legendVariables.CHL,
+    resolution: '4km',
     description:
       'CHL chlorophyll concentration : Mass concentration of chlorophyll a in sea water CHL [mg/m3]',
     shortTitle: 'Mass concentration of chlorophyll a in sea water CHL [mg/m3]',
@@ -173,6 +175,8 @@ export const metadata = {
     attributions: attributions.copernicus,
   },
   SST_monthly: {
+    ...legendVariables.SST,
+    resolution: '0.05°',
     description:
       'SST sea surface Temperature : Sea water temperature analysed_sst [K] 0.05°',
     shortTitle: 'Sea water temperature analysed_sst [K]',
@@ -195,6 +199,8 @@ export const metadata = {
     attributions: attributions.copernicus,
   },
   SPM_monthly_mean: {
+    ...legendVariables.SPM,
+    resolution: '4km',
     description: 'SPM suspended particulate matter',
     shortTitle:
       'Mass concentration of suspended matter in sea water SPM [g/m3]',
@@ -202,13 +208,13 @@ export const metadata = {
     datasetDescription:
       'Global Ocean Colour (Copernicus-GlobColour), Bio-Geo-Chemical, L4 (monthly and interpolated) from Satellite Observations (1997-ongoing)',
     dataset: 'cmems_obs-oc_glo_bgc-transp_my_l4-multi-4km_P1M',
-    resolution: '4km',
     date: 'SPM_09-1997_05-2024',
     attributions: attributions.copernicus,
     urls: {
       Mean: tiffsUrls.SPM_monthly_mean_Mean, SD: tiffsUrls.SPM_monthly_mean_SD},
   },
   DHW_annual_max: {
+    ...legendVariables.DHW,
     shortTitle: 'Degree Heating Week [°C-weeks]',
     identifier: 'DWH_ct5km_dhw-max_v3.1',
     datasetDescription:
@@ -225,13 +231,14 @@ export const metadata = {
     },
   },
   SCV_monthly_mean: {
+    ...legendVariables.SCV,
+    resolution: '0.083°',
     description:
       'Sea Current Velocity calculated from Northward and Eastern velocities',
     shortTitle: 'Sea Current Velocity [m/s]',
     identifier: 'GLOBAL_MULTIYEAR_PHY_001_030',
     datasetDescription: 'Global Ocean Physics Reanalysis',
     dataset: 'cmems_mod_glo_phy_my_0.083_P1D-m',
-    resolution: '0.083°',
     date: '01-1993_06-2021',
     attributions: attributions.copernicus,
     urls: {
@@ -240,6 +247,7 @@ export const metadata = {
     },
   },
   SWS_monthly_mean: {
+    ...legendVariables.SWS,
     description: 'Sea water salinity measurement',
     shortTitle: 'Sea water salinity [10-3]',
     identifier: 'GLOBAL_MULTIYEAR_PHY_001_030',
@@ -260,7 +268,6 @@ export const sources: SourceInfo[] = [
     type: SourceType.MEAN,
     name: 'CHL_monthly_mean',
     ...metadata.CHL_monthly_mean,
-    ...legendVariables.CHL,
     colorScale: CHL_monthly_mean_Mean,
     attribution: attributions.copernicus,
     url: metadata.CHL_monthly_mean.urls.Mean,
@@ -269,7 +276,6 @@ export const sources: SourceInfo[] = [
     type: SourceType.SD,
     name: 'CHL_monthly_mean',
     ...metadata.CHL_monthly_mean,
-    ...legendVariables.CHL,
     colorScale: CHL_monthly_mean_SD,
     attribution: attributions.copernicus,
     url: metadata.CHL_monthly_mean.urls.SD,
@@ -278,7 +284,6 @@ export const sources: SourceInfo[] = [
     type: SourceType.MEAN,
     name: 'SST_monthly_max',
     ...metadata.SST_monthly,
-    ...legendVariables.SST,
     colorScale: SST_monthly_max_Mean,
     attribution: attributions.copernicus,
     url: metadata.SST_monthly.urls.max_Mean,
@@ -287,7 +292,6 @@ export const sources: SourceInfo[] = [
     type: SourceType.SD,
     name: 'SST_monthly_max',
     ...metadata.SST_monthly,
-    ...legendVariables.SST,
     colorScale: SST_monthly_max_SD,
     attribution: attributions.copernicus,
     url: metadata.SST_monthly.urls.max_SD,
@@ -296,7 +300,6 @@ export const sources: SourceInfo[] = [
     type: SourceType.MEAN,
     name: 'SST_monthly_mean',
     ...metadata.SST_monthly,
-    ...legendVariables.SST,
     colorScale: SST_monthly_mean_Mean,
     attribution: attributions.copernicus,
     url: metadata.SST_monthly.urls.mean_Mean,
@@ -305,7 +308,6 @@ export const sources: SourceInfo[] = [
     type: SourceType.SD,
     name: 'SST_monthly_mean',
     ...metadata.SST_monthly,
-    ...legendVariables.SST,
     colorScale: SST_monthly_mean_SD,
     attribution: attributions.copernicus,
     url: metadata.SST_monthly.urls.mean_SD,
@@ -314,7 +316,6 @@ export const sources: SourceInfo[] = [
     type: SourceType.MEAN,
     name: 'SST_monthly_min',
     ...metadata.SST_monthly,
-    ...legendVariables.SST,
     colorScale: SST_monthly_min_Mean,
     attribution: attributions.copernicus,
     url: metadata.SST_monthly.urls.min_Mean,
@@ -323,7 +324,6 @@ export const sources: SourceInfo[] = [
     type: SourceType.SD,
     name: 'SST_monthly_min',
     ...metadata.SST_monthly,
-    ...legendVariables.SST,
     colorScale: SST_monthly_min_SD,
     attribution: attributions.copernicus,
     url: metadata.SST_monthly.urls.min_SD,
@@ -332,7 +332,6 @@ export const sources: SourceInfo[] = [
     name: 'SPM_monthly_mean',
     type: SourceType.MEAN,
     ...metadata.SPM_monthly_mean,
-    ...legendVariables.SPM,
     colorScale: SPM_monthly_mean_Mean,
     attribution: attributions.copernicus,
     url: metadata.SPM_monthly_mean.urls.Mean,
@@ -341,7 +340,6 @@ export const sources: SourceInfo[] = [
     name: 'SPM_monthly_mean',
     type: SourceType.SD,
     ...metadata.SPM_monthly_mean,
-    ...legendVariables.SPM,
     colorScale: SPM_monthly_mean_SD,
     attribution: attributions.copernicus,
     url: metadata.SPM_monthly_mean.urls.SD,
@@ -351,7 +349,6 @@ export const sources: SourceInfo[] = [
     name: 'DHW_annual_max',
     type: SourceType.MEAN,
     ...metadata.DHW_annual_max,
-    ...legendVariables.DHW,
     colorScale: DHW_annual_max_Mean,
     attribution: attributions.copernicus,
     url: metadata.DHW_annual_max.urls.Mean,
@@ -360,7 +357,6 @@ export const sources: SourceInfo[] = [
     name: 'DHW_annual_max',
     type: SourceType.SD,
     ...metadata.DHW_annual_max,
-    ...legendVariables.DHW,
     colorScale: DHW_annual_max_SD,
     attribution: attributions.copernicus,
     url: metadata.DHW_annual_max.urls.SD,
@@ -370,7 +366,6 @@ export const sources: SourceInfo[] = [
     name: 'SCV_monthly_mean',
     type: SourceType.MEAN,
     ...metadata.SCV_monthly_mean,
-    ...legendVariables.SCV,
     colorScale: SCV_monthly_mean_Mean,
     attribution: attributions.copernicus,
     url: metadata.SCV_monthly_mean.urls.Mean,
@@ -379,7 +374,6 @@ export const sources: SourceInfo[] = [
     name: 'SCV_monthly_mean',
     type: SourceType.SD,
     ...metadata.SCV_monthly_mean,
-    ...legendVariables.SCV,
     colorScale: SCV_monthly_mean_SD,
     attribution: attributions.copernicus,
     url: metadata.SCV_monthly_mean.urls.SD,
@@ -389,7 +383,6 @@ export const sources: SourceInfo[] = [
     name: 'SWS_monthly_mean',
     type: SourceType.MEAN,
     ...metadata.SWS_monthly_mean,
-    ...legendVariables.SWS,
     colorScale: SWS_monthly_mean_Mean,
     attribution: attributions.noaa,
     url: metadata.SWS_monthly_mean.urls.Mean,
@@ -398,7 +391,6 @@ export const sources: SourceInfo[] = [
     name: 'SWS_monthly_mean',
     type: SourceType.SD,
     ...metadata.SWS_monthly_mean,
-    ...legendVariables.SWS,
     colorScale: SWS_monthly_mean_SD,
     attribution: attributions.noaa,
     url: metadata.SWS_monthly_mean.urls.SD,
