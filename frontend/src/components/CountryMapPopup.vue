@@ -67,7 +67,7 @@
       </q-card>
     </q-dialog>
     <div class="images">
-      <div class="card" @click="toggle3DZoomedChart">
+      <div class="card" style="cursor: pointer" @click="toggle3DZoomedChart">
         <BarChart3DMapping
           :raw-data="country.rawData"
           :tooltip="false"

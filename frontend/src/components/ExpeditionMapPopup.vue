@@ -183,7 +183,62 @@
           :substrate-level="selectedExpeditionSubstrateLevel"
           :tooltip="true"
           :scroll-legend="true"
+          @click="toggle3DZoomedChart"
         />
+        <q-dialog
+          v-model="showZoomedChart"
+          persistent
+          :maximized="false"
+          class="popup"
+        >
+          <q-card
+            style="
+              width: 80vw;
+              max-width: 1200px;
+              height: 80vh;
+              max-height: 800px;
+            "
+          >
+            <q-card-section class="q-pa-md row items-center justify-between">
+              <h4 class="q-pa-sm q-ma-sm">3D Mapping</h4>
+              <div class="right-actions">
+                <q-toggle
+                    :model-value="selectedExpeditionSubstrateLevel"
+                    true-value="Substrate_coarse"
+                    false-value="Substrate_intermediate"
+                    :label="selectedExpeditionSubstrateLevel"
+                    @update:model-value="setSelectedExpeditionSubstrateLevel"
+                  ></q-toggle>
+                <q-btn
+                  v-close-popup
+                  icon="close"
+                  class="close-btn"
+                  flat
+                  round
+                  dense
+                />
+              </div>
+            </q-card-section>
+            <BarChart3DMappingExpedition
+                v-if="isValidSampleSet"
+                :raw-data="sampleSet"
+                height="76%"
+                width="90%"
+                :substrate-level="selectedExpeditionSubstrateLevel"
+                :tooltip="true"
+                :scroll-legend="true"
+              />
+
+            <q-card-actions align="right">
+              <q-btn
+                label="View on Map"
+                color="white"
+                flat
+                @click="toggle3DZoomedChart"
+              />
+            </q-card-actions>
+          </q-card>
+        </q-dialog>
       </div>
       <hr class="expedition-separation-bar" />
       <StackedLine3DMappingExpeditions
@@ -194,7 +249,61 @@
         :substrate-level="selectedExpeditionSubstrateLevel"
         :tooltip="true"
         :scroll-legend="true"
+        @click="toggle3DZoomedChartTimeseries"
       />
+      <q-dialog
+          v-model="showZoomedChartTimeseries"
+          persistent
+          :maximized="false"
+          class="popup"
+        >
+          <q-card
+            style="
+              width: 80vw;
+              max-width: 1200px;
+              height: 80vh;
+              max-height: 800px;
+            "
+          >
+            <q-card-section class="q-pa-md row items-center justify-between">
+              <h4 class="q-pa-sm q-ma-sm">3D Mapping</h4>
+              <div class="right-actions">
+                <q-toggle
+                    :model-value="selectedExpeditionSubstrateLevel"
+                    true-value="Substrate_coarse"
+                    false-value="Substrate_intermediate"
+                    :label="selectedExpeditionSubstrateLevel"
+                    @update:model-value="setSelectedExpeditionSubstrateLevel"
+                  ></q-toggle>
+                <q-btn
+                  v-close-popup
+                  icon="close"
+                  class="close-btn"
+                  flat
+                  round
+                  dense
+                />
+              </div>
+            </q-card-section>
+              <StackedLine3DMappingExpeditions
+                v-if="isValidSampleSet"
+                :raw-data="timeSeriesSet"
+                height="76%"
+                width="90%"
+                :substrate-level="selectedExpeditionSubstrateLevel"
+                :tooltip="true"
+                :scroll-legend="true"
+              />
+            <q-card-actions align="right">
+              <q-btn
+                label="View on Map"
+                color="white"
+                flat
+                @click="toggle3DZoomedChart"
+              />
+            </q-card-actions>
+          </q-card>
+        </q-dialog>
       <p>Change in Coral cover since</p>
       <div
         class="coral-changes"
@@ -287,6 +396,15 @@ const headerMap: Record<string, string> = {
   '3D': '3D Mapping',
   eDNA: 'eDNA',
   seascape_genomics: 'Seascape Genomics',
+};
+let showZoomedChart = ref(false);
+const toggle3DZoomedChart = () => {
+  showZoomedChart.value = !showZoomedChart.value;
+};
+
+let showZoomedChartTimeseries = ref(false);
+const toggle3DZoomedChartTimeseries = () => {
+  showZoomedChartTimeseries.value = !showZoomedChartTimeseries.value;
 };
 
 function markerFormatter(index: number): string {
@@ -436,6 +554,15 @@ const computedCountryCommunities = computed(() => {
 </script>
 
 <style scoped lang="scss">
+.right-actions {
+  display: flex;
+  width: 206px;
+  justify-content: space-between;
+  align-self: center;
+  flex-direction: column;
+  margin-right: 60px;
+}
+
 .group-title {
   font-size: 1.125rem;
   font-weight: 400;

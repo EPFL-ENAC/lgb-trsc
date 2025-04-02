@@ -1,9 +1,9 @@
 <template>
-  <div ref="chartRef" :style="{ width: width, height: height }"></div>
+  <div ref="chartRef" :style="{ width: width, height: height, margin: '0 auto',cursor: 'pointer'}"></div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch, onUnmounted, computed } from 'vue';
+import { ref, onMounted, watch, onUnmounted } from 'vue';
 import * as echarts from 'echarts';
 import 'echarts/lib/chart/bar'; // Import bar chart
 import 'echarts/lib/component/tooltip'; // Import tooltip component
