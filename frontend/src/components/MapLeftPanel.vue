@@ -2,8 +2,8 @@
   <q-drawer
     v-model="leftDrawerOpen"
     side="left"
-    :width="300"
-    :breakpoint="300"
+    :width="360"
+    :breakpoint="360"
     bordered
     :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'"
     persistent
@@ -26,9 +26,38 @@
       <q-expansion-item
         v-for="(group, groupIndex) in computedOverlayGroups"
         :key="group.title"
+        switch-toggle-side
+        expand-separator
         :group="`overlays${groupIndex}`"
         :label="group.title"
       >
+        <template #header="">
+          <div class="layer-group">
+            <div class="layer-group__title">
+              {{ group.title }}
+            </div>
+            <q-icon
+              v-if="group.title === 'Environmental Layers'"
+              name="info"
+              class="q-mr-sm"
+            >
+              <q-tooltip>
+                Environmental layers are based on the latest available data
+                collected by the NOAA Coral Reef Conservation Program and
+                Djibouti's Ministry of Fisheries and Blue Economy.
+              </q-tooltip>
+            </q-icon>
+            <q-icon
+              :name="group.group.getVisible() ? mdiEyeOutline : 'mdi-eye-off'"
+              flat
+              round
+              class="q-ml-xs visibility-toggle"
+              @click.prevent.stop="
+                () => toggleOverlayGroupVisibility(groupIndex)
+              "
+            />
+          </div>
+        </template>
         <q-list padding>
           <q-item
             v-for="(layerinfo, layerIndex) in group.layers"
@@ -103,8 +132,7 @@
                         name="info"
                       >
                         <q-tooltip>
-                                  {{ layerinfo.layer.get('description') }}
-                 
+                          {{ layerinfo.layer.get('description') }}
                         </q-tooltip>
                       </q-icon>
                       <q-toggle
@@ -118,7 +146,9 @@
                     </div>
                   </div>
                 </template>
-                <template v-if="isLayerVisibleWithLegend(layerinfo.layer as BaseLayer)">
+                <template
+                  v-if="isLayerVisibleWithLegend(layerinfo.layer as BaseLayer)"
+                >
                   <q-card class="legend-card">
                     <MapLegend
                       v-if="layerinfo.layer.get('title') === 'Reef clusters'"
@@ -151,7 +181,13 @@
       </q-expansion-item>
 
       <!-- Base maps section -->
-      <q-expansion-item group="layers" label="Base maps">
+      <q-expansion-item
+        group="layers"
+        label="Base maps"
+        icon="map"
+        switch-toggle-side
+        expand-separator
+      >
         <q-list padding>
           <q-item v-for="layerInfo in baseMaps" :key="layerInfo.title">
             <q-item-section avatar>
@@ -179,6 +215,7 @@ import { ref, computed } from 'vue';
 import { useQuasar } from 'quasar';
 import { useLayerManager } from '@/maps/composables/useLayerManager';
 import MapLegend from './MapLegend.vue';
+import { mdiEyeOutline } from '@mdi/js';
 import {
   geomorphicColorMap,
   benthicColorMap,
@@ -216,19 +253,20 @@ const {
   overlayGroups,
   setBaseMapVisible,
   toggleOverlayLayer: originalToggleOverlayLayer,
+  toggleOverlayGroupVisibility,
   setOverlayLayerRadio,
 } = useLayerManager();
 
 const mapStore = useMapStore();
 const { selectedCountry } = storeToRefs(mapStore);
 const computedOverlayGroups = computed(() => {
-  if (selectedCountry.value === null) {
-    return overlayGroups?.value.filter((layerGroup) =>
-      layerGroup.group.get('visible')
+  return overlayGroups?.value?.filter((layerGroup) => {
+    return (
+      !layerGroup.group.get('showForcountryOnly') ||
+      (layerGroup.group.get('showForcountryOnly') && selectedCountry.value)
     );
-  } else {
-    return overlayGroups?.value;
-  }
+  });
+  // return overlayGroups?.value;
 });
 
 const computedActiveBaseMap = computed(() => {
@@ -238,13 +276,13 @@ const computedActiveBaseMap = computed(() => {
 const updateMeanOrSD = (layer: BaseLayer) => {
   const meanOrSD = layer.get('meanOrSD');
   const newMeanOrSD = meanOrSD === 'Mean' ? 'SD' : 'Mean';
-  
+
   // find appropriate source
   const environmentalSource = environmentalSources.find(
-    (source) => 
+    (source) =>
       source.name === layer.get('title') && source.type === newMeanOrSD
   );
-  
+
   // Only update if we found a matching source
   if (environmentalSource) {
     const newStyle = generateDefaultStyle(
@@ -258,7 +296,7 @@ const updateMeanOrSD = (layer: BaseLayer) => {
     layer.set('meanOrSD', newMeanOrSD);
     layer.set('source', createGeoTIFFSource(environmentalSource));
     layer.changed();
-    
+
     const layerControls = useLayerController();
     layerControls.setEnvironmentalLayer(layer as WebGLTileLayer);
   } else {
@@ -266,7 +304,7 @@ const updateMeanOrSD = (layer: BaseLayer) => {
     $q.notify({
       color: 'warning',
       message: `${newMeanOrSD} data not available for ${layer.get('title')}`,
-      timeout: 2000
+      timeout: 2000,
     });
   }
 };
@@ -324,9 +362,31 @@ const toggleOverlayLayer = (
 }
 </style>
 
-<style scoped>
+<style scoped lang="scss">
+.visibility-toggle {
+  // position: absolute;
+  // right: 0;
+  // top: 0;
+  opacity: 0.6;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+
+  &:hover {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+  &:active {
+    transform: scale(0.9);
+  }
+}
+
 :root {
   --checkbox-cursor: default !important;
+  --left-panel-width: 320px;
+  --left-panel-height: -webkit-fill-available;
+  --left-panel-height: -moz-available;
+  --left-panel-height: fill-available;
+  --left-panel-height: initial;
+  --left-panel-padding: 10px;
 }
 
 .panel-title {
@@ -340,11 +400,11 @@ const toggleOverlayLayer = (
 
 :deep(.q-drawer--left.q-drawer--bordered.q-drawer--standard) {
   background: rgba(255, 255, 255, 0.9) !important;
-  transform: translateX(-300px) !important;
+  transform: translateX(calc(-360px)) !important;
   scroll-behavior: smooth !important;
   top: 0px !important;
   bottom: 0px !important;
-  width: 300px !important;
+  width: 360px !important;
 }
 .env-controls {
   display: flex;
@@ -405,7 +465,7 @@ const toggleOverlayLayer = (
 .layer-grid.no-expand {
   pointer-events: none;
 
-  .checkbox-wrapper, 
+  .checkbox-wrapper,
   .env-controls {
     pointer-events: all;
   }
@@ -415,8 +475,21 @@ const toggleOverlayLayer = (
   }
 }
 
-.layer-title {
+.layer-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0 8px;
+}
+.layer-group__title:hover {
+  cursor: pointer;
+}
+.layer-title,
+.layer-group__title {
   overflow: hidden;
+  font-size: 1rem;
+  font-weight: 500;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
