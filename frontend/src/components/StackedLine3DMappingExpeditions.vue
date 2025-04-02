@@ -55,6 +55,37 @@ const getChartOption = (data: any[], substrateLevel: string) => {
     },
     {} as Record<string, boolean>
   );
+  function computeSeriesData(data: any[], substrateLevel: string) {
+    // const seriesData: Record<string, number[]> = {};
+    // const currentSubstrates = validSubstratesMap[substrateLevel];
+
+    // // Initialize series data
+    // currentSubstrates.forEach((substrate) => {
+    //   seriesData[substrate] = [];
+    // });
+
+    return data.filter(data => substrateLevelPresetMap[substrateLevel].includes(data.name)).map((item, index) => ({
+      name: item.name,
+      type: 'line',
+      lineStyle: {
+        width: 2,
+        color: substrateLevelMapColor?.[substrateLevel][index],
+      },
+      stack: 'Total',
+      data: item.data,
+      color: substrateLevelMapColor?.[substrateLevel][index],
+      // Add itemStyle to ensure legend interactions work properly
+      itemStyle: {
+        color: substrateLevelMapColor?.[substrateLevel][index]
+      },
+      // Add specific emphasis settings
+      emphasis: {
+        focus: 'series'
+      }
+    }))
+    // return seriesData;
+  }
+  const series = computeSeriesData(data, substrateLevel);
   return {
     title: {
       text: 'Timeseries',
@@ -106,26 +137,14 @@ const getChartOption = (data: any[], substrateLevel: string) => {
     },
     yAxis: {
       type: 'value',
+      name: 'Percentage cover',
+      axisLabel: {
+        formatter: function (value: number) {
+          return value * 100 + '%';
+        },
+      },
     },
-    series: data.filter(data => substrateLevelPresetMap[substrateLevel].includes(data.name)).map((item, index) => ({
-      name: item.name,
-      type: 'line',
-      lineStyle: {
-        width: 2,
-        color: substrateLevelMapColor?.[substrateLevel][index],
-      },
-      stack: 'Total',
-      data: item.data,
-      color: substrateLevelMapColor?.[substrateLevel][index],
-      // Add itemStyle to ensure legend interactions work properly
-      itemStyle: {
-        color: substrateLevelMapColor?.[substrateLevel][index]
-      },
-      // Add specific emphasis settings
-      emphasis: {
-        focus: 'series'
-      }
-    })),
+    series,
   };
 };
 
