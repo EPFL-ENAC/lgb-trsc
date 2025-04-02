@@ -49,7 +49,7 @@ import { BaseLayerOptions } from 'ol-layerswitcher';
 import TileLayer from 'ol/layer/Tile';
 import OSM from 'ol/source/OSM';
 
-interface CustomBaseLayerOptions extends BaseLayerOptions {
+export interface CustomBaseLayerOptions extends BaseLayerOptions {
   inputType?: 'base' | 'checkbox' | 'radio';
   showForcountryOnly?: boolean;
 }
@@ -155,7 +155,7 @@ export class MapController {
           title: 'Environmental Layers',
           visible: true,
           showForcountryOnly: false,
-          inputType: 'checkbox',
+          inputType: 'radio',
           layers: createEnvironmentalLayers(),
         } as CustomBaseLayerOptions),
         new LayerGroup({

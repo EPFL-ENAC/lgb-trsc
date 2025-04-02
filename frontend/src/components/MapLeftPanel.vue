@@ -2,8 +2,8 @@
   <q-drawer
     v-model="leftDrawerOpen"
     side="left"
-    :width="300"
-    :breakpoint="300"
+    :width="360"
+    :breakpoint="360"
     bordered
     :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'"
     persistent
@@ -26,12 +26,38 @@
       <q-expansion-item
         v-for="(group, groupIndex) in computedOverlayGroups"
         :key="group.title"
+        switch-toggle-side
+        expand-separator
         :group="`overlays${groupIndex}`"
         :label="group.title"
-        :model-value="
-          group.layers.some((layerinfo) => layerinfo.layer.getVisible())
-        "
       >
+        <template #header="">
+          <div class="layer-group">
+            <div class="layer-group__title">
+              {{ group.title }}
+              <q-icon
+              v-if="group.title === 'Environmental Layers'"
+              name="info"
+              class="q-mr-sm"
+            >
+              <q-tooltip>
+                Environmental layers are based on the latest available data
+                collected by the NOAA Coral Reef Conservation Program and
+                Djibouti's Ministry of Fisheries and Blue Economy.
+              </q-tooltip>
+            </q-icon>
+            </div>
+            <q-icon
+              :name="group.group.getVisible() ? mdiEyeOutline : 'mdi-eye-off'"
+              flat
+              round
+              class="q-ml-xs visibility-toggle"
+              @click.prevent.stop="
+                () => toggleOverlayGroupVisibility(groupIndex)
+              "
+            />
+          </div>
+        </template>
         <q-list padding>
           <q-item
             v-for="(layerinfo, layerIndex) in group.layers"
@@ -54,12 +80,14 @@
             </q-item-section>
             <q-item-section>
               <q-expansion-item
-                v-if="layerinfo.layer.get('visible') && getLayerLegend(layerinfo.layer as BaseLayer)"
                 dense
                 dense-toggle
-                :default-opened="layerinfo.layer.get('visible') && !!getLayerLegend(layerinfo.layer as BaseLayer)"
+                :default-opened="isLayerVisibleWithLegend(layerinfo.layer as BaseLayer)"
                 header-class="text-caption text-grey-7"
-                class="layer-grid"
+                :class="{
+                  'layer-grid': true,
+                  'no-expand': !isLayerVisibleWithLegend(layerinfo.layer as BaseLayer),
+                }"
               >
                 <template #header>
                   <div
@@ -104,24 +132,9 @@
                         name="info"
                       >
                         <q-tooltip>
-                          <q-card>
-                            <q-card-section>
-                              <h3>
-                                <span
-                                  style="
-                                    color: black;
-                                    height: 10px;
-                                    width: 10px;
-                                  "
-                                >
-                                  {{ layerinfo.layer.get('description') }}
-                                </span>
-                              </h3>
-                            </q-card-section>
-                          </q-card>
+                          {{ layerinfo.layer.get('description') }}
                         </q-tooltip>
                       </q-icon>
-
                       <q-toggle
                         :label="layerinfo.layer.get('meanOrSD')"
                         color="pink"
@@ -133,111 +146,33 @@
                     </div>
                   </div>
                 </template>
-                <q-card class="legend-card">
-                  <!-- Duplicate MapLegend is complex, should simplify -->
-                  <MapLegend
-                    v-if="layerinfo.layer.get('title') === 'Reef clusters'"
-                    :is-simple="true"
-                    :class-color-map="getLayerLegend(layerinfo.layer as BaseLayer)?.colorMap"
-                    :max-value="mapStore.selectedEnvironmentalClusterNumber"
-                    :show-legend-text="false"
-                    :is-continuous="
-                      getLayerLegend(layerinfo.layer as BaseLayer)?.type === 'continuous'
-                    "
-                  />
-                  <MapLegend
-                    v-else
-                    :class-color-map="getLayerLegend(layerinfo.layer as BaseLayer)?.colorMap"
-                    :metadata="{
-                      title: layerinfo.layer.get('title'),
-                      unit: layerinfo.layer.get('unit'),
-                      variable: layerinfo.layer.get('variable'),
-                    }"
-                    :is-continuous="
-                      getLayerLegend(layerinfo.layer as BaseLayer)?.type === 'continuous'
-                    "
-                  />
-                </q-card>
-              </q-expansion-item>
-              <!-- Non-expandable version when no legend is available -->
-              <q-expansion-item
-                v-else
-                dense
-                dense-toggle
-                header-class="text-caption text-grey-7"
-                class="layer-grid no-expand"
-              >
-                <template #header>
-                  <div
-                    :class="
-                      group.title !== 'Environmental Layers'
-                        ? 'layer-controls'
-                        : 'layer-environmental-controls'
-                    "
-                  >
-                    <div class="checkbox-wrapper">
-                      <template v-if="group.inputType === 'radio'">
-                        <q-radio
-                          :model-value="
-                            layerinfo.layer.get('visible')
-                              ? layerinfo.layer.get('title')
-                              : null
-                          "
-                          :val="layerinfo.layer.get('title')"
-                          :label="layerinfo.layer.get('title')"
-                          @update:model-value="
-                            () => setOverlayLayerRadio(groupIndex, layerIndex)
-                          "
-                        />
-                      </template>
-                      <template v-else>
-                        <q-checkbox
-                          :model-value="layerinfo.layer.get('visible')"
-                          :label="layerinfo.layer.get('title')"
-                          @update:model-value="
-                            (val) =>
-                              toggleOverlayLayer(groupIndex, layerIndex, val)
-                          "
-                        />
-                      </template>
-                    </div>
-                    <div
-                      v-if="group.title === 'Environmental Layers'"
-                      class="env-controls"
-                    >
-                      <q-icon
-                        v-if="layerinfo.layer.get('description')"
-                        name="info"
-                      >
-                        <q-tooltip>
-                          <q-card>
-                            <q-card-section>
-                              <q-card-title>
-                                <span
-                                  style="
-                                    color: black;
-                                    height: 10px;
-                                    width: 10px;
-                                  "
-                                >
-                                  {{ layerinfo.layer.get('description') }}
-                                </span>
-                              </q-card-title>
-                            </q-card-section>
-                          </q-card>
-                        </q-tooltip>
-                      </q-icon>
-                      <q-toggle
-                        :label="layerinfo.layer.get('meanOrSD')"
-                        color="pink"
-                        false-value="SD"
-                        true-value="Mean"
-                        :model-value="layerinfo.layer.get('meanOrSD')"
-                        @update:model-value="() => updateMeanOrSD(layerinfo.layer as BaseLayer)"
-                        @click:model-value="() => updateMeanOrSD(layerinfo.layer as BaseLayer)"
-                      />
-                    </div>
-                  </div>
+                <template
+                  v-if="isLayerVisibleWithLegend(layerinfo.layer as BaseLayer)"
+                >
+                  <q-card class="legend-card">
+                    <MapLegend
+                      v-if="layerinfo.layer.get('title') === 'Reef clusters'"
+                      :is-simple="true"
+                      :class-color-map="getLayerLegend(layerinfo.layer as BaseLayer)?.colorMap"
+                      :max-value="mapStore.selectedEnvironmentalClusterNumber"
+                      :show-legend-text="false"
+                      :is-continuous="
+                        getLayerLegend(layerinfo.layer as BaseLayer)?.type === 'continuous'
+                      "
+                    />
+                    <MapLegend
+                      v-else
+                      :class-color-map="getLayerLegend(layerinfo.layer as BaseLayer)?.colorMap"
+                      :metadata="{
+                        title: layerinfo.layer.get('title'),
+                        unit: layerinfo.layer.get('unit'),
+                        variable: layerinfo.layer.get('variable'),
+                      }"
+                      :is-continuous="
+                        getLayerLegend(layerinfo.layer as BaseLayer)?.type === 'continuous'
+                      "
+                    />
+                  </q-card>
                 </template>
               </q-expansion-item>
             </q-item-section>
@@ -246,7 +181,26 @@
       </q-expansion-item>
 
       <!-- Base maps section -->
-      <q-expansion-item group="layers" label="Base maps">
+      <q-expansion-item
+        group="layers"
+        label="Base maps"
+        icon="map"
+        switch-toggle-side
+        expand-separator
+      >
+        <template #header>
+          <div class="layer-group">
+            <div class="layer-group__title">
+              Base maps
+            </div>
+            <q-icon
+              name="map"
+              flat
+              round
+              class="q-ml-xs visibility-toggle"
+            />
+          </div>
+        </template>
         <q-list padding>
           <q-item v-for="layerInfo in baseMaps" :key="layerInfo.title">
             <q-item-section avatar>
@@ -274,6 +228,7 @@ import { ref, computed } from 'vue';
 import { useQuasar } from 'quasar';
 import { useLayerManager } from '@/maps/composables/useLayerManager';
 import MapLegend from './MapLegend.vue';
+import { mdiEyeOutline } from '@mdi/js';
 import {
   geomorphicColorMap,
   benthicColorMap,
@@ -295,6 +250,12 @@ import BaseLayer from 'ol/layer/Base';
 import { storeToRefs } from 'pinia';
 import { sourcesTitle } from '@/maps/sources/DjiboutiNOAASource';
 import { generateDefaultStyle } from '@/maps/layers/overlay/EnvironmentalLayers/DjiboutiLayer';
+import WebGLTileLayer from 'ol/layer/WebGLTile';
+
+// Utility function to check layer visibility and legend availability
+const isLayerVisibleWithLegend = (layer: BaseLayer): boolean => {
+  return layer.get('visible') && getLayerLegend(layer) !== undefined;
+};
 
 const $q = useQuasar();
 const leftDrawerOpen = ref(true);
@@ -304,49 +265,52 @@ const {
   overlayGroups,
   setBaseMapVisible,
   toggleOverlayLayer: originalToggleOverlayLayer,
+  toggleOverlayGroupVisibility,
   setOverlayLayerRadio,
 } = useLayerManager();
 
 const mapStore = useMapStore();
 const { selectedCountry } = storeToRefs(mapStore);
 const computedOverlayGroups = computed(() => {
-  if (selectedCountry.value === null) {
-    return overlayGroups?.value.filter((layerGroup) =>
-      layerGroup.group.get('visible')
+  return overlayGroups?.value?.filter((layerGroup) => {
+    return (
+      !layerGroup.group.get('showForcountryOnly') ||
+      (layerGroup.group.get('showForcountryOnly') && selectedCountry.value)
     );
-  } else {
-    return overlayGroups?.value;
-  }
+  });
 });
 
 const computedActiveBaseMap = computed(() => {
   return baseMaps.value.find((baseMap) => baseMap.layer.get('visible'))?.title;
 });
 
-const updateMeanOrSD = (layer: BaseLayer) => {
+const updateMeanOrSD = (layer: WebGLTileLayer) => {
   const meanOrSD = layer.get('meanOrSD');
   const newMeanOrSD = meanOrSD === 'Mean' ? 'SD' : 'Mean';
+
   // find appropriate source
   const environmentalSource = environmentalSources.find(
     (source) =>
       source.name === layer.get('title') && source.type === newMeanOrSD
   );
-  // change the source of the layer!
+  // Only update if we found a matching source
   if (environmentalSource) {
     const newStyle = generateDefaultStyle(
-      environmentalSource?.colorScale || defaultEnvironmentalColorMap
+      environmentalSource?.colorScale
     );
-    layer.set('colorScale', environmentalSource.colorScale);
-    layer.set('style', newStyle);
-    layer.set('properties', {
-      ...environmentalSource,
-    });
+    layer.setStyle(newStyle);
+    layer.set('meanOrSD', newMeanOrSD);
     layer.set('source', createGeoTIFFSource(environmentalSource));
-    layer.changed();
+    layer.set('colorScale', environmentalSource?.colorScale);
+  } else {
+    // Show notification that this type isn't available
+    $q.notify({
+      color: 'warning',
+      message: `${newMeanOrSD} data not available for ${layer.get('title')}`,
+      timeout: 2000,
+    });
   }
-  layer.set('meanOrSD', newMeanOrSD);
 };
-
 const getLayerLegend = (layer: BaseLayer) => {
   // Return the appropriate color map based on the layer title
   if (sourcesTitle.includes(layer.get('title'))) {
@@ -401,9 +365,31 @@ const toggleOverlayLayer = (
 }
 </style>
 
-<style scoped>
+<style scoped lang="scss">
+.visibility-toggle {
+  // position: absolute;
+  // right: 0;
+  // top: 0;
+  opacity: 0.6;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+
+  &:hover {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+  &:active {
+    transform: scale(0.9);
+  }
+}
+
 :root {
   --checkbox-cursor: default !important;
+  --left-panel-width: 320px;
+  --left-panel-height: -webkit-fill-available;
+  --left-panel-height: -moz-available;
+  --left-panel-height: fill-available;
+  --left-panel-height: initial;
+  --left-panel-padding: 10px;
 }
 
 .panel-title {
@@ -417,11 +403,11 @@ const toggleOverlayLayer = (
 
 :deep(.q-drawer--left.q-drawer--bordered.q-drawer--standard) {
   background: rgba(255, 255, 255, 0.9) !important;
-  transform: translateX(-300px) !important;
+  transform: translateX(calc(-360px)) !important;
   scroll-behavior: smooth !important;
   top: 0px !important;
   bottom: 0px !important;
-  width: 300px !important;
+  width: 360px !important;
 }
 .env-controls {
   display: flex;
@@ -482,7 +468,8 @@ const toggleOverlayLayer = (
 .layer-grid.no-expand {
   pointer-events: none;
 
-  .checkbox-wrapper {
+  .checkbox-wrapper,
+  .env-controls {
     pointer-events: all;
   }
 
@@ -491,8 +478,23 @@ const toggleOverlayLayer = (
   }
 }
 
-.layer-title {
+.layer-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0 8px;
+  padding-left: 0px;
+  margin-left: -32px;
+}
+.layer-group__title:hover {
+  cursor: pointer;
+}
+.layer-title,
+.layer-group__title {
   overflow: hidden;
+  font-size: 1rem;
+  font-weight: 500;
   text-overflow: ellipsis;
   white-space: nowrap;
 }

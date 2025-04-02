@@ -9,6 +9,9 @@ import VectorTileLayer from 'ol/layer/VectorTile';
 import VectorTileSource from 'ol/source/VectorTile';
 import Feature from 'ol/Feature';
 import Geometry from 'ol/geom/Geometry';
+import { createEnvironmentalLayers } from './layers/overlay/EnvironmentalLayers/DjiboutiLayer';
+// import GeoTIFFSource from 'ol/source/GeoTIFF';
+import WebGLTileLayer from 'ol/layer/WebGLTile';
 
 interface GeoJSONFeatureCollection {
   type: 'FeatureCollection';
@@ -31,6 +34,11 @@ export class LayerController {
   private expeditionProjectLayer: VectorLayer<VectorSource>;
   private expeditionYearLayer: VectorLayer<VectorSource>;
   private expeditionHardCoralCoverLayer: VectorLayer<VectorSource>;
+  private environmentalLayers: WebGLTileLayer[] | null = null;
+  // private CHL_monthlyMeanLayer: WebGLTileLayer<GeoTIFFSource> | null = null;
+  // private CHL_monthlyMeanMeanLayer: WebGLTileLayer<GeoTIFFSource> | null = null;
+  // private CHL_monthlyMeanSDLayer: WebGLTileLayer<GeoTIFFSource> | null = null;
+
 
   constructor() {
     this.countryLayer = createCountryLayer();
@@ -40,6 +48,9 @@ export class LayerController {
       'hard coral cover',
       { experiment: '3D' }
     );
+    this.environmentalLayers = createEnvironmentalLayers()
+    // this.CHL_monthlyMeanMeanLayer = env[0];
+    // this.CHL_monthlyMeanSDLayer = env[1];
   }
 
   destroy() {
@@ -147,6 +158,37 @@ export class LayerController {
     ];
   }
 
+  public getEnvironmentalLayers() {
+    return this.environmentalLayers;
+  }
+
+  // deprecated for now
+  public setEnvironmentalLayer(
+    environmentalLayer: WebGLTileLayer | null
+  ) {
+    // If environmentalLayers doesn't exist, do nothing
+    if (!this.environmentalLayers) return;
+    
+    // If null is passed, hide all environmental layers
+    if (environmentalLayer === null) {
+      this.environmentalLayers.forEach(layer => layer.setVisible(false));
+      return;
+    }
+    
+    // Find the layer in the array that has the same name as the one passed in
+    const layerName = environmentalLayer.get('name');
+    
+    if (!layerName) {
+      console.warn('Environmental layer has no name property');
+      return;
+    }
+    
+    // Make only the matching layer visible, hide others
+    this.environmentalLayers.forEach(layer => {
+      const name = layer.get('name');
+      layer.setVisible(name === layerName);
+    });
+  }
   public getActiveLayers() {
     return this.getLayers().filter(
       (layer): layer is NonNullable<typeof layer> => {

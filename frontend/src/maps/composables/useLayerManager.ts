@@ -10,13 +10,18 @@ export interface LayerInfo {
   layer: BaseLayer;
 }
 
+export interface CustomGroupLayerOptions extends LayerGroup {
+  inputType?: 'base' | 'checkbox' | 'radio';
+  showForcountryOnly?: boolean;
+}
+
 export interface LayerGroupInfo {
   title: string;
   inputType?: 'radio' | 'checkbox';
   showInLayerSwitcher?: boolean;
   visible: boolean;
   layers: LayerInfo[];
-  group: LayerGroup;
+  group: CustomGroupLayerOptions;
 }
 
 export function useLayerManager() {
@@ -99,6 +104,61 @@ export function useLayerManager() {
     });
   };
 
+  const toggleOverlayGroup = (groupIndex: number, visible: boolean) => {
+    const controller = useMapController();
+    if (!controller) {
+      console.error(
+        'MapController is not available. Unable to initialize layers.'
+      );
+      return;
+    }
+    const group = overlayGroups.value[groupIndex];
+    if (group) {
+      group.group.setVisible(visible);
+      group.layers.forEach((layerInfo) => {
+        layerInfo.layer.setVisible(visible);
+      });
+    }
+  };
+  const toggleOverlayGroupVisibility = (groupIndex: number) => {
+    const controller = useMapController();
+    if (!controller) {
+      console.error(
+        'MapController is not available. Unable to initialize layers.'
+      );
+      return;
+    }
+    const overlayGroup = overlayGroups.value[groupIndex];
+    if (overlayGroup) {
+      const currentVisibility = overlayGroup.group.getVisible();
+      overlayGroup.group.setVisible(!currentVisibility);
+      overlayGroup.layers.forEach((layerInfo, index) => {
+        if (index === 0 && overlayGroup.inputType === 'radio') {
+          // If the group is a radio group, we want to toggle only the first layer
+          // and not the group itself
+          // This is a workaround for the radio group behavior
+          // where the first layer is always visible
+          // and the group visibility is not toggled  
+          // Skip the first layer
+          layerInfo.layer.setVisible(!currentVisibility);
+          return;
+        } else if (overlayGroup.inputType === 'radio') {
+          // If the group is a radio group, we want to toggle only the selected layer
+          // and not the group itself
+          // This is a workaround for the radio group behavior
+          // where the first layer is always visible
+          // and the group visibility is not toggled
+          // Skip the first layer
+          layerInfo.layer.setVisible(false);
+        }
+        if (overlayGroup.inputType === 'checkbox') {
+          // If the group is a checkbox group, we want to toggle all layers
+          layerInfo.layer.setVisible(!currentVisibility);
+        }
+      });
+    }
+  };
+
   const toggleOverlayLayer = (
     groupIndex: number,
     layerIndex: number,
@@ -152,6 +212,8 @@ export function useLayerManager() {
     overlayGroups,
     setBaseMapVisible,
     toggleOverlayLayer,
+    toggleOverlayGroup,
+    toggleOverlayGroupVisibility,
     getOverlayMaps,
     setOverlayLayerRadio,
     initializeLayers,
