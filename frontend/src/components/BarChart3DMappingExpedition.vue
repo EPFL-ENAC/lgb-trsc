@@ -108,9 +108,9 @@ const getChartOption = (data: any[]) => {
     localTooltip = false;
   }
   const series = processData(data, props.substrateLevel);
-  const maxValue = Math.max(
+  const maxValue = Number(Math.max(
     ...series.map((item) => Math.max(...item.data))
-  ).toFixed(1);
+  ).toFixed(1));
   return {
     title: {
       text: `Benthic cover at ${props.substrateLevel} level`,
