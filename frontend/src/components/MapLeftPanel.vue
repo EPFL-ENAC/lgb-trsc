@@ -253,8 +253,8 @@ import { generateDefaultStyle } from '@/maps/layers/overlay/EnvironmentalLayers/
 import WebGLTileLayer from 'ol/layer/WebGLTile';
 
 // Utility function to check layer visibility and legend availability
-const isLayerVisibleWithLegend = (layer: BaseLayer) => {
-  return layer.get('visible') && getLayerLegend(layer);
+const isLayerVisibleWithLegend = (layer: BaseLayer): boolean => {
+  return layer.get('visible') && getLayerLegend(layer) !== undefined;
 };
 
 const $q = useQuasar();
