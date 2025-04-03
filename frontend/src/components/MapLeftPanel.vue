@@ -40,9 +40,9 @@
                 name="info"
                 class="q-mr-sm"
               >
-                <q-tooltip>
-                  Environmental layers are based on the latest available data
-                  collected by the NOAA Coral Reef Conservation Program and
+                <q-tooltip class="text-body2" :offset="[10, 10]" anchor="center right" self="center left">
+                  Example of text: Environmental layers are based on the latest available data<br/>
+                  collected by the NOAA Coral Reef Conservation Program and<br/>
                   Djibouti's Ministry of Fisheries and Blue Economy.
                 </q-tooltip>
               </q-icon>
@@ -132,7 +132,7 @@
                         v-if="layerinfo.layer.get('description')"
                         name="info"
                       >
-                        <q-tooltip>
+                        <q-tooltip class="text-body2" :offset="[10, 10]" anchor="center right" self="center left">
                           {{ layerinfo.layer.get('description') }}
                         </q-tooltip>
                       </q-icon>
