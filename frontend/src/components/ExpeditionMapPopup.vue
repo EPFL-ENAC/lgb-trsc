@@ -245,14 +245,6 @@
         v-if="selectedExpeditionsDatesByExperiment.length > 1"
         class="expeditions-timeseries-monitoring-group"
       >
-        <h2 class="expeditions-timeseries-monitoring-header">
-          Expeditions Time Series Monitoring
-        </h2>
-        <p>
-          The following chart shows the time series of coral cover for the
-          selected substrate level.
-        </p>
-        <hr class="expedition-separation-bar" />
         <StackedLine3DMappingExpeditions
           v-if="isValidSampleSet"
           :raw-data="timeSeriesSet"
@@ -319,7 +311,7 @@
       </div>
       <div v-if="selectedExpeditionsDatesByExperiment.length > 1">
         <hr class="expedition-separation-bar" />
-        <p>Change in Coral cover since</p>
+        <p>Change in Coral cover since {{ baseYear }}</p>
         <div
           class="coral-changes"
           :class="{
@@ -442,6 +434,14 @@ const formatCoordinate = (decimal: number): string => {
 };
 
 const isDebugOpen = ref(false);
+
+const baseYear = computed(() => {
+  const years = selectedExpeditionsYearsByExperiment.value;
+  if (years.length > 0) {
+    return years[0];
+  }
+  return '';
+});
 
 const mapStore = useMapStore();
 const {
