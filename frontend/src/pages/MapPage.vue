@@ -5,7 +5,7 @@
     class="map"
     :style="{
       '--drawer-width': drawer ? '500px' : '0px',
-      '--left-drawer-width': '300px',
+      '--left-drawer-width': '360px',
     }"
   >
     <div id="info"></div>

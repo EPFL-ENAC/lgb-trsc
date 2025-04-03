@@ -6,6 +6,7 @@ export function createArcGISLayer(saturationFactor = 1) {
   return new WebGLTileLayer({
     source: new XYZ({
       url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+      attributions: 'Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community',
     }),
     style: {
       color: [

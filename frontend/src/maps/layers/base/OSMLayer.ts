@@ -9,6 +9,7 @@ export const createOSMLayer = () =>
     title: 'OSM',
     visible: false,
     source: new XYZ({
+      attributions: 'Tiles &copy; OpenStreetMap contributors',
       url: 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png',
     }),
   } as BaseLayerOptions);
