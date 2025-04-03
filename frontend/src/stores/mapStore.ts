@@ -196,10 +196,25 @@ export const useMapStore = defineStore('map', () => {
 
   function getSelectedExpeditionsByExperiment(experiment: string) {
     if (!selectedExpeditions.value) return [];
-
-    return selectedExpeditions.value.filter(
-      (expedition: any) => expedition.properties.experiment === experiment
+    // just use selectedExpeditionsDatesByExperiment to filter the expeditions
+    // and then filter the selectedExpeditions by the experiment
+    const selectedExpeditionsDates = selectedExpeditionsDatesByExperiment.value;
+    if (selectedExpeditionsDates.length === 0) return [];
+    // filter the expeditions by the selectedExpeditionsDates
+    const filteredExpeditions = selectedExpeditions.value.filter(
+      (expedition: any) =>
+        selectedExpeditionsDates.includes(
+          expedition.properties.full_date_iso
+        ) && expedition.properties.experiment === experiment
     );
+    // if the filteredExpeditions is empty, just return the selectedExpeditions
+    if (filteredExpeditions.length === 0) { 
+      return selectedExpeditions.value.filter(
+        (expedition: any) =>
+          expedition.properties.experiment === experiment
+      );
+    }
+    return filteredExpeditions;
   }
 
   function closeDrawer() {
