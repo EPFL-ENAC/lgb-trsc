@@ -149,7 +149,7 @@
                 <template
                   v-if="isLayerVisibleWithLegend(layerinfo.layer as BaseLayer)"
                 >
-                  <q-card class="legend-card">
+                  <div class="legend-card">
                     <MapLegend
                       v-if="layerinfo.layer.get('title') === 'Reef clusters'"
                       :is-simple="true"
@@ -172,7 +172,7 @@
                         getLayerLegend(layerinfo.layer as BaseLayer)?.type === 'continuous'
                       "
                     />
-                  </q-card>
+                  </div>
                 </template>
               </q-expansion-item>
             </q-item-section>
