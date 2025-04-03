@@ -80,9 +80,10 @@
             </q-item-section>
             <q-item-section>
               <q-expansion-item
+                :model-value="isLayerVisibleWithLegend(layerinfo.layer as BaseLayer)"
+                :label="layerinfo.layer.get('title')"
                 dense
                 dense-toggle
-                :default-opened="isLayerVisibleWithLegend(layerinfo.layer as BaseLayer)"
                 header-class="text-caption text-grey-7"
                 :class="{
                   'layer-grid': true,
