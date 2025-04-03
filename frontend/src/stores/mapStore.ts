@@ -131,14 +131,11 @@ export const useMapStore = defineStore('map', () => {
     // should be unique years
     if (!selectedExpeditions.value) return [];
 
-    let dates = selectedExpeditions.value
-      .filter(
-        (expedition: any) =>
-          expedition.properties.experiment ===
-          selectedExpeditionExperiment.value
-      )
-    
-    
+    let dates = selectedExpeditions.value.filter(
+      (expedition: any) =>
+        expedition.properties.experiment === selectedExpeditionExperiment.value
+    );
+
     // if the years > 1, sort them and filter the ones without the properties.type === 'monitoring'
     let newDates = [];
     if (dates.length > 1) {
@@ -146,9 +143,11 @@ export const useMapStore = defineStore('map', () => {
         return expe.properties.type === 'monitoring';
       });
       if (newDates.length === 0) {
-        // just retrieve the event_id 
+        // just retrieve the event_id
         newDates = dates.filter((expe: any) => {
-          return expe.properties.event_id === selectedExpedition.value?.event_id;
+          return (
+            expe.properties.event_id === selectedExpedition.value?.event_id
+          );
         });
       }
       dates = newDates;
@@ -208,10 +207,9 @@ export const useMapStore = defineStore('map', () => {
         ) && expedition.properties.experiment === experiment
     );
     // if the filteredExpeditions is empty, just return the selectedExpeditions
-    if (filteredExpeditions.length === 0) { 
+    if (filteredExpeditions.length === 0) {
       return selectedExpeditions.value.filter(
-        (expedition: any) =>
-          expedition.properties.experiment === experiment
+        (expedition: any) => expedition.properties.experiment === experiment
       );
     }
     return filteredExpeditions;
