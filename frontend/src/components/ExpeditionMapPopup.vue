@@ -239,6 +239,7 @@
             </q-card-actions>
           </q-card>
         </q-dialog>
+        <hr class="expedition-separation-bar" />
       </div>
       <div
         v-if="selectedExpeditionsDatesByExperiment.length > 1"
@@ -316,46 +317,47 @@
           </q-card>
         </q-dialog>
       </div>
-      <div
-      v-if="selectedExpeditionsDatesByExperiment.length > 1"
-      class="coral-changes"
-      :class="{
-        'horizontal-groups':
-        selectedExpeditionSubstrateLevel === 'Substrate_coarse',
-      }"
-      >
+      <div v-if="selectedExpeditionsDatesByExperiment.length > 1">
+        <hr class="expedition-separation-bar" />
         <p>Change in Coral cover since</p>
         <div
-          v-for="(group, groupName) in summaryStats"
-          :key="groupName"
-          class="coral-change-group"
+          class="coral-changes"
+          :class="{
+            'horizontal-groups':
+              selectedExpeditionSubstrateLevel === 'Substrate_coarse',
+          }"
         >
-          <h4 class="group-title">{{ groupName }}</h4>
-          <div class="group-items">
-            <div
-              v-for="(value, key) in group"
-              :key="key"
-              class="coral-change-item"
-            >
-              <div class="coral-type">{{ key }}</div>
-              <div class="change-indicator">
-                <q-icon
-                  :name="value.icon as string"
-                  :color="value.color as string"
-                  size="md"
-                />
-                <span class="percentage" :class="value.color"
-                  >{{ value.value }}%</span
-                >
+          <div
+            v-for="(group, groupName) in summaryStats"
+            :key="groupName"
+            class="coral-change-group"
+          >
+            <h4 class="group-title">{{ groupName }}</h4>
+            <div class="group-items">
+              <div
+                v-for="(value, key) in group"
+                :key="key"
+                class="coral-change-item"
+              >
+                <div class="coral-type">{{ key }}</div>
+                <div class="change-indicator">
+                  <q-icon
+                    :name="value.icon as string"
+                    :color="value.color as string"
+                    size="md"
+                  />
+                  <span class="percentage" :class="value.color"
+                    >{{ value.value }}%</span
+                  >
+                </div>
               </div>
             </div>
           </div>
+          <hr class="expedition-separation-bar" />
         </div>
-        <hr class="expedition-separation-bar" />
       </div>
     </div>
     <div v-else>No data available</div>
-    <hr class="expedition-separation-bar" />
 
     <p>
       Data generated with the
