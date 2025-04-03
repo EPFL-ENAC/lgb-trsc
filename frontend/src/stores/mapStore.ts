@@ -131,13 +131,30 @@ export const useMapStore = defineStore('map', () => {
     // should be unique years
     if (!selectedExpeditions.value) return [];
 
-    const dates = selectedExpeditions.value
-      .filter(
-        (expedition: any) =>
-          expedition.properties.experiment ===
-          selectedExpeditionExperiment.value
-      )
-      .map((expedition: any) => expedition.properties.full_date_iso);
+    let dates = selectedExpeditions.value.filter(
+      (expedition: any) =>
+        expedition.properties.experiment === selectedExpeditionExperiment.value
+    );
+
+    // if the years > 1, sort them and filter the ones without the properties.type === 'monitoring'
+    let newDates = [];
+    if (dates.length > 1) {
+      newDates = dates.filter((expe: any) => {
+        return expe.properties.type === 'monitoring';
+      });
+      if (newDates.length === 0) {
+        // just retrieve the event_id
+        newDates = dates.filter((expe: any) => {
+          return (
+            expe.properties.event_id === selectedExpedition.value?.event_id
+          );
+        });
+      }
+      dates = newDates;
+    }
+
+    dates = dates.map((expedition: any) => expedition.properties.full_date_iso);
+    // remove duplicates
     return [...new Set(dates)];
   });
 
@@ -178,10 +195,24 @@ export const useMapStore = defineStore('map', () => {
 
   function getSelectedExpeditionsByExperiment(experiment: string) {
     if (!selectedExpeditions.value) return [];
-
-    return selectedExpeditions.value.filter(
-      (expedition: any) => expedition.properties.experiment === experiment
+    // just use selectedExpeditionsDatesByExperiment to filter the expeditions
+    // and then filter the selectedExpeditions by the experiment
+    const selectedExpeditionsDates = selectedExpeditionsDatesByExperiment.value;
+    if (selectedExpeditionsDates.length === 0) return [];
+    // filter the expeditions by the selectedExpeditionsDates
+    const filteredExpeditions = selectedExpeditions.value.filter(
+      (expedition: any) =>
+        selectedExpeditionsDates.includes(
+          expedition.properties.full_date_iso
+        ) && expedition.properties.experiment === experiment
     );
+    // if the filteredExpeditions is empty, just return the selectedExpeditions
+    if (filteredExpeditions.length === 0) {
+      return selectedExpeditions.value.filter(
+        (expedition: any) => expedition.properties.experiment === experiment
+      );
+    }
+    return filteredExpeditions;
   }
 
   function closeDrawer() {

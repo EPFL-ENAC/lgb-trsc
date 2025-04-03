@@ -133,7 +133,7 @@
     <div
       v-if="
         selectedExpeditionExperiment &&
-        selectedExpeditionsDatesByExperiment.length > 0
+        selectedExpeditionsDatesByExperiment.length > 1
       "
       class="date-slider-container"
     >
@@ -156,9 +156,9 @@
         "
         @update:model-value="(newValue) => console.log(newValue)"
       />
+      <hr class="expedition-separation-bar" />
     </div>
 
-    <hr class="expedition-separation-bar" />
     <h2 class="first-expedition-header">
       {{
         headerMap?.[selectedExpedition.experiment] ??
@@ -179,7 +179,7 @@
           v-if="isValidSampleSet"
           :raw-data="sampleSet"
           height="400px"
-          width="400px"
+          width="450px"
           :substrate-level="selectedExpeditionSubstrateLevel"
           :tooltip="true"
           :scroll-legend="true"
@@ -239,110 +239,125 @@
             </q-card-actions>
           </q-card>
         </q-dialog>
+        <hr class="expedition-separation-bar" />
       </div>
-      <hr class="expedition-separation-bar" />
-      <StackedLine3DMappingExpeditions
-        v-if="isValidSampleSet"
-        :raw-data="timeSeriesSet"
-        height="400px"
-        width="400px"
-        :substrate-level="selectedExpeditionSubstrateLevel"
-        :tooltip="true"
-        :scroll-legend="true"
-        @click="toggle3DZoomedChartTimeseries"
-      />
-      <q-dialog
-        v-model="showZoomedChartTimeseries"
-        persistent
-        :maximized="false"
-        class="popup"
-      >
-        <q-card
-          style="
-            width: 80vw;
-            max-width: 1200px;
-            height: 80vh;
-            max-height: 800px;
-          "
-        >
-          <q-card-section class="q-pa-md row items-center justify-between">
-            <h4 class="q-pa-sm q-ma-sm">3D Mapping</h4>
-            <div class="right-actions">
-              <q-toggle
-                :model-value="selectedExpeditionSubstrateLevel"
-                true-value="Substrate_coarse"
-                false-value="Substrate_intermediate"
-                :label="selectedExpeditionSubstrateLevel"
-                @update:model-value="setSelectedExpeditionSubstrateLevel"
-              ></q-toggle>
-              <q-btn
-                v-close-popup
-                icon="close"
-                class="close-btn"
-                flat
-                round
-                dense
-              />
-            </div>
-          </q-card-section>
-          <StackedLine3DMappingExpeditions
-            v-if="isValidSampleSet"
-            :raw-data="timeSeriesSet"
-            height="76%"
-            width="90%"
-            :substrate-level="selectedExpeditionSubstrateLevel"
-            :tooltip="true"
-            :scroll-legend="true"
-          />
-          <q-card-actions align="right">
-            <q-btn
-              label="View on Map"
-              color="white"
-              flat
-              @click="toggle3DZoomedChart"
-            />
-          </q-card-actions>
-        </q-card>
-      </q-dialog>
-      <p>Change in Coral cover since</p>
       <div
-        class="coral-changes"
-        :class="{
-          'horizontal-groups':
-            selectedExpeditionSubstrateLevel === 'Substrate_coarse',
-        }"
+        v-if="selectedExpeditionsDatesByExperiment.length > 1"
+        class="expeditions-timeseries-monitoring-group"
       >
-        <div
-          v-for="(group, groupName) in summaryStats"
-          :key="groupName"
-          class="coral-change-group"
+        <h2 class="expeditions-timeseries-monitoring-header">
+          Expeditions Time Series Monitoring
+        </h2>
+        <p>
+          The following chart shows the time series of coral cover for the
+          selected substrate level.
+        </p>
+        <hr class="expedition-separation-bar" />
+        <StackedLine3DMappingExpeditions
+          v-if="isValidSampleSet"
+          :raw-data="timeSeriesSet"
+          height="400px"
+          width="450px"
+          :substrate-level="selectedExpeditionSubstrateLevel"
+          :tooltip="true"
+          :scroll-legend="true"
+          @click="toggle3DZoomedChartTimeseries"
+        />
+        <q-dialog
+          v-model="showZoomedChartTimeseries"
+          persistent
+          :maximized="false"
+          class="popup"
         >
-          <h4 class="group-title">{{ groupName }}</h4>
-          <div class="group-items">
-            <div
-              v-for="(value, key) in group"
-              :key="key"
-              class="coral-change-item"
-            >
-              <div class="coral-type">{{ key }}</div>
-              <div class="change-indicator">
-                <q-icon
-                  :name="value.icon as string"
-                  :color="value.color as string"
-                  size="md"
+          <q-card
+            style="
+              width: 80vw;
+              max-width: 1200px;
+              height: 80vh;
+              max-height: 800px;
+            "
+          >
+            <q-card-section class="q-pa-md row items-center justify-between">
+              <h4 class="q-pa-sm q-ma-sm">3D Mapping</h4>
+              <div class="right-actions">
+                <q-toggle
+                  :model-value="selectedExpeditionSubstrateLevel"
+                  true-value="Substrate_coarse"
+                  false-value="Substrate_intermediate"
+                  :label="selectedExpeditionSubstrateLevel"
+                  @update:model-value="setSelectedExpeditionSubstrateLevel"
+                ></q-toggle>
+                <q-btn
+                  v-close-popup
+                  icon="close"
+                  class="close-btn"
+                  flat
+                  round
+                  dense
                 />
-                <span class="percentage" :class="value.color"
-                  >{{ value.value }}%</span
-                >
+              </div>
+            </q-card-section>
+            <StackedLine3DMappingExpeditions
+              v-if="isValidSampleSet"
+              :raw-data="timeSeriesSet"
+              height="76%"
+              width="90%"
+              :substrate-level="selectedExpeditionSubstrateLevel"
+              :tooltip="true"
+              :scroll-legend="true"
+            />
+            <q-card-actions align="right">
+              <q-btn
+                label="View on Map"
+                color="white"
+                flat
+                @click="toggle3DZoomedChart"
+              />
+            </q-card-actions>
+          </q-card>
+        </q-dialog>
+      </div>
+      <div v-if="selectedExpeditionsDatesByExperiment.length > 1">
+        <hr class="expedition-separation-bar" />
+        <p>Change in Coral cover since</p>
+        <div
+          class="coral-changes"
+          :class="{
+            'horizontal-groups':
+              selectedExpeditionSubstrateLevel === 'Substrate_coarse',
+          }"
+        >
+          <div
+            v-for="(group, groupName) in summaryStats"
+            :key="groupName"
+            class="coral-change-group"
+          >
+            <h4 class="group-title">{{ groupName }}</h4>
+            <div class="group-items">
+              <div
+                v-for="(value, key) in group"
+                :key="key"
+                class="coral-change-item"
+              >
+                <div class="coral-type">{{ key }}</div>
+                <div class="change-indicator">
+                  <q-icon
+                    :name="value.icon as string"
+                    :color="value.color as string"
+                    size="md"
+                  />
+                  <span class="percentage" :class="value.color"
+                    >{{ value.value }}%</span
+                  >
+                </div>
               </div>
             </div>
           </div>
+          <hr class="expedition-separation-bar" />
         </div>
       </div>
-      <hr class="expedition-separation-bar" />
     </div>
     <div v-else>No data available</div>
-    <hr class="expedition-separation-bar" />
 
     <p>
       Data generated with the
@@ -638,9 +653,6 @@ h2 {
   line-height: 1.4rem;
   font-weight: bold;
   font-style: italic;
-  margin: 0px;
-  margin-bottom: 0.1rem;
-  padding: 0;
 }
 h3 {
   color: red;

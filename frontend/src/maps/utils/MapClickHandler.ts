@@ -24,8 +24,8 @@ export const clickHandlerFn =
     const target = mapBrowserEvent.originalEvent.target;
     // const hit = map.hasFeatureAtPixel(pixel);
     const validExpeditons = [
-      'Exploration',
-      'Monitoring',
+      'exploration',
+      'monitoring',
       'by year',
       'by project',
       'hard coral cover',
