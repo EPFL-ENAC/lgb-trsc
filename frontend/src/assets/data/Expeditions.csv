@@ -1,5 +1,4 @@
 ﻿country,country_abbr,date_iso,time,experiment,expe_name,region_name,reef_area,sampling_site_name,event_id,Exploration_or_monitoring,latitude_start,longitude_start,latitude_end,longitude_end,team_members,,,,,,,,,,
-,,,,,,,,,,,,,,,,,,,,,,,,,
 Djibouti,DJ,2022-09-16,,MP,exp202209_DJ,Gulf of Tadjourah,Djibouti_city,kempinski hotel,EXP202209_DJ_001,exploration,11.6270966667,43.1525666667,,,,,,,,,,,-,,
 Djibouti,DJ,2022-09-16,12:30:00 PM,3D,exp202209_DJ,Gulf of Tadjourah,Djibouti_city,kempinski hotel,EXP202209_DJ_002,exploration,11.625800,43.154000,11.625417,43.153800,,,,,,,,,,,
 Djibouti,DJ,2022-09-16,,SG,exp202209_DJ,Gulf of Tadjourah,Djibouti_city,kempinski hotel,EXP202209_DJ_002,exploration,11.6258,43.154,,,,,,,,,,,,,-
