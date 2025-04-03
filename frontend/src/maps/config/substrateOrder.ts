@@ -70,16 +70,17 @@ export const validSubstrates2 = [
   'massive/meandering_dead',
 ];
 
-
 export const validSubstratesMap: Record<string, string[]> = {
   Substrate_coarse: validSubstrates,
   Substrate_intermediate: validSubstrates2,
 };
 
-
-
 // Methods
-export const preselectedLegendCoarse = ['coral_bleached', 'coral_dead', 'coral_alive'].map(legend => validSubtrateMapKeyText[legend]);
+export const preselectedLegendCoarse = [
+  'coral_bleached',
+  'coral_dead',
+  'coral_alive',
+].map((legend) => validSubtrateMapKeyText[legend]);
 
 export const preselectedLegendIntermediate = [
   'other_coral_dead',
@@ -94,7 +95,7 @@ export const preselectedLegendIntermediate = [
   'branching_alive',
   'meandering_alive',
   'massive/meandering_dead',
-].map(legend => validSubtrateMapKeyText[legend]);
+].map((legend) => validSubtrateMapKeyText[legend]);
 
 export const substrateLevelPresetMap: Record<string, string[]> = {
   Substrate_coarse: preselectedLegendCoarse,

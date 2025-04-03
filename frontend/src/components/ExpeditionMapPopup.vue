@@ -203,12 +203,12 @@
               <h4 class="q-pa-sm q-ma-sm">3D Mapping</h4>
               <div class="right-actions">
                 <q-toggle
-                    :model-value="selectedExpeditionSubstrateLevel"
-                    true-value="Substrate_coarse"
-                    false-value="Substrate_intermediate"
-                    :label="selectedExpeditionSubstrateLevel"
-                    @update:model-value="setSelectedExpeditionSubstrateLevel"
-                  ></q-toggle>
+                  :model-value="selectedExpeditionSubstrateLevel"
+                  true-value="Substrate_coarse"
+                  false-value="Substrate_intermediate"
+                  :label="selectedExpeditionSubstrateLevel"
+                  @update:model-value="setSelectedExpeditionSubstrateLevel"
+                ></q-toggle>
                 <q-btn
                   v-close-popup
                   icon="close"
@@ -220,14 +220,14 @@
               </div>
             </q-card-section>
             <BarChart3DMappingExpedition
-                v-if="isValidSampleSet"
-                :raw-data="sampleSet"
-                height="76%"
-                width="90%"
-                :substrate-level="selectedExpeditionSubstrateLevel"
-                :tooltip="true"
-                :scroll-legend="true"
-              />
+              v-if="isValidSampleSet"
+              :raw-data="sampleSet"
+              height="76%"
+              width="90%"
+              :substrate-level="selectedExpeditionSubstrateLevel"
+              :tooltip="true"
+              :scroll-legend="true"
+            />
 
             <q-card-actions align="right">
               <q-btn
@@ -252,58 +252,58 @@
         @click="toggle3DZoomedChartTimeseries"
       />
       <q-dialog
-          v-model="showZoomedChartTimeseries"
-          persistent
-          :maximized="false"
-          class="popup"
+        v-model="showZoomedChartTimeseries"
+        persistent
+        :maximized="false"
+        class="popup"
+      >
+        <q-card
+          style="
+            width: 80vw;
+            max-width: 1200px;
+            height: 80vh;
+            max-height: 800px;
+          "
         >
-          <q-card
-            style="
-              width: 80vw;
-              max-width: 1200px;
-              height: 80vh;
-              max-height: 800px;
-            "
-          >
-            <q-card-section class="q-pa-md row items-center justify-between">
-              <h4 class="q-pa-sm q-ma-sm">3D Mapping</h4>
-              <div class="right-actions">
-                <q-toggle
-                    :model-value="selectedExpeditionSubstrateLevel"
-                    true-value="Substrate_coarse"
-                    false-value="Substrate_intermediate"
-                    :label="selectedExpeditionSubstrateLevel"
-                    @update:model-value="setSelectedExpeditionSubstrateLevel"
-                  ></q-toggle>
-                <q-btn
-                  v-close-popup
-                  icon="close"
-                  class="close-btn"
-                  flat
-                  round
-                  dense
-                />
-              </div>
-            </q-card-section>
-              <StackedLine3DMappingExpeditions
-                v-if="isValidSampleSet"
-                :raw-data="timeSeriesSet"
-                height="76%"
-                width="90%"
-                :substrate-level="selectedExpeditionSubstrateLevel"
-                :tooltip="true"
-                :scroll-legend="true"
-              />
-            <q-card-actions align="right">
+          <q-card-section class="q-pa-md row items-center justify-between">
+            <h4 class="q-pa-sm q-ma-sm">3D Mapping</h4>
+            <div class="right-actions">
+              <q-toggle
+                :model-value="selectedExpeditionSubstrateLevel"
+                true-value="Substrate_coarse"
+                false-value="Substrate_intermediate"
+                :label="selectedExpeditionSubstrateLevel"
+                @update:model-value="setSelectedExpeditionSubstrateLevel"
+              ></q-toggle>
               <q-btn
-                label="View on Map"
-                color="white"
+                v-close-popup
+                icon="close"
+                class="close-btn"
                 flat
-                @click="toggle3DZoomedChart"
+                round
+                dense
               />
-            </q-card-actions>
-          </q-card>
-        </q-dialog>
+            </div>
+          </q-card-section>
+          <StackedLine3DMappingExpeditions
+            v-if="isValidSampleSet"
+            :raw-data="timeSeriesSet"
+            height="76%"
+            width="90%"
+            :substrate-level="selectedExpeditionSubstrateLevel"
+            :tooltip="true"
+            :scroll-legend="true"
+          />
+          <q-card-actions align="right">
+            <q-btn
+              label="View on Map"
+              color="white"
+              flat
+              @click="toggle3DZoomedChart"
+            />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
       <p>Change in Coral cover since</p>
       <div
         class="coral-changes"
@@ -476,7 +476,7 @@ const summaryStats = computed(() => {
     substrateLevelPresetMap[selectedExpeditionSubstrateLevel.value];
 
   // Calculate all percentage changes
-  const results = authorized_ids.reduce((acc, authorized_id, index) => {
+  const results = authorized_ids.reduce((acc, authorized_id) => {
     const timeSeries = timeSeriesSet.value.find(
       (item) => item.name === authorized_id
     );

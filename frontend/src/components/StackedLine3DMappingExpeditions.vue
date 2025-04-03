@@ -48,7 +48,7 @@ const getChartOption = (data: any[], substrateLevel: string) => {
   const selected = validSubstratesMap[substrateLevel].reduce(
     (acc, substrate) => {
       const name = validSubtrateMapKeyText[substrate];
-      if (substrateLevelPresetMap[substrateLevel].includes(name)){
+      if (substrateLevelPresetMap[substrateLevel].includes(name)) {
         acc[name] = true;
       }
       return acc;
@@ -57,32 +57,43 @@ const getChartOption = (data: any[], substrateLevel: string) => {
   );
   function computeSeriesData(data: any[], substrateLevel: string) {
     const offsetColor: Record<string, number> = {
-      'Substrate_coarse': 4,
-      'Substrate_intermediate': 12,
-    }
+      Substrate_coarse: 4,
+      Substrate_intermediate: 12,
+    };
     return data
-      .filter(data => substrateLevelPresetMap[substrateLevel].includes(data.name))
+      .filter((data) =>
+        substrateLevelPresetMap[substrateLevel].includes(data.name)
+      )
       .map((item, index) => {
-        return ({
-      name: item.name,
-      type: 'line',
-      lineStyle: {
-        width: 2,
-        color: substrateLevelMapColor?.[substrateLevel][index + offsetColor[substrateLevel]],
-      },
-      stack: 'Total',
-      data: item.data,
-      color: substrateLevelMapColor?.[substrateLevel][index + offsetColor[substrateLevel]],
-      // Add itemStyle to ensure legend interactions work properly
-      itemStyle: {
-        color: substrateLevelMapColor?.[substrateLevel][index + offsetColor[substrateLevel]]
-      },
-      // Add specific emphasis settings
-      emphasis: {
-        focus: 'series'
-      }
-    })
-      })
+        return {
+          name: item.name,
+          type: 'line',
+          lineStyle: {
+            width: 2,
+            color:
+              substrateLevelMapColor?.[substrateLevel][
+                index + offsetColor[substrateLevel]
+              ],
+          },
+          stack: 'Total',
+          data: item.data,
+          color:
+            substrateLevelMapColor?.[substrateLevel][
+              index + offsetColor[substrateLevel]
+            ],
+          // Add itemStyle to ensure legend interactions work properly
+          itemStyle: {
+            color:
+              substrateLevelMapColor?.[substrateLevel][
+                index + offsetColor[substrateLevel]
+              ],
+          },
+          // Add specific emphasis settings
+          emphasis: {
+            focus: 'series',
+          },
+        };
+      });
   }
   const series = computeSeriesData(data, substrateLevel);
   return {
@@ -168,21 +179,20 @@ const closeChart = () => {
 // Lifecycle hooks
 onMounted(() => {
   initChart();
-  
+
   // Add window resize handler
   const resizeHandler = () => {
     chart.value?.resize();
   };
-  
+
   window.addEventListener('resize', resizeHandler);
-  
+
   // Store the handler reference for proper cleanup
   onUnmounted(() => {
     window.removeEventListener('resize', resizeHandler);
     chart.value?.dispose();
   });
 });
-
 
 // Watchers
 watch(
@@ -191,7 +201,7 @@ watch(
     if (value.length === 0) {
       return;
     }
-    closeChart()
+    closeChart();
     initChart();
   },
   { deep: true }

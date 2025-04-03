@@ -172,7 +172,10 @@ export const metadata = {
       'Global Ocean Colour (Copernicus-GlobColour), Bio-Geo-Chemical, L4 (monthly and interpolated) from Satellite Observations (1997-ongoing)',
     dataset: 'cmems_obs-oc_glo_bgc-plankton_my_l4-multi-4km_P1M',
     date: 'CHL_09-1997_05-2024',
-    urls: {Mean: tiffsUrls.CHL_monthly_mean_Mean, SD: tiffsUrls.CHL_monthly_mean_SD},
+    urls: {
+      Mean: tiffsUrls.CHL_monthly_mean_Mean,
+      SD: tiffsUrls.CHL_monthly_mean_SD,
+    },
     attributions: attributions.copernicus,
   },
   SST_monthly: {
@@ -212,7 +215,9 @@ export const metadata = {
     date: 'SPM_09-1997_05-2024',
     attributions: attributions.copernicus,
     urls: {
-      Mean: tiffsUrls.SPM_monthly_mean_Mean, SD: tiffsUrls.SPM_monthly_mean_SD},
+      Mean: tiffsUrls.SPM_monthly_mean_Mean,
+      SD: tiffsUrls.SPM_monthly_mean_SD,
+    },
   },
   DHW_annual_max: {
     ...legendVariables.DHW,

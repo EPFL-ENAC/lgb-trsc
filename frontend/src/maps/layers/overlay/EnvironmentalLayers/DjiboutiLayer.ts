@@ -17,10 +17,14 @@ const NODATA_VALUE = -3.4e38;
 // Adjusted EPSILON: Use a smaller tolerance, e.g., 1.0, adjust if needed based on data precision
 const EPSILON = 1.0;
 
-const convertColorMapToArray = (colorMap: Record<string, string>): (number | string)[] => {
+const convertColorMapToArray = (
+  colorMap: Record<string, string>
+): (number | string)[] => {
   const colorMapArray: (number | string)[] = [];
   // Sort keys numerically to ensure correct interpolation order
-  const sortedKeys = Object.keys(colorMap).sort((a, b) => parseFloat(a) - parseFloat(b));
+  const sortedKeys = Object.keys(colorMap).sort(
+    (a, b) => parseFloat(a) - parseFloat(b)
+  );
   for (const key of sortedKeys) {
     colorMapArray.push(parseFloat(key));
     colorMapArray.push(colorMap[key]);
@@ -28,7 +32,8 @@ const convertColorMapToArray = (colorMap: Record<string, string>): (number | str
   return colorMapArray;
 };
 
-export function generateDefaultStyle(colorScale: ColorMap): any { // Consider defining a more specific return type for OL Style
+export function generateDefaultStyle(colorScale: ColorMap): any {
+  // Consider defining a more specific return type for OL Style
   const min = colorScale.min ?? 0.00001;
   const max = colorScale.max ?? 100;
   // Use the provided nodata value or the default
@@ -61,7 +66,13 @@ export function generateDefaultStyle(colorScale: ColorMap): any { // Consider de
         // Find the color associated with the max value in the color map
         // This requires colorScale.colorMap to be available here or passed differently
         // For simplicity, keeping white, but ideally, use the max color stop.
-        ['color', ...olColor.asArray(colorScale.colorMap[max.toString()] || '#ffffff').slice(0, 3), 255], // Use max color stop or default white
+        [
+          'color',
+          ...olColor
+            .asArray(colorScale.colorMap[max.toString()] || '#ffffff')
+            .slice(0, 3),
+          255,
+        ], // Use max color stop or default white
         // Linear interpolation for values between min and max
         [
           'interpolate',
@@ -87,7 +98,9 @@ export const createEnvironmentalLayers = (): WebGLTileLayer[] => {
       try {
         let effectiveColorScale = source.colorScale;
         if (!effectiveColorScale) {
-          console.warn(`Source "${source.name}" is missing colorScale. Using default.`);
+          console.warn(
+            `Source "${source.name}" is missing colorScale. Using default.`
+          );
           effectiveColorScale = defaultEnvironmentalColorMap;
         }
 
@@ -110,7 +123,10 @@ export const createEnvironmentalLayers = (): WebGLTileLayer[] => {
         } as BaseLayerOptions); // Type assertion might still be needed depending on BaseLayerOptions definition
         return layer;
       } catch (error) {
-        console.error(`Failed to create layer for source "${source?.name || 'unknown'}":`, error);
+        console.error(
+          `Failed to create layer for source "${source?.name || 'unknown'}":`,
+          error
+        );
         return null; // Return null for sources that failed
       }
     })

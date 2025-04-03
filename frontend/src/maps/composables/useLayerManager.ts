@@ -138,7 +138,7 @@ export function useLayerManager() {
           // and not the group itself
           // This is a workaround for the radio group behavior
           // where the first layer is always visible
-          // and the group visibility is not toggled  
+          // and the group visibility is not toggled
           // Skip the first layer
           layerInfo.layer.setVisible(!currentVisibility);
           return;

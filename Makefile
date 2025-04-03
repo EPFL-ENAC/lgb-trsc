@@ -16,10 +16,8 @@ test:
 lint:
 	$(MAKE) -C frontend lint
 
-
 format:
 	$(MAKE) -C frontend format
-
 
 type-check:
 	$(MAKE) -C frontend type-check

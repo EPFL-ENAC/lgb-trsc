@@ -1,5 +1,13 @@
 <template>
-  <div ref="chartRef" :style="{ width: width, height: height, margin: '0 auto',cursor: 'pointer'}"></div>
+  <div
+    ref="chartRef"
+    :style="{
+      width: width,
+      height: height,
+      margin: '0 auto',
+      cursor: 'pointer',
+    }"
+  ></div>
 </template>
 
 <script setup lang="ts">
@@ -86,6 +94,7 @@ const processData = (data: any[], substrateLevel: string) => {
 const getChartOption = (data: any[]) => {
   let localTooltip = {
     trigger: 'axis',
+    show: true,
     axisPointer: {
       type: 'shadow',
     },
@@ -102,15 +111,17 @@ const getChartOption = (data: any[]) => {
 
       return result;
     },
-  };
+  } as echarts.TooltipComponentOption;
 
   if (props.tooltip === false) {
-    localTooltip = false;
+    localTooltip = {
+      show: false,
+    };
   }
   const series = processData(data, props.substrateLevel);
-  const maxValue = Number(Math.max(
-    ...series.map((item) => Math.max(...item.data))
-  ).toFixed(1));
+  const maxValue = Number(
+    Math.max(...series.map((item) => Math.max(...item.data))).toFixed(1)
+  );
   return {
     title: {
       text: `Benthic cover at ${props.substrateLevel} level`,

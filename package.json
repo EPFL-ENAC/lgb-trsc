@@ -1,6 +1,7 @@
 {
   "devDependencies": {
-    "lefthook": "^1.9.2"
+    "lefthook": "^1.9.2",
+    "typescript": "^5.8.2"
   },
   "dependencies": {
     "@mdi/js": "^7.4.47"

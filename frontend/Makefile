@@ -21,5 +21,11 @@ lint:
 format:
 		npm run format
 
+format:
+		npm run format
+
+type-check:
+		npm run type-check
+
 test:
 		npm run test

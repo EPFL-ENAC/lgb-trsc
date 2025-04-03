@@ -36,16 +36,16 @@
             <div class="layer-group__title">
               {{ group.title }}
               <q-icon
-              v-if="group.title === 'Environmental Layers'"
-              name="info"
-              class="q-mr-sm"
-            >
-              <q-tooltip>
-                Environmental layers are based on the latest available data
-                collected by the NOAA Coral Reef Conservation Program and
-                Djibouti's Ministry of Fisheries and Blue Economy.
-              </q-tooltip>
-            </q-icon>
+                v-if="group.title === 'Environmental Layers'"
+                name="info"
+                class="q-mr-sm"
+              >
+                <q-tooltip>
+                  Environmental layers are based on the latest available data
+                  collected by the NOAA Coral Reef Conservation Program and
+                  Djibouti's Ministry of Fisheries and Blue Economy.
+                </q-tooltip>
+              </q-icon>
             </div>
             <q-icon
               :name="group.group.getVisible() ? mdiEyeOutline : 'mdi-eye-off'"
@@ -190,15 +190,8 @@
       >
         <template #header>
           <div class="layer-group">
-            <div class="layer-group__title">
-              Base maps
-            </div>
-            <q-icon
-              name="map"
-              flat
-              round
-              class="q-ml-xs visibility-toggle"
-            />
+            <div class="layer-group__title">Base maps</div>
+            <q-icon name="map" flat round class="q-ml-xs visibility-toggle" />
           </div>
         </template>
         <q-list padding>
@@ -295,9 +288,7 @@ const updateMeanOrSD = (layer: WebGLTileLayer) => {
   );
   // Only update if we found a matching source
   if (environmentalSource) {
-    const newStyle = generateDefaultStyle(
-      environmentalSource?.colorScale
-    );
+    const newStyle = generateDefaultStyle(environmentalSource?.colorScale);
     layer.setStyle(newStyle);
     layer.set('meanOrSD', newMeanOrSD);
     layer.set('source', createGeoTIFFSource(environmentalSource));
