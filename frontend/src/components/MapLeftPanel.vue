@@ -40,9 +40,15 @@
                 name="info"
                 class="q-mr-sm"
               >
-                <q-tooltip class="text-body2" :offset="[10, 10]" anchor="center right" self="center left">
-                  Example of text: Environmental layers are based on the latest available data<br/>
-                  collected by the NOAA Coral Reef Conservation Program and<br/>
+                <q-tooltip
+                  class="text-body2"
+                  :offset="[10, 10]"
+                  anchor="center right"
+                  self="center left"
+                >
+                  Example of text: Environmental layers are based on the latest
+                  available data<br />
+                  collected by the NOAA Coral Reef Conservation Program and<br />
                   Djibouti's Ministry of Fisheries and Blue Economy.
                 </q-tooltip>
               </q-icon>
@@ -84,6 +90,8 @@
                 :label="layerinfo.layer.get('title')"
                 dense
                 dense-toggle
+                expand-icon="none"
+                expand-icon-class="hidden"
                 header-class="text-caption text-grey-7"
                 :class="{
                   'layer-grid': true,
@@ -123,19 +131,25 @@
                           "
                         />
                       </template>
+                      <q-icon
+                        v-if="layerinfo.layer.get('description')"
+                        class="q-ml-xs"
+                        name="info"
+                      >
+                        <q-tooltip
+                          class="text-body2"
+                          :offset="[10, 10]"
+                          anchor="center right"
+                          self="center left"
+                        >
+                          {{ layerinfo.layer.get('description') }}
+                        </q-tooltip>
+                      </q-icon>
                     </div>
                     <div
                       v-if="group.title === 'Environmental Layers'"
                       class="env-controls"
                     >
-                      <q-icon
-                        v-if="layerinfo.layer.get('description')"
-                        name="info"
-                      >
-                        <q-tooltip class="text-body2" :offset="[10, 10]" anchor="center right" self="center left">
-                          {{ layerinfo.layer.get('description') }}
-                        </q-tooltip>
-                      </q-icon>
                       <q-toggle
                         :label="layerinfo.layer.get('meanOrSD')"
                         color="pink"
@@ -429,8 +443,9 @@ const toggleOverlayLayer = (
   }
   .layer-environmental-controls {
     display: grid;
-    grid-template-columns: auto 1fr 0.5fr;
+    grid-template-columns: auto 90px;
     align-items: center;
+    justify-content: space-between;
     gap: 8px;
     width: 100%;
   }
