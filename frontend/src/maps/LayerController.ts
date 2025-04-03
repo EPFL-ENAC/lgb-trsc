@@ -39,7 +39,6 @@ export class LayerController {
   // private CHL_monthlyMeanMeanLayer: WebGLTileLayer<GeoTIFFSource> | null = null;
   // private CHL_monthlyMeanSDLayer: WebGLTileLayer<GeoTIFFSource> | null = null;
 
-
   constructor() {
     this.countryLayer = createCountryLayer();
     this.expeditionProjectLayer = createExpeditionLayer('by project');
@@ -48,7 +47,7 @@ export class LayerController {
       'hard coral cover',
       { experiment: '3D' }
     );
-    this.environmentalLayers = createEnvironmentalLayers()
+    this.environmentalLayers = createEnvironmentalLayers();
     // this.CHL_monthlyMeanMeanLayer = env[0];
     // this.CHL_monthlyMeanSDLayer = env[1];
   }
@@ -163,28 +162,26 @@ export class LayerController {
   }
 
   // deprecated for now
-  public setEnvironmentalLayer(
-    environmentalLayer: WebGLTileLayer | null
-  ) {
+  public setEnvironmentalLayer(environmentalLayer: WebGLTileLayer | null) {
     // If environmentalLayers doesn't exist, do nothing
     if (!this.environmentalLayers) return;
-    
+
     // If null is passed, hide all environmental layers
     if (environmentalLayer === null) {
-      this.environmentalLayers.forEach(layer => layer.setVisible(false));
+      this.environmentalLayers.forEach((layer) => layer.setVisible(false));
       return;
     }
-    
+
     // Find the layer in the array that has the same name as the one passed in
     const layerName = environmentalLayer.get('name');
-    
+
     if (!layerName) {
       console.warn('Environmental layer has no name property');
       return;
     }
-    
+
     // Make only the matching layer visible, hide others
-    this.environmentalLayers.forEach(layer => {
+    this.environmentalLayers.forEach((layer) => {
       const name = layer.get('name');
       layer.setVisible(name === layerName);
     });

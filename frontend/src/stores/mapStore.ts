@@ -76,7 +76,8 @@ export const useMapStore = defineStore('map', () => {
   }
 
   type SubstrateLevel = 'Substrate_coarse' | 'Substrate_intermediate';
-  const selectedExpeditionSubstrateLevel = ref<SubstrateLevel>('Substrate_coarse');
+  const selectedExpeditionSubstrateLevel =
+    ref<SubstrateLevel>('Substrate_coarse');
   function setSelectedExpeditionSubstrateLevel(substrateLevel: SubstrateLevel) {
     selectedExpeditionSubstrateLevel.value = substrateLevel;
   }
@@ -330,8 +331,6 @@ export const useMapStore = defineStore('map', () => {
 
   const timeSeriesSet = computed(() => {
     try {
-
-
       // init the results array with correct validSubtrateMapKeyText level
       // {
       //   name: (sampleById as any)[selectedExpeditionSubstrateLevel.value],
@@ -341,8 +340,8 @@ export const useMapStore = defineStore('map', () => {
       // }
       const results = initSubstrateForEventId();
       const threeDExpeditions = getSelectedExpeditionsByExperiment('3D');
-      const dates = threeDExpeditions.map(expedition =>
-        expedition.properties.full_date_iso
+      const dates = threeDExpeditions.map(
+        (expedition) => expedition.properties.full_date_iso
       );
       // it should be sorted by dates already
       // iterate through each eventIds to get the mean value of the selectedExpeditionSubstrateLevel
@@ -350,8 +349,9 @@ export const useMapStore = defineStore('map', () => {
         try {
           const sampleByIds =
             Djibouti3DMapping?.filter(
-              (d3Mapping) => d3Mapping.full_date_iso === expedition.full_date_iso ||
-              d3Mapping.event_id === expedition.event_id
+              (d3Mapping) =>
+                d3Mapping.full_date_iso === expedition.full_date_iso ||
+                d3Mapping.event_id === expedition.event_id
             ) || [];
           // {
           //   name: 'Union Ads',

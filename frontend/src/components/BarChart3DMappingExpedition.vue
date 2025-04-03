@@ -1,9 +1,17 @@
 <template>
-  <div ref="chartRef" :style="{ width: width, height: height }"></div>
+  <div
+    ref="chartRef"
+    :style="{
+      width: width,
+      height: height,
+      margin: '0 auto',
+      cursor: 'pointer',
+    }"
+  ></div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch, onUnmounted, computed } from 'vue';
+import { ref, onMounted, watch, onUnmounted } from 'vue';
 import * as echarts from 'echarts';
 import 'echarts/lib/chart/bar'; // Import bar chart
 import 'echarts/lib/component/tooltip'; // Import tooltip component
@@ -86,6 +94,7 @@ const processData = (data: any[], substrateLevel: string) => {
 const getChartOption = (data: any[]) => {
   let localTooltip = {
     trigger: 'axis',
+    show: true,
     axisPointer: {
       type: 'shadow',
     },
@@ -102,12 +111,17 @@ const getChartOption = (data: any[]) => {
 
       return result;
     },
-  };
+  } as echarts.TooltipComponentOption;
 
   if (props.tooltip === false) {
-    localTooltip = false;
+    localTooltip = {
+      show: false,
+    };
   }
-
+  const series = processData(data, props.substrateLevel);
+  const maxValue = Number(
+    Math.max(...series.map((item) => Math.max(...item.data))).toFixed(1)
+  );
   return {
     title: {
       text: `Benthic cover at ${props.substrateLevel} level`,
@@ -122,7 +136,7 @@ const getChartOption = (data: any[]) => {
       bottom: props.substrateLevel === 'Substrate_coarse' ? 0 : 0,
     },
     grid: {
-      left: '2.4%',
+      left: '5px',
       right: '4%',
       bottom: props.substrateLevel === 'Substrate_coarse' ? '100px' : '250px',
       containLabel: true,
@@ -138,15 +152,21 @@ const getChartOption = (data: any[]) => {
     yAxis: {
       type: 'value',
       name: 'Percentage cover',
+      nameTextStyle: {
+        color: '#000',
+        fontSize: '9px',
+        padding: [0, 0, 0, 5],
+      },
       axisLabel: {
         formatter: function (value: number) {
           return value * 100 + '%';
         },
       },
-      max: 1,
+      // max value is the max value of the series
+      max: maxValue,
       min: 0,
     },
-    series: processData(data, props.substrateLevel),
+    series,
   };
 };
 

@@ -48,13 +48,54 @@ const getChartOption = (data: any[], substrateLevel: string) => {
   const selected = validSubstratesMap[substrateLevel].reduce(
     (acc, substrate) => {
       const name = validSubtrateMapKeyText[substrate];
-      if (substrateLevelPresetMap[substrateLevel].includes(name)){
+      if (substrateLevelPresetMap[substrateLevel].includes(name)) {
         acc[name] = true;
       }
       return acc;
     },
     {} as Record<string, boolean>
   );
+  function computeSeriesData(data: any[], substrateLevel: string) {
+    const offsetColor: Record<string, number> = {
+      Substrate_coarse: 4,
+      Substrate_intermediate: 12,
+    };
+    return data
+      .filter((data) =>
+        substrateLevelPresetMap[substrateLevel].includes(data.name)
+      )
+      .map((item, index) => {
+        return {
+          name: item.name,
+          type: 'line',
+          lineStyle: {
+            width: 2,
+            color:
+              substrateLevelMapColor?.[substrateLevel][
+                index + offsetColor[substrateLevel]
+              ],
+          },
+          stack: 'Total',
+          data: item.data,
+          color:
+            substrateLevelMapColor?.[substrateLevel][
+              index + offsetColor[substrateLevel]
+            ],
+          // Add itemStyle to ensure legend interactions work properly
+          itemStyle: {
+            color:
+              substrateLevelMapColor?.[substrateLevel][
+                index + offsetColor[substrateLevel]
+              ],
+          },
+          // Add specific emphasis settings
+          emphasis: {
+            focus: 'series',
+          },
+        };
+      });
+  }
+  const series = computeSeriesData(data, substrateLevel);
   return {
     title: {
       text: 'Timeseries',
@@ -73,14 +114,14 @@ const getChartOption = (data: any[], substrateLevel: string) => {
         return acc;
       }, {} as Record<string, boolean>),
       // Apply colors to legend items through textStyle
-      textStyle: {
-        rich: data.reduce((acc, item, index) => {
-          acc[item.name] = {
-            color: substrateLevelMapColor?.[substrateLevel][index]
-          };
-          return acc;
-        }, {})
-      }
+      // textStyle: {
+      //   rich: data.reduce((acc, item, index) => {
+      //     acc[item.name] = {
+      //       color: substrateLevelMapColor?.[substrateLevel][index]
+      //     };
+      //     return acc;
+      //   }, {})
+      // }
     },
     grid: {
       left: '3%',
@@ -106,26 +147,19 @@ const getChartOption = (data: any[], substrateLevel: string) => {
     },
     yAxis: {
       type: 'value',
+      name: 'Percentage cover',
+      nameTextStyle: {
+        color: '#000',
+        fontSize: '9px',
+        padding: [0, 0, 0, 5],
+      },
+      axisLabel: {
+        formatter: function (value: number) {
+          return value * 100 + '%';
+        },
+      },
     },
-    series: data.filter(data => substrateLevelPresetMap[substrateLevel].includes(data.name)).map((item, index) => ({
-      name: item.name,
-      type: 'line',
-      lineStyle: {
-        width: 2,
-        color: substrateLevelMapColor?.[substrateLevel][index],
-      },
-      stack: 'Total',
-      data: item.data,
-      color: substrateLevelMapColor?.[substrateLevel][index],
-      // Add itemStyle to ensure legend interactions work properly
-      itemStyle: {
-        color: substrateLevelMapColor?.[substrateLevel][index]
-      },
-      // Add specific emphasis settings
-      emphasis: {
-        focus: 'series'
-      }
-    })),
+    series,
   };
 };
 
@@ -137,24 +171,28 @@ const initChart = () => {
   chart.value?.setOption(option);
 };
 
+const closeChart = () => {
+  chart.value?.dispose();
+  chart.value = null;
+};
+
 // Lifecycle hooks
 onMounted(() => {
   initChart();
-  
+
   // Add window resize handler
   const resizeHandler = () => {
     chart.value?.resize();
   };
-  
+
   window.addEventListener('resize', resizeHandler);
-  
+
   // Store the handler reference for proper cleanup
   onUnmounted(() => {
     window.removeEventListener('resize', resizeHandler);
     chart.value?.dispose();
   });
 });
-
 
 // Watchers
 watch(
@@ -163,17 +201,7 @@ watch(
     if (value.length === 0) {
       return;
     }
-    initChart();
-  },
-  { deep: true }
-);
-
-watch(
-  () => props.substrateLevel,
-  (value) => {
-    if (value.length === 0) {
-      return;
-    }
+    closeChart();
     initChart();
   },
   { deep: true }
