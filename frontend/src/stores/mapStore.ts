@@ -131,13 +131,31 @@ export const useMapStore = defineStore('map', () => {
     // should be unique years
     if (!selectedExpeditions.value) return [];
 
-    const dates = selectedExpeditions.value
+    let dates = selectedExpeditions.value
       .filter(
         (expedition: any) =>
           expedition.properties.experiment ===
           selectedExpeditionExperiment.value
       )
-      .map((expedition: any) => expedition.properties.full_date_iso);
+    
+    
+    // if the years > 1, sort them and filter the ones without the properties.type === 'monitoring'
+    let newDates = [];
+    if (dates.length > 1) {
+      newDates = dates.filter((expe: any) => {
+        return expe.properties.type === 'monitoring';
+      });
+      if (newDates.length === 0) {
+        // just retrieve the event_id 
+        newDates = dates.filter((expe: any) => {
+          return expe.properties.event_id === selectedExpedition.value?.event_id;
+        });
+      }
+      dates = newDates;
+    }
+
+    dates = dates.map((expedition: any) => expedition.properties.full_date_iso);
+    // remove duplicates
     return [...new Set(dates)];
   });
 
