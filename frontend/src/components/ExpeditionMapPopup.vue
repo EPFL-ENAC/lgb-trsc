@@ -245,14 +245,6 @@
         v-if="selectedExpeditionsDatesByExperiment.length > 1"
         class="expeditions-timeseries-monitoring-group"
       >
-        <h2 class="expeditions-timeseries-monitoring-header">
-          Expeditions Time Series Monitoring
-        </h2>
-        <p>
-          The following chart shows the time series of coral cover for the
-          selected substrate level.
-        </p>
-        <hr class="expedition-separation-bar" />
         <StackedLine3DMappingExpeditions
           v-if="isValidSampleSet"
           :raw-data="timeSeriesSet"
