@@ -133,7 +133,7 @@
     <div
       v-if="
         selectedExpeditionExperiment &&
-        selectedExpeditionsDatesByExperiment.length > 0
+        selectedExpeditionsDatesByExperiment.length > 1
       "
       class="date-slider-container"
     >
@@ -156,9 +156,9 @@
         "
         @update:model-value="(newValue) => console.log(newValue)"
       />
+      <hr class="expedition-separation-bar" />
     </div>
 
-    <hr class="expedition-separation-bar" />
     <h2 class="first-expedition-header">
       {{
         headerMap?.[selectedExpedition.experiment] ??
