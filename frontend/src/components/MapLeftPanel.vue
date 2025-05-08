@@ -2,8 +2,8 @@
   <q-drawer
     v-model="leftDrawerOpen"
     side="left"
-    :width="360"
-    :breakpoint="360"
+    :width="400"
+    :breakpoint="400"
     bordered
     :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'"
     persistent
@@ -142,7 +142,8 @@
                           anchor="center right"
                           self="center left"
                         >
-                          {{ layerinfo.layer.get('description') }}
+                          {{ layerinfo.layer.get('description') }}<br/>
+                          Toggle the pink button, to switch from Mean to Standard deviation (SD)
                         </q-tooltip>
                       </q-icon>
                     </div>
@@ -150,13 +151,27 @@
                       v-if="group.title === 'Environmental Layers'"
                       class="env-controls"
                     >
-                      <q-toggle
-                        :label="layerinfo.layer.get('meanOrSD')"
+                      <span>Mean</span>
+                      <q-icon
+                        v-if="layerinfo.layer.get('meanOrSD') === 'Mean'"
+                        name="check"
                         color="pink"
-                        false-value="SD"
-                        true-value="Mean"
+                        class="q-ml-xs"
+                      />
+                      <q-toggle
+
+                        color="pink"
+                        false-value="Mean"
+                        true-value="SD"
                         :model-value="layerinfo.layer.get('meanOrSD')"
                         @update:model-value="() => updateMeanOrSD(layerinfo.layer as BaseLayer)"
+                      />
+                      <span>SD</span>
+                       <q-icon
+                        v-if="layerinfo.layer.get('meanOrSD') === 'SD'"
+                        name="check"
+                        color="pink"
+                        class="q-ml-xs"
                       />
                     </div>
                   </div>
@@ -390,7 +405,7 @@ const toggleOverlayLayer = (
 
 :root {
   --checkbox-cursor: default !important;
-  --left-panel-width: 320px;
+  --left-panel-width: 400px;
   --left-panel-height: -webkit-fill-available;
   --left-panel-height: -moz-available;
   --left-panel-height: fill-available;
@@ -409,11 +424,11 @@ const toggleOverlayLayer = (
 
 :deep(.q-drawer--left.q-drawer--bordered.q-drawer--standard) {
   background: rgba(255, 255, 255, 0.9) !important;
-  transform: translateX(calc(-360px)) !important;
+  transform: translateX(calc(-400px)) !important;
   scroll-behavior: smooth !important;
   top: 0px !important;
   bottom: 0px !important;
-  width: 360px !important;
+  width: 400px !important;
 }
 .env-controls {
   display: flex;
@@ -443,7 +458,8 @@ const toggleOverlayLayer = (
   }
   .layer-environmental-controls {
     display: grid;
-    grid-template-columns: auto 90px;
+    // grid-template-columns: auto 90px;
+    grid-template-columns: auto auto;
     align-items: center;
     justify-content: space-between;
     gap: 8px;
