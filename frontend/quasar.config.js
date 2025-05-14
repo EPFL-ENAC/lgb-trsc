@@ -90,7 +90,10 @@ export default defineConfig(function (/* ctx */) {
             runtimeOnly: false,
 
             // you need to set i18n resource including paths !
-            include: path.resolve(__dirname, './src/i18n/**'),
+            include: [
+              path.resolve(__dirname, './src/i18n/**/*.json'),
+              path.resolve(__dirname, './src/assets/i18n/**/*.json')
+            ],
           },
         ],
       ],

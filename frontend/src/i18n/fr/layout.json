@@ -1,0 +1,27 @@
+{
+  "layout": {
+    "header": {
+      "title": "Centre Transnational de la Mer Rouge",
+      "menu": {
+        "about": "À propos",
+        "theRedSea": "La Mer Rouge",
+        "community": "Communauté",
+        "researchProjects": "Projets de Recherche",
+        "map": "Carte",
+        "resources": "Ressources",
+        "contactUs": "Contactez-nous"
+      },
+      "projects": {
+        "3dMapping": "Cartographie 3D",
+        "seascapeGenomics": "Génomique du paysage marin",
+        "edna": "ADN environnemental",
+        "echinodermPopulationGenetics": "génétique des populations d'échinodermes",
+        "marinePollution": "pollution marine",
+        "socioEconomics": "aspects socio-économiques"
+      }
+    },
+    "footer": {
+      "developedBy": "Développé par le Centre Transnational de la Mer Rouge à l'École Polytechnique Fédérale de Lausanne, Suisse"
+    }
+  }
+}

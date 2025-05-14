@@ -1,0 +1,27 @@
+{
+  "layout": {
+    "header": {
+      "title": "Transnational Red Sea Center",
+      "menu": {
+        "about": "About",
+        "theRedSea": "The Red Sea",
+        "community": "Community",
+        "researchProjects": "Research Projects",
+        "map": "Map",
+        "resources": "Resources",
+        "contactUs": "Contact us"
+      },
+      "projects": {
+        "3dMapping": "3D mapping",
+        "seascapeGenomics": "Seascape Genomics",
+        "edna": "eDNA",
+        "echinodermPopulationGenetics": "echinoderm population genetics",
+        "marinePollution": "marine pollution",
+        "socioEconomics": "socio economics"
+      }
+    },
+    "footer": {
+      "developedBy": "Developed by the Transnational Red Sea Center at the Ecole Polytechnique Fédérale of Lausanne, Switzerland"
+    }
+  }
+}
