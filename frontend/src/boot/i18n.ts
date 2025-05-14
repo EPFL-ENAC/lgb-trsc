@@ -25,6 +25,10 @@ declare module 'vue-i18n' {
 }
 /* eslint-enable @typescript-eslint/no-empty-interface */
 
+import { Quasar } from 'quasar';
+import langEn from 'quasar/lang/en-US';
+import langAr from 'quasar/lang/ar';
+
 export default boot(({ app }) => {
   const userLang = navigator.language;
   let defaultLocale = 'en-US';
@@ -34,6 +38,10 @@ export default boot(({ app }) => {
   } else if (userLang.startsWith('ar')) {
     defaultLocale = 'ar';
   }
+
+
+  const wantArabic = defaultLocale === 'ar';
+  Quasar.lang.set(wantArabic ? langAr : langEn);   // flips dir automatically
 
   const i18n = createI18n({
     locale: defaultLocale,

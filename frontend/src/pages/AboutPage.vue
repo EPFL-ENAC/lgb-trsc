@@ -1,6 +1,5 @@
 <template>
   <div class="about-page">
-    
     <p class="top-element q-pa-md">
       <q-markdown :src="about" />
     </p>

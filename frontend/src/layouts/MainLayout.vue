@@ -98,9 +98,24 @@ import { useRouter } from 'vue-router';
 const { locale } = useI18n();
 const lang = ref(locale.value);
 const router = useRouter();
+import { Quasar } from 'quasar';
+import langEn from 'quasar/lang/en-US';
+import langFr from 'quasar/lang/fr';
+import langAr from 'quasar/lang/ar';
 
 watch(lang, (newLang) => {
   locale.value = newLang;
+  if (newLang.includes('ar')) {
+    document.documentElement.setAttribute('dir', 'rtl');
+    Quasar.lang.set(langAr);
+  } else {
+    document.documentElement.removeAttribute('dir');
+    if (newLang.includes('fr')) {
+      Quasar.lang.set(langFr);
+    } else {
+      Quasar.lang.set(langEn);
+    }
+  }
 });
 
 function navigateToHome() {
