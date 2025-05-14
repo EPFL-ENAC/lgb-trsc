@@ -1,22 +1,8 @@
 <template>
   <div class="about-page">
+    
     <p class="top-element q-pa-md">
-      <a class="trsc-link" href="https://trsc.org" target="_blank"
-        >The Transnational Red Sea</a
-      >, established in 2019 at
-      <a target="_blank" class="trsc-link" href="https://www.epfl.ch/"
-        >the Ecole Polytechnique Federale de Lausanne</a
-      >
-      with support from the Swiss Foreign Ministry, is an independent non-profit
-      organisation dedicated to coral reef conservation in the Red Sea. By
-      drawing on Switzerland's neutrality and scientific expertise, the Center
-      promotes scientific collaboration among Red Sea countries to better
-      understand how the region's corals have developed resilience to climate
-      change. It also develops innovative, cost-effective technologies to
-      enhance coral reef monitoring with higher resolution, standardisation, and
-      scalability. The Center advocates for environmental protection policies by
-      sharing these solutions with Red Sea nations and beyond, supporting
-      science-based efforts to conserve coral reefs globally.
+      <q-markdown :src="about" />
     </p>
     <div class="bottom-element">
       <div v-for="person in people" :key="person.id" class="card">
@@ -61,9 +47,29 @@ import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 const { locale } = useI18n();
 import about_fr from 'src/assets/i18n/about_fr.md';
-import about_de from 'src/assets/i18n/about_en.md';
-import about_it from 'src/assets/i18n/about_ar.md';
+import about_en from 'src/assets/i18n/about_en.md';
+import about_ar from 'src/assets/i18n/about_ar.md';
 
+import { watch } from 'vue';
+
+// Create a reactive reference for the current about text
+const about = ref(about_en);
+
+// Watch for locale changes and update content accordingly
+watch(locale, (newLocale) => {
+  switch(newLocale) {
+    case 'fr':
+      about.value = about_fr;
+      break;
+    case 'ar':
+      about.value = about_ar;
+      break;
+    case 'en':
+    default:
+      about.value = about_en;
+      break;
+  }
+}, { immediate: true });
 
 const people = ref([
   {
@@ -144,9 +150,16 @@ const people = ref([
     z-index: 1;
   }
 }
-.trsc-link {
+.trsc-link, :deep(.q-markdown--link-external) {
   color: red;
   font-weight: bold;
+  &:after {
+    /* override default styles content: '\e895'*/
+    content: none;
+    font-family: Material Icons;
+    font-size: 1.2rem;
+    margin-left: 0.5rem;
+  }
   &:hover {
     text-decoration: underline;
   }
@@ -157,6 +170,7 @@ const people = ref([
     color: red;
   }
 }
+
 .about-page {
   gap: 1rem;
   display: grid;
