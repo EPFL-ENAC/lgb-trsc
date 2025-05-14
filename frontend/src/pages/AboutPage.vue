@@ -1,6 +1,6 @@
 <template>
   <div class="about-page">
-    <p class="top-element q-pa-md">
+    <p class="top-element q-pa-md markdown-container">
       <q-markdown :src="about" />
     </p>
     <div class="bottom-element">
@@ -46,33 +46,15 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-const { locale, t } = useI18n();
-
+const { t } = useI18n();
 
 import about_fr from 'src/assets/i18n/about_fr.md';
 import about_en from 'src/assets/i18n/about_en.md';
 import about_ar from 'src/assets/i18n/about_ar.md';
 
-import { watch } from 'vue';
+import { useLocalizedMarkdown } from 'src/composables/useLocalizedMarkdown';
 
-// Create a reactive reference for the current about text
-const about = ref(about_en);
-
-// Watch for locale changes and update content accordingly
-watch(locale, (newLocale) => {
-  switch(newLocale) {
-    case 'fr':
-      about.value = about_fr;
-      break;
-    case 'ar':
-      about.value = about_ar;
-      break;
-    case 'en':
-    default:
-      about.value = about_en;
-      break;
-  }
-}, { immediate: true });
+const about = useLocalizedMarkdown({ en: about_en, fr: about_fr, ar: about_ar });
 
 const people = ref([
   {
@@ -194,26 +176,6 @@ ar:
     height: 20px;
     background: linear-gradient(to bottom, white, transparent);
     z-index: 1;
-  }
-}
-.trsc-link, :deep(.q-markdown--link-external) {
-  color: red;
-  font-weight: bold;
-  &:after {
-    /* override default styles content: '\e895'*/
-    content: none;
-    font-family: Material Icons;
-    font-size: 1.2rem;
-    margin-left: 0.5rem;
-  }
-  &:hover {
-    text-decoration: underline;
-  }
-  &:visited {
-    color: red;
-  }
-  &:active {
-    color: red;
   }
 }
 

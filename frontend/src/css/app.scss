@@ -66,3 +66,29 @@ body {
     0.3
   ); /* Using warning-color with transparency */
 }
+
+
+.trsc-link, .markdown-container .q-markdown--link-external {
+  color: red;
+  font-weight: bold;
+}
+
+.trsc-link:after,.markdown-container .q-markdown--link-external:after {
+  /* override default styles content: '\e895'*/
+  content: none;
+  font-family: Material Icons;
+  font-size: 1.2rem;
+  margin-left: 0.5rem;
+}
+
+.trsc-link:hover, .markdown-container .q-markdown--link-external:hover {
+  text-decoration: underline;
+}
+
+.trsc-link:visited, .markdown-container .q-markdown--link-external:visited {
+  color: red;
+}
+
+.trsc-link:active, .markdown-container .q-markdown--link-external:active {
+  color: red;
+}
