@@ -1,6 +1,6 @@
 <template>
   <div class="red-sea-container">
-    <div class="q-pa-md">
+    <div class="q-pa-md red-sea-text">
       <p>
         <b>Coral Reefs and the Red Sea’s Unique Ecosystem</b>
       </p>
@@ -129,7 +129,7 @@
         fit="cover"
         src="/theredsea.jpeg"
         alt="Red Sea Map"
-        style="height: 100%; width: 100%"
+        style="height: calc(100vh - var(--footer-height) - var(--header-height) - 2rem); width: 100%"
       />
     </div>
   </div>
@@ -144,10 +144,17 @@ const scrollToRef = (refId: string) => {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .red-sea-container {
   display: grid;
   grid-template-columns: 3fr 2fr;
+  height: calc(100vh - var(--footer-height) - var(--header-height) - 2rem);
+
+  .red-sea-text {
+    padding: 1rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
 }
 .trsc-link {
   color: red;
