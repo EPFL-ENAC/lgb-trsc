@@ -17,6 +17,7 @@
 <script setup lang="ts">
 import 'ol/ol.css';
 import 'ol-layerswitcher/dist/ol-layerswitcher.css';
+import 'src/css/app.scss'
 
 import { onMounted, onUnmounted, ref, watch } from 'vue';
 import { MapController } from 'maps/MapController';
