@@ -71,6 +71,7 @@ body {
 .trsc-link, .markdown-container .q-markdown--link-external {
   color: red;
   font-weight: bold;
+  cursor: pointer;
 }
 
 .trsc-link:after,.markdown-container .q-markdown--link-external:after {
