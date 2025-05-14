@@ -1,5 +1,5 @@
 import { PMTilesVectorSource } from 'ol-pmtiles';
-import { attributions } from '@/maps/utils/attributions';
+import { attributions } from 'maps/utils/attributions';
 
 export const createPMTilesSource = () =>
   new PMTilesVectorSource({

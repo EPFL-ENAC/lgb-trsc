@@ -58,6 +58,12 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+const { locale } = useI18n();
+import about_fr from 'src/assets/i18n/about_fr.md';
+import about_de from 'src/assets/i18n/about_en.md';
+import about_it from 'src/assets/i18n/about_ar.md';
+
 
 const people = ref([
   {

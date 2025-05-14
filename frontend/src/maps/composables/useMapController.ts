@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import { MapController } from '@/maps/MapController';
+import { MapController } from 'maps/MapController';
 
 const mapController = ref<MapController | null>(null);
 

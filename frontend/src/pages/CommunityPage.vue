@@ -29,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import communities from '@/assets/communities';
+import communities from 'assets/communities';
 </script>
 
 <style scoped>

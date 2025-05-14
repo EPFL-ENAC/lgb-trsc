@@ -14,9 +14,9 @@ import {
   validSubstratesMap,
   validSubtrateMapKeyText,
   substrateLevelPresetMap,
-} from '@/maps/config/substrateOrder';
-import { substrateLevelMapColor } from '@/maps/config/layerColors';
-import { DateFormatter } from '@/dateFormatter';
+} from 'maps/config/substrateOrder';
+import { substrateLevelMapColor } from 'maps/config/layerColors';
+import { DateFormatter } from 'src/dateFormatter';
 
 // Props definition
 const props = defineProps({

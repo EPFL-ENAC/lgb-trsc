@@ -1,6 +1,6 @@
 import VectorSource from 'ol/source/Vector';
 import { GeoJSON } from 'ol/format';
-import { attributions } from '@/maps/utils/attributions';
+import { attributions } from 'maps/utils/attributions';
 
 const geoFeatures = {
   type: 'FeatureCollection',

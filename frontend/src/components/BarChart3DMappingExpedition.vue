@@ -20,8 +20,8 @@ import 'echarts/lib/component/legend'; // Import legend component
 import {
   validSubstratesMap,
   validSubtrateMapKeyText,
-} from '@/maps/config/substrateOrder';
-import { substrateLevelMapColor } from '@/maps/config/layerColors';
+} from 'maps/config/substrateOrder';
+import { substrateLevelMapColor } from 'maps/config/layerColors';
 import { debounce } from 'lodash';
 
 const TIME_OUT = 150;

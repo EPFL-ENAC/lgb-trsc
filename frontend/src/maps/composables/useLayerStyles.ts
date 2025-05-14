@@ -10,12 +10,12 @@ import {
   boundaryColorMap,
   marineProtectedAreaColorMap,
   environmentalClusterColorMap,
-} from '@/maps/config/layerColors';
+} from 'maps/config/layerColors';
 import { Style, Fill, Stroke, Circle as CircleStyle } from 'ol/style';
 import { Feature } from 'ol';
 import { Geometry } from 'ol/geom';
-import { useMapStore } from '@/stores/mapStore';
-import { useMapController } from '@/maps/composables/useMapController';
+import { useMapStore } from 'stores/mapStore';
+import { useMapController } from 'maps/composables/useMapController';
 
 const visibleClasses = ref<{ [key: string]: boolean }>({
   ...Object.fromEntries(

@@ -24,7 +24,7 @@
 
 <script setup lang="ts">
 import { useQuasar } from 'quasar';
-import { useMapStore } from '@/stores/mapStore';
+import { useMapStore } from 'stores/mapStore';
 import { QDrawer } from 'quasar';
 
 import { storeToRefs } from 'pinia';

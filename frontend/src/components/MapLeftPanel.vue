@@ -249,7 +249,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { useQuasar } from 'quasar';
-import { useLayerManager } from '@/maps/composables/useLayerManager';
+import { useLayerManager } from 'maps/composables/useLayerManager';
 import MapLegend from './MapLegend.vue';
 import { mdiEyeOutline } from '@mdi/js';
 import {
@@ -263,16 +263,16 @@ import {
   samplingSiteByYearColorMap,
   samplingSiteByProjectColorMap,
   samplingSiteByHardCoralCoverColorMap,
-} from '@/maps/config/layerColors';
+} from 'maps/config/layerColors';
 import {
   sources as environmentalSources,
   createGeoTIFFSource,
-} from '@/maps/sources/DjiboutiNOAASource';
-import { useMapStore } from '@/stores/mapStore';
+} from 'maps/sources/DjiboutiNOAASource';
+import { useMapStore } from 'stores/mapStore';
 import BaseLayer from 'ol/layer/Base';
 import { storeToRefs } from 'pinia';
-import { sourcesTitle } from '@/maps/sources/DjiboutiNOAASource';
-import { generateDefaultStyle } from '@/maps/layers/overlay/EnvironmentalLayers/DjiboutiLayer';
+import { sourcesTitle } from 'maps/sources/DjiboutiNOAASource';
+import { generateDefaultStyle } from 'maps/layers/overlay/EnvironmentalLayers/DjiboutiLayer';
 import WebGLTileLayer from 'ol/layer/WebGLTile';
 
 // Utility function to check layer visibility and legend availability

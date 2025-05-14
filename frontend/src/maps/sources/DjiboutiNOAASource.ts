@@ -1,5 +1,5 @@
 import GeoTIFF from 'ol/source/GeoTIFF.js';
-import { attributions } from '@/maps/utils/attributions';
+import { attributions } from 'maps/utils/attributions';
 import { Style } from 'ol/style';
 import {
   CHL_monthly_mean_Mean,
@@ -19,7 +19,7 @@ import {
   SST_monthly_min_Mean,
   SST_monthly_min_SD,
   ColorMap,
-} from '@/maps/config/layerColors';
+} from 'maps/config/layerColors';
 
 /**
  * Enum for source types

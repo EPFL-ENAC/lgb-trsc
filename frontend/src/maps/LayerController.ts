@@ -1,8 +1,8 @@
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
-import { createCountryLayer } from '@/maps/layers/overlay/CountryLayer';
-import { createExpeditionLayer } from '@/maps/layers/overlay/SamplingSites/ExpeditionLayer';
-import { countryStyle } from '@/maps/styles/layerStyles';
+import { createCountryLayer } from 'maps/layers/overlay/CountryLayer';
+import { createExpeditionLayer } from 'maps/layers/overlay/SamplingSites/ExpeditionLayer';
+import { countryStyle } from 'maps/styles/layerStyles';
 import { Style } from 'ol/style';
 import GeoJSON from 'ol/format/GeoJSON';
 import VectorTileLayer from 'ol/layer/VectorTile';

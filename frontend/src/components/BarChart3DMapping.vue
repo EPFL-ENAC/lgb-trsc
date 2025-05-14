@@ -8,11 +8,11 @@ import 'echarts/lib/chart/bar'; // Import bar chart
 import 'echarts/lib/component/tooltip'; // Import tooltip component
 import 'echarts/lib/component/title'; // Import title component
 import 'echarts/lib/component/legend'; // Import legend component
-import { substrateLevelMapColor } from '@/maps/config/layerColors';
+import { substrateLevelMapColor } from 'maps/config/layerColors';
 import {
   validSubstratesMap,
   validSubtrateMapKeyText,
-} from '@/maps/config/substrateOrder';
+} from 'maps/config/substrateOrder';
 import { debounce } from 'lodash';
 
 const TIME_OUT = 150;

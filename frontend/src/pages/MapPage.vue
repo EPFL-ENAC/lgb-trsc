@@ -19,16 +19,16 @@ import 'ol/ol.css';
 import 'ol-layerswitcher/dist/ol-layerswitcher.css';
 
 import { onMounted, onUnmounted, ref, watch } from 'vue';
-import { MapController } from '@/maps/MapController';
+import { MapController } from 'maps/MapController';
 import { storeToRefs } from 'pinia';
-import { useMapStore } from '@/stores/mapStore';
-import MapRightPanel from '@/components/MapRightPanel.vue';
+import { useMapStore } from 'stores/mapStore';
+import MapRightPanel from 'components/MapRightPanel.vue';
 import {
   useMapController,
   destroyMapController,
-} from '@/maps/composables/useMapController';
-import MapLeftPanel from '@/components/MapLeftPanel.vue';
-import { destroyLayerController } from '@/maps/composables/useLayerController';
+} from 'maps/composables/useMapController';
+import MapLeftPanel from 'components/MapLeftPanel.vue';
+import { destroyLayerController } from 'maps/composables/useLayerController';
 
 const mapStore = useMapStore();
 const mapElement = ref<HTMLElement | null>(null);
@@ -75,7 +75,7 @@ onUnmounted(() => {
 </script>
 
 <style scoped lang="scss">
-@import '@/css/app.scss';
+@import 'src/css/app.scss';
 
 .map {
   width: calc(100vw - var(--drawer-width) - var(--left-drawer-width));

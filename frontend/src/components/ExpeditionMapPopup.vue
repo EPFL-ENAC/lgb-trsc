@@ -385,13 +385,13 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 // for now we hard code the data for Djibouti 3D Mapping
-import { useMapStore } from '@/stores/mapStore';
-import BarChart3DMappingExpedition from '@/components/BarChart3DMappingExpedition.vue';
-import StackedLine3DMappingExpeditions from '@/components/StackedLine3DMappingExpeditions.vue';
+import { useMapStore } from 'stores/mapStore';
+import BarChart3DMappingExpedition from 'components/BarChart3DMappingExpedition.vue';
+import StackedLine3DMappingExpeditions from 'components/StackedLine3DMappingExpeditions.vue';
 import { storeToRefs } from 'pinia';
-import communities from '@/assets/communities';
-import { DateFormatter } from '@/dateFormatter';
-import { substrateLevelPresetMap } from '@/maps/config/substrateOrder';
+import communities from 'assets/communities';
+import { DateFormatter } from 'src/dateFormatter';
+import { substrateLevelPresetMap } from 'maps/config/substrateOrder';
 import {
   mdiTriangleSmallDown,
   mdiTriangleSmallUp,

@@ -26,13 +26,13 @@ import {
 import {
   addMapClickHandler,
   MapClickHandlerOptions,
-} from '@/maps/utils/MapClickHandler';
+} from 'maps/utils/MapClickHandler';
 import Point from 'ol/geom/Point';
-import { addMapPointerMoveHandler } from '@/maps/utils/MapPointerMove';
-import { useMapStore } from '@/stores/mapStore';
-import DjiboutiExpeditions from '@/assets/data/Expeditions.json';
-import Djibouti3DMapping from '@/assets/data/dji_3d_mapping_all_results.json';
-import { useLayerController } from '@/maps/composables/useLayerController';
+import { addMapPointerMoveHandler } from 'maps/utils/MapPointerMove';
+import { useMapStore } from 'stores/mapStore';
+import DjiboutiExpeditions from 'assets/data/Expeditions.json';
+import Djibouti3DMapping from 'assets/data/dji_3d_mapping_all_results.json';
+import { useLayerController } from 'maps/composables/useLayerController';
 import GeoJSON from 'ol/format/GeoJSON';
 import { getCenter } from 'ol/extent';
 import { transformExtent } from 'ol/proj';
@@ -42,8 +42,8 @@ import {
   createDjiboutiMarineProtectedAreaLayer,
   createDjiboutiBoundaryLayer,
   createDjiboutiReefExtentLayer,
-} from '@/maps/layers/overlay/ReefLayers/DjiboutiLayer';
-import { createDjiboutiEnvironmentalClusterLayer } from '@/maps/layers/overlay/EnvironmentalClusters/DjiboutiLayer';
+} from 'maps/layers/overlay/ReefLayers/DjiboutiLayer';
+import { createDjiboutiEnvironmentalClusterLayer } from 'maps/layers/overlay/EnvironmentalClusters/DjiboutiLayer';
 import { createEnvironmentalLayers } from './layers/overlay/EnvironmentalLayers/DjiboutiLayer';
 import { BaseLayerOptions } from 'ol-layerswitcher';
 import TileLayer from 'ol/layer/Tile';

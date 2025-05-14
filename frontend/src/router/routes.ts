@@ -1,5 +1,5 @@
 import { RouteRecordRaw } from 'vue-router';
-import MapPage from '@/pages/MapPage.vue';
+import MapPage from 'pages/MapPage.vue';
 
 const routes: RouteRecordRaw[] = [
   {

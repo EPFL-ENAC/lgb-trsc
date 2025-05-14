@@ -114,7 +114,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import BarChart3DMapping from './BarChart3DMapping.vue';
-import communities from '@/assets/communities';
+import communities from 'assets/communities';
 
 const props = defineProps({
   country: {

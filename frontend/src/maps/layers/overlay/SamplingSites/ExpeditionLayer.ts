@@ -2,18 +2,18 @@ import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import { BaseLayerOptions } from 'ol-layerswitcher';
 import { computed, watch } from 'vue';
-import { useMapStore } from '@/stores/mapStore';
-// import { expeditionStyle } from '@/maps/styles/layerStyles';
-import { createFeatureStyle } from '@/maps/composables/useLayerStyles';
+import { useMapStore } from 'stores/mapStore';
+// import { expeditionStyle } from 'maps/styles/layerStyles';
+import { createFeatureStyle } from 'maps/composables/useLayerStyles';
 // import GeoJSON from 'ol/format/GeoJSON';
 
 // const LayerTitle = 'Expedition';
-// import DjiboutiExpeditions from '@/assets/data/Expeditions.json';
+// import DjiboutiExpeditions from 'assets/data/Expeditions.json';
 import {
   samplingSiteByYearColorMap,
   samplingSiteByProjectColorMap,
   samplingSiteByHardCoralCoverColorMap,
-} from '@/maps/config/layerColors';
+} from 'maps/config/layerColors';
 import Feature from 'ol/Feature';
 import Geometry from 'ol/geom/Geometry';
 // or we could just use the json file as is and create a new class for each line.

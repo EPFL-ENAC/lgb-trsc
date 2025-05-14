@@ -8,10 +8,12 @@
 // Configuration for your app
 // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js
 
-const { configure } = require('quasar/wrappers');
-const path = require('path');
+import { defineConfig } from '#q-app/wrappers'
+import { fileURLToPath } from 'node:url'
 
-module.exports = configure(function (/* ctx */) {
+import path from 'path';
+
+export default defineConfig(function (/* ctx */) {
   return {
     eslint: {
       // fix: true,
@@ -36,8 +38,8 @@ module.exports = configure(function (/* ctx */) {
     // https://github.com/quasarframework/quasar/tree/dev/extras
     extras: [
       // 'ionicons-v4',
-      'mdi-v7',
-      // 'fontawesome-v6',
+      // 'mdi-v5',
+      'fontawesome-v6',
       // 'eva-icons',
       // 'themify',
       // 'line-awesome',
@@ -51,43 +53,41 @@ module.exports = configure(function (/* ctx */) {
     build: {
       target: {
         browser: ['es2019', 'edge88', 'firefox78', 'chrome87', 'safari13.1'],
-        node: 'node16',
+        node: 'node22',
+      },
+      alias: {
+        maps: fileURLToPath(new URL('./src/maps', import.meta.url))
       },
 
-      vueRouterMode: 'hash', // available values: 'hash', 'history'
+      vueRouterMode: 'history', // available values: 'hash', 'history'
       // vueRouterBase,
       // vueDevtools,
       // vueOptionsAPI: false,
 
       // rebuildCache: true, // rebuilds Vite/linter/etc cache on startup
 
-      // publicPath: '/',
+      publicPath: '/',
       // analyze: true,
-      // env: {},
+      env: {},
       // rawDefine: {}
       // ignorePublicFolder: true,
-      // minify: false,
+      minify: true,
       // polyfillModulePreload: true,
       // distDir
 
-      extendViteConf(viteConf) {
-        viteConf.resolve.alias = {
-          ...viteConf.resolve.alias,
-          '@': path.resolve(__dirname, './src'),
-        };
-      },
+      // extendViteConf (viteConf) {},
       // viteVuePluginOptions: {},
 
       vitePlugins: [
         [
-          '@intlify/vite-plugin-vue-i18n',
+          '@intlify/unplugin-vue-i18n/vite',
           {
             // if you want to use Vue I18n Legacy API, you need to set `compositionOnly: false`
             // compositionOnly: false,
 
             // if you want to use named tokens in your Vue I18n messages, such as 'Hello {name}',
             // you need to set `runtimeOnly: false`
-            // runtimeOnly: false,
+            runtimeOnly: false,
 
             // you need to set i18n resource including paths !
             include: path.resolve(__dirname, './src/i18n/**'),
@@ -99,25 +99,25 @@ module.exports = configure(function (/* ctx */) {
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#devServer
     devServer: {
       // https: true
-      open: true, // opens browser window automatically
+      open: false, // opens browser window automatically
     },
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#framework
     framework: {
-      config: {},
-
-      // iconSet: 'material-icons', // Quasar icon set
-      // lang: 'en-US', // Quasar language pack
-
-      // For special cases outside of where the auto-import strategy can have an impact
-      // (like functional components as one of the examples),
-      // you can manually specify Quasar components/directives to be available everywhere:
-      //
-      // components: [],
-      // directives: [],
-
-      // Quasar plugins
-      plugins: [],
+      plugins: [
+        'Dialog',
+        'Loading',
+        'Notify',
+        'LocalStorage',
+        'SessionStorage',
+        'Meta',
+      ],
+      config: {
+        brand: {
+          // primary: '#B51F1F',
+          // ... other colors
+        },
+      },
     },
 
     // animations: 'all', // --- includes all animations
@@ -204,7 +204,7 @@ module.exports = configure(function (/* ctx */) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: 'frontend',
+        appId: 'astra-82001',
       },
     },
 
