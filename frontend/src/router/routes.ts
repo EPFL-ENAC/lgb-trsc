@@ -50,7 +50,7 @@ const routes: RouteRecordRaw[] = [
           },
         ],
       },
-      { path: 'map', component: MapPage },
+      { path: 'map', name: 'map', component: MapPage },
       { path: 'resources', component: () => import('pages/ResourcesPage.vue') },
       {
         path: 'contact-us',

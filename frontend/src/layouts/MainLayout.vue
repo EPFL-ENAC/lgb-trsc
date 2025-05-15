@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="hHh lpr fFf">
+  <q-layout view="hHh LpR fFf">
     <q-header
       style="height: var(--header-height); border-bottom: 1px solid red"
       class="bg-white text-red APax text-weight-thin"
@@ -81,6 +81,8 @@
       </q-toolbar>
     </q-footer>
 
+    <MapLeftPanel v-if="$route.name === 'map'" class="layer-selector-panel" />
+    <MapRightPanel v-if="$route.name === 'map'" class="info-panel"/>
     <q-page-container>
       <q-page>
         <router-view />
@@ -102,6 +104,8 @@ import langEn from 'quasar/lang/en-US';
 import langFr from 'quasar/lang/fr';
 import langAr from 'quasar/lang/ar';
 
+import MapRightPanel from 'components/MapRightPanel.vue';
+import MapLeftPanel from 'components/MapLeftPanel.vue';
 // Split the title into three lines for display
 const titleLines = computed(() => {
   const title = t('layout.header.title');

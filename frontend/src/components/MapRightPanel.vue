@@ -4,14 +4,7 @@
     side="right"
     :width="500"
     :breakpoint="500"
-    overlay
     :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'"
-    style="
-      height: -webkit-fill-available;
-      height: -moz-available;
-      height: fill-available;
-      height: initial;
-    "
   >
     <CountryMapPopup
       v-if="selectedCountry && !selectedExpedition"
@@ -34,6 +27,7 @@ import ExpeditionMapPopup from './ExpeditionMapPopup.vue';
 const $q = useQuasar();
 const mapStore = useMapStore();
 const { selectedCountry, selectedExpedition, drawer } = storeToRefs(mapStore);
+console.log('drawer', drawer.value);
 const { closeDrawer } = mapStore;
 </script>
 

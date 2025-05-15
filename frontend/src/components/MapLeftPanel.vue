@@ -2,19 +2,12 @@
   <q-drawer
     v-model="leftDrawerOpen"
     side="left"
+    show-if-above
     :width="400"
-    :breakpoint="400"
+    :breakpoint="500"
     bordered
-    :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'"
+    :class="[$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3', 'left-panel', 'q-pa-md']"
     persistent
-    style="
-      height: -webkit-fill-available;
-      height: -moz-available;
-      height: fill-available;
-      height: initial;
-      padding-left: 10px;
-      padding-right: 10px;
-    "
   >
     <q-list padding>
       <!-- Panel Title that changes based on selected country -->
@@ -142,8 +135,9 @@
                           anchor="center right"
                           self="center left"
                         >
-                          {{ layerinfo.layer.get('description') }}<br/>
-                          Toggle the pink button, to switch from Mean to Standard deviation (SD)
+                          {{ layerinfo.layer.get('description') }}<br />
+                          Toggle the pink button, to switch from Mean to
+                          Standard deviation (SD)
                         </q-tooltip>
                       </q-icon>
                     </div>
@@ -159,7 +153,6 @@
                         class="q-ml-xs"
                       />
                       <q-toggle
-
                         color="pink"
                         false-value="Mean"
                         true-value="SD"
@@ -167,7 +160,7 @@
                         @update:model-value="() => updateMeanOrSD(layerinfo.layer as BaseLayer)"
                       />
                       <span>SD</span>
-                       <q-icon
+                      <q-icon
                         v-if="layerinfo.layer.get('meanOrSD') === 'SD'"
                         name="check"
                         color="pink"
@@ -422,14 +415,14 @@ const toggleOverlayLayer = (
   margin-bottom: 10px;
 }
 
-:deep(.q-drawer--left.q-drawer--bordered.q-drawer--standard) {
-  background: rgba(255, 255, 255, 0.9) !important;
-  transform: translateX(calc(-400px)) !important;
-  scroll-behavior: smooth !important;
-  top: 0px !important;
-  bottom: 0px !important;
-  width: 400px !important;
-}
+// :deep(.q-drawer--left.q-drawer--bordered.q-drawer--standard) {
+// background: rgba(255, 255, 255, 0.9) !important;
+// transform: translateX(calc(-400px)) !important;
+// scroll-behavior: smooth !important;
+// top: 0px !important;
+// bottom: 0px !important;
+// width: 400px !important;
+// }
 .env-controls {
   display: flex;
   justify-content: center;
