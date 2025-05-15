@@ -1,22 +1,23 @@
 <template>
   <div
-    ref="chartRef"
+    ref="chartEl"
     :style="{
-      width: width,
-      height: height,
+      width,
+      height,
       margin: '0 auto',
       cursor: 'pointer',
     }"
   ></div>
 </template>
 
-<script setup lang="ts">
-import { ref, onMounted, watch, onUnmounted } from 'vue';
+<script setup>
+import { ref, watch, onMounted, onUnmounted } from 'vue';
 import * as echarts from 'echarts';
-import 'echarts/lib/chart/bar'; // Import bar chart
-import 'echarts/lib/component/tooltip'; // Import tooltip component
-import 'echarts/lib/component/title'; // Import title component
-import 'echarts/lib/component/legend'; // Import legend component
+import { useI18n } from 'vue-i18n';
+import 'echarts/lib/chart/bar';
+import 'echarts/lib/component/tooltip';
+import 'echarts/lib/component/title';
+import 'echarts/lib/component/legend';
 import {
   validSubstratesMap,
   validSubtrateMapKeyText,
@@ -26,7 +27,7 @@ import { debounce } from 'lodash';
 
 const TIME_OUT = 150;
 
-// Props definition
+// Props
 const props = defineProps({
   rawData: {
     type: Array,
@@ -50,18 +51,19 @@ const props = defineProps({
   },
 });
 
-// Reactive state
-const chartRef = ref<HTMLElement | null>(null);
-const chart = ref<echarts.ECharts | null>(null);
-const windowResizeInnerWidth = ref(window.innerWidth);
-const windowResizeInnerHeight = ref(window.innerHeight);
+// i18n
+const { t, locale } = useI18n({ useScope: 'local' });
 
-// Methods
-const processData = (data: any[], substrateLevel: string) => {
-  const seriesData: Record<string, number> = {}; // init to 0
+// Chart refs and state
+const chartEl = ref(null);
+const chart = ref(null);
+
+// --- Chart Option Builder ---
+function processData(data, substrateLevel) {
+  const seriesData = {};
   const currentSubstrates = validSubstratesMap[substrateLevel];
 
-  // init to 0
+  // Initialize all to 0
   currentSubstrates.forEach((substrate) => {
     seriesData[substrate] = 0;
   });
@@ -78,7 +80,7 @@ const processData = (data: any[], substrateLevel: string) => {
     _data[index] = seriesData[substrate];
 
     return {
-      name: substrate,
+      name: validSubtrateMapKeyText[substrate],
       type: 'bar',
       data: _data,
       itemStyle: {
@@ -87,53 +89,58 @@ const processData = (data: any[], substrateLevel: string) => {
       barGap: '-100%',
       barCategoryGap: '0%',
       barWidth: '80%',
+      emphasis: { focus: 'series' },
     };
   });
-};
+}
 
-const getChartOption = (data: any[]) => {
+function getChartOption(data) {
+  // Tooltip
   let localTooltip = {
     trigger: 'axis',
     show: true,
     axisPointer: {
       type: 'shadow',
     },
-    formatter: function (params: any[]) {
+    formatter: function (params) {
       let result = '';
       let param = params[params[0].dataIndex];
       if (param === undefined) {
         return '';
       }
       result += `<span style="margin-right:1rem;background-color:${param.color};display: inline-block;width: 10px;height: 10px;"></span>`;
-      result += `${param.axisValueLabel} ${(param.value * 100).toFixed(
-        2
-      )}%<br/>`;
-
+      result += `${param.axisValueLabel} ${(param.value * 100).toFixed(2)}%<br/>`;
       return result;
     },
-  } as echarts.TooltipComponentOption;
+  };
 
   if (props.tooltip === false) {
-    localTooltip = {
-      show: false,
-    };
+    localTooltip = { show: false };
   }
+
   const series = processData(data, props.substrateLevel);
   const maxValue = Number(
     Math.max(...series.map((item) => Math.max(...item.data))).toFixed(1)
   );
+
+  const titleMap = {
+    Substrate_coarse: 'chart.title.coarse',
+    Substrate_intermediate: 'chart.title.intermediate',
+  };
+
   return {
     title: {
-      text: `Benthic cover at ${props.substrateLevel} level`,
+      text: t(titleMap[props.substrateLevel]),
       left: '-6px',
     },
     tooltip: localTooltip,
     legend: {
-      formatter: function (name: string) {
-        return validSubtrateMapKeyText[name];
+      data: validSubstratesMap[props.substrateLevel].map((substrate) => validSubtrateMapKeyText[substrate]),
+      formatter: function (name) {
+        return name;
       },
       orient: 'horizontal',
-      bottom: props.substrateLevel === 'Substrate_coarse' ? 0 : 0,
+      bottom: 0,
     },
     grid: {
       left: '5px',
@@ -147,70 +154,64 @@ const getChartOption = (data: any[]) => {
       axisLabel: {
         show: false,
       },
-      name: 'substrate',
+      name: t('chart.xAxis'),
     },
     yAxis: {
       type: 'value',
-      name: 'Percentage cover',
+      name: t('chart.yAxis'),
       nameTextStyle: {
         color: '#000',
         fontSize: '9px',
         padding: [0, 0, 0, 5],
       },
       axisLabel: {
-        formatter: function (value: number) {
+        formatter: function (value) {
           return value * 100 + '%';
         },
       },
-      // max value is the max value of the series
       max: maxValue,
       min: 0,
     },
     series,
+    color: substrateLevelMapColor?.[props.substrateLevel],
   };
-};
+}
+
+// --- Chart Lifecycle ---
+const handleResize = debounce(() => {
+  chart.value?.resize();
+}, TIME_OUT);
 
 const initChart = () => {
-  if (chart.value == null && chartRef.value) {
-    chart.value = echarts.init(chartRef.value);
+  if (!chart.value && chartEl.value) {
+    chart.value = echarts.init(chartEl.value);
   }
   const option = getChartOption(props.rawData);
   chart.value?.setOption(option);
 };
 
-const handleResize = debounce(() => {
-  if (chart.value && chartRef.value) {
-    chart.value.dispose();
-    chart.value = null;
-    chart.value = echarts.init(chartRef.value);
-    const option = getChartOption(props.rawData);
-    chart.value.setOption(option);
-  }
-}, TIME_OUT);
-
-const updateWidth = (value: any) => {
-  windowResizeInnerWidth.value = value.target.innerWidth;
-  windowResizeInnerHeight.value = value.target.innerHeight;
+const closeChart = () => {
+  chart.value?.dispose();
+  chart.value = null;
 };
 
-// Lifecycle hooks
 onMounted(() => {
   initChart();
-  window.addEventListener('resize', updateWidth);
+  window.addEventListener('resize', handleResize);
 });
 
 onUnmounted(() => {
-  chart.value?.dispose();
-  window.removeEventListener('resize', updateWidth);
+  window.removeEventListener('resize', handleResize);
+  closeChart();
+  handleResize.cancel && handleResize.cancel();
 });
 
-// Watchers
+// --- Watchers ---
 watch(
   () => props.rawData,
   (value) => {
-    if (value.length === 0) {
-      return;
-    }
+    if (!value || value.length === 0) return;
+    closeChart();
     initChart();
   },
   { deep: true }
@@ -219,17 +220,42 @@ watch(
 watch(
   () => props.substrateLevel,
   () => {
-    if (chart.value) {
-      chart.value.clear();
-      const option = getChartOption(props.rawData);
-      chart.value.setOption(option);
-    }
+    closeChart();
+    initChart();
   }
 );
 
-watch([windowResizeInnerWidth, windowResizeInnerHeight], () => {
-  handleResize();
-});
+watch(
+  () => t('chart.title.coarse'),
+  () => {
+    closeChart();
+    initChart();
+  }
+);
 </script>
 
 <style scoped></style>
+
+<i18n lang="yaml">
+en:
+  chart:
+    title:
+      coarse: Main categories of coral reef benthic substrate
+      intermediate: Main categories of coral reef benthic substrate and hard coral growth forms
+    xAxis: Substrate
+    yAxis: Percentage cover
+fr:
+  chart:
+    title:
+      coarse: Principales catégories de substrat benthique des récifs coralliens
+      intermediate: Principales catégories de substrat benthique des récifs coralliens et formes de croissance des coraux durs
+    xAxis: Substrat
+    yAxis: Pourcentage de couverture
+ar:
+  chart:
+    title:
+      coarse: الفئات الرئيسية لركيزة قاع الشعاب المرجانية
+      intermediate: الفئات الرئيسية لركيزة قاع الشعاب المرجانية وأشكال نمو المرجان الصلب
+    xAxis: الركيزة
+    yAxis: نسبة التغطية
+</i18n>
