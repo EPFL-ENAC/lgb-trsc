@@ -14,6 +14,7 @@ import {
   validSubtrateMapKeyText,
 } from 'maps/config/substrateOrder';
 import { debounce } from 'lodash';
+import { useI18n } from 'vue-i18n';
 
 const TIME_OUT = 150;
 
@@ -53,6 +54,15 @@ export default {
     };
   },
   watch: {
+    '$i18n.locale': {
+      handler() {
+        if (this.chart) {
+          const option = this.getChartOption(this.rawData, this.substrateLevel);
+          this.chart.setOption(option);
+        }
+      },
+      deep: true,
+    },
     substrateLevel: {
       handler(newValue) {
         this.chart.clear();
@@ -101,6 +111,7 @@ export default {
       this.chart.setOption(option);
     },
     getChartOption(data, substrateLevel) {
+      const { t } = useI18n({ useScope: 'local' });
       const ids = Array.from(new Set(data.map((x) => x.id)));
       function getSiteNameFromSiteId(data, SiteId) {
         if (data === undefined) {
@@ -167,9 +178,8 @@ export default {
       }
 
       const titleMap = {
-        Substrate_coarse: 'Main categories of coral reef benthic substrate',
-        Substrate_intermediate:
-          'Main categories of coral reef benthic substrate and hard coral growth forms',
+        Substrate_coarse: 'chart.title.coarse',
+        Substrate_intermediate: 'chart.title.intermediate',
       };
       let gridBottom = substrateLevel === 'Substrate_coarse' ? '10%' : '18%';
       let forceScrollLegend = false;
@@ -196,14 +206,33 @@ export default {
       }
       return {
         title: {
-          text: titleMap[substrateLevel],
+          text: t(titleMap[substrateLevel]),
           textStyle: {
             fontSize: '1rem',
             fontFamily: 'Apax, Helvetica, Arial, sans-serif',
             fontWeight: 900,
           },
         },
-        tooltip: this.tooltip ? getTooltip(data) : undefined,
+        tooltip: this.tooltip
+          ? {
+              ...getTooltip(data),
+              formatter: (params) => {
+                let result = `${t('chart.tooltip.id')}: ${params[0].axisValue}<br/>`;
+                result += `${t('chart.tooltip.siteName')}: ${getSiteNameFromSiteId(
+                  data,
+                  params[0].axisValue
+                )}<br/>`;
+                params.forEach((param) => {
+                  result += `<span style="margin-right:1rem;background-color:${
+                    param.color
+                  };display: inline-block;width: 10px;height: 10px;"></span>${
+                    param.seriesName
+                  }: ${(param.value * 100).toFixed(2)}%<br/>`;
+                });
+                return result;
+              },
+            }
+          : undefined,
         legend: {
           data: validSubstratesMap[substrateLevel],
 
@@ -223,11 +252,11 @@ export default {
         xAxis: {
           type: 'category',
           data: ids,
-          name: 'Location ID',
+          name: t('chart.xAxis'),
         },
         yAxis: {
           type: 'value',
-          name: 'Percentage',
+          name: t('chart.yAxis'),
           axisLabel: {
             formatter: function (value) {
               return value * 100 + '%';
@@ -245,3 +274,36 @@ export default {
 </script>
 
 <style scoped></style>
+
+<i18n lang="yaml">
+en:
+  chart:
+    title:
+      coarse: Main categories of coral reef benthic substrate
+      intermediate: Main categories of coral reef benthic substrate and hard coral growth forms
+    xAxis: Location ID
+    yAxis: Percentage
+    tooltip:
+      id: ID
+      siteName: Site Name
+fr:
+  chart:
+    title:
+      coarse: Principales catégories de substrat benthique des récifs coralliens
+      intermediate: Principales catégories de substrat benthique des récifs coralliens et formes de croissance des coraux durs
+    xAxis: Identifiant de site
+    yAxis: Pourcentage
+    tooltip:
+      id: ID
+      siteName: Nom du site
+ar:
+  chart:
+    title:
+      coarse: الفئات الرئيسية لركيزة قاع الشعاب المرجانية
+      intermediate: الفئات الرئيسية لركيزة قاع الشعاب المرجانية وأشكال نمو المرجان الصلب
+    xAxis: معرف الموقع
+    yAxis: النسبة المئوية
+    tooltip:
+      id: المعرف
+      siteName: اسم الموقع
+</i18n>
