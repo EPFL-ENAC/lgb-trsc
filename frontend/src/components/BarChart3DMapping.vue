@@ -211,7 +211,7 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener('resize', handleResize);
   closeChart();
-  handleResize.cancel && handleResize.cancel();
+  handleResize?.cancel();
 });
 
 // --- Watchers ---

@@ -461,8 +461,8 @@ export const useMapStore = defineStore('map', () => {
           return styleSheet.href
             ? `<link rel="stylesheet" href="${styleSheet.href}">`
             : '';
-        } catch (e) {
-          return '';
+        } catch (e: any) {
+          return `error: ${e.message}`;
         }
       })
       .join('');

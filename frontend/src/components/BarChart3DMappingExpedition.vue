@@ -52,7 +52,7 @@ const props = defineProps({
 });
 
 // i18n
-const { t, locale } = useI18n({ useScope: 'local' });
+const { t } = useI18n({ useScope: 'local' });
 
 // Chart refs and state
 const chartEl = ref(null);
@@ -203,10 +203,9 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener('resize', handleResize);
   closeChart();
-  handleResize.cancel && handleResize.cancel();
+  handleResize?.cancel?.();
 });
 
-// --- Watchers ---
 watch(
   () => props.rawData,
   (value) => {
