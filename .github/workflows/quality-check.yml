@@ -21,7 +21,7 @@ jobs:
         with:
             node-version: '>=22.0.0 < 23.0.0'
             cache: 'npm'
-            cache-dependency-path: './npm-shrinkwrap.json'
+            cache-dependency-path: './frontend/npm-shrinkwrap.json'
   
 
       - name: Install dependencies
