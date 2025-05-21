@@ -208,7 +208,7 @@ export default defineConfig(function (/* ctx */) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: 'astra-82001',
+        appId: 'lgb-trsc',
       },
     },
 
