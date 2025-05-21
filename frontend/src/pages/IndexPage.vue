@@ -16,26 +16,16 @@
       </q-img> -->
     </div>
     <div class="right-element">
-      <p>Welcome to our Red Sea Reef data navigator</p>
-      <p>
-        On this online platform, you will be able to learn about our work and
-        about the specific research projects we have in collaboration with our
-        many Red Sea partners. You will also be able to learn about the new
-        coral reef monitoring technologies that we are developing and
-        implementing to support science-based conservation in the Red Sea.
-      </p>
-      <p>
-        This tool will also allow you to visualise the various data associated
-        with the work conducted by the TRSC in the Red Sea:
-      </p>
+      <div class="markdown-container q-pa-md">
+        <q-markdown :src="welcome" />
+      </div>
       <q-btn
-        class="q-pa-md"
+        class="q-ma-md"
         label="Dive into the data"
         @click="navigateToMap"
       />
-      <p class="q-pt-md">
-        If you wish to collaborate with us, feel free to contact us and we will
-        do our best to come back to you shortly!
+      <p class="q-pa-md">
+        {{ $t('aboutPage.contactUs') }}
       </p>
     </div>
   </q-page>
@@ -43,13 +33,36 @@
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
+import welcome_en from 'src/assets/i18n/welcome_en.md';
+import welcome_fr from 'src/assets/i18n/welcome_fr.md';
+import welcome_ar from 'src/assets/i18n/welcome_ar.md';
+import { useLocalizedMarkdown } from 'src/composables/useLocalizedMarkdown';
+import { useI18n } from 'vue-i18n';
+const welcome = useLocalizedMarkdown({ en: welcome_en, fr: welcome_fr, ar: welcome_ar });
 
+const { t: $t } = useI18n({
+  useScope: 'local',
+});
 const router = useRouter();
 
 function navigateToMap() {
   router.push('/map');
 }
 </script>
+
+<i18n lang="yaml">
+en:
+  aboutPage:
+    contactUs: "If you wish to collaborate with us, feel free to contact us and we will
+        do our best to come back to you shortly!"
+fr:
+  aboutPage:
+    contactUs: "Si vous souhaitez collaborer avec nous, n'hésitez pas à nous
+        contacter et nous ferons de notre mieux pour vous répondre rapidement !"
+ar:
+  aboutPage:
+    contactUs: "إذا كنت ترغب في التعاون معنا، فلا تتردد في الاتصال بنا وسنبذل قصارى جهدنا للرد عليك في أقرب وقت ممكن!"
+</i18n>
 
 <style scoped>
 .about-page {
