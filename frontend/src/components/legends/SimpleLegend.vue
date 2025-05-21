@@ -18,7 +18,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { DiscreteLegendProps } from '@/types/legend';
+import { DiscreteLegendProps } from 'src/types/legend';
 
 const props = withDefaults(defineProps<DiscreteLegendProps>(), {
   classColorMap: () => ({}),
@@ -43,5 +43,5 @@ const visibleColorClasses = computed(() => {
 </script>
 
 <style scoped lang="scss">
-@import '@/css/legend.scss';
+@import 'src/css/legend.scss';
 </style>

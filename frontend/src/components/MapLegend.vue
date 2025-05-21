@@ -7,7 +7,7 @@ import { computed } from 'vue';
 import DiscreteLegend from './legends/DiscreteLegend.vue';
 import ContinuousLegend from './legends/ContinuousLegend.vue';
 import SimpleLegend from './legends/SimpleLegend.vue';
-import { MapLegendProps } from '@/types/legend';
+import { MapLegendProps } from 'src/types/legend';
 
 const props = withDefaults(defineProps<MapLegendProps>(), {
   selectedCountry: '',

@@ -20,7 +20,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { ContinuousLegendProps } from '@/types/legend';
+import { ContinuousLegendProps } from 'src/types/legend';
 const props = withDefaults(defineProps<ContinuousLegendProps>(), {
   classColorMap: () => ({}),
   metadata: () => ({}),
@@ -38,7 +38,7 @@ const gradientCSS = computed(() => {
 </script>
 
 <style scoped lang="scss">
-@import '@/css/legend.scss';
+@import 'src/css/legend.scss';
 
 .horizontal-gradient {
   display: grid;

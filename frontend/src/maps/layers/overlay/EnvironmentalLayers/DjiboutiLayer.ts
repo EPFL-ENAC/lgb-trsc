@@ -2,12 +2,12 @@ import {
   createGeoTIFFSource,
   sources,
   // SourceMetadata, // Assuming SourceMetadata is defined in DjiboutiNOAASource.ts
-} from '@/maps/sources/DjiboutiNOAASource';
+} from 'maps/sources/DjiboutiNOAASource';
 import { BaseLayerOptions } from 'ol-layerswitcher';
 import {
   defaultEnvironmentalColorMap,
   ColorMap,
-} from '@/maps/config/layerColors';
+} from 'maps/config/layerColors';
 import WebGLTileLayer from 'ol/layer/WebGLTile';
 import * as olColor from 'ol/color';
 // import { Style } from 'ol/style'; // Import Style type if needed for source.style

@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="hHh lpr fFf">
+  <q-layout view="hHh LpR fFf">
     <q-header
       style="height: var(--header-height); border-bottom: 1px solid red"
       class="bg-white text-red APax text-weight-thin"
@@ -10,17 +10,17 @@
             <!-- <img src="/trsc.svg"> -->
           </q-avatar>
           <!-- <q-route-tab to="/" label="Transnational Red Sea Center" /> -->
-          <div class="text-red">Transnational<br />Red Sea<br />Center</div>
+          <div class="text-red">{{ titleLines[0] }}<br />{{ titleLines[1] }}<br />{{ titleLines[2] }}</div>
         </q-toolbar-title>
       </q-toolbar>
 
       <q-tabs align="left" class="q-pr-md">
-        <q-route-tab to="/about" label="About" />
-        <q-route-tab to="/the-red-sea" label="The Red Sea" />
-        <q-route-tab to="/community" label="Community" />
+        <q-route-tab to="/about" :label="t('layout.header.menu.about')" />
+        <q-route-tab to="/the-red-sea" :label="t('layout.header.menu.theRedSea')" />
+        <q-route-tab to="/community" :label="t('layout.header.menu.community')" />
         <q-btn-dropdown
           flat
-          label="Research Projects"
+          :label="t('layout.header.menu.researchProjects')"
           no-caps
           class="q-ml-md research-projects-dropdown"
         >
@@ -33,15 +33,15 @@
               <q-item-section>
                 <q-route-tab
                   :to="{ name: project.page }"
-                  :label="project.name"
+                  :label="t(`layout.header.projects.${project.translationKey}`)"
                 />
               </q-item-section>
             </q-item>
           </q-list>
         </q-btn-dropdown>
-        <q-route-tab to="/map" label="Map" />
-        <q-route-tab to="/resources" label="Resources" />
-        <q-route-tab to="/contact-us" label="Contact us" />
+        <q-route-tab to="/map" :label="t('layout.header.menu.map')" />
+        <q-route-tab to="/resources" :label="t('layout.header.menu.resources')" />
+        <q-route-tab to="/contact-us" :label="t('layout.header.menu.contactUs')" />
         <q-btn-toggle
           v-model="lang"
           flat
@@ -61,8 +61,7 @@
       <q-toolbar>
         <q-toolbar-title class="row pd-x text-red toolbar-footer">
           <span class="footer-text">
-            Developed by the Transnational Red Sea Center at the Ecole
-            Polytechnique Fédérale of Lausanne, Switzerland
+            {{ t('layout.footer.developedBy') }}
           </span>
           <q-avatar style="border-radius: 0%; width: auto; height: auto">
             <img style="width: auto" src="/EPFL_logo.png" />
@@ -82,6 +81,8 @@
       </q-toolbar>
     </q-footer>
 
+    <MapLeftPanel v-if="$route.name === 'map'" class="layer-selector-panel" />
+    <MapRightPanel v-if="$route.name === 'map'" class="info-panel"/>
     <q-page-container>
       <q-page>
         <router-view />
@@ -91,16 +92,65 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref, watch, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 
-const { locale } = useI18n();
+const { locale, t } = useI18n();
 const lang = ref(locale.value);
 const router = useRouter();
+import { Quasar } from 'quasar';
+import langEn from 'quasar/lang/en-US';
+import langFr from 'quasar/lang/fr';
+import langAr from 'quasar/lang/ar';
+
+import MapRightPanel from 'components/MapRightPanel.vue';
+import MapLeftPanel from 'components/MapLeftPanel.vue';
+// Split the title into three lines for display
+const titleLines = computed(() => {
+  const title = t('layout.header.title');
+  const words = title.split(' ');
+  
+  // For Arabic, handle the title differently
+  if (locale.value === 'ar') {
+    // Simple approach for Arabic - split by spaces into 3 roughly equal parts
+    const third = Math.ceil(words.length / 3);
+    return [
+      words.slice(0, third).join(' '),
+      words.slice(third, third * 2).join(' '),
+      words.slice(third * 2).join(' ')
+    ];
+  }
+  
+  // For English and French, hardcode the splits for better appearance
+  if (title === 'Transnational Red Sea Center') {
+    return ['Transnational', 'Red Sea', 'Center'];
+  } else if (title === 'Centre Transnational de la Mer Rouge') {
+    return ['Centre', 'Transnational', 'de la Mer Rouge'];
+  } else {
+    // Fallback logic for other languages - split evenly
+    const third = Math.ceil(words.length / 3);
+    return [
+      words.slice(0, third).join(' '),
+      words.slice(third, third * 2).join(' '),
+      words.slice(third * 2).join(' ')
+    ];
+  }
+});
 
 watch(lang, (newLang) => {
   locale.value = newLang;
+  if (newLang.includes('ar')) {
+    document.documentElement.setAttribute('dir', 'rtl');
+    Quasar.lang.set(langAr);
+  } else {
+    document.documentElement.removeAttribute('dir');
+    if (newLang.includes('fr')) {
+      Quasar.lang.set(langFr);
+    } else {
+      Quasar.lang.set(langEn);
+    }
+  }
 });
 
 function navigateToHome() {
@@ -112,15 +162,16 @@ function navigateToProject(page: string) {
 }
 
 const researchProjects = ref([
-  { name: '3D mapping', page: '3d_mapping' },
-  { name: 'Seascape Genomics', page: 'seascape_genomics' },
-  { name: 'eDNA', page: 'edna' },
+  { name: '3D mapping', page: '3d_mapping', translationKey: '3dMapping' },
+  { name: 'Seascape Genomics', page: 'seascape_genomics', translationKey: 'seascapeGenomics' },
+  { name: 'eDNA', page: 'edna', translationKey: 'edna' },
   {
     name: 'echinoderm population genetics',
     page: 'echinoderm_population_genetics',
+    translationKey: 'echinodermPopulationGenetics'
   },
-  { name: 'marine pollution', page: 'marine_pollution' },
-  { name: 'socio economics', page: 'socio_economics' },
+  { name: 'marine pollution', page: 'marine_pollution', translationKey: 'marinePollution' },
+  { name: 'socio economics', page: 'socio_economics', translationKey: 'socioEconomics' },
 ]);
 </script>
 
@@ -226,5 +277,24 @@ const researchProjects = ref([
 }
 .clickable {
   cursor: pointer;
+}
+
+/* i18n-specific styles */
+[dir="rtl"] .toolbar-title {
+  /* Adjust title for RTL languages */
+  text-align: right;
+}
+
+[dir="rtl"] .toolbar-footer {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .q-tabs {
+  justify-content: flex-end;
+}
+
+/* Dark mode adjustments can be added here if needed */
+.dark-mode .text-red {
+  color: #ff6b6b;
 }
 </style>

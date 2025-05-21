@@ -1,22 +1,22 @@
 <template>
   <div class="popup">
-    <button class="close-btn" @click="() => closeDrawer()">Back</button>
+    <button class="close-btn" @click="() => closeDrawer()">{{ $t('back') }}</button>
     <h3 class="country-name">{{ country.name }}</h3>
     <div class="country-info">
-      <p><strong>Date of past visits:</strong> {{ country.visited }}</p>
-      <p><strong>Ongoing projects:</strong> {{ country.projects }}</p>
-      <p><strong>Number of sites visited:</strong> {{ country.sites }}</p>
+      <p><strong>{{ $t('dateOfPastVisits') }}</strong> {{ country.visited }}</p>
+      <p><strong>{{ $t('ongoingProjects') }}</strong> {{ country.projects }}</p>
+      <p><strong>{{ $t('numberOfSitesVisited') }}</strong> {{ country.sites }}</p>
       <p>
-        <strong>Number of permanent monitoring sites:</strong>
+        <strong>{{ $t('numberOfPermanentMonitoringSites') }}</strong>
         {{ country.monitoring }}
       </p>
       <p v-if="country.training">
-        <strong>Number of training workshop completed:</strong>
+        <strong>{{ $t('numberOfTrainingWorkshopCompleted') }}</strong>
         {{ country.training }}
       </p>
-      <p><strong>Local collaborators:</strong> {{ country.collaboration }}</p>
+      <p><strong>{{ $t('localCollaborators') }}</strong> {{ country.collaboration }}</p>
       <p v-if="country.contact">
-        <strong>Contact persons:</strong> {{ country.contact }}
+        <strong>{{ $t('contactPersons') }}</strong> {{ country.contact }}
       </p>
     </div>
     <q-dialog
@@ -29,7 +29,7 @@
         style="width: 80vw; max-width: 1200px; height: 80vh; max-height: 800px"
       >
         <q-card-section class="q-pa-md row items-center justify-between">
-          <h4 class="q-pa-sm q-ma-sm">3D Mapping</h4>
+          <h4 class="q-pa-sm q-ma-sm">{{ $t('3dMapping') }}</h4>
           <div class="right-actions">
             <q-toggle
               v-model="substrateLevel"
@@ -58,7 +58,7 @@
 
         <q-card-actions align="right">
           <q-btn
-            label="View on Map"
+            :label="$t('viewOnMap')"
             color="white"
             flat
             @click="toggle3DZoomedChart"
@@ -73,22 +73,23 @@
           :tooltip="false"
           width="90%"
         />
-        <p>3D Mapping</p>
+        <p>{{ $t('3dMapping') }}</p>
       </div>
       <div class="card">
-        <h3 class="card_title">Number of detected species per family</h3>
+        <h3 class="card_title">{{ $t('numberOfDetectedSpeciesPerFamily') }}</h3>
         <img src="/eDNANew.png" alt="eDNA" />
-        <p>Environmental DNA project</p>
-        <p><i>Temporary results</i></p>
+        <p>{{ $t('environmentalDNAProject') }}</p>
+        <p><i>{{ $t('temporaryResults') }}</i></p>
       </div>
       <div class="card">
         <!-- <img src="/seacape-genomics.png" alt="Seascape Genomics" /> -->
-        <p>Seascape Genomics</p>
-        <p><i>Coming soon</i></p>
+        <p>{{ $t('seascapeGenomics') }}</p>
+        <p><i>{{ $t('comingSoon') }}</i></p>
       </div>
       <div class="card">
         <!-- <img src="/seacape-genomics.png" alt="Seascape Genomics" /> -->
-        <p>In Collaboration with</p>
+        <p>{{ $t('inCollaborationWith') }}</p>
+
         <div style="display: flex; gap: 1rem">
           <div
             v-for="community in computedCountryCommunities"
@@ -114,7 +115,13 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import BarChart3DMapping from './BarChart3DMapping.vue';
-import communities from '@/assets/communities';
+import communities from 'assets/communities';
+import { useI18n } from 'vue-i18n';
+
+    const { t: $t } = useI18n({
+      inheritLocale: true,
+      useScope: 'local'
+    })
 
 const props = defineProps({
   country: {
@@ -140,6 +147,62 @@ const toggle3DZoomedChart = () => {
 };
 </script>
 
+
+<i18n lang="yaml">
+en:
+  back: Back
+  dateOfPastVisits: 'Date of past visits:'
+  ongoingProjects: 'Ongoing projects:'
+  numberOfSitesVisited: 'Number of sites visited:'
+  numberOfPermanentMonitoringSites: 'Number of permanent monitoring sites:'
+  numberOfTrainingWorkshopCompleted: 'Number of training workshop completed:'
+  localCollaborators: 'Local collaborators:'
+  contactPersons: 'Contact persons:'
+  3dMapping: 3D Mapping
+  viewOnMap: View on Map
+  numberOfDetectedSpeciesPerFamily: Number of detected species per family
+  environmentalDNAProject: Environmental DNA project
+  temporaryResults: Temporary results
+  seascapeGenomics: Seascape Genomics
+  comingSoon: Coming soon
+  inCollaborationWith: In Collaboration with
+
+fr:
+  back: Retour
+  dateOfPastVisits: 'Date des visites précédentes :'
+  ongoingProjects: 'Projets en cours :'
+  numberOfSitesVisited: 'Nombre de sites visités :'
+  numberOfPermanentMonitoringSites: 'Nombre de sites de suivi permanent :'
+  numberOfTrainingWorkshopCompleted: 'Nombre d''ateliers de formation réalisés :'
+  localCollaborators: 'Collaborateurs locaux :'
+  contactPersons: 'Personnes de contact :'
+  3dMapping: Cartographie 3D
+  viewOnMap: Voir sur la carte
+  numberOfDetectedSpeciesPerFamily: Nombre d'espèces détectées par famille
+  environmentalDNAProject: Projet ADN environnemental
+  temporaryResults: Résultats temporaires
+  seascapeGenomics: Génomique des paysages marins
+  comingSoon: Bientôt disponible
+  inCollaborationWith: En collaboration avec
+
+ar:
+  back: عودة
+  dateOfPastVisits: ':تاريخ الزيارات السابقة'
+  ongoingProjects: ':المشاريع الجارية'
+  numberOfSitesVisited: ':عدد المواقع التي تمت زيارتها'
+  numberOfPermanentMonitoringSites: ':عدد مواقع المراقبة الدائمة'
+  numberOfTrainingWorkshopCompleted: ':عدد ورش العمل التدريبية المنجزة'
+  localCollaborators: ':المتعاونون المحليون'
+  contactPersons: ':الأشخاص المسؤولون'
+  3dMapping: رسم الخرائط ثلاثية الأبعاد
+  viewOnMap: عرض على الخريطة
+  numberOfDetectedSpeciesPerFamily: ':عدد الأنواع المكتشفة لكل عائلة'
+  environmentalDNAProject: مشروع الحمض النووي البيئي
+  temporaryResults: نتائج مؤقتة
+  seascapeGenomics: الجينوميات البحرية
+  comingSoon: قريباً
+  inCollaborationWith: بالتعاون مع
+</i18n>
 <style scoped>
 .card_title {
   font-size: 1rem;

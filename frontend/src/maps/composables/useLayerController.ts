@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import { LayerController } from '@/maps/LayerController';
+import { LayerController } from 'maps/LayerController';
 
 const layerController = ref<LayerController | null>(null);
 

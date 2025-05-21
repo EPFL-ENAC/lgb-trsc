@@ -1,20 +1,20 @@
 import { BaseLayerOptions } from 'ol-layerswitcher';
-import { geoMorphicStyle } from '@/maps/styles/geomorphicLayerStyle';
-import { benthicStyle } from '@/maps/styles/benthicLayerStyle';
-import { reefExtentStyle } from '@/maps/styles/reefExtentLayerStyle';
-import { boundaryStyle } from '@/maps/styles/boundaryLayerStyle';
-import { marineProtectedAreaStyle } from '@/maps/styles/marineProtectedAreaLayerStyle';
+import { geoMorphicStyle } from 'maps/styles/geomorphicLayerStyle';
+import { benthicStyle } from 'maps/styles/benthicLayerStyle';
+import { reefExtentStyle } from 'maps/styles/reefExtentLayerStyle';
+import { boundaryStyle } from 'maps/styles/boundaryLayerStyle';
+import { marineProtectedAreaStyle } from 'maps/styles/marineProtectedAreaLayerStyle';
 import VectorLayer from 'ol/layer/Vector';
 import { computed, watch } from 'vue';
-import { createPMTilesSource as createGeomorphicSource } from '@/maps/sources/DjiboutiGeomorphicSource';
-import { createPMTilesSource as createBenthicSource } from '@/maps/sources/DjiboutiBenthicSource';
-import { createPMTilesSource as createBoundarySource } from '@/maps/sources/DjiboutiBoundarySource';
-import { createPMTilesSource as createReefExtentSource } from '@/maps/sources/DjiboutiReefExtentSource';
-import { useMapStore } from '@/stores/mapStore';
+import { createPMTilesSource as createGeomorphicSource } from 'maps/sources/DjiboutiGeomorphicSource';
+import { createPMTilesSource as createBenthicSource } from 'maps/sources/DjiboutiBenthicSource';
+import { createPMTilesSource as createBoundarySource } from 'maps/sources/DjiboutiBoundarySource';
+import { createPMTilesSource as createReefExtentSource } from 'maps/sources/DjiboutiReefExtentSource';
+import { useMapStore } from 'stores/mapStore';
 import { Feature } from 'ol';
 import { Geometry } from 'ol/geom';
 import VectorTileLayer from 'ol/layer/VectorTile';
-import { createPMTilesSource as createDjiboutiMarineProtectedAreaSource } from '@/maps/sources/DjiboutiMarineProtectedAreaSource';
+import { createPMTilesSource as createDjiboutiMarineProtectedAreaSource } from 'maps/sources/DjiboutiMarineProtectedAreaSource';
 
 const LayerTitle = 'Geomorphic';
 

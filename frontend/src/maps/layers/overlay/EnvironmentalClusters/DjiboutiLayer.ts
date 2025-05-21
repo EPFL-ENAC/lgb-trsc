@@ -1,8 +1,8 @@
 import { BaseLayerOptions } from 'ol-layerswitcher';
-import { environmentalClusterStyle } from '@/maps/styles/environmentalClusterLayerStyle';
+import { environmentalClusterStyle } from 'maps/styles/environmentalClusterLayerStyle';
 import { computed, watch } from 'vue';
-import { createPMTilesSource as createEnvironmentalClusterSource } from '@/maps/sources/DjiboutiEnvironmentalClustersSource';
-import { useMapStore } from '@/stores/mapStore';
+import { createPMTilesSource as createEnvironmentalClusterSource } from 'maps/sources/DjiboutiEnvironmentalClustersSource';
+import { useMapStore } from 'stores/mapStore';
 import { Feature } from 'ol';
 import { Geometry } from 'ol/geom';
 import VectorTileLayer from 'ol/layer/VectorTile';

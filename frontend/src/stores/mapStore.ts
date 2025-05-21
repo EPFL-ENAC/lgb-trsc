@@ -1,14 +1,14 @@
 import { ref, computed } from 'vue';
 import { defineStore } from 'pinia';
-import { useLayerController } from '@/maps/composables/useLayerController';
-import { useMapController } from '@/maps/composables/useMapController';
-import { useLayerStyles } from '@/maps/composables/useLayerStyles';
-import DjiboutiExpeditions from '@/assets/data/Expeditions.json';
-import Djibouti3DMapping from '@/assets/data/dji_3d_mapping_all_results.json';
+import { useLayerController } from 'maps/composables/useLayerController';
+import { useMapController } from 'maps/composables/useMapController';
+import { useLayerStyles } from 'maps/composables/useLayerStyles';
+import DjiboutiExpeditions from 'assets/data/Expeditions.json';
+import Djibouti3DMapping from 'assets/data/dji_3d_mapping_all_results.json';
 import {
   validSubstratesMap,
   validSubtrateMapKeyText,
-} from '@/maps/config/substrateOrder';
+} from 'maps/config/substrateOrder';
 
 interface CountryProperties {
   name: string;
@@ -461,8 +461,8 @@ export const useMapStore = defineStore('map', () => {
           return styleSheet.href
             ? `<link rel="stylesheet" href="${styleSheet.href}">`
             : '';
-        } catch (e) {
-          return '';
+        } catch (e: any) {
+          return `error: ${e.message}`;
         }
       })
       .join('');

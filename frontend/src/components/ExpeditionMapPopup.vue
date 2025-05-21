@@ -1,87 +1,73 @@
 <template>
   <div v-if="selectedExpedition" id="expedition-popup" class="popup">
     <div class="btn-group">
-      <button class="close-btn" @click="closeExpedition">Back</button>
+      <button class="close-btn" @click="closeExpedition">{{ t('ui.back') }}</button>
       <button class="download-btn" @click="() => downloadExpedition()">
-        {{ `Download ${selectedExpedition.sampling_site_name} Summary` }}
+        {{ t('ui.download_summary', { site: selectedExpedition.sampling_site_name }) }}
       </button>
       <div v-if="isDev" class="debug-dropdown">
         <button class="debug-toggle" @click="isDebugOpen = !isDebugOpen">
-          {{ isDebugOpen ? 'Hide Debug Info' : 'Show Debug Info' }}
+          {{ isDebugOpen ? t('ui.hide_debug') : t('ui.show_debug') }}
         </button>
         <div v-if="isDebugOpen" class="debug-content">
           <div class="debug-panel">
             <div class="debug-section">
-              <h4 class="debug-title">Collection Data</h4>
+              <h4 class="debug-title">{{ t('ui.collection_data') }}</h4>
               <div class="debug-item">
-                <span class="debug-label">Expeditions:</span>
-                <span class="debug-value">{{
-                  selectedExpeditions.length
-                }}</span>
+                <span class="debug-label">{{ t('ui.expeditions') }}:</span>
+                <span class="debug-value">{{ selectedExpeditions.length }}</span>
               </div>
               <div class="debug-item">
-                <span class="debug-label">Location Hash:</span>
-                <span class="debug-value">{{
-                  selectedExpedition.locationNameHash
-                }}</span>
+                <span class="debug-label">{{ t('ui.location_hash') }}:</span>
+                <span class="debug-value">{{ selectedExpedition.locationNameHash }}</span>
               </div>
             </div>
 
             <div class="debug-section">
-              <h4 class="debug-title">Selected Filters</h4>
+              <h4 class="debug-title">{{ t('ui.selected_filters') }}</h4>
               <div class="debug-item">
-                <span class="debug-label">Date:</span>
+                <span class="debug-label">{{ t('ui.date') }}:</span>
                 <span class="debug-value">{{ selectedExpeditionDate }}</span>
               </div>
               <div class="debug-item">
-                <span class="debug-label">Year:</span>
+                <span class="debug-label">{{ t('ui.year') }}:</span>
                 <span class="debug-value">{{ selectedExpeditionYear }}</span>
               </div>
               <div class="debug-item">
-                <span class="debug-label">Experiment:</span>
-                <span class="debug-value">{{
-                  selectedExpeditionExperiment
-                }}</span>
+                <span class="debug-label">{{ t('ui.experiment') }}:</span>
+                <span class="debug-value">{{ selectedExpeditionExperiment }}</span>
               </div>
             </div>
 
             <div class="debug-section">
-              <h4 class="debug-title">Available Options</h4>
+              <h4 class="debug-title">{{ t('ui.available_options') }}</h4>
               <div class="debug-item">
-                <span class="debug-label">Years:</span>
+                <span class="debug-label">{{ t('ui.years') }}:</span>
                 <span class="debug-value">{{ selectedExpeditionsYears }}</span>
               </div>
               <div class="debug-item">
-                <span class="debug-label">Dates:</span>
+                <span class="debug-label">{{ t('ui.dates') }}:</span>
                 <span class="debug-value">{{ selectedExpeditionsDates }}</span>
               </div>
               <div class="debug-item">
-                <span class="debug-label">Experiments:</span>
-                <span class="debug-value">{{
-                  selectedExpeditionsExperiments
-                }}</span>
+                <span class="debug-label">{{ t('ui.experiments') }}:</span>
+                <span class="debug-value">{{ selectedExpeditionsExperiments }}</span>
               </div>
             </div>
 
             <div class="debug-section">
-              <h4 class="debug-title">Relationships</h4>
+              <h4 class="debug-title">{{ t('ui.relationships') }}</h4>
               <div class="debug-item">
-                <span class="debug-label">Years by Experiment:</span>
-                <pre class="debug-json">{{
-                  JSON.stringify(selectedExpeditionsYearsByExperiment, null, 2)
-                }}</pre>
+                <span class="debug-label">{{ t('ui.years_by_experiment') }}:</span>
+                <pre class="debug-json">{{ JSON.stringify(selectedExpeditionsYearsByExperiment, null, 2) }}</pre>
               </div>
               <div class="debug-item">
-                <span class="debug-label">Dates by Experiment:</span>
-                <pre class="debug-json">{{
-                  JSON.stringify(selectedExpeditionsDatesByExperiment, null, 2)
-                }}</pre>
+                <span class="debug-label">{{ t('ui.dates_by_experiment') }}:</span>
+                <pre class="debug-json">{{ JSON.stringify(selectedExpeditionsDatesByExperiment, null, 2) }}</pre>
               </div>
               <div class="debug-item">
-                <span class="debug-label">Experiments by Years:</span>
-                <pre class="debug-json">{{
-                  JSON.stringify(selectedExpeditionsExperimentsByYears, null, 2)
-                }}</pre>
+                <span class="debug-label">{{ t('ui.experiments_by_years') }}:</span>
+                <pre class="debug-json">{{ JSON.stringify(selectedExpeditionsExperimentsByYears, null, 2) }}</pre>
               </div>
             </div>
           </div>
@@ -97,14 +83,14 @@
       {{ selectedExpedition.event_id }}
     </p>
     <p>
-      <span v-if="selectedExpedition.latitude_end">Start</span> Position:
+      <span v-if="selectedExpedition.latitude_end">{{ t('ui.start_position') }}</span> {{ t('ui.position') }}:
       <span v-if="selectedExpedition.latitude_start">
         N {{ formatCoordinate(selectedExpedition.latitude_start, 'N') }} E
         {{ formatCoordinate(selectedExpedition.longitude_start, 'E') }}
       </span>
     </p>
     <p v-if="selectedExpedition.latitude_end">
-      End Position: N
+      {{ t('ui.end_position') }}: N
       {{ formatCoordinate(selectedExpedition.latitude_end, 'N') }} E
       {{ formatCoordinate(selectedExpedition.longitude_end, 'E') }}
     </p>
@@ -121,13 +107,12 @@
       }}
     </p>
     <p v-if="selectedExpedition.experiment === '3D'">
-      Length of the transect: {{ selectedExpedition.length }} m
+      {{ t('ui.length_transect') }}: {{ selectedExpedition.length }} m
     </p>
     <p v-if="selectedExpedition.experiment === '3D'">
-      Average depth: {{ selectedExpedition.depth ?? 5 }} m
+      {{ t('ui.avg_depth') }}: {{ selectedExpedition.depth ?? 5 }} m
     </p>
 
-    <!-- Add this where you want the date slider to appear -->
     <hr class="expedition-separation-bar" />
 
     <div
@@ -138,7 +123,7 @@
       class="date-slider-container"
     >
       <p class="date-slider-label">
-        Select a date to view expedition data from different time periods
+        {{ t('ui.select_date') }}
       </p>
       <q-slider
         v-model="dateSliderIndex"
@@ -164,7 +149,7 @@
         headerMap?.[selectedExpedition.experiment] ??
         selectedExpedition.experiment
       }}
-      project
+      {{ t('project') }}
     </h2>
     <div v-if="selectedExpedition.experiment === '3D'">
       <div v-if="sampleSet.length > 0">
@@ -200,7 +185,7 @@
             "
           >
             <q-card-section class="q-pa-md row items-center justify-between">
-              <h4 class="q-pa-sm q-ma-sm">3D Mapping</h4>
+              <h4 class="q-pa-sm q-ma-sm">{{ t('header.3d') }}</h4>
               <div class="right-actions">
                 <q-toggle
                   :model-value="selectedExpeditionSubstrateLevel"
@@ -231,7 +216,7 @@
 
             <q-card-actions align="right">
               <q-btn
-                label="View on Map"
+                :label="t('ui.view_on_map')"
                 color="white"
                 flat
                 @click="toggle3DZoomedChart"
@@ -270,7 +255,7 @@
             "
           >
             <q-card-section class="q-pa-md row items-center justify-between">
-              <h4 class="q-pa-sm q-ma-sm">3D Mapping</h4>
+              <h4 class="q-pa-sm q-ma-sm">{{ t('header.3d') }}</h4>
               <div class="right-actions">
                 <q-toggle
                   :model-value="selectedExpeditionSubstrateLevel"
@@ -300,7 +285,7 @@
             />
             <q-card-actions align="right">
               <q-btn
-                label="View on Map"
+                :label="t('ui.view_on_map')"
                 color="white"
                 flat
                 @click="toggle3DZoomedChart"
@@ -311,7 +296,7 @@
       </div>
       <div v-if="selectedExpeditionsDatesByExperiment.length > 1">
         <hr class="expedition-separation-bar" />
-        <p>Change in Coral cover since {{ baseYear }}</p>
+        <p>{{ t('ui.change_coral') }} {{ baseYear }}</p>
         <div
           class="coral-changes"
           :class="{
@@ -349,18 +334,18 @@
         </div>
       </div>
     </div>
-    <div v-else>No data available</div>
+    <div v-else>{{ t('ui.no_data') }}</div>
 
     <p>
-      Data generated with the
+      {{ t('ui.data_generated') }}
       <a href="https://josauder.github.io/deepreefmap/" target="_blank"
         >Deep Reef Map</a
       >
-      methodology
+      {{ t('ui.methodology') }}
     </p>
     <div class="card">
       <!-- <img src="/seacape-genomics.png" alt="Seascape Genomics" /> -->
-      <p>In Collaboration with</p>
+      <p>{{ t('ui.in_collab') }}</p>
       <div style="display: flex; gap: 1rem">
         <div
           v-for="community in computedCountryCommunities"
@@ -384,26 +369,30 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n'; // <-- Add this import
 // for now we hard code the data for Djibouti 3D Mapping
-import { useMapStore } from '@/stores/mapStore';
-import BarChart3DMappingExpedition from '@/components/BarChart3DMappingExpedition.vue';
-import StackedLine3DMappingExpeditions from '@/components/StackedLine3DMappingExpeditions.vue';
+import { useMapStore } from 'stores/mapStore';
+import BarChart3DMappingExpedition from 'components/BarChart3DMappingExpedition.vue';
+import StackedLine3DMappingExpeditions from 'components/StackedLine3DMappingExpeditions.vue';
 import { storeToRefs } from 'pinia';
-import communities from '@/assets/communities';
-import { DateFormatter } from '@/dateFormatter';
-import { substrateLevelPresetMap } from '@/maps/config/substrateOrder';
+import communities from 'assets/communities';
+import { DateFormatter } from 'src/dateFormatter';
+import { substrateLevelPresetMap } from 'maps/config/substrateOrder';
 import {
   mdiTriangleSmallDown,
   mdiTriangleSmallUp,
 } from '@quasar/extras/mdi-v7';
 
+const { t, locale } = useI18n({ useScope: 'local' }); // <-- Use local scope
+
 const isDev = ref(import.meta.env.DEV);
-const locale = 'en-US';
+
 const headerMap: Record<string, string> = {
-  '3D': '3D Mapping',
-  eDNA: 'eDNA',
-  seascape_genomics: 'Seascape Genomics',
+  '3D': t('header.3d'),
+  eDNA: t('header.edna'),
+  seascape_genomics: t('header.seascape_genomics'),
 };
+
 let showZoomedChart = ref(false);
 const toggle3DZoomedChart = () => {
   showZoomedChart.value = !showZoomedChart.value;
@@ -418,7 +407,7 @@ function markerFormatter(index: number): string {
   return DateFormatter.formatDate(
     selectedExpeditionsDatesByExperiment.value[index],
     {
-      locale,
+      locale: locale.value,
       dateStyle: 'short',
       dateOnly: true,
     }
@@ -567,6 +556,118 @@ const computedCountryCommunities = computed(() => {
   );
 });
 </script>
+<i18n lang="yaml">
+en:
+  project: project
+  header:
+    3d: 3D Mapping
+    edna: eDNA
+    seascape_genomics: Seascape Genomics
+  ui:
+    back: Back
+    download_summary: "Download {site} Summary"
+    show_debug: Show Debug Info
+    hide_debug: Hide Debug Info
+    collection_data: Collection Data
+    expeditions: Expeditions
+    location_hash: Location Hash
+    selected_filters: Selected Filters
+    date: Date
+    year: Year
+    experiment: Experiment
+    available_options: Available Options
+    years: Years
+    dates: Dates
+    experiments: Experiments
+    relationships: Relationships
+    years_by_experiment: Years by Experiment
+    dates_by_experiment: Dates by Experiment
+    experiments_by_years: Experiments by Years
+    start_position: Start Position
+    end_position: End Position
+    position: Position
+    length_transect: Length of the transect
+    avg_depth: Average depth
+    select_date: Select a date to view expedition data from different time periods
+    view_on_map: View on Map
+    no_data: No data available
+    change_coral: Change in Coral cover since
+    data_generated: Data generated with the
+    methodology: methodology
+    in_collab: In Collaboration with
+fr:
+  project: projet
+  header:
+    3d: Cartographie 3D
+    edna: eDNA
+    seascape_genomics: Génomique des paysages marins
+  ui:
+    back: Retour
+    download_summary: "Télécharger le résumé de {site}"
+    show_debug: Afficher les infos de debug
+    hide_debug: Masquer les infos de debug
+    collection_data: Données de collecte
+    expeditions: Expéditions
+    location_hash: Hash de localisation
+    selected_filters: Filtres sélectionnés
+    date: Date
+    year: Année
+    experiment: Expérience
+    available_options: Options disponibles
+    years: Années
+    dates: Dates
+    experiments: Expériences
+    relationships: Relations
+    years_by_experiment: Années par expérience
+    dates_by_experiment: Dates par expérience
+    experiments_by_years: Expériences par années
+    start_position: Position de départ
+    end_position: Position de fin
+    position: Position
+    length_transect: Longueur du transect
+    avg_depth: Profondeur moyenne
+    select_date: Sélectionnez une date pour voir les données d'expédition à différentes périodes
+    view_on_map: Voir sur la carte
+    no_data: Pas de données disponibles
+    change_coral: Changement de couverture corallienne depuis
+    data_generated: Données générées avec la
+    methodology: méthodologie
+    in_collab: En collaboration avec
+ar:
+  project: مشروع
+  header:
+    3d: رسم الخرائط ثلاثية الأبعاد
+    edna: الحمض النووي البيئي
+    seascape_genomics: جينوميات المناظر البحرية
+  ui:
+    back: رجوع
+    download_summary: "تحميل ملخص {site}"
+    show_debug: عرض معلومات التصحيح
+    hide_debug: إخفاء معلومات التصحيح
+    collection_data: بيانات الجمع
+    expeditions: البعثات
+    location_hash: تجزئة الموقع
+    selected_filters: عوامل التصفية المحددة
+    date: التاريخ
+    year: السنة
+    experiment: التجربة
+    available_options: الخيارات المتاحة
+    years: السنوات
+    dates: التواريخ
+    experiments: التجارب
+    relationships: العلاقات
+    years_by_experiment: السنوات حسب التجربة
+    dates_by_experiment: التواريخ حسب التجربة
+    experiments_by_years: التجارب حسب السنوات
+    start_position: موقع البداية
+    end_position: موقع النهاية
+    position: الموقع
+    length_transect: طول المقطع
+    avg_depth: العمق المتوسط
+    select_date: اختر تاريخًا لعرض بيانات البعثة من فترات زمنية مختلفة
+    view_on_map: عرض على الخريطة
+    no_data: لا توجد بيانات
+</i18n>
 
 <style scoped lang="scss">
 .right-actions {

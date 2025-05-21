@@ -1,4 +1,4 @@
-import { attributions } from '@/maps/utils/attributions';
+import { attributions } from 'maps/utils/attributions';
 import VectorSource from 'ol/source/Vector';
 import GeoJSON from 'ol/format/GeoJSON';
 
@@ -211,7 +211,7 @@ export const createPMTilesSource = () =>
   });
 
 // import { PMTilesVectorSource } from 'ol-pmtiles';
-// import { attributions } from '@/maps/utils/attributions';
+// import { attributions } from 'maps/utils/attributions';
 
 // use the following pmtiles/
 // url: 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/processed_data/djibouti_protected/',

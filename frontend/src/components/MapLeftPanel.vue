@@ -2,24 +2,17 @@
   <q-drawer
     v-model="leftDrawerOpen"
     side="left"
-    :width="360"
-    :breakpoint="360"
+    show-if-above
+    :width="400"
+    :breakpoint="500"
     bordered
-    :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'"
+    :class="[$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3', 'left-panel', 'q-pa-md']"
     persistent
-    style="
-      height: -webkit-fill-available;
-      height: -moz-available;
-      height: fill-available;
-      height: initial;
-      padding-left: 10px;
-      padding-right: 10px;
-    "
   >
     <q-list padding>
       <!-- Panel Title that changes based on selected country -->
       <div class="panel-title q-py-md">
-        {{ selectedCountry ? selectedCountry.name : 'The Red Sea' }}
+        {{ selectedCountry ? selectedCountry.name : t('panel.title') }}
       </div>
 
       <!-- Overlay groups section -->
@@ -29,12 +22,12 @@
         switch-toggle-side
         expand-separator
         :group="`overlays${groupIndex}`"
-        :label="group.title"
+        :label="group.title === 'Environmental Layers' ? t('panel.environmental_layers') : group.title"
       >
         <template #header="">
           <div class="layer-group">
             <div class="layer-group__title">
-              {{ group.title }}
+              {{ group.title === 'Environmental Layers' ? t('panel.environmental_layers') : group.title }}
               <q-icon
                 v-if="group.title === 'Environmental Layers'"
                 name="info"
@@ -46,10 +39,7 @@
                   anchor="center right"
                   self="center left"
                 >
-                  Example of text: Environmental layers are based on the latest
-                  available data<br />
-                  collected by the NOAA Coral Reef Conservation Program and<br />
-                  Djibouti's Ministry of Fisheries and Blue Economy.
+                  {{ t('panel.environmental_layers') }}
                 </q-tooltip>
               </q-icon>
             </div>
@@ -77,7 +67,7 @@
               <q-input
                 v-model.number="mapStore.selectedEnvironmentalClusterNumber"
                 type="number"
-                label="Number of Reef Clusters"
+                :label="t('panel.number_of_reef_clusters')"
                 dense
                 min="3"
                 max="6"
@@ -142,7 +132,8 @@
                           anchor="center right"
                           self="center left"
                         >
-                          {{ layerinfo.layer.get('description') }}
+                          {{ layerinfo.layer.get('description') }}<br />
+                          {{ t('panel.toggle_mean_sd') }}
                         </q-tooltip>
                       </q-icon>
                     </div>
@@ -150,13 +141,26 @@
                       v-if="group.title === 'Environmental Layers'"
                       class="env-controls"
                     >
-                      <q-toggle
-                        :label="layerinfo.layer.get('meanOrSD')"
+                      <span>{{ t('panel.mean') }}</span>
+                      <q-icon
+                        v-if="layerinfo.layer.get('meanOrSD') === 'Mean'"
+                        name="check"
                         color="pink"
-                        false-value="SD"
-                        true-value="Mean"
+                        class="q-ml-xs"
+                      />
+                      <q-toggle
+                        color="pink"
+                        false-value="Mean"
+                        true-value="SD"
                         :model-value="layerinfo.layer.get('meanOrSD')"
                         @update:model-value="() => updateMeanOrSD(layerinfo.layer as BaseLayer)"
+                      />
+                      <span>{{ t('panel.sd') }}</span>
+                      <q-icon
+                        v-if="layerinfo.layer.get('meanOrSD') === 'SD'"
+                        name="check"
+                        color="pink"
+                        class="q-ml-xs"
                       />
                     </div>
                   </div>
@@ -198,14 +202,14 @@
       <!-- Base maps section -->
       <q-expansion-item
         group="layers"
-        label="Base maps"
+        :label="t('panel.base_maps')"
         icon="map"
         switch-toggle-side
         expand-separator
       >
         <template #header>
           <div class="layer-group">
-            <div class="layer-group__title">Base maps</div>
+            <div class="layer-group__title">{{ t('panel.base_maps') }}</div>
             <q-icon name="map" flat round class="q-ml-xs visibility-toggle" />
           </div>
         </template>
@@ -225,7 +229,7 @@
 
       <div v-if="!selectedCountry" class="q-pa-md text-center">
         <hr />
-        <i>Click on a country flag to access detailed country data</i>
+        <i>{{ t('panel.click_country') }}</i>
       </div>
     </q-list>
   </q-drawer>
@@ -234,7 +238,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { useQuasar } from 'quasar';
-import { useLayerManager } from '@/maps/composables/useLayerManager';
+import { useLayerManager } from 'maps/composables/useLayerManager';
 import MapLegend from './MapLegend.vue';
 import { mdiEyeOutline } from '@mdi/js';
 import {
@@ -248,18 +252,19 @@ import {
   samplingSiteByYearColorMap,
   samplingSiteByProjectColorMap,
   samplingSiteByHardCoralCoverColorMap,
-} from '@/maps/config/layerColors';
+} from 'maps/config/layerColors';
 import {
   sources as environmentalSources,
   createGeoTIFFSource,
-} from '@/maps/sources/DjiboutiNOAASource';
-import { useMapStore } from '@/stores/mapStore';
+} from 'maps/sources/DjiboutiNOAASource';
+import { useMapStore } from 'stores/mapStore';
 import BaseLayer from 'ol/layer/Base';
 import { storeToRefs } from 'pinia';
-import { sourcesTitle } from '@/maps/sources/DjiboutiNOAASource';
-import { generateDefaultStyle } from '@/maps/layers/overlay/EnvironmentalLayers/DjiboutiLayer';
+import { sourcesTitle } from 'maps/sources/DjiboutiNOAASource';
+import { generateDefaultStyle } from 'maps/layers/overlay/EnvironmentalLayers/DjiboutiLayer';
 import WebGLTileLayer from 'ol/layer/WebGLTile';
-
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n({ useScope: 'local' });
 // Utility function to check layer visibility and legend availability
 const isLayerVisibleWithLegend = (layer: BaseLayer): boolean => {
   return layer.get('visible') && getLayerLegend(layer) !== undefined;
@@ -312,7 +317,10 @@ const updateMeanOrSD = (layer: WebGLTileLayer) => {
     // Show notification that this type isn't available
     $q.notify({
       color: 'warning',
-      message: `${newMeanOrSD} data not available for ${layer.get('title')}`,
+      message: t('panel.not_available', {
+        type: newMeanOrSD,
+        title: layer.get('title'),
+      }),
       timeout: 2000,
     });
   }
@@ -390,7 +398,7 @@ const toggleOverlayLayer = (
 
 :root {
   --checkbox-cursor: default !important;
-  --left-panel-width: 320px;
+  --left-panel-width: 400px;
   --left-panel-height: -webkit-fill-available;
   --left-panel-height: -moz-available;
   --left-panel-height: fill-available;
@@ -407,14 +415,14 @@ const toggleOverlayLayer = (
   margin-bottom: 10px;
 }
 
-:deep(.q-drawer--left.q-drawer--bordered.q-drawer--standard) {
-  background: rgba(255, 255, 255, 0.9) !important;
-  transform: translateX(calc(-360px)) !important;
-  scroll-behavior: smooth !important;
-  top: 0px !important;
-  bottom: 0px !important;
-  width: 360px !important;
-}
+// :deep(.q-drawer--left.q-drawer--bordered.q-drawer--standard) {
+// background: rgba(255, 255, 255, 0.9) !important;
+// transform: translateX(calc(-400px)) !important;
+// scroll-behavior: smooth !important;
+// top: 0px !important;
+// bottom: 0px !important;
+// width: 400px !important;
+// }
 .env-controls {
   display: flex;
   justify-content: center;
@@ -443,7 +451,8 @@ const toggleOverlayLayer = (
   }
   .layer-environmental-controls {
     display: grid;
-    grid-template-columns: auto 90px;
+    // grid-template-columns: auto 90px;
+    grid-template-columns: auto auto;
     align-items: center;
     justify-content: space-between;
     gap: 8px;
@@ -516,3 +525,42 @@ const toggleOverlayLayer = (
   padding-right: 0;
 }
 </style>
+
+<i18n lang="yaml">
+en:
+  panel:
+    title: The Red Sea
+    overlays: Overlays
+    base_maps: Base maps
+    environmental_layers: Environmental Layers
+    mean: Mean
+    sd: SD
+    number_of_reef_clusters: Number of Reef Clusters
+    click_country: Click on a country flag to access detailed country data
+    toggle_mean_sd: Toggle the pink button, to switch from Mean to Standard deviation (SD)
+    not_available: "{type} data not available for {title}"
+fr:
+  panel:
+    title: La Mer Rouge
+    overlays: Couches
+    base_maps: Cartes de base
+    environmental_layers: Couches environnementales
+    mean: Moyenne
+    sd: Écart-type
+    number_of_reef_clusters: Nombre de groupes de récifs
+    click_country: Cliquez sur un drapeau pour accéder aux données détaillées du pays
+    toggle_mean_sd: Activez le bouton rose pour passer de la moyenne à l'écart-type (SD)
+    not_available: "Données {type} non disponibles pour {title}"
+ar:
+  panel:
+    title: البحر الأحمر
+    overlays: الطبقات
+    base_maps: الخرائط الأساسية
+    environmental_layers: الطبقات البيئية
+    mean: المتوسط
+    sd: الانحراف المعياري
+    number_of_reef_clusters: عدد مجموعات الشعاب المرجانية
+    click_country: انقر على علم الدولة للوصول إلى بيانات الدولة التفصيلية
+    toggle_mean_sd: قم بتبديل الزر الوردي للتبديل بين المتوسط والانحراف المعياري (SD)
+    not_available: "بيانات {type} غير متوفرة لـ {title}"
+</i18n>

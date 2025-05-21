@@ -26,8 +26,8 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useMapStore } from '@/stores/mapStore';
-import { DiscreteLegendProps } from '@/types/legend';
+import { useMapStore } from 'stores/mapStore';
+import { DiscreteLegendProps } from 'src/types/legend';
 
 const props = withDefaults(defineProps<DiscreteLegendProps>(), {
   classColorMap: () => ({}),
@@ -59,5 +59,5 @@ const toggleClassVisibility = (className: string) => {
 </script>
 
 <style scoped lang="scss">
-@import '@/css/legend.scss';
+@import 'src/css/legend.scss';
 </style>

@@ -1,12 +1,18 @@
 {
-  "extends": "@quasar/app-vite/tsconfig-preset",
-  "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["src/*"]
-    },
-    "resolveJsonModule": true
-    // "esModuleInterop": true
-  },
-  "include": ["src/types", "src/**/*.ts", "src/**/*.vue"]
+  "extends": "./.quasar/tsconfig.json",
+  // "compilerOptions": {
+  //   "baseUrl": ".",
+  //   "target": "ES2022",
+  //   "module": "ESNext",
+  //   "lib": ["ES2022", "DOM", "DOM.Iterable"],
+  //   "useDefineForClassFields": true,
+  //   "moduleResolution": "bundler",
+  //   "strict": true,
+    // "paths": {
+    //   "@/*": ["src/*"]
+    // },
+  //   "resolveJsonModule": true
+  //   // "esModuleInterop": true
+  // },
+  // "include": ["src/types", "src/**/*.ts", "src/**/*.vue"]
 }

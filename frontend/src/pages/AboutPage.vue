@@ -1,22 +1,7 @@
 <template>
   <div class="about-page">
-    <p class="top-element q-pa-md">
-      <a class="trsc-link" href="https://trsc.org" target="_blank"
-        >The Transnational Red Sea</a
-      >, established in 2019 at
-      <a target="_blank" class="trsc-link" href="https://www.epfl.ch/"
-        >the Ecole Polytechnique Federale de Lausanne</a
-      >
-      with support from the Swiss Foreign Ministry, is an independent non-profit
-      organisation dedicated to coral reef conservation in the Red Sea. By
-      drawing on Switzerland's neutrality and scientific expertise, the Center
-      promotes scientific collaboration among Red Sea countries to better
-      understand how the region's corals have developed resilience to climate
-      change. It also develops innovative, cost-effective technologies to
-      enhance coral reef monitoring with higher resolution, standardisation, and
-      scalability. The Center advocates for environmental protection policies by
-      sharing these solutions with Red Sea nations and beyond, supporting
-      science-based efforts to conserve coral reefs globally.
+    <p class="top-element q-pa-md markdown-container">
+      <q-markdown :src="about" />
     </p>
     <div class="bottom-element">
       <div v-for="person in people" :key="person.id" class="card">
@@ -35,9 +20,11 @@
           </div>
         </a>
         <p v-if="person.function" class="two-lines">
-          <em>{{ person.function }}</em>
+          <em>{{ t(person.function) }}</em>
         </p>
-        <!-- <p>{{ person.description }}</p> -->
+        <!-- <p v-if="person.description" class="two-lines">
+          {{ t(person.description) }}
+        </p> -->
       </div>
     </div>
     <q-img
@@ -58,45 +45,98 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
+
+import about_fr from 'src/assets/i18n/about_fr.md';
+import about_en from 'src/assets/i18n/about_en.md';
+import about_ar from 'src/assets/i18n/about_ar.md';
+
+import { useLocalizedMarkdown } from 'src/composables/useLocalizedMarkdown';
+
+const about = useLocalizedMarkdown({ en: about_en, fr: about_fr, ar: about_ar });
 
 const people = ref([
   {
     id: 1,
     name: 'Prof. Anders Meibom',
-    function: 'General Director',
-    image:
-      'https://people.epfl.ch/private/common/photos/links/220185.jpg?ts=1734001592',
+    function: 'people.1.function',
+    image: 'https://people.epfl.ch/private/common/photos/links/220185.jpg?ts=1734001592',
     epflPage: 'https://people.epfl.ch/anders.meibom',
-    description: 'Anders is the director of the TRSC',
+    description: 'people.1.description',
   },
   {
     id: 2,
     name: 'Samuel Gardaz',
-    function: 'Project Manager and Communication Director',
-    image:
-      'https://people.epfl.ch/private/common/photos/links/336212.jpg?ts=1734001629',
+    function: 'people.2.function',
+    image: 'https://people.epfl.ch/private/common/photos/links/336212.jpg?ts=1734001629',
     epflPage: 'https://people.epfl.ch/samuel.gardaz',
-    description: 'Chef de projet, Laboratoire de géochimie biologique',
+    description: 'people.2.description',
   },
   {
     id: 3,
     name: 'Dr. Guilhem Banc-Prandi',
-    function: 'Scientific Director',
+    function: 'people.3.function',
     image: '/people/guilhem_x660.webp',
     epflPage: 'https://people.epfl.ch/guilhem.banc-prandi',
-    description:
-      'My work mostly focused on the impact of thermal stress on the resilience of Red Sea coral to anthropogenic heavy metal pollution. I am also interested in the mechanisms of thermal acclimatisation and adaptation in cnidarians. ',
+    description: 'people.3.description',
   },
   {
     id: 4,
     name: 'Samuel Donck',
-    function: 'Science and education officer',
+    function: 'people.4.function',
     image: '/people/Donck_x660.webp',
     epflPage: 'https://people.epfl.ch/samuel.donck',
-    description: 'Samuel is a research assistant at the TRSC...',
+    description: 'people.4.description',
   },
 ]);
 </script>
+
+<i18n lang="yaml">
+en:
+  people:
+    1:
+      function: "General Director"
+      description: "Anders is the director of the TRSC."
+    2:
+      function: "Project Manager and Communication Director"
+      description: "Project manager, Laboratory of Biological Geochemistry."
+    3:
+      function: "Scientific Director"
+      description: "My work mostly focused on the impact of thermal stress on the resilience of Red Sea coral to anthropogenic heavy metal pollution. I am also interested in the mechanisms of thermal acclimatisation and adaptation in cnidarians."
+    4:
+      function: "Science and education officer"
+      description: "Samuel is a research assistant at the TRSC."
+fr:
+  people:
+    1:
+      function: "Directeur général"
+      description: "Anders est le directeur du TRSC."
+    2:
+      function: "Chef de projet et directeur de la communication"
+      description: "Chef de projet, Laboratoire de géochimie biologique."
+    3:
+      function: "Directeur scientifique"
+      description: "Mon travail porte principalement sur l'impact du stress thermique sur la résilience des coraux de la mer Rouge à la pollution anthropique par les métaux lourds. Je m'intéresse également aux mécanismes d'acclimatation et d'adaptation thermique chez les cnidaires."
+    4:
+      function: "Responsable scientifique et pédagogique"
+      description: "Samuel est assistant de recherche au TRSC."
+ar:
+  people:
+    1:
+      function: "المدير العام"
+      description: "أندرس هو مدير مركز TRSC."
+    2:
+      function: "مدير المشروع ومدير الاتصالات"
+      description: "مدير المشروع، مختبر الكيمياء الجيولوجية الحيوية."
+    3:
+      function: "المدير العلمي"
+      description: "تركز عملي في الغالب على تأثير الإجهاد الحراري على قدرة الشعاب المرجانية في البحر الأحمر على مقاومة التلوث البشري بالمعادن الثقيلة. كما أنني مهتم بآليات التكيف والتأقلم الحراري لدى الكائنات اللاسعة."
+    4:
+      function: "مسؤول العلوم والتعليم"
+      description: "صموئيل هو مساعد بحث في مركز TRSC."
+</i18n>
+
 
 <style scoped>
 .about-page .card .q-img {
@@ -138,19 +178,7 @@ const people = ref([
     z-index: 1;
   }
 }
-.trsc-link {
-  color: red;
-  font-weight: bold;
-  &:hover {
-    text-decoration: underline;
-  }
-  &:visited {
-    color: red;
-  }
-  &:active {
-    color: red;
-  }
-}
+
 .about-page {
   gap: 1rem;
   display: grid;

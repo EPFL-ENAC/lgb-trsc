@@ -1,7 +1,7 @@
 import type { Map } from 'ol';
 import type { FeatureLike } from 'ol/Feature';
-import { useLayerController } from '@/maps/composables/useLayerController';
-import { useMapController } from '@/maps/composables/useMapController';
+import { useLayerController } from 'maps/composables/useLayerController';
+import { useMapController } from 'maps/composables/useMapController';
 import { EventsKey } from 'ol/events';
 import BaseEvent from 'ol/events/Event';
 import MapBrowserEvent from 'ol/MapBrowserEvent';
@@ -19,7 +19,7 @@ export const clickHandlerFn =
     if (!map) return;
 
     // Cast to MapBrowserEvent to access originalEvent
-    const mapBrowserEvent = evt as MapBrowserEvent<MouseEvent>;
+    const mapBrowserEvent = evt as MapBrowserEvent<PointerEvent>;
     const pixel = map.getEventPixel(mapBrowserEvent.originalEvent);
     const target = mapBrowserEvent.originalEvent.target;
     // const hit = map.hasFeatureAtPixel(pixel);

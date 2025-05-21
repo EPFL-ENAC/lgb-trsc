@@ -2,9 +2,9 @@ import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import { BaseLayerOptions } from 'ol-layerswitcher';
 import GeoJSON from 'ol/format/GeoJSON';
-import { countryStyle } from '@/maps/styles/layerStyles';
+import { countryStyle } from 'maps/styles/layerStyles';
 
-import countries from '@/assets/data/countries';
+import countries from 'assets/data/countries';
 
 const LayerTitle = 'Countries';
 

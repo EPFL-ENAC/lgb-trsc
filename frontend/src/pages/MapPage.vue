@@ -1,34 +1,28 @@
 <template>
-  <div
-    id="map"
-    ref="mapElement"
-    class="map"
-    :style="{
-      '--drawer-width': drawer ? '500px' : '0px',
-      '--left-drawer-width': '360px',
-    }"
-  >
-    <div id="info"></div>
-  </div>
-  <MapLeftPanel />
-  <MapRightPanel />
+    <div
+      id="map"
+      ref="mapElement"
+      class="map"
+    >
+      <div id="info"></div>
+    </div>
+
 </template>
 
 <script setup lang="ts">
 import 'ol/ol.css';
 import 'ol-layerswitcher/dist/ol-layerswitcher.css';
+import 'src/css/app.scss'
 
 import { onMounted, onUnmounted, ref, watch } from 'vue';
-import { MapController } from '@/maps/MapController';
+import { MapController } from 'maps/MapController';
 import { storeToRefs } from 'pinia';
-import { useMapStore } from '@/stores/mapStore';
-import MapRightPanel from '@/components/MapRightPanel.vue';
+import { useMapStore } from 'stores/mapStore';
 import {
   useMapController,
   destroyMapController,
-} from '@/maps/composables/useMapController';
-import MapLeftPanel from '@/components/MapLeftPanel.vue';
-import { destroyLayerController } from '@/maps/composables/useLayerController';
+} from 'maps/composables/useMapController';
+import { destroyLayerController } from 'maps/composables/useLayerController';
 
 const mapStore = useMapStore();
 const mapElement = ref<HTMLElement | null>(null);
@@ -37,7 +31,7 @@ const mapHeight = ref(0);
 const mapController = ref<MapController | null>(null);
 
 const { drawer } = storeToRefs(mapStore);
-
+console.log('drawer', drawer.value);
 // Update dimensions when drawer changes
 watch(drawer, () => {
   updateMapDimensions();
@@ -75,7 +69,16 @@ onUnmounted(() => {
 </script>
 
 <style scoped lang="scss">
-@import '@/css/app.scss';
+@import 'src/css/app.scss';
+
+.map-container {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  width: 100vw;
+  height: calc(100vh - var(--header-height) - var(--footer-height));
+  box-sizing: border-box;
+}
 
 .map {
   width: calc(100vw - var(--drawer-width) - var(--left-drawer-width));
