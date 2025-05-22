@@ -9,12 +9,12 @@ import {
   SST_monthly_mean_Mean,
   SPM_monthly_mean_Mean,
   DHW_annual_max_Mean,
-  SCV_monthly_mean_Mean,
+  SWV_monthly_mean_Mean,
   SWS_monthly_mean_Mean,
   SST_monthly_mean_SD,
   SPM_monthly_mean_SD,
   DHW_annual_max_SD,
-  SCV_monthly_mean_SD,
+  SWV_monthly_mean_SD,
   SWS_monthly_mean_SD,
   SST_monthly_min_Mean,
   SST_monthly_min_SD,
@@ -97,7 +97,6 @@ const legendVariables = {
     unit: 'm/s',
     variableTitle: 'Sea Water Velocity', // Updated title
     variable: 'SWV', // Updated variable
-    shortName: 'SWV', // Added shortName
   },
   SWS: {
     unit: '10⁻³', // Updated unit to match spec (‰ is equivalent)
@@ -112,8 +111,8 @@ export type TiffsUrls = {
   CHL_monthly_mean_SD: string;
   DHW_annual_max_Mean: string;
   DHW_annual_max_SD: string;
-  SCV_monthly_mean_Mean: string;
-  SCV_monthly_mean_SD: string;
+  SWV_monthly_mean_Mean: string;
+  SWV_monthly_mean_SD: string;
   SPM_monthly_mean_Mean: string;
   SPM_monthly_mean_SD: string;
   SST_monthly_max_Mean: string;
@@ -135,9 +134,9 @@ export const tiffsUrls: TiffsUrls = {
     'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/processed_data/SG_MANON/env_rasters_cut/DHW_annual_max_Mean.tif',
   DHW_annual_max_SD:
     'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/processed_data/SG_MANON/env_rasters_cut/DHW_annual_max_SD.tif',
-  SCV_monthly_mean_Mean:
+  SWV_monthly_mean_Mean:
     'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/processed_data/SG_MANON/env_rasters_cut/SCV_monthly_mean_Mean.tif',
-  SCV_monthly_mean_SD:
+  SWV_monthly_mean_SD:
     'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/processed_data/SG_MANON/env_rasters_cut/SCV_monthly_mean_SD.tif',
   SPM_monthly_mean_Mean:
     'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/processed_data/SG_MANON/env_rasters_cut/SPM_monthly_mean_Mean.tif',
@@ -271,8 +270,8 @@ export const metadata = {
     sourceProvider: 'Copernicus Marine Services', // From NWV/EWV
     attributions: attributions.copernicus,
     urls: {
-      Mean: tiffsUrls.SCV_monthly_mean_Mean,
-      SD: tiffsUrls.SCV_monthly_mean_SD,
+      Mean: tiffsUrls.SWV_monthly_mean_Mean,
+      SD: tiffsUrls.SWV_monthly_mean_SD,
     },
   },
   SWS_monthly_mean: {
@@ -391,14 +390,14 @@ export const sources: SourceInfo[] = [
   {
     type: SourceType.MEAN,
     ...metadata.SWV_monthly_mean,
-    colorScale: SCV_monthly_mean_Mean,
+    colorScale: SWV_monthly_mean_Mean,
     attribution: attributions.copernicus,
     url: metadata.SWV_monthly_mean.urls.Mean,
   },
   {
     type: SourceType.SD,
     ...metadata.SWV_monthly_mean,
-    colorScale: SCV_monthly_mean_SD,
+    colorScale: SWV_monthly_mean_SD,
     attribution: attributions.copernicus,
     url: metadata.SWV_monthly_mean.urls.SD,
   },

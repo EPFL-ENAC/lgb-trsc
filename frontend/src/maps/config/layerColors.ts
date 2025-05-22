@@ -204,7 +204,7 @@ export const SPM_monthly_mean_SD: ColorMap = {
   epsilon: 1.0e35,
 };
 
-export const SCV_monthly_mean_Mean: ColorMap = {
+export const SWV_monthly_mean_Mean: ColorMap = {
   type: 'continuous',
   colorMap: {
     '0.02': '#fcfbfd',
@@ -223,7 +223,7 @@ export const SCV_monthly_mean_Mean: ColorMap = {
   epsilon: 1.0e35,
 };
 
-export const SCV_monthly_mean_SD: ColorMap = {
+export const SWV_monthly_mean_SD: ColorMap = {
   type: 'continuous',
   colorMap: {
     '0.01': '#ffffff',
