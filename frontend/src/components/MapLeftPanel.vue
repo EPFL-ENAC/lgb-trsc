@@ -3,7 +3,7 @@
     v-model="leftDrawerOpen"
     side="left"
     show-if-above
-    :width="400"
+    :width="500"
     :breakpoint="500"
     bordered
     :class="[$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3', 'left-panel', 'q-pa-md']"
@@ -398,7 +398,7 @@ const toggleOverlayLayer = (
 
 :root {
   --checkbox-cursor: default !important;
-  --left-panel-width: 400px;
+  --left-panel-width: 500px;
   --left-panel-height: -webkit-fill-available;
   --left-panel-height: -moz-available;
   --left-panel-height: fill-available;
@@ -414,15 +414,6 @@ const toggleOverlayLayer = (
   border-bottom: 1px solid #ff432c;
   margin-bottom: 10px;
 }
-
-// :deep(.q-drawer--left.q-drawer--bordered.q-drawer--standard) {
-// background: rgba(255, 255, 255, 0.9) !important;
-// transform: translateX(calc(-400px)) !important;
-// scroll-behavior: smooth !important;
-// top: 0px !important;
-// bottom: 0px !important;
-// width: 400px !important;
-// }
 .env-controls {
   display: flex;
   justify-content: center;
