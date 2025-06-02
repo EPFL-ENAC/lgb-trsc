@@ -522,7 +522,7 @@ en:
     sd: SD
     number_of_reef_clusters: Number of Reef Clusters
     click_country: Click on a country flag to access detailed country data
-    toggle_mean_sd: Toggle the pink button, to switch from Mean to Standard deviation (SD)
+    toggle_mean_sd: Toggle the button, to switch from Mean to Standard deviation (SD)
     not_available: "{type} data not available for {title}"
 fr:
   panel:
