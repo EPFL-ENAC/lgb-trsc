@@ -142,26 +142,15 @@
                       class="env-controls"
                     >
                       <span>{{ t('panel.mean') }}</span>
-                      <q-icon
-                        v-if="layerinfo.layer.get('meanOrSD') === 'Mean'"
-                        name="check"
-                        color="pink"
-                        class="q-ml-xs"
-                      />
                       <q-toggle
                         color="pink"
+                        :keep-color="true"
                         false-value="Mean"
                         true-value="SD"
                         :model-value="layerinfo.layer.get('meanOrSD')"
                         @update:model-value="() => updateMeanOrSD(layerinfo.layer as BaseLayer)"
                       />
                       <span>{{ t('panel.sd') }}</span>
-                      <q-icon
-                        v-if="layerinfo.layer.get('meanOrSD') === 'SD'"
-                        name="check"
-                        color="pink"
-                        class="q-ml-xs"
-                      />
                     </div>
                   </div>
                 </template>
@@ -380,6 +369,11 @@ const toggleOverlayLayer = (
 </style>
 
 <style scoped lang="scss">
+:deep(.q-toggle__thumb) {
+ &:after {
+      background: #e91e63 !important;
+ };
+}
 .visibility-toggle {
   // position: absolute;
   // right: 0;
