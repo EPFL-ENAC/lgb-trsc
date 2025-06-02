@@ -21,7 +21,7 @@
       </div>
       <q-btn
         class="q-ma-md"
-        label="Dive into the data"
+        :label="$t('aboutPage.diveIntoData')"
         @click="navigateToMap"
       />
       <p class="q-pa-md">
@@ -55,13 +55,16 @@ en:
   aboutPage:
     contactUs: "If you wish to collaborate with us, feel free to contact us and we will
         do our best to come back to you shortly!"
+    diveIntoData: "Dive into the data"
 fr:
   aboutPage:
     contactUs: "Si vous souhaitez collaborer avec nous, n'hésitez pas à nous
         contacter et nous ferons de notre mieux pour vous répondre rapidement !"
+    diveIntoData: "Plongez dans les données"
 ar:
   aboutPage:
     contactUs: "إذا كنت ترغب في التعاون معنا، فلا تتردد في الاتصال بنا وسنبذل قصارى جهدنا للرد عليك في أقرب وقت ممكن!"
+    diveIntoData: "الغوص في البيانات"
 </i18n>
 
 <style scoped>
