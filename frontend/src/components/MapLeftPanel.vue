@@ -44,7 +44,7 @@
               </q-icon>
             </div>
             <q-icon
-              :name="group.group.getVisible() ? mdiEyeOutline : 'mdi-eye-off'"
+              :name="group.group.getVisible() ? mdiEyeOutline : mdiEyeOffOutline"
               flat
               round
               class="q-ml-xs visibility-toggle"
@@ -143,7 +143,7 @@
                     >
                       <span>{{ t('panel.mean') }}</span>
                       <q-toggle
-                        color="pink"
+                        color="blue"
                         :keep-color="true"
                         false-value="Mean"
                         true-value="SD"
@@ -229,7 +229,7 @@ import { ref, computed } from 'vue';
 import { useQuasar } from 'quasar';
 import { useLayerManager } from 'maps/composables/useLayerManager';
 import MapLegend from './MapLegend.vue';
-import { mdiEyeOutline } from '@mdi/js';
+import { mdiEyeOutline, mdiEyeOffOutline } from '@mdi/js';
 import {
   geomorphicColorMap,
   benthicColorMap,
@@ -371,7 +371,7 @@ const toggleOverlayLayer = (
 <style scoped lang="scss">
 :deep(.q-toggle__thumb) {
  &:after {
-      background: #e91e63 !important;
+      background: blue !important;
  };
 }
 .visibility-toggle {
