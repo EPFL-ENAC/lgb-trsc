@@ -125,8 +125,8 @@
               v-for="project in researchProjects"
               :key="project.page"
               clickable
-              @click="navigateToProject(project.page)"
               class="q-pl-md"
+              @click="navigateToProject(project.page)"
             >
               <q-item-section>
                 <q-item-label>{{
