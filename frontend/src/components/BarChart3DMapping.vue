@@ -14,7 +14,7 @@ import {
   validSubstratesMap,
   validSubtrateMapKeyText,
 } from 'maps/config/substrateOrder';
-import { debounce } from 'lodash';
+import { debounce, min } from 'lodash';
 import { useI18n } from 'vue-i18n';
 
 const TIME_OUT = 150;
@@ -44,6 +44,10 @@ const props = defineProps({
   substrateLevel: {
     type: String,
     default: 'Substrate_coarse',
+  },
+  miniState: {
+    type: Boolean,
+    default: false,
   },
 });
 
@@ -223,6 +227,15 @@ watch(
     initChart();
   },
   { deep: true }
+);
+
+watch(
+  () => props.miniState === false,
+  () => {
+    debugger;
+    closeChart();
+    initChart();
+  }
 );
 
 watch(

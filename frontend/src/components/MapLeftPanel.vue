@@ -1,20 +1,30 @@
 <template>
   <q-drawer
     v-model="leftDrawerOpen"
+    :mini="!leftDrawerOpen || leftMiniDrawer"
     side="left"
     show-if-above
     :width="500"
     :breakpoint="500"
     bordered
-    :class="[$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3', 'left-panel', 'q-pa-md']"
+    :class="['bg-white', 'left-panel', 'q-pa-md']"
     persistent
   >
-    <q-list padding>
-      <!-- Panel Title that changes based on selected country -->
-      <div class="panel-title q-py-md">
-        {{ selectedCountry ? selectedCountry.name : t('panel.title') }}
-      </div>
+    <div
+      class="absolute"
+      :style="{ top: '16px', right: leftMiniDrawer ? '12px': '-16px', zIndex: 1000 }"
+    >
+      <q-btn
+        dense
+        round
+        unelevated
+        color="primary"
+        :icon="leftMiniDrawer ? 'chevron_right' : 'chevron_left'"
+        @click="leftMiniDrawer = !leftMiniDrawer"
+      />
+    </div>
 
+    <q-list v-if="!leftMiniDrawer">
       <!-- Overlay groups section -->
       <q-expansion-item
         v-for="(group, groupIndex) in computedOverlayGroups"
@@ -22,12 +32,20 @@
         switch-toggle-side
         expand-separator
         :group="`overlays${groupIndex}`"
-        :label="group.title === 'Environmental Layers' ? t('panel.environmental_layers') : group.title"
+        :label="
+          group.title === 'Environmental Layers'
+            ? t('panel.environmental_layers')
+            : group.title
+        "
       >
         <template #header="">
           <div class="layer-group">
             <div class="layer-group__title">
-              {{ group.title === 'Environmental Layers' ? t('panel.environmental_layers') : group.title }}
+              {{
+                group.title === 'Environmental Layers'
+                  ? t('panel.environmental_layers')
+                  : group.title
+              }}
               <q-icon
                 v-if="group.title === 'Environmental Layers'"
                 name="info"
@@ -44,7 +62,9 @@
               </q-icon>
             </div>
             <q-icon
-              :name="group.group.getVisible() ? mdiEyeOutline : mdiEyeOffOutline"
+              :name="
+                group.group.getVisible() ? mdiEyeOutline : mdiEyeOffOutline
+              "
               flat
               round
               class="q-ml-xs visibility-toggle"
@@ -229,7 +249,10 @@ import { ref, computed } from 'vue';
 import { useQuasar } from 'quasar';
 import { useLayerManager } from 'maps/composables/useLayerManager';
 import MapLegend from './MapLegend.vue';
-import { mdiEyeOutline, mdiEyeOffOutline } from '@mdi/js';
+import {
+  mdiEyeOutline,
+  mdiEyeOffOutline,
+} from '@mdi/js';
 import {
   geomorphicColorMap,
   benthicColorMap,
@@ -260,7 +283,9 @@ const isLayerVisibleWithLegend = (layer: BaseLayer): boolean => {
 };
 
 const $q = useQuasar();
-const leftDrawerOpen = ref(true);
+// const leftDrawerOpen = ref(true);
+// const miniState = ref(false);
+
 
 const {
   baseMaps,
@@ -272,7 +297,7 @@ const {
 } = useLayerManager();
 
 const mapStore = useMapStore();
-const { selectedCountry } = storeToRefs(mapStore);
+const { selectedCountry, leftDrawerOpen, leftMiniDrawer } = storeToRefs(mapStore);
 const computedOverlayGroups = computed(() => {
   return overlayGroups?.value?.filter((layerGroup) => {
     return (
@@ -370,9 +395,9 @@ const toggleOverlayLayer = (
 
 <style scoped lang="scss">
 :deep(.q-toggle__thumb) {
- &:after {
-      background: blue !important;
- };
+  &:after {
+    background: blue !important;
+  }
 }
 .visibility-toggle {
   // position: absolute;
@@ -523,7 +548,7 @@ en:
     number_of_reef_clusters: Number of Reef Clusters
     click_country: Click on a country flag to access detailed country data
     toggle_mean_sd: Toggle the button, to switch from Mean to Standard deviation (SD)
-    not_available: "{type} data not available for {title}"
+    not_available: '{type} data not available for {title}'
 fr:
   panel:
     title: La Mer Rouge
@@ -535,7 +560,7 @@ fr:
     number_of_reef_clusters: Nombre de groupes de récifs
     click_country: Cliquez sur un drapeau pour accéder aux données détaillées du pays
     toggle_mean_sd: Activez le bouton rose pour passer de la moyenne à l'écart-type (SD)
-    not_available: "Données {type} non disponibles pour {title}"
+    not_available: 'Données {type} non disponibles pour {title}'
 ar:
   panel:
     title: البحر الأحمر
@@ -547,5 +572,5 @@ ar:
     number_of_reef_clusters: عدد مجموعات الشعاب المرجانية
     click_country: انقر على علم الدولة للوصول إلى بيانات الدولة التفصيلية
     toggle_mean_sd: قم بتبديل الزر الوردي للتبديل بين المتوسط والانحراف المعياري (SD)
-    not_available: "بيانات {type} غير متوفرة لـ {title}"
+    not_available: 'بيانات {type} غير متوفرة لـ {title}'
 </i18n>

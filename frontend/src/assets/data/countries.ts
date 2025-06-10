@@ -21,8 +21,8 @@ const countries = {
         visited: 'September 2022, November 2023',
         projects: '3D, SG, MP, eDNA, Sym, echi',
         sites: '22 sites visited',
-        monitoring: '4 permanent monitoring sites in service',
-        training: '4 training workshops completed',
+        monitoring: '4',
+        training: '4',
         collaboration:
           "University of Djibouti, Centre d'étude et de recherche de Djibouti, Ministère de l'Environnement et du Développement Durable de Djibouti",
         contact: 'Dr. Guilhem Banc-Prandi, Dr. Ibrahim Souleiman Abdallah',

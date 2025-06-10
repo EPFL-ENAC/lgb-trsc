@@ -50,6 +50,7 @@
         <BarChart3DMapping
           :raw-data="country.rawData"
           :style="{ margin: '0 auto' }"
+          :mini-state="miniState"
           height="76%"
           width="90%"
           :tooltip="true"
@@ -131,6 +132,10 @@ const props = defineProps({
   closeDrawer: {
     type: Function,
     required: true,
+  },
+  miniState: {
+    type: Boolean,
+    default: false,
   },
 });
 

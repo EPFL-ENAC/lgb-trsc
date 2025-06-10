@@ -67,6 +67,15 @@ body {
   ); /* Using warning-color with transparency */
 }
 
+.ol-control-layer-icon {
+  left: 2.5em;
+  top: .5em;
+  width: 1.5em;
+  & button {
+    cursor: pointer !important
+  }
+}
+
 
 .trsc-link, .markdown-container .q-markdown--link-external {
   color: red;

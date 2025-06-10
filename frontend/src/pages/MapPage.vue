@@ -5,6 +5,14 @@
       class="map"
     >
       <div id="info"></div>
+      <div id="map-zoom-reset" class="ol-control ol-control-layer-icon">
+        <q-tooltip>
+          {{ leftMiniDrawer ? $t('Expand drawer') : $t('Collapse drawer') }}
+        </q-tooltip>
+        <button class="" type="button" @click="leftMiniDrawer = !leftMiniDrawer">
+          <q-icon :name="leftMiniDrawer ? 'chevron_right' : 'chevron_left'" size="1.125rem" />
+        </button>
+      </div>
     </div>
 
 </template>
@@ -30,8 +38,9 @@ const mapWidth = ref(0);
 const mapHeight = ref(0);
 const mapController = ref<MapController | null>(null);
 
-const { drawer } = storeToRefs(mapStore);
+const { drawer, leftMiniDrawer } = storeToRefs(mapStore);
 console.log('drawer', drawer.value);
+
 // Update dimensions when drawer changes
 watch(drawer, () => {
   updateMapDimensions();

@@ -10,14 +10,24 @@
             <!-- <img src="/trsc.svg"> -->
           </q-avatar>
           <!-- <q-route-tab to="/" label="Transnational Red Sea Center" /> -->
-          <div class="text-red">{{ titleLines[0] }}<br />{{ titleLines[1] }}<br />{{ titleLines[2] }}</div>
+          <div class="text-red">
+            {{ titleLines[0] }}<br />{{ titleLines[1] }}<br />{{
+              titleLines[2]
+            }}
+          </div>
         </q-toolbar-title>
       </q-toolbar>
 
-      <q-tabs align="left" class="q-pr-md">
+      <q-tabs align="left" class="q-pr-md gt-sm">
         <q-route-tab to="/about" :label="t('layout.header.menu.about')" />
-        <q-route-tab to="/the-red-sea" :label="t('layout.header.menu.theRedSea')" />
-        <q-route-tab to="/community" :label="t('layout.header.menu.community')" />
+        <q-route-tab
+          to="/the-red-sea"
+          :label="t('layout.header.menu.theRedSea')"
+        />
+        <q-route-tab
+          to="/community"
+          :label="t('layout.header.menu.community')"
+        />
         <q-btn-dropdown
           flat
           :label="t('layout.header.menu.researchProjects')"
@@ -40,8 +50,14 @@
           </q-list>
         </q-btn-dropdown>
         <q-route-tab to="/map" :label="t('layout.header.menu.map')" />
-        <q-route-tab to="/resources" :label="t('layout.header.menu.resources')" />
-        <q-route-tab to="/contact-us" :label="t('layout.header.menu.contactUs')" />
+        <q-route-tab
+          to="/resources"
+          :label="t('layout.header.menu.resources')"
+        />
+        <q-route-tab
+          to="/contact-us"
+          :label="t('layout.header.menu.contactUs')"
+        />
         <q-btn-toggle
           v-model="lang"
           flat
@@ -52,6 +68,22 @@
           ]"
         />
       </q-tabs>
+
+      <q-btn-dropdown class="lt-md" flat icon="menu" dropdown-icon="none">
+        <q-list>
+          <q-item clickable v-close-popup @click="selectTab('home')">
+            <q-item-section>
+              <q-item-label>Home</q-item-label>
+            </q-item-section>
+          </q-item>
+          <q-item clickable v-close-popup @click="selectTab('about')">
+            <q-item-section>
+              <q-item-label>About</q-item-label>
+            </q-item-section>
+          </q-item>
+          <!-- Add other menu items -->
+        </q-list>
+      </q-btn-dropdown>
     </q-header>
 
     <q-footer
@@ -80,9 +112,14 @@
         </q-toolbar-title>
       </q-toolbar>
     </q-footer>
+    <transition name="slide-left" mode="out-in">
+      <MapLeftPanel
+        v-if="$route.name === 'map' && !leftMiniDrawer"
+        class="layer-selector-panel"
+      />
+    </transition>
 
-    <MapLeftPanel v-if="$route.name === 'map'" class="layer-selector-panel" />
-    <MapRightPanel v-if="$route.name === 'map'" class="info-panel"/>
+    <MapRightPanel v-if="$route.name === 'map'" class="info-panel" />
     <q-page-container>
       <q-page>
         <router-view />
@@ -100,17 +137,21 @@ const { locale, t } = useI18n();
 const lang = ref(locale.value);
 const router = useRouter();
 import { Quasar } from 'quasar';
+import { useMapStore } from 'stores/mapStore';
+import { storeToRefs } from 'pinia';
 import langEn from 'quasar/lang/en-US';
 import langFr from 'quasar/lang/fr';
 import langAr from 'quasar/lang/ar';
 
 import MapRightPanel from 'components/MapRightPanel.vue';
 import MapLeftPanel from 'components/MapLeftPanel.vue';
+
+const { leftDrawerOpen, leftMiniDrawer } = storeToRefs(useMapStore());
 // Split the title into three lines for display
 const titleLines = computed(() => {
   const title = t('layout.header.title');
   const words = title.split(' ');
-  
+
   // For Arabic, handle the title differently
   if (locale.value === 'ar') {
     // Simple approach for Arabic - split by spaces into 3 roughly equal parts
@@ -118,10 +159,10 @@ const titleLines = computed(() => {
     return [
       words.slice(0, third).join(' '),
       words.slice(third, third * 2).join(' '),
-      words.slice(third * 2).join(' ')
+      words.slice(third * 2).join(' '),
     ];
   }
-  
+
   // For English and French, hardcode the splits for better appearance
   if (title === 'Transnational Red Sea Center') {
     return ['Transnational', 'Red Sea', 'Center'];
@@ -133,7 +174,7 @@ const titleLines = computed(() => {
     return [
       words.slice(0, third).join(' '),
       words.slice(third, third * 2).join(' '),
-      words.slice(third * 2).join(' ')
+      words.slice(third * 2).join(' '),
     ];
   }
 });
@@ -163,19 +204,53 @@ function navigateToProject(page: string) {
 
 const researchProjects = ref([
   { name: '3D mapping', page: '3d_mapping', translationKey: '3dMapping' },
-  { name: 'Seascape Genomics', page: 'seascape_genomics', translationKey: 'seascapeGenomics' },
+  {
+    name: 'Seascape Genomics',
+    page: 'seascape_genomics',
+    translationKey: 'seascapeGenomics',
+  },
   { name: 'eDNA', page: 'edna', translationKey: 'edna' },
   {
     name: 'echinoderm population genetics',
     page: 'echinoderm_population_genetics',
-    translationKey: 'echinodermPopulationGenetics'
+    translationKey: 'echinodermPopulationGenetics',
   },
-  { name: 'marine pollution', page: 'marine_pollution', translationKey: 'marinePollution' },
-  { name: 'socio economics', page: 'socio_economics', translationKey: 'socioEconomics' },
+  {
+    name: 'marine pollution',
+    page: 'marine_pollution',
+    translationKey: 'marinePollution',
+  },
+  {
+    name: 'socio economics',
+    page: 'socio_economics',
+    translationKey: 'socioEconomics',
+  },
 ]);
 </script>
 
 <style lang="scss" scoped>
+/* Slide animation for MapLeftPanel */
+.slide-left-enter-active,
+.slide-left-leave-active {
+  transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out;
+}
+
+.slide-left-enter-from {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+.slide-left-leave-to {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+.slide-left-enter-to,
+.slide-left-leave-from {
+  transform: translateX(0);
+  opacity: 1;
+}
+
 .toolbar-footer {
   display: flex;
   flex-direction: row;
@@ -280,16 +355,16 @@ const researchProjects = ref([
 }
 
 /* i18n-specific styles */
-[dir="rtl"] .toolbar-title {
+[dir='rtl'] .toolbar-title {
   /* Adjust title for RTL languages */
   text-align: right;
 }
 
-[dir="rtl"] .toolbar-footer {
+[dir='rtl'] .toolbar-footer {
   flex-direction: row-reverse;
 }
 
-[dir="rtl"] .q-tabs {
+[dir='rtl'] .q-tabs {
   justify-content: flex-end;
 }
 

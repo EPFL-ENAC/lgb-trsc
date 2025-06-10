@@ -118,7 +118,7 @@ export default defineConfig(function (/* ctx */) {
       ],
       config: {
         brand: {
-          // primary: '#B51F1F',
+          primary: '#B51F1F',
           // ... other colors
         },
       },
