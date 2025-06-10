@@ -4,11 +4,9 @@
       style="height: var(--header-height); border-bottom: 1px solid red"
       class="bg-white text-red APax text-weight-thin"
     >
-      <q-toolbar class="clickable" @click="navigateToHome">
+      <q-toolbar class="clickable q-pr-xs" @click="navigateToHome">
         <q-toolbar-title class="toolbar-title">
-          <q-avatar class="toolbar-avatar">
-          </q-avatar>
-          <!-- <q-route-tab to="/" label="Transnational Red Sea Center" /> -->
+          <q-avatar class="toolbar-avatar"> </q-avatar>
           <div class="text-red">
             {{ titleLines[0] }}<br />{{ titleLines[1] }}<br />{{
               titleLines[2]
@@ -16,19 +14,30 @@
           </div>
         </q-toolbar-title>
       </q-toolbar>
-      <q-tabs align="left" class="q-pr-sm gt-sm" dense  :mobile-arrows="true" :shrink="true" active-color="red" >
-        <!-- // start dropping tab progressively starting at lt.1280px -->
-        <q-route-tab to="/about" :label="t('layout.header.menu.about')" />
+
+      <q-tabs align="left" dense active-color="red">
+        <!-- Always visible tabs -->
         <q-route-tab
+          v-if="$q.screen.gt.xs"
+          to="/about"
+          :label="t('layout.header.menu.about')"
+        />
+
+        <!-- Hide progressively based on screen size -->
+        <q-route-tab
+          v-if="$q.screen.gt.sm"
           to="/the-red-sea"
           :label="t('layout.header.menu.theRedSea')"
         />
         <q-route-tab
+          v-if="$q.screen.gt.sm"
           to="/community"
           :label="t('layout.header.menu.community')"
         />
         <q-btn-dropdown
+          v-if="$q.screen.gt.sm"
           flat
+          dense
           :label="t('layout.header.menu.researchProjects')"
           no-caps
           class="q-ml-md research-projects-dropdown"
@@ -48,44 +57,67 @@
             </q-item>
           </q-list>
         </q-btn-dropdown>
-        <q-route-tab to="/map" :label="t('layout.header.menu.map')" />
         <q-route-tab
+          v-if="$q.screen.gt.xs"
+          to="/map"
+          :label="t('layout.header.menu.map')"
+        />
+        <q-route-tab
+          v-if="$q.screen.gt.md"
           to="/resources"
           :label="t('layout.header.menu.resources')"
         />
         <q-route-tab
+          v-if="$q.screen.gt.md"
           to="/contact-us"
           :label="t('layout.header.menu.contactUs')"
         />
-      <q-btn
-        v-if="$q.screen.lt.lg"
-        flat
-        round
-        icon="more_vert"
-        class="q-ml-md"
-        :aria-controls="'navbar-menu'"
-      >
+
+        <!-- Language selector - always visible on larger screens -->
+        <q-btn-toggle
+          v-if="$q.screen.gt.md"
+          v-model="lang"
+          flat
+          dense
+          aria-label="Language Selector"
+          :options="[
+            { label: 'En', value: 'en-US' },
+            { label: 'Fr', value: 'fr' },
+            { label: 'العربية', value: 'ar' },
+          ]"
+        />
+      </q-tabs>
+
+      <!-- Progressive dropdown menu - shows hidden items -->
+      <q-btn v-if="hasHiddenItems" flat round icon="more_vert" class="q-ml-md">
         <q-menu>
-          <q-item clickable @click="$router.push('/about')">
+          <q-item v-if="$q.screen.lt.sm" clickable @click="$router.push('/about')">
             <q-item-section>
-              <q-item-label>{{ t('layout.header.menu.about') }}</q-item-label>
+              <q-item-label>{{
+                t('layout.header.menu.about')
+              }}</q-item-label>
             </q-item-section>
           </q-item>
-          
-          <q-item clickable @click="$router.push('/the-red-sea')">
+          <!-- Show items that are hidden from main nav -->
+          <q-item v-if="$q.screen.lt.md" clickable @click="$router.push('/the-red-sea')">
             <q-item-section>
-              <q-item-label>{{ t('layout.header.menu.theRedSea') }}</q-item-label>
+              <q-item-label>{{
+                t('layout.header.menu.theRedSea')
+              }}</q-item-label>
             </q-item-section>
           </q-item>
-          
-          <q-item clickable @click="$router.push('/community')">
+
+          <q-item v-if="$q.screen.lt.md" clickable @click="$router.push('/community')">
             <q-item-section>
-              <q-item-label>{{ t('layout.header.menu.community') }}</q-item-label>
+              <q-item-label>{{
+                t('layout.header.menu.community')
+              }}</q-item-label>
             </q-item-section>
           </q-item>
-          
-          <!-- Replace nested dropdown with expansion item -->
+
+          <!-- Research projects when hidden from main nav -->
           <q-expansion-item
+            v-if="$q.screen.lt.md"
             :label="t('layout.header.menu.researchProjects')"
             dense
           >
@@ -97,82 +129,65 @@
               class="q-pl-md"
             >
               <q-item-section>
-                <q-item-label>{{ t(`layout.header.projects.${project.translationKey}`) }}</q-item-label>
+                <q-item-label>{{
+                  t(`layout.header.projects.${project.translationKey}`)
+                }}</q-item-label>
               </q-item-section>
             </q-item>
           </q-expansion-item>
-          
-          <q-item clickable @click="$router.push('/map')">
+
+          <q-item v-if="$q.screen.lt.sm" clickable @click="$router.push('/map')">
             <q-item-section>
               <q-item-label>{{ t('layout.header.menu.map') }}</q-item-label>
             </q-item-section>
           </q-item>
-          
-          <q-item clickable @click="$router.push('/resources')">
+
+          <q-item v-if="$q.screen.lt.lg" clickable @click="$router.push('/resources')">
             <q-item-section>
-              <q-item-label>{{ t('layout.header.menu.resources') }}</q-item-label>
+              <q-item-label>{{
+                t('layout.header.menu.resources')
+              }}</q-item-label>
             </q-item-section>
           </q-item>
-          
-          <q-item clickable @click="$router.push('/contact-us')">
+
+          <q-item v-if="$q.screen.lt.lg" clickable @click="$router.push('/contact-us')">
             <q-item-section>
-              <q-item-label>{{ t('layout.header.menu.contactUs') }}</q-item-label>
+              <q-item-label>{{
+                t('layout.header.menu.contactUs')
+              }}</q-item-label>
             </q-item-section>
           </q-item>
         </q-menu>
       </q-btn>
-      <q-btn v-if="$q.screen.lt.lg" flat round icon="translate">
+
+      <!-- Mobile language selector -->
+      <q-btn
+        v-if="$q.screen.lt.lg"
+        flat
+        round
+        icon="translate"
+        aria-label="Language Selector"
+      >
         <q-menu>
           <q-list>
             <q-item v-close-popup clickable @click="lang = 'en-US'">
               <q-item-section>
-          <q-item-label>En</q-item-label>
+                <q-item-label>En</q-item-label>
               </q-item-section>
             </q-item>
             <q-item v-close-popup clickable @click="lang = 'fr'">
               <q-item-section>
-          <q-item-label>Fr</q-item-label>
+                <q-item-label>Fr</q-item-label>
               </q-item-section>
             </q-item>
             <q-item v-close-popup clickable @click="lang = 'ar'">
               <q-item-section>
-          <q-item-label>العربية</q-item-label>
+                <q-item-label>العربية</q-item-label>
               </q-item-section>
             </q-item>
           </q-list>
         </q-menu>
-      </q-btn>  
-        <q-btn-toggle v-if="$q.screen.gt.md"
-          v-model="lang"
-          :aria-label="t('layout.header.menu.language')"
-          :aria-haspopup="true"
-          :aria-expanded="false"
-          :aria-controls="'language-menu'"
-          flat
-          dense
-          :options="[
-            { label: 'En', value: 'en-US' },
-            { label: 'Fr', value: 'fr' },
-            { label: 'العربية', value: 'ar' },
-          ]"
-        />
-      </q-tabs>
-
-      <q-btn-dropdown class="lt-md" flat icon="menu" dropdown-icon="none">
-        <q-list>
-          <q-item v-close-popup clickable @click="selectTab('home')">
-            <q-item-section>
-              <q-item-label>Home</q-item-label>
-            </q-item-section>
-          </q-item>
-          <q-item v-close-popup clickable @click="selectTab('about')">
-            <q-item-section>
-              <q-item-label>About</q-item-label>
-            </q-item-section>
-          </q-item>
-          <!-- Add other menu items -->
-        </q-list>
-      </q-btn-dropdown>
+      </q-btn>
     </q-header>
 
     <q-footer
@@ -203,7 +218,7 @@
     </q-footer>
     <transition name="slide-left" mode="out-in">
       <MapLeftPanel
-        v-if="$route.name === 'map' && !leftMiniDrawer"
+        v-if="$route.name === 'map'"
         class="layer-selector-panel"
       />
     </transition>
@@ -234,6 +249,7 @@ import langAr from 'quasar/lang/ar';
 
 import MapRightPanel from 'components/MapRightPanel.vue';
 import MapLeftPanel from 'components/MapLeftPanel.vue';
+import { useQuasar } from 'quasar';
 
 const { leftDrawerOpen, leftMiniDrawer } = storeToRefs(useMapStore());
 // Split the title into three lines for display
@@ -315,6 +331,13 @@ const researchProjects = ref([
     translationKey: 'socioEconomics',
   },
 ]);
+
+const $q = useQuasar();
+
+// Computed property to determine if we need the more_vert button
+const hasHiddenItems = computed(() => {
+  return $q.screen.lt.lg || $q.screen.lt.md || $q.screen.lt.sm;
+});
 </script>
 
 <style lang="scss" scoped>
@@ -371,6 +394,8 @@ const researchProjects = ref([
   --black: #2b2e34;
   --white: #ffffff;
   --red: rgb(255, 67, 44);
+  --primary: rgb(255, 67, 44);
+  --primary2: #ff432c;
   --gold: #c5ae8f;
   --gold2: #a69176;
   --blue: #567888;
@@ -387,6 +412,11 @@ const researchProjects = ref([
 .research-projects-dropdown {
   text-transform: uppercase;
   white-space: nowrap;
+}
+@media screen and (max-width: 1280px) {
+  :deep(.q-tab) {
+    padding: 0 8px;
+  }
 }
 .toolbar-title {
   -webkit-text-size-adjust: 100%;
@@ -433,7 +463,7 @@ const researchProjects = ref([
     height: 2.80769231em;
     margin-left: 0;
     margin-right: 0.25em;
-    @media screen and (max-width: 600px) {
+    @media screen and (max-width: 1280px) {
       width: 3em;
       height: 2em;
       margin-left: 0;
@@ -443,7 +473,7 @@ const researchProjects = ref([
     background-size: contain;
     background-repeat: no-repeat;
     max-height: 76px;
-    max-width:min-content
+    max-width: min-content;
   }
 }
 .clickable {

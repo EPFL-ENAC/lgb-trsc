@@ -5,14 +5,6 @@
       class="map"
     >
       <div id="info"></div>
-      <div id="map-zoom-reset" class="ol-control ol-control-layer-icon">
-        <q-tooltip>
-          {{ leftMiniDrawer ? $t('Expand drawer') : $t('Collapse drawer') }}
-        </q-tooltip>
-        <button class="" type="button" @click="leftMiniDrawer = !leftMiniDrawer">
-          <q-icon :name="leftMiniDrawer ? 'chevron_right' : 'chevron_left'" size="1.125rem" />
-        </button>
-      </div>
     </div>
 
 </template>
