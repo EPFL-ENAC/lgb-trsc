@@ -7,7 +7,6 @@
       <q-toolbar class="clickable" @click="navigateToHome">
         <q-toolbar-title class="toolbar-title">
           <q-avatar class="toolbar-avatar">
-            <!-- <img src="/trsc.svg"> -->
           </q-avatar>
           <!-- <q-route-tab to="/" label="Transnational Red Sea Center" /> -->
           <div class="text-red">
@@ -17,8 +16,8 @@
           </div>
         </q-toolbar-title>
       </q-toolbar>
-
-      <q-tabs align="left" class="q-pr-md gt-sm">
+      <q-tabs align="left" class="q-pr-sm gt-sm" dense  :mobile-arrows="true" :shrink="true" active-color="red" >
+        <!-- // start dropping tab progressively starting at lt.1280px -->
         <q-route-tab to="/about" :label="t('layout.header.menu.about')" />
         <q-route-tab
           to="/the-red-sea"
@@ -58,9 +57,86 @@
           to="/contact-us"
           :label="t('layout.header.menu.contactUs')"
         />
-        <q-btn-toggle
+      <q-btn
+        v-if="$q.screen.lt.lg"
+        flat
+        round
+        icon="more_vert"
+        class="q-ml-md"
+        :aria-controls="'navbar-menu'"
+      >
+        <q-menu>
+          <q-route-tab to="/about" :label="t('layout.header.menu.about')" />
+     
+          <q-route-tab
+            to="/the-red-sea"
+            :label="t('layout.header.menu.theRedSea')"
+          />
+               <q-route-tab
+            to="/community"
+            :label="t('layout.header.menu.community')"
+          />
+          <q-btn-dropdown
+            flat
+            :label="t('layout.header.menu.researchProjects')"
+            no-caps
+            class="research-projects-dropdown"
+          >
+            <q-list>
+              <q-item
+                v-for="project in researchProjects"
+                :key="project.page"
+                @click="() => navigateToProject(project.page)"
+              >
+                <q-item-section>
+                  <q-route-tab
+                    :to="{ name: project.page }"
+                    :label="t(`layout.header.projects.${project.translationKey}`)"
+                  />
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </q-btn-dropdown>
+          <q-route-tab to="/map" :label="t('layout.header.menu.map')" />
+          <q-route-tab
+            to="/resources"
+            :label="t('layout.header.menu.resources')"
+          />
+          <q-route-tab
+          to="/contact-us"
+          :label="t('layout.header.menu.contactUs')"
+        />
+        </q-menu>
+      </q-btn>
+      <q-btn v-if="$q.screen.lt.lg" flat round icon="translate">
+        <q-menu>
+          <q-list>
+            <q-item v-close-popup clickable @click="lang = 'en-US'">
+              <q-item-section>
+          <q-item-label>En</q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item v-close-popup clickable @click="lang = 'fr'">
+              <q-item-section>
+          <q-item-label>Fr</q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item v-close-popup clickable @click="lang = 'ar'">
+              <q-item-section>
+          <q-item-label>العربية</q-item-label>
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-menu>
+      </q-btn>  
+        <q-btn-toggle v-if="$q.screen.gt.md"
           v-model="lang"
+          :aria-label="t('layout.header.menu.language')"
+          :aria-haspopup="true"
+          :aria-expanded="false"
+          :aria-controls="'language-menu'"
           flat
+          dense
           :options="[
             { label: 'En', value: 'en-US' },
             { label: 'Fr', value: 'fr' },
@@ -71,12 +147,12 @@
 
       <q-btn-dropdown class="lt-md" flat icon="menu" dropdown-icon="none">
         <q-list>
-          <q-item clickable v-close-popup @click="selectTab('home')">
+          <q-item v-close-popup clickable @click="selectTab('home')">
             <q-item-section>
               <q-item-label>Home</q-item-label>
             </q-item-section>
           </q-item>
-          <q-item clickable v-close-popup @click="selectTab('about')">
+          <q-item v-close-popup clickable @click="selectTab('about')">
             <q-item-section>
               <q-item-label>About</q-item-label>
             </q-item-section>
@@ -343,11 +419,18 @@ const researchProjects = ref([
     width: 3.76923077em;
     height: 2.80769231em;
     margin-left: 0;
-    margin-right: 0.85em;
+    margin-right: 0.25em;
+    @media screen and (max-width: 600px) {
+      width: 3em;
+      height: 2em;
+      margin-left: 0;
+      margin-right: 0.2em;
+    }
     background-image: url('/trsc.svg');
     background-size: contain;
     background-repeat: no-repeat;
     max-height: 76px;
+    max-width:min-content
   }
 }
 .clickable {
