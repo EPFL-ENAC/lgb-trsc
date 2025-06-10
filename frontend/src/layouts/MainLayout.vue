@@ -66,46 +66,59 @@
         :aria-controls="'navbar-menu'"
       >
         <q-menu>
-          <q-route-tab to="/about" :label="t('layout.header.menu.about')" />
-     
-          <q-route-tab
-            to="/the-red-sea"
-            :label="t('layout.header.menu.theRedSea')"
-          />
-               <q-route-tab
-            to="/community"
-            :label="t('layout.header.menu.community')"
-          />
-          <q-btn-dropdown
-            flat
+          <q-item clickable @click="$router.push('/about')">
+            <q-item-section>
+              <q-item-label>{{ t('layout.header.menu.about') }}</q-item-label>
+            </q-item-section>
+          </q-item>
+          
+          <q-item clickable @click="$router.push('/the-red-sea')">
+            <q-item-section>
+              <q-item-label>{{ t('layout.header.menu.theRedSea') }}</q-item-label>
+            </q-item-section>
+          </q-item>
+          
+          <q-item clickable @click="$router.push('/community')">
+            <q-item-section>
+              <q-item-label>{{ t('layout.header.menu.community') }}</q-item-label>
+            </q-item-section>
+          </q-item>
+          
+          <!-- Replace nested dropdown with expansion item -->
+          <q-expansion-item
             :label="t('layout.header.menu.researchProjects')"
-            no-caps
-            class="research-projects-dropdown"
+            dense
           >
-            <q-list>
-              <q-item
-                v-for="project in researchProjects"
-                :key="project.page"
-                @click="() => navigateToProject(project.page)"
-              >
-                <q-item-section>
-                  <q-route-tab
-                    :to="{ name: project.page }"
-                    :label="t(`layout.header.projects.${project.translationKey}`)"
-                  />
-                </q-item-section>
-              </q-item>
-            </q-list>
-          </q-btn-dropdown>
-          <q-route-tab to="/map" :label="t('layout.header.menu.map')" />
-          <q-route-tab
-            to="/resources"
-            :label="t('layout.header.menu.resources')"
-          />
-          <q-route-tab
-          to="/contact-us"
-          :label="t('layout.header.menu.contactUs')"
-        />
+            <q-item
+              v-for="project in researchProjects"
+              :key="project.page"
+              clickable
+              @click="navigateToProject(project.page)"
+              class="q-pl-md"
+            >
+              <q-item-section>
+                <q-item-label>{{ t(`layout.header.projects.${project.translationKey}`) }}</q-item-label>
+              </q-item-section>
+            </q-item>
+          </q-expansion-item>
+          
+          <q-item clickable @click="$router.push('/map')">
+            <q-item-section>
+              <q-item-label>{{ t('layout.header.menu.map') }}</q-item-label>
+            </q-item-section>
+          </q-item>
+          
+          <q-item clickable @click="$router.push('/resources')">
+            <q-item-section>
+              <q-item-label>{{ t('layout.header.menu.resources') }}</q-item-label>
+            </q-item-section>
+          </q-item>
+          
+          <q-item clickable @click="$router.push('/contact-us')">
+            <q-item-section>
+              <q-item-label>{{ t('layout.header.menu.contactUs') }}</q-item-label>
+            </q-item-section>
+          </q-item>
         </q-menu>
       </q-btn>
       <q-btn v-if="$q.screen.lt.lg" flat round icon="translate">
