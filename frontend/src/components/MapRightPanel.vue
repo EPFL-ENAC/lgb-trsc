@@ -4,13 +4,12 @@
     :mini="!drawer || miniState"
     :mini-to-overlay="!drawer || miniState"
     side="right"
-    :width="400"
-    :breakpoint="400"
+    :width="450"
     :class="'bg-white text-black'"
   >
-        <div
+    <div
       class="absolute"
-      :style="{ top: '16px', left: miniState ? '12px': '-16px', zIndex: 1000 }"
+      :style="{ top: '16px', left: miniState ? '12px' : '-16px', zIndex: 1000 }"
     >
       <q-btn
         dense
