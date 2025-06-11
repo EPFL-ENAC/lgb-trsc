@@ -12,7 +12,11 @@
   >
     <div
       class="absolute"
-      :style="{ top: '16px', right: leftMiniDrawer ? '12px': '-16px', zIndex: 1000 }"
+      :style="{
+        top: '16px',
+        right: leftMiniDrawer ? '12px' : '-16px',
+        zIndex: 1000,
+      }"
     >
       <q-btn
         dense
@@ -251,10 +255,7 @@ import { ref, computed } from 'vue';
 import { useQuasar } from 'quasar';
 import { useLayerManager } from 'maps/composables/useLayerManager';
 import MapLegend from './MapLegend.vue';
-import {
-  mdiEyeOutline,
-  mdiEyeOffOutline,
-} from '@mdi/js';
+import { mdiEyeOutline, mdiEyeOffOutline } from '@mdi/js';
 import {
   geomorphicColorMap,
   benthicColorMap,
@@ -288,7 +289,6 @@ const $q = useQuasar();
 // const leftDrawerOpen = ref(true);
 // const miniState = ref(false);
 
-
 const {
   baseMaps,
   overlayGroups,
@@ -299,7 +299,8 @@ const {
 } = useLayerManager();
 
 const mapStore = useMapStore();
-const { selectedCountry, leftDrawerOpen, leftMiniDrawer } = storeToRefs(mapStore);
+const { selectedCountry, leftDrawerOpen, leftMiniDrawer } =
+  storeToRefs(mapStore);
 const computedOverlayGroups = computed(() => {
   return overlayGroups?.value?.filter((layerGroup) => {
     return (
