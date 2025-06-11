@@ -1,10 +1,10 @@
 <template>
   <q-page class="row items-center justify-evenly about-page">
-    <div class="left-element">
+    <div class="image-element">
       <q-img
         loading="lazy"
         fit="cover"
-        position="center"
+        position="top"
         spinner-color="white"
         placeholder-color="blue-grey-2"
         src="/splash-about-800w.webp"
@@ -23,12 +23,12 @@
         alt="Guilhem Banc-Prandi | TRSC"
         style="height: 100%"
       >
-        <div class="absolute-bottom-right text-subtitle2">
+        <div class="absolute-bottom-right text-subtitle2 q-pa-none text-white">
           Guilhem Banc-Prandi | TRSC
         </div>
       </q-img>
     </div>
-    <div class="right-element">
+    <div class="text-element">
       <div class="markdown-container q-pl-md q-pr-md">
         <q-markdown :src="welcome" />
       </div>
@@ -94,26 +94,37 @@ ar:
 
 <style scoped>
 .about-page {
-  display: grid;
+  display: grid !important;
   grid-template-columns: 60% 40%;
   gap: 1rem;
+  @media screen and (max-width: 1024px) {
+    grid-template-columns: 100%;
+    grid-template-rows: 220px 1fr
+  }
 }
 
-.left-element {
-  /* background-image: url('/splash-about.webp');
-  background-size: cover;
-  background-position: center; */
+.image-element {
   height: 100%;
+
 }
 
-.right-element {
+:deep(.q-img__content) div{
+  padding: 0;
+  padding-right: 0.2em;
+  padding-left: 0.2em;
+  @media screen and (min-width: 1024px) {
+    padding: 0.5rem;
+    
+  }
+}
+.text-element {
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: 1rem;
 }
 
-.right-element p {
+.text-element p {
   margin-bottom: 1rem;
 }
 </style>
