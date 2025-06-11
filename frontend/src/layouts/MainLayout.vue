@@ -1,8 +1,6 @@
 <template>
   <q-layout view="hHh LpR fFf">
-    <q-header
-      class="trsc-header bg-white text-red APax text-weight-thin"
-    >
+    <q-header class="trsc-header bg-white text-red APax text-weight-thin">
       <q-toolbar class="clickable q-pr-xs" @click="navigateToHome">
         <q-toolbar-title class="toolbar-title">
           <q-avatar class="toolbar-avatar"> </q-avatar>
@@ -91,15 +89,21 @@
       <!-- Progressive dropdown menu - shows hidden items -->
       <q-btn v-if="hasHiddenItems" flat round icon="more_vert" class="q-ml-md">
         <q-menu>
-          <q-item v-if="$q.screen.lt.sm" clickable @click="$router.push('/about')">
+          <q-item
+            v-if="$q.screen.lt.sm"
+            clickable
+            @click="$router.push('/about')"
+          >
             <q-item-section>
-              <q-item-label>{{
-                t('layout.header.menu.about')
-              }}</q-item-label>
+              <q-item-label>{{ t('layout.header.menu.about') }}</q-item-label>
             </q-item-section>
           </q-item>
           <!-- Show items that are hidden from main nav -->
-          <q-item v-if="$q.screen.lt.md" clickable @click="$router.push('/the-red-sea')">
+          <q-item
+            v-if="$q.screen.lt.md"
+            clickable
+            @click="$router.push('/the-red-sea')"
+          >
             <q-item-section>
               <q-item-label>{{
                 t('layout.header.menu.theRedSea')
@@ -107,7 +111,11 @@
             </q-item-section>
           </q-item>
 
-          <q-item v-if="$q.screen.lt.md" clickable @click="$router.push('/community')">
+          <q-item
+            v-if="$q.screen.lt.md"
+            clickable
+            @click="$router.push('/community')"
+          >
             <q-item-section>
               <q-item-label>{{
                 t('layout.header.menu.community')
@@ -136,13 +144,21 @@
             </q-item>
           </q-expansion-item>
 
-          <q-item v-if="$q.screen.lt.sm" clickable @click="$router.push('/map')">
+          <q-item
+            v-if="$q.screen.lt.sm"
+            clickable
+            @click="$router.push('/map')"
+          >
             <q-item-section>
               <q-item-label>{{ t('layout.header.menu.map') }}</q-item-label>
             </q-item-section>
           </q-item>
 
-          <q-item v-if="$q.screen.lt.lg" clickable @click="$router.push('/resources')">
+          <q-item
+            v-if="$q.screen.lt.lg"
+            clickable
+            @click="$router.push('/resources')"
+          >
             <q-item-section>
               <q-item-label>{{
                 t('layout.header.menu.resources')
@@ -150,7 +166,11 @@
             </q-item-section>
           </q-item>
 
-          <q-item v-if="$q.screen.lt.lg" clickable @click="$router.push('/contact-us')">
+          <q-item
+            v-if="$q.screen.lt.lg"
+            clickable
+            @click="$router.push('/contact-us')"
+          >
             <q-item-section>
               <q-item-label>{{
                 t('layout.header.menu.contactUs')
@@ -217,10 +237,7 @@
       </q-toolbar>
     </q-footer>
     <transition name="slide-left" mode="out-in">
-      <MapLeftPanel
-        v-if="$route.name === 'map'"
-        class="layer-selector-panel"
-      />
+      <MapLeftPanel v-if="$route.name === 'map'" class="layer-selector-panel" />
     </transition>
 
     <MapRightPanel v-if="$route.name === 'map'" class="info-panel" />
@@ -372,6 +389,8 @@ const hasHiddenItems = computed(() => {
 }
 .footer-text {
   font-size: 0.8rem;
+  text-wrap-mode: wrap;
+  text-align: center;
 }
 :root {
   --info: #46789a;
@@ -407,7 +426,7 @@ const hasHiddenItems = computed(() => {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  height:auto;
+  height: auto;
   padding: 0.5em;
   background-color: var(--white);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
