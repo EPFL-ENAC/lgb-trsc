@@ -15,7 +15,7 @@
 }
 body {
   font-family: Apax, Helvetica, Arial, sans-serif;
-  font-size: 18px;
+  font-size: 16px;
   text-rendering: geometricPrecision;
 }
 
@@ -65,6 +65,15 @@ body {
     44,
     0.3
   ); /* Using warning-color with transparency */
+}
+
+.ol-control-layer-icon {
+  left: 2.5em;
+  top: .5em;
+  width: 1.5em;
+  & button {
+    cursor: pointer !important
+  }
 }
 
 

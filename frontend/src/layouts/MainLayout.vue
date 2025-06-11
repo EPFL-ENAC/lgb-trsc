@@ -1,25 +1,40 @@
 <template>
   <q-layout view="hHh LpR fFf">
-    <q-header
-      style="height: var(--header-height); border-bottom: 1px solid red"
-      class="bg-white text-red APax text-weight-thin"
-    >
-      <q-toolbar class="clickable" @click="navigateToHome">
+    <q-header class="trsc-header bg-white text-red APax text-weight-thin">
+      <q-toolbar class="clickable q-pr-xs" @click="navigateToHome">
         <q-toolbar-title class="toolbar-title">
-          <q-avatar class="toolbar-avatar">
-            <!-- <img src="/trsc.svg"> -->
-          </q-avatar>
-          <!-- <q-route-tab to="/" label="Transnational Red Sea Center" /> -->
-          <div class="text-red">{{ titleLines[0] }}<br />{{ titleLines[1] }}<br />{{ titleLines[2] }}</div>
+          <q-avatar class="toolbar-avatar"> </q-avatar>
+          <div class="text-red">
+            {{ titleLines[0] }}<br />{{ titleLines[1] }}<br />{{
+              titleLines[2]
+            }}
+          </div>
         </q-toolbar-title>
       </q-toolbar>
 
-      <q-tabs align="left" class="q-pr-md">
-        <q-route-tab to="/about" :label="t('layout.header.menu.about')" />
-        <q-route-tab to="/the-red-sea" :label="t('layout.header.menu.theRedSea')" />
-        <q-route-tab to="/community" :label="t('layout.header.menu.community')" />
+      <q-tabs align="left" dense active-color="red">
+        <!-- Always visible tabs -->
+        <q-route-tab
+          v-if="$q.screen.gt.xs"
+          to="/about"
+          :label="t('layout.header.menu.about')"
+        />
+
+        <!-- Hide progressively based on screen size -->
+        <q-route-tab
+          v-if="$q.screen.gt.sm"
+          to="/the-red-sea"
+          :label="t('layout.header.menu.theRedSea')"
+        />
+        <q-route-tab
+          v-if="$q.screen.gt.sm"
+          to="/community"
+          :label="t('layout.header.menu.community')"
+        />
         <q-btn-dropdown
+          v-if="$q.screen.gt.sm"
           flat
+          dense
           :label="t('layout.header.menu.researchProjects')"
           no-caps
           class="q-ml-md research-projects-dropdown"
@@ -39,12 +54,30 @@
             </q-item>
           </q-list>
         </q-btn-dropdown>
-        <q-route-tab to="/map" :label="t('layout.header.menu.map')" />
-        <q-route-tab to="/resources" :label="t('layout.header.menu.resources')" />
-        <q-route-tab to="/contact-us" :label="t('layout.header.menu.contactUs')" />
+        <q-route-tab
+          v-if="$q.screen.gt.xs"
+          to="/map"
+          :label="t('layout.header.menu.map')"
+        />
+        <q-route-tab
+          v-if="$q.screen.gt.md"
+          to="/resources"
+          :label="t('layout.header.menu.resources')"
+        />
+        <q-route-tab
+          v-if="$q.screen.gt.md"
+          to="/contact-us"
+          :label="t('layout.header.menu.contactUs')"
+        />
+
+        <!-- Language selector - always visible on larger screens -->
         <q-btn-toggle
+          v-if="$q.screen.gt.md"
           v-model="lang"
+          class="q-mr-md q-ml-md"
           flat
+          dense
+          aria-label="Language Selector"
           :options="[
             { label: 'En', value: 'en-US' },
             { label: 'Fr', value: 'fr' },
@@ -52,6 +85,129 @@
           ]"
         />
       </q-tabs>
+
+      <!-- Progressive dropdown menu - shows hidden items -->
+      <q-btn v-if="hasHiddenItems" flat round icon="more_vert" class="q-ml-md">
+        <q-menu>
+          <q-item
+            v-if="$q.screen.lt.sm"
+            clickable
+            @click="$router.push('/about')"
+          >
+            <q-item-section>
+              <q-item-label>{{ t('layout.header.menu.about') }}</q-item-label>
+            </q-item-section>
+          </q-item>
+          <!-- Show items that are hidden from main nav -->
+          <q-item
+            v-if="$q.screen.lt.md"
+            clickable
+            @click="$router.push('/the-red-sea')"
+          >
+            <q-item-section>
+              <q-item-label>{{
+                t('layout.header.menu.theRedSea')
+              }}</q-item-label>
+            </q-item-section>
+          </q-item>
+
+          <q-item
+            v-if="$q.screen.lt.md"
+            clickable
+            @click="$router.push('/community')"
+          >
+            <q-item-section>
+              <q-item-label>{{
+                t('layout.header.menu.community')
+              }}</q-item-label>
+            </q-item-section>
+          </q-item>
+
+          <!-- Research projects when hidden from main nav -->
+          <q-expansion-item
+            v-if="$q.screen.lt.md"
+            :label="t('layout.header.menu.researchProjects')"
+            dense
+          >
+            <q-item
+              v-for="project in researchProjects"
+              :key="project.page"
+              clickable
+              class="q-pl-md"
+              @click="navigateToProject(project.page)"
+            >
+              <q-item-section>
+                <q-item-label>{{
+                  t(`layout.header.projects.${project.translationKey}`)
+                }}</q-item-label>
+              </q-item-section>
+            </q-item>
+          </q-expansion-item>
+
+          <q-item
+            v-if="$q.screen.lt.sm"
+            clickable
+            @click="$router.push('/map')"
+          >
+            <q-item-section>
+              <q-item-label>{{ t('layout.header.menu.map') }}</q-item-label>
+            </q-item-section>
+          </q-item>
+
+          <q-item
+            v-if="$q.screen.lt.lg"
+            clickable
+            @click="$router.push('/resources')"
+          >
+            <q-item-section>
+              <q-item-label>{{
+                t('layout.header.menu.resources')
+              }}</q-item-label>
+            </q-item-section>
+          </q-item>
+
+          <q-item
+            v-if="$q.screen.lt.lg"
+            clickable
+            @click="$router.push('/contact-us')"
+          >
+            <q-item-section>
+              <q-item-label>{{
+                t('layout.header.menu.contactUs')
+              }}</q-item-label>
+            </q-item-section>
+          </q-item>
+        </q-menu>
+      </q-btn>
+
+      <!-- Mobile language selector -->
+      <q-btn
+        v-if="$q.screen.lt.lg"
+        flat
+        round
+        icon="translate"
+        aria-label="Language Selector"
+      >
+        <q-menu>
+          <q-list>
+            <q-item v-close-popup clickable @click="lang = 'en-US'">
+              <q-item-section>
+                <q-item-label>En</q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item v-close-popup clickable @click="lang = 'fr'">
+              <q-item-section>
+                <q-item-label>Fr</q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item v-close-popup clickable @click="lang = 'ar'">
+              <q-item-section>
+                <q-item-label>العربية</q-item-label>
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-menu>
+      </q-btn>
     </q-header>
 
     <q-footer
@@ -80,9 +236,11 @@
         </q-toolbar-title>
       </q-toolbar>
     </q-footer>
+    <transition name="slide-left" mode="out-in">
+      <MapLeftPanel v-if="$route.name === 'map'" class="layer-selector-panel" />
+    </transition>
 
-    <MapLeftPanel v-if="$route.name === 'map'" class="layer-selector-panel" />
-    <MapRightPanel v-if="$route.name === 'map'" class="info-panel"/>
+    <MapRightPanel v-if="$route.name === 'map'" class="info-panel" />
     <q-page-container>
       <q-page>
         <router-view />
@@ -100,17 +258,22 @@ const { locale, t } = useI18n();
 const lang = ref(locale.value);
 const router = useRouter();
 import { Quasar } from 'quasar';
+import { useMapStore } from 'stores/mapStore';
+import { storeToRefs } from 'pinia';
 import langEn from 'quasar/lang/en-US';
 import langFr from 'quasar/lang/fr';
 import langAr from 'quasar/lang/ar';
 
 import MapRightPanel from 'components/MapRightPanel.vue';
 import MapLeftPanel from 'components/MapLeftPanel.vue';
+import { useQuasar } from 'quasar';
+
+const { leftDrawerOpen, leftMiniDrawer } = storeToRefs(useMapStore());
 // Split the title into three lines for display
 const titleLines = computed(() => {
   const title = t('layout.header.title');
   const words = title.split(' ');
-  
+
   // For Arabic, handle the title differently
   if (locale.value === 'ar') {
     // Simple approach for Arabic - split by spaces into 3 roughly equal parts
@@ -118,10 +281,10 @@ const titleLines = computed(() => {
     return [
       words.slice(0, third).join(' '),
       words.slice(third, third * 2).join(' '),
-      words.slice(third * 2).join(' ')
+      words.slice(third * 2).join(' '),
     ];
   }
-  
+
   // For English and French, hardcode the splits for better appearance
   if (title === 'Transnational Red Sea Center') {
     return ['Transnational', 'Red Sea', 'Center'];
@@ -133,7 +296,7 @@ const titleLines = computed(() => {
     return [
       words.slice(0, third).join(' '),
       words.slice(third, third * 2).join(' '),
-      words.slice(third * 2).join(' ')
+      words.slice(third * 2).join(' '),
     ];
   }
 });
@@ -163,19 +326,60 @@ function navigateToProject(page: string) {
 
 const researchProjects = ref([
   { name: '3D mapping', page: '3d_mapping', translationKey: '3dMapping' },
-  { name: 'Seascape Genomics', page: 'seascape_genomics', translationKey: 'seascapeGenomics' },
+  {
+    name: 'Seascape Genomics',
+    page: 'seascape_genomics',
+    translationKey: 'seascapeGenomics',
+  },
   { name: 'eDNA', page: 'edna', translationKey: 'edna' },
   {
     name: 'echinoderm population genetics',
     page: 'echinoderm_population_genetics',
-    translationKey: 'echinodermPopulationGenetics'
+    translationKey: 'echinodermPopulationGenetics',
   },
-  { name: 'marine pollution', page: 'marine_pollution', translationKey: 'marinePollution' },
-  { name: 'socio economics', page: 'socio_economics', translationKey: 'socioEconomics' },
+  {
+    name: 'marine pollution',
+    page: 'marine_pollution',
+    translationKey: 'marinePollution',
+  },
+  {
+    name: 'socio economics',
+    page: 'socio_economics',
+    translationKey: 'socioEconomics',
+  },
 ]);
+
+const $q = useQuasar();
+
+// Computed property to determine if we need the more_vert button
+const hasHiddenItems = computed(() => {
+  return $q.screen.lt.lg || $q.screen.lt.md || $q.screen.lt.sm;
+});
 </script>
 
 <style lang="scss" scoped>
+/* Slide animation for MapLeftPanel */
+.slide-left-enter-active,
+.slide-left-leave-active {
+  transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out;
+}
+
+.slide-left-enter-from {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+.slide-left-leave-to {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+.slide-left-enter-to,
+.slide-left-leave-from {
+  transform: translateX(0);
+  opacity: 1;
+}
+
 .toolbar-footer {
   display: flex;
   flex-direction: row;
@@ -185,6 +389,8 @@ const researchProjects = ref([
 }
 .footer-text {
   font-size: 0.8rem;
+  text-wrap-mode: wrap;
+  text-align: center;
 }
 :root {
   --info: #46789a;
@@ -207,6 +413,8 @@ const researchProjects = ref([
   --black: #2b2e34;
   --white: #ffffff;
   --red: rgb(255, 67, 44);
+  --primary: rgb(255, 67, 44);
+  --primary2: #ff432c;
   --gold: #c5ae8f;
   --gold2: #a69176;
   --blue: #567888;
@@ -218,11 +426,21 @@ const researchProjects = ref([
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  height: auto;
+  padding: 0.5em;
+  background-color: var(--white);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
 }
 
 .research-projects-dropdown {
   text-transform: uppercase;
   white-space: nowrap;
+}
+@media screen and (max-width: 1280px) {
+  :deep(.q-tab) {
+    padding: 0 8px;
+  }
 }
 .toolbar-title {
   -webkit-text-size-adjust: 100%;
@@ -268,11 +486,18 @@ const researchProjects = ref([
     width: 3.76923077em;
     height: 2.80769231em;
     margin-left: 0;
-    margin-right: 0.85em;
+    margin-right: 0.25em;
+    @media screen and (max-width: 1280px) {
+      width: 3em;
+      height: 2em;
+      margin-left: 0;
+      margin-right: 0.2em;
+    }
     background-image: url('/trsc.svg');
     background-size: contain;
     background-repeat: no-repeat;
     max-height: 76px;
+    max-width: min-content;
   }
 }
 .clickable {
@@ -280,16 +505,16 @@ const researchProjects = ref([
 }
 
 /* i18n-specific styles */
-[dir="rtl"] .toolbar-title {
+[dir='rtl'] .toolbar-title {
   /* Adjust title for RTL languages */
   text-align: right;
 }
 
-[dir="rtl"] .toolbar-footer {
+[dir='rtl'] .toolbar-footer {
   flex-direction: row-reverse;
 }
 
-[dir="rtl"] .q-tabs {
+[dir='rtl'] .q-tabs {
   justify-content: flex-end;
 }
 

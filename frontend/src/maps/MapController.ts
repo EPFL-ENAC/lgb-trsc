@@ -7,6 +7,7 @@ import {
   Zoom,
   Attribution,
   OverviewMap,
+  Control,
 } from 'ol/control';
 import { createOSMLayer } from './layers/base/OSMLayer';
 import { createArcGISLayer } from './layers/base/ArcGISLayer';
@@ -74,6 +75,7 @@ export class MapController {
 
   constructor(target: string) {
     // Create OverviewMap control
+    console.log('Creating OverviewMap control', document.getElementById('map-zoom-reset'));
     this.overviewMapControl = createOverviewMap();
     this.map = new Map({
       target,
@@ -91,6 +93,22 @@ export class MapController {
         new Zoom(),
         new Attribution({
           collapsible: false,
+        }),
+        new Control({
+          element: document.getElementById('map-zoom-reset') as HTMLElement,
+          // render: function (this: Control, target: HTMLElement) {
+          //   // Custom rendering logic for the reset zoom button
+          //   target.innerHTML = '<button class="reset-zoom">Reset Zoom</button>';
+          //   const button = target.querySelector('.reset-zoom');
+          //   if (button) {
+          //     button.onclick = () => {
+          //       // if (this.map) {
+          //       //   this.map.getView().setCenter(defaultCenter);
+          //       //   this.map.getView().setZoom(defaultMinZoom);
+          //       // }
+          //     };
+          //   }
+          // }
         }),
         this.overviewMapControl,
       ],

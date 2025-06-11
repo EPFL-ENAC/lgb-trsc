@@ -1,9 +1,15 @@
 <template>
   <div v-if="selectedExpedition" id="expedition-popup" class="popup">
     <div class="btn-group">
-      <button class="close-btn" @click="closeExpedition">{{ t('ui.back') }}</button>
+      <button class="close-btn" @click="closeExpedition">
+        {{ t('ui.back') }}
+      </button>
       <button class="download-btn" @click="() => downloadExpedition()">
-        {{ t('ui.download_summary', { site: selectedExpedition.sampling_site_name }) }}
+        {{
+          t('ui.download_summary', {
+            site: selectedExpedition.sampling_site_name,
+          })
+        }}
       </button>
       <div v-if="isDev" class="debug-dropdown">
         <button class="debug-toggle" @click="isDebugOpen = !isDebugOpen">
@@ -15,11 +21,15 @@
               <h4 class="debug-title">{{ t('ui.collection_data') }}</h4>
               <div class="debug-item">
                 <span class="debug-label">{{ t('ui.expeditions') }}:</span>
-                <span class="debug-value">{{ selectedExpeditions.length }}</span>
+                <span class="debug-value">{{
+                  selectedExpeditions.length
+                }}</span>
               </div>
               <div class="debug-item">
                 <span class="debug-label">{{ t('ui.location_hash') }}:</span>
-                <span class="debug-value">{{ selectedExpedition.locationNameHash }}</span>
+                <span class="debug-value">{{
+                  selectedExpedition.locationNameHash
+                }}</span>
               </div>
             </div>
 
@@ -35,7 +45,9 @@
               </div>
               <div class="debug-item">
                 <span class="debug-label">{{ t('ui.experiment') }}:</span>
-                <span class="debug-value">{{ selectedExpeditionExperiment }}</span>
+                <span class="debug-value">{{
+                  selectedExpeditionExperiment
+                }}</span>
               </div>
             </div>
 
@@ -51,23 +63,37 @@
               </div>
               <div class="debug-item">
                 <span class="debug-label">{{ t('ui.experiments') }}:</span>
-                <span class="debug-value">{{ selectedExpeditionsExperiments }}</span>
+                <span class="debug-value">{{
+                  selectedExpeditionsExperiments
+                }}</span>
               </div>
             </div>
 
             <div class="debug-section">
               <h4 class="debug-title">{{ t('ui.relationships') }}</h4>
               <div class="debug-item">
-                <span class="debug-label">{{ t('ui.years_by_experiment') }}:</span>
-                <pre class="debug-json">{{ JSON.stringify(selectedExpeditionsYearsByExperiment, null, 2) }}</pre>
+                <span class="debug-label"
+                  >{{ t('ui.years_by_experiment') }}:</span
+                >
+                <pre class="debug-json">{{
+                  JSON.stringify(selectedExpeditionsYearsByExperiment, null, 2)
+                }}</pre>
               </div>
               <div class="debug-item">
-                <span class="debug-label">{{ t('ui.dates_by_experiment') }}:</span>
-                <pre class="debug-json">{{ JSON.stringify(selectedExpeditionsDatesByExperiment, null, 2) }}</pre>
+                <span class="debug-label"
+                  >{{ t('ui.dates_by_experiment') }}:</span
+                >
+                <pre class="debug-json">{{
+                  JSON.stringify(selectedExpeditionsDatesByExperiment, null, 2)
+                }}</pre>
               </div>
               <div class="debug-item">
-                <span class="debug-label">{{ t('ui.experiments_by_years') }}:</span>
-                <pre class="debug-json">{{ JSON.stringify(selectedExpeditionsExperimentsByYears, null, 2) }}</pre>
+                <span class="debug-label"
+                  >{{ t('ui.experiments_by_years') }}:</span
+                >
+                <pre class="debug-json">{{
+                  JSON.stringify(selectedExpeditionsExperimentsByYears, null, 2)
+                }}</pre>
               </div>
             </div>
           </div>
@@ -83,7 +109,10 @@
       {{ selectedExpedition.event_id }}
     </p>
     <p>
-      <span v-if="selectedExpedition.latitude_end">{{ t('ui.start_position') }}</span> {{ t('ui.position') }}:
+      <span v-if="selectedExpedition.latitude_end">{{
+        t('ui.start_position')
+      }}</span>
+      {{ t('ui.position') }}:
       <span v-if="selectedExpedition.latitude_start">
         N {{ formatCoordinate(selectedExpedition.latitude_start, 'N') }} E
         {{ formatCoordinate(selectedExpedition.longitude_start, 'E') }}
@@ -164,7 +193,7 @@
           v-if="isValidSampleSet"
           :raw-data="sampleSet"
           height="400px"
-          width="450px"
+          width="410px"
           :substrate-level="selectedExpeditionSubstrateLevel"
           :tooltip="true"
           :scroll-legend="true"
@@ -565,7 +594,7 @@ en:
     seascape_genomics: Seascape Genomics
   ui:
     back: Back
-    download_summary: "Download {site} Summary"
+    download_summary: 'Download {site} Summary'
     show_debug: Show Debug Info
     hide_debug: Hide Debug Info
     collection_data: Collection Data
@@ -603,7 +632,7 @@ fr:
     seascape_genomics: Génomique des paysages marins
   ui:
     back: Retour
-    download_summary: "Télécharger le résumé de {site}"
+    download_summary: 'Télécharger le résumé de {site}'
     show_debug: Afficher les infos de debug
     hide_debug: Masquer les infos de debug
     collection_data: Données de collecte
@@ -641,7 +670,7 @@ ar:
     seascape_genomics: جينوميات المناظر البحرية
   ui:
     back: رجوع
-    download_summary: "تحميل ملخص {site}"
+    download_summary: 'تحميل ملخص {site}'
     show_debug: عرض معلومات التصحيح
     hide_debug: إخفاء معلومات التصحيح
     collection_data: بيانات الجمع

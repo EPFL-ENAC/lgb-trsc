@@ -19,7 +19,7 @@ import { useI18n } from 'vue-i18n';
 
 const TIME_OUT = 150;
 
-// Props
+// Props - Remove miniState since it's not needed
 const props = defineProps({
   rawData: {
     type: Array,
@@ -61,7 +61,8 @@ function getChartOption(data, substrateLevel) {
   function getSiteNameFromSiteId(data, SiteId) {
     if (!data) return '';
     return (
-      data.find((item) => item.id === parseInt(SiteId))?.sampling_site_name || ''
+      data.find((item) => item.id === parseInt(SiteId))?.sampling_site_name ||
+      ''
     );
   }
 
@@ -147,7 +148,9 @@ function getChartOption(data, substrateLevel) {
     },
     tooltip: props.tooltip ? getTooltip(data) : undefined,
     legend: {
-      data: validSubstratesMap[substrateLevel].map((substrate) => validSubtrateMapKeyText[substrate]),
+      data: validSubstratesMap[substrateLevel].map(
+        (substrate) => validSubtrateMapKeyText[substrate]
+      ),
       orient: 'horizontal',
       selectedMode: 'multiple',
       bottom: 0,
@@ -185,7 +188,7 @@ function getChartOption(data, substrateLevel) {
   };
 }
 
-// --- Chart Lifecycle ---
+// --- Simplified Chart Lifecycle ---
 const handleResize = debounce(() => {
   chart.value?.resize();
 }, TIME_OUT);
@@ -194,13 +197,17 @@ const initChart = () => {
   if (!chart.value && chartEl.value) {
     chart.value = echarts.init(chartEl.value);
   }
-  const option = getChartOption(props.rawData, props.substrateLevel);
-  chart.value?.setOption(option);
+  if (chart.value && props.rawData?.length > 0) {
+    const option = getChartOption(props.rawData, props.substrateLevel);
+    chart.value.setOption(option);
+  }
 };
 
 const closeChart = () => {
-  chart.value?.dispose();
-  chart.value = null;
+  if (chart.value) {
+    chart.value.dispose();
+    chart.value = null;
+  }
 };
 
 onMounted(() => {
@@ -211,10 +218,10 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener('resize', handleResize);
   closeChart();
-  handleResize?.cancel();
+  handleResize?.cancel?.();
 });
 
-// --- Watchers ---
+// --- Simplified Watchers ---
 watch(
   () => props.rawData,
   (value) => {

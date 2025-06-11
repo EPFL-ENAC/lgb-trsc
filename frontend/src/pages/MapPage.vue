@@ -30,8 +30,9 @@ const mapWidth = ref(0);
 const mapHeight = ref(0);
 const mapController = ref<MapController | null>(null);
 
-const { drawer } = storeToRefs(mapStore);
+const { drawer, leftMiniDrawer } = storeToRefs(mapStore);
 console.log('drawer', drawer.value);
+
 // Update dimensions when drawer changes
 watch(drawer, () => {
   updateMapDimensions();

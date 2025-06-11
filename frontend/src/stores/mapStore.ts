@@ -60,6 +60,22 @@ export const useMapStore = defineStore('map', () => {
     },
   });
 
+  const _leftDrawerOpen = ref<boolean>(true);
+  const leftDrawerOpen = computed({
+    get: () => _leftDrawerOpen.value,
+    set: (value: boolean) => {
+      _leftDrawerOpen.value = value;
+    },
+  });
+
+  const _leftMiniDrawer = ref<boolean>(false);
+  const leftMiniDrawer = computed({
+    get: () => _leftMiniDrawer.value,
+    set: (value: boolean) => {
+      _leftMiniDrawer.value = value;
+    },
+  });
+
   const selectedExpeditionYear = ref<string | null>(null);
   function setSelectedExpeditionYear(year: string) {
     selectedExpeditionYear.value = year;
@@ -519,6 +535,8 @@ export const useMapStore = defineStore('map', () => {
     hoveredExpeditionPixel,
     onHover,
     drawer,
+    leftDrawerOpen,
+    leftMiniDrawer,
     selectedExpeditions,
     selectedExpeditionsYears,
     selectedExpeditionsDates,
