@@ -4,8 +4,8 @@
     :mini="!leftDrawerOpen || leftMiniDrawer"
     side="left"
     show-if-above
-    :width="500"
-    :breakpoint="500"
+    :width="drawerWidth"
+    :breakpoint="300"
     bordered
     :class="['bg-white', 'left-panel', 'q-pa-md']"
     persistent
@@ -29,6 +29,7 @@
       <q-expansion-item
         v-for="(group, groupIndex) in computedOverlayGroups"
         :key="group.title"
+        v-model="expandedGroups[groupIndex]"
         switch-toggle-side
         expand-separator
         :group="`overlays${groupIndex}`"
@@ -37,6 +38,7 @@
             ? t('panel.environmental_layers')
             : group.title
         "
+        @update:model-value="(val) => onGroupExpansionChange(group.title, val)"
       >
         <template #header="">
           <div class="layer-group">
@@ -370,6 +372,22 @@ const getLayerLegend = (layer: BaseLayer) => {
   }
 };
 
+// Track expansion state of groups
+const expandedGroups = ref<Record<number, boolean>>({});
+const isEnvironmentalLayersExpanded = ref(false);
+
+// Computed property for drawer width
+const drawerWidth = computed(() => {
+  return isEnvironmentalLayersExpanded.value ? 500 : 300;
+});
+
+// Handle group expansion changes
+const onGroupExpansionChange = (groupTitle: string, isExpanded: boolean) => {
+  if (groupTitle === 'Environmental Layers') {
+    isEnvironmentalLayersExpanded.value = isExpanded;
+  }
+};
+
 const toggleOverlayLayer = (
   groupIndex: number,
   layerIndex: number,
@@ -417,7 +435,6 @@ const toggleOverlayLayer = (
 
 :root {
   --checkbox-cursor: default !important;
-  --left-panel-width: 500px;
   --left-panel-height: -webkit-fill-available;
   --left-panel-height: -moz-available;
   --left-panel-height: fill-available;

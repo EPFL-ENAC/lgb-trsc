@@ -4,8 +4,8 @@
     :mini="!drawer || miniState"
     :mini-to-overlay="!drawer || miniState"
     side="right"
-    :width="500"
-    :breakpoint="500"
+    :width="400"
+    :breakpoint="400"
     :class="'bg-white text-black'"
   >
         <div
