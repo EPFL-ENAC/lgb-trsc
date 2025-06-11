@@ -1,11 +1,19 @@
 <template>
   <div class="popup">
-    <button class="close-btn" @click="() => closeDrawer()">{{ $t('back') }}</button>
+    <button class="close-btn" @click="() => closeDrawer()">
+      {{ $t('back') }}
+    </button>
     <h3 class="country-name">{{ country.name }}</h3>
     <div class="country-info">
-      <p><strong>{{ $t('dateOfPastVisits') }}</strong> {{ country.visited }}</p>
-      <p><strong>{{ $t('ongoingProjects') }}</strong> {{ country.projects }}</p>
-      <p><strong>{{ $t('numberOfSitesVisited') }}</strong> {{ country.sites }}</p>
+      <p>
+        <strong>{{ $t('dateOfPastVisits') }}</strong> {{ country.visited }}
+      </p>
+      <p>
+        <strong>{{ $t('ongoingProjects') }}</strong> {{ country.projects }}
+      </p>
+      <p>
+        <strong>{{ $t('numberOfSitesVisited') }}</strong> {{ country.sites }}
+      </p>
       <p>
         <strong>{{ $t('numberOfPermanentMonitoringSites') }}</strong>
         {{ country.monitoring }}
@@ -14,7 +22,10 @@
         <strong>{{ $t('numberOfTrainingWorkshopCompleted') }}</strong>
         {{ country.training }}
       </p>
-      <p><strong>{{ $t('localCollaborators') }}</strong> {{ country.collaboration }}</p>
+      <p>
+        <strong>{{ $t('localCollaborators') }}</strong>
+        {{ country.collaboration }}
+      </p>
       <p v-if="country.contact">
         <strong>{{ $t('contactPersons') }}</strong> {{ country.contact }}
       </p>
@@ -50,7 +61,6 @@
         <BarChart3DMapping
           :raw-data="country.rawData"
           :style="{ margin: '0 auto' }"
-          :mini-state="miniState"
           height="76%"
           width="90%"
           :tooltip="true"
@@ -71,8 +81,9 @@
       <div class="card" style="cursor: pointer" @click="toggle3DZoomedChart">
         <BarChart3DMapping
           :raw-data="country.rawData"
+          height="400px"
+          width="415px"
           :tooltip="false"
-          width="90%"
         />
         <p>{{ $t('3dMapping') }}</p>
       </div>
@@ -80,12 +91,16 @@
         <h3 class="card_title">{{ $t('numberOfDetectedSpeciesPerFamily') }}</h3>
         <img src="/eDNANew.png" alt="eDNA" />
         <p>{{ $t('environmentalDNAProject') }}</p>
-        <p><i>{{ $t('temporaryResults') }}</i></p>
+        <p>
+          <i>{{ $t('temporaryResults') }}</i>
+        </p>
       </div>
       <div class="card">
         <!-- <img src="/seacape-genomics.png" alt="Seascape Genomics" /> -->
         <p>{{ $t('seascapeGenomics') }}</p>
-        <p><i>{{ $t('comingSoon') }}</i></p>
+        <p>
+          <i>{{ $t('comingSoon') }}</i>
+        </p>
       </div>
       <div class="card">
         <!-- <img src="/seacape-genomics.png" alt="Seascape Genomics" /> -->
@@ -119,10 +134,10 @@ import BarChart3DMapping from './BarChart3DMapping.vue';
 import communities from 'assets/communities';
 import { useI18n } from 'vue-i18n';
 
-    const { t: $t } = useI18n({
-      inheritLocale: true,
-      useScope: 'local'
-    })
+const { t: $t } = useI18n({
+  inheritLocale: true,
+  useScope: 'local',
+});
 
 const props = defineProps({
   country: {
@@ -152,7 +167,6 @@ const toggle3DZoomedChart = () => {
 };
 </script>
 
-
 <i18n lang="yaml">
 en:
   back: Back
@@ -178,7 +192,7 @@ fr:
   ongoingProjects: 'Projets en cours :'
   numberOfSitesVisited: 'Nombre de sites visités :'
   numberOfPermanentMonitoringSites: 'Nombre de sites de suivi permanent :'
-  numberOfTrainingWorkshopCompleted: 'Nombre d''ateliers de formation réalisés :'
+  numberOfTrainingWorkshopCompleted: "Nombre d'ateliers de formation réalisés :"
   localCollaborators: 'Collaborateurs locaux :'
   contactPersons: 'Personnes de contact :'
   3dMapping: Cartographie 3D
