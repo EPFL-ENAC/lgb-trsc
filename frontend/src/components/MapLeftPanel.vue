@@ -379,8 +379,16 @@ const isEnvironmentalLayersExpanded = ref(false);
 
 // Computed property for drawer width
 const drawerWidth = computed(() => {
-  return isEnvironmentalLayersExpanded.value ? 500 : 300;
+  const screenWidth = window.innerWidth;
+  const baseWidth = isEnvironmentalLayersExpanded.value ? 500 : 300;
+  
+  if (screenWidth <= 500) {
+    return Math.min(screenWidth, baseWidth);
+  }
+  
+  return Math.max(300, Math.min(500, baseWidth));
 });
+
 
 // Handle group expansion changes
 const onGroupExpansionChange = (groupTitle: string, isExpanded: boolean) => {

@@ -87,7 +87,13 @@
       </q-tabs>
 
       <!-- Progressive dropdown menu - shows hidden items -->
-      <q-btn v-if="hasHiddenItems" flat round icon="more_vert" class="q-ml-md">
+      <q-btn
+        v-if="hasHiddenItems"
+        flat
+        round
+        icon="more_vert"
+        :class="$q.screen.lt.sm ? 'q-ml-xs' : 'q-ml-md'"
+      >
         <q-menu>
           <q-item
             v-if="$q.screen.lt.sm"
@@ -219,17 +225,10 @@
           <span class="footer-text">
             {{ t('layout.footer.developedBy') }}
           </span>
-          <q-avatar style="border-radius: 0%; width: auto; height: auto">
+          <q-avatar class="toolbar-avatar-epfl">
             <img style="width: auto" src="/EPFL_logo.png" />
           </q-avatar>
-          <q-avatar
-            style="
-              border-radius: 0%;
-              width: 118px;
-              height: auto;
-              margin-left: 1rem;
-            "
-          >
+          <q-avatar class="toolbar-avatar-swiss">
             <q-img fit="scale-down" src="/fdfa.png" />
           </q-avatar>
           <!-- <div>Sponsors</div> -->
@@ -387,6 +386,59 @@ const hasHiddenItems = computed(() => {
   align-items: center;
   gap: 1rem;
 }
+.toolbar-avatar-epfl {
+  border-radius: 0%;
+  width: auto;
+  height: auto;
+}
+.toolbar-avatar-swiss {
+  border-radius: 0%;
+  width: 118px;
+  height: auto;
+  margin-left: 1rem;
+}
+
+@media screen and (max-width: 1280px) {
+  .toolbar-footer {
+    display: grid;
+    grid-template-columns: auto repeat(2, 1fr);
+    gap: 0.1em;
+    justify-items:center;
+    align-items: center;
+    .toolbar-avatar-epfl {
+      border-radius: 0%;
+      width: auto;
+      height: 13px;
+    }
+    .toolbar-avatar-swiss {
+      border-radius: 0%;
+      width: 37px;
+    }
+  }
+  
+}
+
+@media screen and (max-width: 430px) {
+  .toolbar-footer {
+    display: grid;
+    grid-template-columns: auto repeat(2, 1fr);
+    gap: 0.1em;
+    justify-items:center;
+    align-items: center;
+    .toolbar-avatar-epfl {
+      border-radius: 0%;
+      width: auto;
+      height: 13px;
+    }
+    .toolbar-avatar-swiss {
+      border-radius: 0%;
+      width: 37px;
+      // height: 16px;
+      // margin-left: 1rem;
+    }
+  }
+}
+
 .footer-text {
   font-size: 0.8rem;
   text-wrap-mode: wrap;
@@ -444,9 +496,7 @@ const hasHiddenItems = computed(() => {
 }
 .toolbar-title {
   -webkit-text-size-adjust: 100%;
-
   text-rendering: geometricPrecision;
-
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -481,18 +531,13 @@ const hasHiddenItems = computed(() => {
   text-rendering: geometricprecision;
   text-size-adjust: 100%;
   text-transform: none;
+
   .toolbar-avatar {
     border-radius: 0%;
     width: 3.76923077em;
     height: 2.80769231em;
     margin-left: 0;
     margin-right: 0.25em;
-    @media screen and (max-width: 1280px) {
-      width: 3em;
-      height: 2em;
-      margin-left: 0;
-      margin-right: 0.2em;
-    }
     background-image: url('/trsc.svg');
     background-size: contain;
     background-repeat: no-repeat;
@@ -500,6 +545,25 @@ const hasHiddenItems = computed(() => {
     max-width: min-content;
   }
 }
+
+@media screen and (max-width: 1280px) {
+  .toolbar-title .toolbar-avatar {
+    width: 3em;
+    height: 2em;
+    margin-left: 0;
+    margin-right: 0.2em;
+  }
+}
+
+@media screen and (max-width: 430px) {
+  .toolbar-title .toolbar-avatar {
+    width: 2.5em;
+    height: 1.8em;
+    margin-left: 0;
+    margin-right: 0.15em;
+  }
+}
+
 .clickable {
   cursor: pointer;
 }
