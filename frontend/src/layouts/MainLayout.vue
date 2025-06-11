@@ -1,8 +1,7 @@
 <template>
   <q-layout view="hHh LpR fFf">
     <q-header
-      style="height: var(--header-height); border-bottom: 1px solid red"
-      class="bg-white text-red APax text-weight-thin"
+      class="trsc-header bg-white text-red APax text-weight-thin"
     >
       <q-toolbar class="clickable q-pr-xs" @click="navigateToHome">
         <q-toolbar-title class="toolbar-title">
@@ -77,6 +76,7 @@
         <q-btn-toggle
           v-if="$q.screen.gt.md"
           v-model="lang"
+          class="q-mr-md q-ml-md"
           flat
           dense
           aria-label="Language Selector"
@@ -407,6 +407,11 @@ const hasHiddenItems = computed(() => {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  height:auto;
+  padding: 0.5em;
+  background-color: var(--white);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
 }
 
 .research-projects-dropdown {

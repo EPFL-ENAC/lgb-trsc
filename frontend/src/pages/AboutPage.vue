@@ -1,6 +1,6 @@
 <template>
   <div class="about-page">
-    <p class="top-element q-pa-md markdown-container">
+    <p class="top-element q-pl-md q-pt-md q-pr-md q-my-none markdown-container">
       <q-markdown :src="about" />
     </p>
     <div class="bottom-element">
@@ -204,13 +204,14 @@ ar:
 .bottom-element {
   display: grid;
   grid-template-columns: repeat(4, minmax(200px, 300px));
+  grid-template-rows: minmax(150px, fit-content);
   justify-content: center;
   gap: 1rem;
   align-items: self-end;
-  @media screen and (max-width: 1200px) {
-    grid-template-columns: repeat(2, minmax(200px, 300px));
+  @media screen and (max-width: 800px) {
+    grid-template-columns: repeat(2, minmax(200px, 1fr));
   }
-  @media screen and (max-width: 850px) {
+  @media screen and (max-width: 600px) {
     grid-template-columns: repeat(1, minmax(200px, 300px));
   }
 }
