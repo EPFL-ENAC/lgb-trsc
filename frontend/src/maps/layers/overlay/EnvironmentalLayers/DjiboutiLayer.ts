@@ -109,6 +109,8 @@ export const createEnvironmentalLayers = (): WebGLTileLayer[] => {
           title: source.name,
           visible: false,
           baseLayer: false,
+          // Disable smoothing to preserve pixel boundaries
+          preload: 0,
           meanOrSD: source.type,
           style:
             source.style || // Use pre-defined style if available

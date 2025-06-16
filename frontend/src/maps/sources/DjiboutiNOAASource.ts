@@ -424,6 +424,7 @@ export const createGeoTIFFSource = (sourceInfo: SourceInfo) => {
   const source = new GeoTIFF({
     sources: [{ url: sourceInfo.url }],
     wrapX: false,
+    interpolate: false,
     normalize: false,
   });
   source.setAttributions(sourceInfo.attribution);
