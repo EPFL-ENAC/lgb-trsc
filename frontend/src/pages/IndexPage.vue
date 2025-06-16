@@ -49,6 +49,7 @@
         :disable="false"
         :disable-ripple="false"
         :label="$t('aboutPage.diveIntoData')"
+        @click="playSound"
       />
       <p class="q-pa-md">
         {{ $t('aboutPage.contactUs') }}
@@ -63,6 +64,8 @@ import welcome_fr from 'src/assets/i18n/welcome_fr.md';
 import welcome_ar from 'src/assets/i18n/welcome_ar.md';
 import { useLocalizedMarkdown } from 'src/composables/useLocalizedMarkdown';
 import { useI18n } from 'vue-i18n';
+import { ref, onMounted } from 'vue';
+
 const welcome = useLocalizedMarkdown({
   en: welcome_en,
   fr: welcome_fr,
@@ -72,6 +75,23 @@ const welcome = useLocalizedMarkdown({
 const { t: $t } = useI18n({
   useScope: 'local',
 });
+
+const audio = ref<HTMLAudioElement | null>(null);
+
+onMounted(() => {
+  audio.value = new Audio('/sounds/bubble-fx-343684.mp3');
+  audio.value.volume = 0.1;
+  audio.value.preload = 'auto';
+});
+
+const playSound = () => {
+  if (audio.value) {
+    audio.value.currentTime = 0; // Reset to beginning
+    audio.value.play().catch(error => {
+      console.warn('Failed to play sound:', error);
+    });
+  }
+};
 </script>
 
 <i18n lang="yaml">
