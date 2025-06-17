@@ -174,7 +174,7 @@
                         false-value="Mean"
                         true-value="SD"
                         :model-value="layerinfo.layer.get('meanOrSD')"
-                        @update:model-value="() => updateMeanOrSD(layerinfo.layer as BaseLayer)"
+                        @update:model-value="() => updateMeanOrSD(layerinfo.layer as WebGLTileLayer)"
                       />
                       <span>{{ t('panel.sd') }}</span>
                     </div>
@@ -251,7 +251,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { ref, computed } from 'vue';
 import { useQuasar } from 'quasar';
 import { useLayerManager } from 'maps/composables/useLayerManager';
 import MapLegend from './MapLegend.vue';
@@ -269,8 +269,8 @@ import {
   samplingSiteByHardCoralCoverColorMap,
 } from 'maps/config/layerColors';
 import {
-  sources as environmentalSources,
   createGeoTIFFSource,
+  generateSources,
 } from 'maps/sources/DjiboutiNOAASource';
 import { useMapStore } from 'stores/mapStore';
 import BaseLayer from 'ol/layer/Base';
@@ -318,8 +318,12 @@ const updateMeanOrSD = (layer: WebGLTileLayer) => {
   const meanOrSD = layer.get('meanOrSD');
   const newMeanOrSD = meanOrSD === 'Mean' ? 'SD' : 'Mean';
 
+  // Generate sources for the current scope (country-specific or Red Sea)
+  const currentCountry = selectedCountry.value?.name;
+  const scopeAwareSources = generateSources(currentCountry);
+
   // find appropriate source
-  const environmentalSource = environmentalSources.find(
+  const environmentalSource = scopeAwareSources.find(
     (source) =>
       source.name === layer.get('title') && source.type === newMeanOrSD
   );
