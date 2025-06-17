@@ -106,7 +106,7 @@ const legendVariables = {
   },
 };
 
-export type TiffsUrls = {
+export type DefaultUrls = {
   CHL_monthly_mean_Mean: string;
   CHL_monthly_mean_SD: string;
   DHW_annual_max_Mean: string;
@@ -125,40 +125,40 @@ export type TiffsUrls = {
   SWS_monthly_mean_SD: string;
 };
 
-export const tiffsUrls: TiffsUrls = {
-  CHL_monthly_mean_Mean:
-    'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/processed_data/SG_MANON/env_rasters_cut/CHL_monthly_mean_Mean.tif',
-  CHL_monthly_mean_SD:
-    'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/processed_data/SG_MANON/env_rasters_cut/CHL_monthly_mean_SD.tif',
-  DHW_annual_max_Mean:
-    'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/processed_data/SG_MANON/env_rasters_cut/DHW_annual_max_Mean.tif',
-  DHW_annual_max_SD:
-    'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/processed_data/SG_MANON/env_rasters_cut/DHW_annual_max_SD.tif',
-  SWV_monthly_mean_Mean:
-    'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/processed_data/SG_MANON/env_rasters_cut/SCV_monthly_mean_Mean.tif',
-  SWV_monthly_mean_SD:
-    'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/processed_data/SG_MANON/env_rasters_cut/SCV_monthly_mean_SD.tif',
-  SPM_monthly_mean_Mean:
-    'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/processed_data/SG_MANON/env_rasters_cut/SPM_monthly_mean_Mean.tif',
-  SPM_monthly_mean_SD:
-    'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/processed_data/SG_MANON/env_rasters_cut/SPM_monthly_mean_SD.tif',
-  SST_monthly_max_Mean:
-    'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/processed_data/SG_MANON/env_rasters_cut/SST_monthly_max_Mean.tif',
-  SST_monthly_max_SD:
-    'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/processed_data/SG_MANON/env_rasters_cut/SST_monthly_max_SD.tif',
-  SST_monthly_mean_Mean:
-    'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/processed_data/SG_MANON/env_rasters_cut/SST_monthly_mean_Mean.tif',
-  SST_monthly_mean_SD:
-    'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/processed_data/SG_MANON/env_rasters_cut/SST_monthly_mean_SD.tif',
-  SST_monthly_min_Mean:
-    'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/processed_data/SG_MANON/env_rasters_cut/SST_monthly_min_Mean.tif',
-  SST_monthly_min_SD:
-    'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/processed_data/SG_MANON/env_rasters_cut/SST_monthly_min_SD.tif',
-  SWS_monthly_mean_Mean:
-    'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/processed_data/SG_MANON/env_rasters_cut/SWS_monthly_mean_Mean.tif',
-  SWS_monthly_mean_SD:
-    'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/processed_data/SG_MANON/env_rasters_cut/SWS_monthly_mean_SD.tif',
-};
+/**
+ * Generates TIFF URLs for a specific country
+ * @param country - The country name (e.g., 'djibouti')
+ * @returns DefaultUrls object with all TIFF file URLs for the specified country
+ */
+export function generateDefaultUrls(country: string): DefaultUrls {
+  const baseUrl = 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/processed_data/SG_MANON';
+  const pathSuffix = country ? `env_rasters_cut_32x_${country.toLowerCase()}` : 'env_rasters_cut_1x_redsea';
+  
+  return {
+    CHL_monthly_mean_Mean: `${baseUrl}/${pathSuffix}/CHL_monthly_mean_Mean.tif`,
+    CHL_monthly_mean_SD: `${baseUrl}/${pathSuffix}/CHL_monthly_mean_SD.tif`,
+    DHW_annual_max_Mean: `${baseUrl}/${pathSuffix}/DHW_annual_max_Mean.tif`,
+    DHW_annual_max_SD: `${baseUrl}/${pathSuffix}/DHW_annual_max_SD.tif`,
+    SWV_monthly_mean_Mean: `${baseUrl}/${pathSuffix}/SCV_monthly_mean_Mean.tif`,
+    SWV_monthly_mean_SD: `${baseUrl}/${pathSuffix}/SCV_monthly_mean_SD.tif`,
+    SPM_monthly_mean_Mean: `${baseUrl}/${pathSuffix}/SPM_monthly_mean_Mean.tif`,
+    SPM_monthly_mean_SD: `${baseUrl}/${pathSuffix}/SPM_monthly_mean_SD.tif`,
+    SST_monthly_max_Mean: `${baseUrl}/${pathSuffix}/SST_monthly_max_Mean.tif`,
+    SST_monthly_max_SD: `${baseUrl}/${pathSuffix}/SST_monthly_max_SD.tif`,
+    SST_monthly_mean_Mean: `${baseUrl}/${pathSuffix}/SST_monthly_mean_Mean.tif`,
+    SST_monthly_mean_SD: `${baseUrl}/${pathSuffix}/SST_monthly_mean_SD.tif`,
+    SST_monthly_min_Mean: `${baseUrl}/${pathSuffix}/SST_monthly_min_Mean.tif`,
+    SST_monthly_min_SD: `${baseUrl}/${pathSuffix}/SST_monthly_min_SD.tif`,
+    SWS_monthly_mean_Mean: `${baseUrl}/${pathSuffix}/SWS_monthly_mean_Mean.tif`,
+    SWS_monthly_mean_SD: `${baseUrl}/${pathSuffix}/SWS_monthly_mean_SD.tif`,
+  };
+}
+
+// You can now use this function to generate URLs for different countries
+// For example:
+const djiboutiUrls = generateDefaultUrls('djibouti');
+const defaultUrls = generateDefaultUrls(''); // Uses the default env_rasters_cut path
+
 
 export const metadata = {
   CHL_monthly_mean: {
@@ -179,8 +179,8 @@ export const metadata = {
     sourceProvider: 'Copernicus Marine Services', // Spec: Source
     attributions: attributions.copernicus, // Kept for existing structure, sourceProvider is preferred for spec string
     urls: {
-      Mean: tiffsUrls.CHL_monthly_mean_Mean,
-      SD: tiffsUrls.CHL_monthly_mean_SD,
+      Mean: defaultUrls.CHL_monthly_mean_Mean,
+      SD: defaultUrls.CHL_monthly_mean_SD,
     },
   },
   SST_monthly: {
@@ -206,12 +206,12 @@ export const metadata = {
     attributions: attributions.noaa, // Updated to NOAA
 
     urls: {
-      max_Mean: tiffsUrls.SST_monthly_max_Mean,
-      max_SD: tiffsUrls.SST_monthly_max_SD,
-      mean_Mean: tiffsUrls.SST_monthly_mean_Mean,
-      mean_SD: tiffsUrls.SST_monthly_mean_SD,
-      min_Mean: tiffsUrls.SST_monthly_min_Mean,
-      min_SD: tiffsUrls.SST_monthly_min_SD,
+      max_Mean: defaultUrls.SST_monthly_max_Mean,
+      max_SD: defaultUrls.SST_monthly_max_SD,
+      mean_Mean: defaultUrls.SST_monthly_mean_Mean,
+      mean_SD: defaultUrls.SST_monthly_mean_SD,
+      min_Mean: defaultUrls.SST_monthly_min_Mean,
+      min_SD: defaultUrls.SST_monthly_min_SD,
     },
   },
   SPM_monthly_mean: {
@@ -228,8 +228,8 @@ export const metadata = {
     sourceProvider: 'Copernicus Marine Services',
     attributions: attributions.copernicus,
     urls: {
-      Mean: tiffsUrls.SPM_monthly_mean_Mean,
-      SD: tiffsUrls.SPM_monthly_mean_SD,
+      Mean: defaultUrls.SPM_monthly_mean_Mean,
+      SD: defaultUrls.SPM_monthly_mean_SD,
     },
   },
   DHW_annual_max: {
@@ -250,8 +250,8 @@ export const metadata = {
     sourceProvider: 'NOAA', // Spec: Source
     attributions: attributions.noaa,
     urls: {
-      Mean: tiffsUrls.DHW_annual_max_Mean, // URL key kept, points to updated filename
-      SD: tiffsUrls.DHW_annual_max_SD,
+      Mean: defaultUrls.DHW_annual_max_Mean, // URL key kept, points to updated filename
+      SD: defaultUrls.DHW_annual_max_SD,
     },
   },
   SWV_monthly_mean: {
@@ -270,8 +270,8 @@ export const metadata = {
     sourceProvider: 'Copernicus Marine Services', // From NWV/EWV
     attributions: attributions.copernicus,
     urls: {
-      Mean: tiffsUrls.SWV_monthly_mean_Mean,
-      SD: tiffsUrls.SWV_monthly_mean_SD,
+      Mean: defaultUrls.SWV_monthly_mean_Mean,
+      SD: defaultUrls.SWV_monthly_mean_SD,
     },
   },
   SWS_monthly_mean: {
@@ -288,8 +288,8 @@ export const metadata = {
     sourceProvider: 'Copernicus Marine Services', // Spec: Source (Corrected from NOAA)
     attributions: attributions.copernicus, // Corrected from noaa
     urls: {
-      Mean: tiffsUrls.SWS_monthly_mean_Mean,
-      SD: tiffsUrls.SWS_monthly_mean_SD,
+      Mean: defaultUrls.SWS_monthly_mean_Mean,
+      SD: defaultUrls.SWS_monthly_mean_SD,
     },
   },
 };

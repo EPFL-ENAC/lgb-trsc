@@ -141,14 +141,17 @@ export const createDjiboutiMarineProtectedAreaLayer = () => {
 };
 
 export const createDjiboutiBoundaryLayer = () =>
-  new VectorLayer({
+  new VectorTileLayer({
     declutter: true,
     _pmtiles: true,
     source: createBoundarySource(),
-    title: 'Boundary',
     visible: false,
     base: false,
-    style: boundaryStyle,
+    renderMode: 'vector',
+    title: 'Boundary',
+    // style: boundaryStyle,
+    updateWhileAnimating: true,
+    updateWhileInteracting: true,
   } as BaseLayerOptions);
 
 // export const createDjiboutiReefExtentLayer = () =>

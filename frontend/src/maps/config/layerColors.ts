@@ -140,24 +140,54 @@ export const SST_monthly_mean_SD: ColorMap = {
   epsilon: 1.0e35,
 };
 
+// RED SEA
+// export const CHL_monthly_mean_Mean: ColorMap = {
+//   type: 'continuous',
+//   colorMap: {
+//     '0.13': '#f7fcf5',
+//     '0.79': '#c5e8be',
+//     '1.45': '#9ed899',
+//     '2.11': '#73c476',
+//     '2.77': '#4cb062',
+//     '3.42': '#329b51',
+//     '4.08': '#1b8540',
+//     '4.69': '#05712f',
+//     '5.20': '#00441b',
+//   },
+//   min: 0.13,
+//   max: 5.2,
+//   nodata: -3.4e38,
+//   epsilon: 1.0e35,
+// };
+
+// <MDI key="STATISTICS_MINIMUM">0.1310852766037</MDI>
+// <MDI key="STATISTICS_MAXIMUM">5.1965737342834</MDI>
+// <MDI key="STATISTICS_MEAN">0.57692993133414</MDI>
+// <MDI key="STATISTICS_STDDEV">0.45746119299034</MDI>
+// <MDI key="STATISTICS_VALID_PERCENT">16.74</MDI>
+
+
+// DJIBOUTI
 export const CHL_monthly_mean_Mean: ColorMap = {
   type: 'continuous',
   colorMap: {
-    '0.13': '#f7fcf5',
-    '0.79': '#c5e8be',
-    '1.45': '#9ed899',
-    '2.11': '#73c476',
-    '2.77': '#4cb062',
-    '3.42': '#329b51',
-    '4.08': '#1b8540',
-    '4.69': '#05712f',
-    '5.20': '#00441b',
+    '0.00': '#f7fcf5',
+    // '0.79': '#c5e8be',
+    // '1.45': '#9ed899',
+    // '2.11': '#73c476',
+    '2.00': '#4cb062',
+    // '3.42': '#329b51',
+    // '3.58': '#1b8540',
+    // '3.69': '#05712f',
+    '4.00': '#00441b',
   },
-  min: 0.13,
-  max: 5.2,
+  min: 0.00,
+  max: 4.00,
   nodata: -3.4e38,
   epsilon: 1.0e35,
 };
+
+
 
 export const CHL_monthly_mean_SD: ColorMap = {
   type: 'continuous',
@@ -324,7 +354,8 @@ export const defaultEnvironmentalColorMap: ColorMap = {
 export const boundaryColorMap: ColorMap = {
   type: 'categorical',
   colorMap: {
-    boundary: 'rgba(125,201,201, 0.5)',
+    'Maritime boundaries': 'rgba(125,201,201, 0.5)',
+    // 'boundary': 'rgba(125,201,201, 0.5)',
   },
 };
 

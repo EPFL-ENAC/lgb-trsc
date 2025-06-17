@@ -328,6 +328,8 @@ export class MapController {
         currentView.maxZoom = defaultMaxZoomCountry;
         currentView.center = getCenter(extent);
         currentView.extent = extent;
+        console.log('current extent', extent);
+        console.log('current view', currentView);
       }
 
       // Hide overview map in country scope
