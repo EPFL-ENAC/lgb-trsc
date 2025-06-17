@@ -238,6 +238,9 @@ export const useMapStore = defineStore('map', () => {
 
     const layerController = useLayerController();
     layerController.showCountryLayer();
+    // Update environmental layers back to Red Sea scope (in place)
+    layerController.updateEnvironmentalLayersForScope();
+    
     const mapController = useMapController();
     mapController.zoomOutOfCountry();
   }
@@ -252,6 +255,9 @@ export const useMapStore = defineStore('map', () => {
     selectedCountry.value = properties;
     const layerController = useLayerController();
     layerController.hideCountryLayer();
+    // Update environmental layers to country-specific scope (in place)
+    layerController.updateEnvironmentalLayersForScope(properties.name);
+    
     drawer.value = true;
   }
 

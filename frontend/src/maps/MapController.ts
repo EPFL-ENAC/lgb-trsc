@@ -45,7 +45,6 @@ import {
   createDjiboutiReefExtentLayer,
 } from 'maps/layers/overlay/ReefLayers/DjiboutiLayer';
 import { createDjiboutiEnvironmentalClusterLayer } from 'maps/layers/overlay/EnvironmentalClusters/DjiboutiLayer';
-import { createEnvironmentalLayers } from './layers/overlay/EnvironmentalLayers/DjiboutiLayer';
 import { BaseLayerOptions } from 'ol-layerswitcher';
 import TileLayer from 'ol/layer/Tile';
 import OSM from 'ol/source/OSM';
@@ -174,7 +173,7 @@ export class MapController {
           visible: true,
           showForcountryOnly: false,
           inputType: 'radio',
-          layers: createEnvironmentalLayers(),
+          layers: [],
         } as CustomBaseLayerOptions),
         new LayerGroup({
           title: 'Reef Layers',
@@ -216,6 +215,12 @@ export class MapController {
 
     this.map?.addLayer(this.baseMaps);
     this.map?.addLayer(this.overlayMaps);
+
+    // Initialize environmental layers in the Environmental Layers group
+    const initialEnvironmentalLayers = layerController.getEnvironmentalLayers();
+    if (initialEnvironmentalLayers) {
+      this.updateEnvironmentalLayersGroup(initialEnvironmentalLayers);
+    }
 
     // Initialize overview map to be visible only in Red Sea scope
     this.toggleOverviewMap(true);
@@ -418,4 +423,31 @@ export class MapController {
       });
     }
   };
+
+  public updateEnvironmentalLayersGroup(newLayers: import('ol/layer/WebGLTile').default[]): void {
+    if (!this.overlayMaps) return;
+    
+    // Get the Environmental Layers group (first group in overlayMaps)
+    const groups = this.overlayMaps.getLayers();
+    const environmentalGroup = groups.item(0);
+    
+    if (environmentalGroup instanceof LayerGroup) {
+      // Get the current layers collection
+      const layersCollection = environmentalGroup.getLayers();
+      
+      // Remove all existing layers from the map
+      const existingLayers = layersCollection.getArray().slice(); // Create a copy
+      existingLayers.forEach(layer => {
+        layersCollection.remove(layer);
+      });
+      
+      // Add new layers
+      newLayers.forEach(layer => {
+        layersCollection.push(layer);
+      });
+      
+      // Force a refresh of the map
+      this.map?.renderSync();
+    }
+  }
 }

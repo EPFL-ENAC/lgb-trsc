@@ -251,7 +251,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useQuasar } from 'quasar';
 import { useLayerManager } from 'maps/composables/useLayerManager';
 import MapLegend from './MapLegend.vue';

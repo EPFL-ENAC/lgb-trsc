@@ -9,7 +9,7 @@ import VectorTileLayer from 'ol/layer/VectorTile';
 import VectorTileSource from 'ol/source/VectorTile';
 import Feature from 'ol/Feature';
 import Geometry from 'ol/geom/Geometry';
-import { createEnvironmentalLayers } from './layers/overlay/EnvironmentalLayers/DjiboutiLayer';
+import { createEnvironmentalLayers, updateEnvironmentalLayersSourcesInPlace } from './layers/overlay/EnvironmentalLayers/DjiboutiLayer';
 // import GeoTIFFSource from 'ol/source/GeoTIFF';
 import WebGLTileLayer from 'ol/layer/WebGLTile';
 
@@ -68,6 +68,18 @@ export class LayerController {
 
   public updateCountryStyle(style: Style) {
     this.countryLayer.setStyle(style);
+  }
+
+  public updateEnvironmentalLayersForScope(country?: string): WebGLTileLayer[] {
+    if (!this.environmentalLayers) {
+      // Create initial layers if they don't exist
+      this.environmentalLayers = createEnvironmentalLayers(country);
+      return this.environmentalLayers;
+    }
+    
+    // Update existing layers sources in place to avoid reference issues
+    updateEnvironmentalLayersSourcesInPlace(this.environmentalLayers, country);
+    return this.environmentalLayers;
   }
 
   public updateExpeditions(expeditionData: GeoJSONFeatureCollection) {

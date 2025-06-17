@@ -156,8 +156,202 @@ export function generateDefaultUrls(country: string): DefaultUrls {
 
 // You can now use this function to generate URLs for different countries
 // For example:
-const djiboutiUrls = generateDefaultUrls('djibouti');
-const defaultUrls = generateDefaultUrls(''); // Uses the default env_rasters_cut path
+// const djiboutiUrls = generateDefaultUrls('djibouti');
+// const defaultUrls = generateDefaultUrls(''); // Uses the default env_rasters_cut path
+
+/**
+ * Generates sources for a specific scope
+ * @param country - The country name (e.g., 'djibouti') or empty string for Red Sea scope
+ * @returns Array of SourceInfo objects with appropriate URLs for the scope
+ */
+export function generateSources(country?: string): SourceInfo[] {
+  const urls = generateDefaultUrls(country || '');
+  
+  const scopeMetadata = {
+    CHL_monthly_mean: {
+      ...metadata.CHL_monthly_mean,
+      urls: {
+        Mean: urls.CHL_monthly_mean_Mean,
+        SD: urls.CHL_monthly_mean_SD,
+      },
+    },
+    SST_monthly: {
+      ...metadata.SST_monthly,
+      urls: {
+        max_Mean: urls.SST_monthly_max_Mean,
+        max_SD: urls.SST_monthly_max_SD,
+        mean_Mean: urls.SST_monthly_mean_Mean,
+        mean_SD: urls.SST_monthly_mean_SD,
+        min_Mean: urls.SST_monthly_min_Mean,
+        min_SD: urls.SST_monthly_min_SD,
+      },
+    },
+    SPM_monthly_mean: {
+      ...metadata.SPM_monthly_mean,
+      urls: {
+        Mean: urls.SPM_monthly_mean_Mean,
+        SD: urls.SPM_monthly_mean_SD,
+      },
+    },
+    DHW_annual_max: {
+      ...metadata.DHW_annual_max,
+      urls: {
+        Mean: urls.DHW_annual_max_Mean,
+        SD: urls.DHW_annual_max_SD,
+      },
+    },
+    SWV_monthly_mean: {
+      ...metadata.SWV_monthly_mean,
+      urls: {
+        Mean: urls.SWV_monthly_mean_Mean,
+        SD: urls.SWV_monthly_mean_SD,
+      },
+    },
+    SWS_monthly_mean: {
+      ...metadata.SWS_monthly_mean,
+      urls: {
+        Mean: urls.SWS_monthly_mean_Mean,
+        SD: urls.SWS_monthly_mean_SD,
+      },
+    },
+  };
+
+  return [
+    // CHL
+    {
+      type: SourceType.MEAN,
+      ...scopeMetadata.CHL_monthly_mean,
+      colorScale: CHL_monthly_mean_Mean,
+      attribution: attributions.copernicus,
+      url: scopeMetadata.CHL_monthly_mean.urls.Mean,
+    },
+    {
+      type: SourceType.SD,
+      ...scopeMetadata.CHL_monthly_mean,
+      colorScale: CHL_monthly_mean_SD,
+      attribution: attributions.copernicus,
+      url: scopeMetadata.CHL_monthly_mean.urls.SD,
+    },
+
+    // SST max
+    {
+      type: SourceType.MEAN,
+      ...scopeMetadata.SST_monthly,
+      name: `${scopeMetadata.SST_monthly.name} max`,
+      colorScale: SST_monthly_max_Mean,
+      attribution: attributions.noaa,
+      url: scopeMetadata.SST_monthly.urls.max_Mean,
+    },
+    {
+      type: SourceType.SD,
+      ...scopeMetadata.SST_monthly,
+      name: `${scopeMetadata.SST_monthly.name} max`,
+      colorScale: SST_monthly_max_SD,
+      attribution: attributions.noaa,
+      url: scopeMetadata.SST_monthly.urls.max_SD,
+    },
+
+    // SST mean
+    {
+      type: SourceType.MEAN,
+      ...scopeMetadata.SST_monthly,
+      name: `${scopeMetadata.SST_monthly.name} mean`,
+      colorScale: SST_monthly_mean_Mean,
+      attribution: attributions.noaa,
+      url: scopeMetadata.SST_monthly.urls.mean_Mean,
+    },
+    {
+      type: SourceType.SD,
+      ...scopeMetadata.SST_monthly,
+      name: `${scopeMetadata.SST_monthly.name} mean`,
+      colorScale: SST_monthly_mean_SD,
+      attribution: attributions.noaa,
+      url: scopeMetadata.SST_monthly.urls.mean_SD,
+    },
+
+    // SST min
+    {
+      type: SourceType.MEAN,
+      ...scopeMetadata.SST_monthly,
+      name: `${scopeMetadata.SST_monthly.name} min`,
+      colorScale: SST_monthly_min_Mean,
+      attribution: attributions.copernicus,
+      url: scopeMetadata.SST_monthly.urls.min_Mean,
+    },
+    {
+      type: SourceType.SD,
+      ...scopeMetadata.SST_monthly,
+      name: `${scopeMetadata.SST_monthly.name} min`,
+      colorScale: SST_monthly_min_SD,
+      attribution: attributions.copernicus,
+      url: scopeMetadata.SST_monthly.urls.min_SD,
+    },
+
+    // SPM
+    {
+      type: SourceType.MEAN,
+      ...scopeMetadata.SPM_monthly_mean,
+      colorScale: SPM_monthly_mean_Mean,
+      attribution: attributions.copernicus,
+      url: scopeMetadata.SPM_monthly_mean.urls.Mean,
+    },
+    {
+      type: SourceType.SD,
+      ...scopeMetadata.SPM_monthly_mean,
+      colorScale: SPM_monthly_mean_SD,
+      attribution: attributions.copernicus,
+      url: scopeMetadata.SPM_monthly_mean.urls.SD,
+    },
+
+    // DHW
+    {
+      type: SourceType.MEAN,
+      ...scopeMetadata.DHW_annual_max,
+      colorScale: DHW_annual_max_Mean,
+      attribution: attributions.copernicus,
+      url: scopeMetadata.DHW_annual_max.urls.Mean,
+    },
+    {
+      type: SourceType.SD,
+      ...scopeMetadata.DHW_annual_max,
+      colorScale: DHW_annual_max_SD,
+      attribution: attributions.copernicus,
+      url: scopeMetadata.DHW_annual_max.urls.SD,
+    },
+
+    // SWV
+    {
+      type: SourceType.MEAN,
+      ...scopeMetadata.SWV_monthly_mean,
+      colorScale: SWV_monthly_mean_Mean,
+      attribution: attributions.copernicus,
+      url: scopeMetadata.SWV_monthly_mean.urls.Mean,
+    },
+    {
+      type: SourceType.SD,
+      ...scopeMetadata.SWV_monthly_mean,
+      colorScale: SWV_monthly_mean_SD,
+      attribution: attributions.copernicus,
+      url: scopeMetadata.SWV_monthly_mean.urls.SD,
+    },
+
+    // SWS
+    {
+      type: SourceType.MEAN,
+      ...scopeMetadata.SWS_monthly_mean,
+      colorScale: SWS_monthly_mean_Mean,
+      attribution: attributions.noaa,
+      url: scopeMetadata.SWS_monthly_mean.urls.Mean,
+    },
+    {
+      type: SourceType.SD,
+      ...scopeMetadata.SWS_monthly_mean,
+      colorScale: SWS_monthly_mean_SD,
+      attribution: attributions.noaa,
+      url: scopeMetadata.SWS_monthly_mean.urls.SD,
+    },
+  ];
+}
 
 
 export const metadata = {
@@ -178,10 +372,6 @@ export const metadata = {
     date: '02/09/1997 → 01/05/2024', // Spec: Date range
     sourceProvider: 'Copernicus Marine Services', // Spec: Source
     attributions: attributions.copernicus, // Kept for existing structure, sourceProvider is preferred for spec string
-    urls: {
-      Mean: defaultUrls.CHL_monthly_mean_Mean,
-      SD: defaultUrls.CHL_monthly_mean_SD,
-    },
   },
   SST_monthly: {
     name: 'Sea Surface Temperature', // Spec: Name
@@ -204,15 +394,6 @@ export const metadata = {
     // DOI not specified for SST in the provided spec text
     sourceProvider: 'NOAA', // Spec: Source
     attributions: attributions.noaa, // Updated to NOAA
-
-    urls: {
-      max_Mean: defaultUrls.SST_monthly_max_Mean,
-      max_SD: defaultUrls.SST_monthly_max_SD,
-      mean_Mean: defaultUrls.SST_monthly_mean_Mean,
-      mean_SD: defaultUrls.SST_monthly_mean_SD,
-      min_Mean: defaultUrls.SST_monthly_min_Mean,
-      min_SD: defaultUrls.SST_monthly_min_SD,
-    },
   },
   SPM_monthly_mean: {
     ...legendVariables.SPM,
@@ -227,10 +408,6 @@ export const metadata = {
     date: '02/09/1997 → 01/05/2024',
     sourceProvider: 'Copernicus Marine Services',
     attributions: attributions.copernicus,
-    urls: {
-      Mean: defaultUrls.SPM_monthly_mean_Mean,
-      SD: defaultUrls.SPM_monthly_mean_SD,
-    },
   },
   DHW_annual_max: {
     // Key kept as is, though spec files suggest "monthly_max"
@@ -249,10 +426,6 @@ export const metadata = {
     date: '01/1985 – 05/2024', // Spec: Date range
     sourceProvider: 'NOAA', // Spec: Source
     attributions: attributions.noaa,
-    urls: {
-      Mean: defaultUrls.DHW_annual_max_Mean, // URL key kept, points to updated filename
-      SD: defaultUrls.DHW_annual_max_SD,
-    },
   },
   SWV_monthly_mean: {
     // Renamed from SCV_monthly_mean
@@ -269,10 +442,6 @@ export const metadata = {
     date: '17/01/1993 → 26/03/2024', // Spec: Date range for NWV/EWV, applied to SWV
     sourceProvider: 'Copernicus Marine Services', // From NWV/EWV
     attributions: attributions.copernicus,
-    urls: {
-      Mean: defaultUrls.SWV_monthly_mean_Mean,
-      SD: defaultUrls.SWV_monthly_mean_SD,
-    },
   },
   SWS_monthly_mean: {
     ...legendVariables.SWS,
@@ -287,137 +456,10 @@ export const metadata = {
     date: '17/01/1993 → 26/03/2024', // Spec: Date range
     sourceProvider: 'Copernicus Marine Services', // Spec: Source (Corrected from NOAA)
     attributions: attributions.copernicus, // Corrected from noaa
-    urls: {
-      Mean: defaultUrls.SWS_monthly_mean_Mean,
-      SD: defaultUrls.SWS_monthly_mean_SD,
-    },
   },
 };
 
-export const sources: SourceInfo[] = [
-  {
-    type: SourceType.MEAN,
-    ...metadata.CHL_monthly_mean,
-    colorScale: CHL_monthly_mean_Mean,
-    attribution: attributions.copernicus,
-    url: metadata.CHL_monthly_mean.urls.Mean,
-  },
-  {
-    type: SourceType.SD,
-    ...metadata.CHL_monthly_mean,
-    colorScale: CHL_monthly_mean_SD,
-    attribution: attributions.copernicus,
-    url: metadata.CHL_monthly_mean.urls.SD,
-  },
-  {
-    type: SourceType.MEAN,
-    ...metadata.SST_monthly,
-    name: `${metadata.SST_monthly.name} max`,
-    colorScale: SST_monthly_max_Mean,
-    attribution: attributions.copernicus,
-    url: metadata.SST_monthly.urls.max_Mean,
-  },
-  {
-    type: SourceType.SD,
-    ...metadata.SST_monthly,
-    name: `${metadata.SST_monthly.name} max`,
-    colorScale: SST_monthly_max_SD,
-    attribution: attributions.copernicus,
-    url: metadata.SST_monthly.urls.max_SD,
-  },
-  {
-    type: SourceType.MEAN,
-    ...metadata.SST_monthly,
-    name: `${metadata.SST_monthly.name} mean`,
-    colorScale: SST_monthly_mean_Mean,
-    attribution: attributions.copernicus,
-    url: metadata.SST_monthly.urls.mean_Mean,
-  },
-  {
-    type: SourceType.SD,
-    ...metadata.SST_monthly,
-    name: `${metadata.SST_monthly.name} mean`,
-    colorScale: SST_monthly_mean_SD,
-    attribution: attributions.copernicus,
-    url: metadata.SST_monthly.urls.mean_SD,
-  },
-  {
-    type: SourceType.MEAN,
-    ...metadata.SST_monthly,
-    name: `${metadata.SST_monthly.name} min`,
-    colorScale: SST_monthly_min_Mean,
-    attribution: attributions.copernicus,
-    url: metadata.SST_monthly.urls.min_Mean,
-  },
-  {
-    type: SourceType.SD,
-    ...metadata.SST_monthly,
-    name: `${metadata.SST_monthly.name} min`,
-    colorScale: SST_monthly_min_SD,
-    attribution: attributions.copernicus,
-    url: metadata.SST_monthly.urls.min_SD,
-  },
-  {
-    type: SourceType.MEAN,
-    ...metadata.SPM_monthly_mean,
-    colorScale: SPM_monthly_mean_Mean,
-    attribution: attributions.copernicus,
-    url: metadata.SPM_monthly_mean.urls.Mean,
-  },
-  {
-    type: SourceType.SD,
-    ...metadata.SPM_monthly_mean,
-    colorScale: SPM_monthly_mean_SD,
-    attribution: attributions.copernicus,
-    url: metadata.SPM_monthly_mean.urls.SD,
-  },
-
-  {
-    type: SourceType.MEAN,
-    ...metadata.DHW_annual_max,
-    colorScale: DHW_annual_max_Mean,
-    attribution: attributions.copernicus,
-    url: metadata.DHW_annual_max.urls.Mean,
-  },
-  {
-    type: SourceType.SD,
-    ...metadata.DHW_annual_max,
-    colorScale: DHW_annual_max_SD,
-    attribution: attributions.copernicus,
-    url: metadata.DHW_annual_max.urls.SD,
-  },
-
-  {
-    type: SourceType.MEAN,
-    ...metadata.SWV_monthly_mean,
-    colorScale: SWV_monthly_mean_Mean,
-    attribution: attributions.copernicus,
-    url: metadata.SWV_monthly_mean.urls.Mean,
-  },
-  {
-    type: SourceType.SD,
-    ...metadata.SWV_monthly_mean,
-    colorScale: SWV_monthly_mean_SD,
-    attribution: attributions.copernicus,
-    url: metadata.SWV_monthly_mean.urls.SD,
-  },
-
-  {
-    type: SourceType.MEAN,
-    ...metadata.SWS_monthly_mean,
-    colorScale: SWS_monthly_mean_Mean,
-    attribution: attributions.noaa,
-    url: metadata.SWS_monthly_mean.urls.Mean,
-  },
-  {
-    type: SourceType.SD,
-    ...metadata.SWS_monthly_mean,
-    colorScale: SWS_monthly_mean_SD,
-    attribution: attributions.noaa,
-    url: metadata.SWS_monthly_mean.urls.SD,
-  },
-];
-
+export const sources = generateSources(); // Red Sea scope by default
 export const sourcesTitle = sources.map((source) => source.name);
 
 export const createGeoTIFFSource = (sourceInfo: SourceInfo) => {

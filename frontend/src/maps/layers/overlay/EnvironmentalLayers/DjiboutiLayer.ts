@@ -1,6 +1,7 @@
 import {
   createGeoTIFFSource,
   sources,
+  generateSources,
   // SourceMetadata, // Assuming SourceMetadata is defined in DjiboutiNOAASource.ts
 } from 'maps/sources/DjiboutiNOAASource';
 import { BaseLayerOptions } from 'ol-layerswitcher';
@@ -91,8 +92,11 @@ export function generateDefaultStyle(colorScale: ColorMap): any {
   };
 }
 
-export const createEnvironmentalLayers = (): WebGLTileLayer[] => {
-  const layers = sources
+export const createEnvironmentalLayers = (country?: string): WebGLTileLayer[] => {
+  // Generate sources based on scope
+  const scopedSources = country ? generateSources(country) : sources;
+  
+  const layers = scopedSources
     .filter((source) => source.type === 'Mean') // Filter sources for environmental layers
     .map((source) => {
       try {
@@ -134,5 +138,74 @@ export const createEnvironmentalLayers = (): WebGLTileLayer[] => {
     })
     .filter((layer): layer is WebGLTileLayer => layer !== null); // Filter out nulls (failed layers)
 
+  console.log(`Created ${layers.length} environmental layers for scope: ${country || 'Red Sea'}`);
   return layers;
+};
+
+/**
+ * Updates environmental layers for a specific scope by recreating them with new sources
+ * @param existingLayers - Current environmental layers to update
+ * @param country - Country scope ('djibouti') or undefined for Red Sea scope
+ * @returns New array of environmental layers for the specified scope
+ */
+export const updateEnvironmentalLayersForScope = (
+  existingLayers: WebGLTileLayer[],
+  country?: string
+): WebGLTileLayer[] => {
+  // Store visibility state of existing layers
+  const layerVisibilityMap = new Map<string, boolean>();
+  existingLayers.forEach((layer) => {
+    layerVisibilityMap.set(layer.get('title'), layer.get('visible'));
+  });
+
+  // Create new layers for the specified scope
+  const newLayers = createEnvironmentalLayers(country);
+  
+  // Restore visibility state
+  newLayers.forEach((layer) => {
+    const layerTitle = layer.get('title');
+    if (layerVisibilityMap.has(layerTitle)) {
+      layer.setVisible(layerVisibilityMap.get(layerTitle) || false);
+    }
+  });
+
+  return newLayers;
+};
+
+/**
+ * Updates environmental layers sources in place without creating new layer instances
+ * @param existingLayers - Current environmental layers to update
+ * @param country - Country scope ('djibouti') or undefined for Red Sea scope
+ */
+export const updateEnvironmentalLayersSourcesInPlace = (
+  existingLayers: WebGLTileLayer[],
+  country?: string
+): void => {
+  // Generate sources based on scope
+  const scopedSources = country ? generateSources(country) : sources;
+  const meanSources = scopedSources.filter((source) => source.type === 'Mean');
+  
+  // Update each existing layer with new source
+  existingLayers.forEach((layer, index) => {
+    if (index < meanSources.length) {
+      const newSource = meanSources[index];
+      try {
+        // Update the layer's source
+        layer.setSource(createGeoTIFFSource(newSource));
+        
+        // Update layer properties with new source metadata
+        layer.setProperties({
+          ...newSource,
+          colorScale: newSource.colorScale,
+        });
+        
+        // Update style if needed (optional, depends on if style needs to change)
+        const newStyle = newSource.style || generateDefaultStyle(newSource.colorScale);
+        layer.setStyle(newStyle);
+        
+      } catch (error) {
+        console.error(`Failed to update layer "${layer.get('title')}" with new source:`, error);
+      }
+    }
+  });
 };

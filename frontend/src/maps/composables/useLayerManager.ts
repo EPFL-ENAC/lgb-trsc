@@ -217,5 +217,6 @@ export function useLayerManager() {
     getOverlayMaps,
     setOverlayLayerRadio,
     initializeLayers,
+    refreshLayers: initializeLayers, // Alias for refreshing layers
   };
 }
