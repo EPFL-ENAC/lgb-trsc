@@ -76,6 +76,10 @@ export const useMapStore = defineStore('map', () => {
     },
   });
 
+  // Environmental layers UI state management
+  const environmentalLayersExpanded = ref<boolean>(false);
+  const environmentalLayersVisibility = ref<Record<string, boolean>>({});
+
   const selectedExpeditionYear = ref<string | null>(null);
   function setSelectedExpeditionYear(year: string) {
     selectedExpeditionYear.value = year;
@@ -231,6 +235,22 @@ export const useMapStore = defineStore('map', () => {
     return filteredExpeditions;
   }
 
+  function resetEnvironmentalLayersState() {
+    // Reset all environmental layers visibility
+    environmentalLayersVisibility.value = {};
+    // Collapse the environmental layers section
+    environmentalLayersExpanded.value = false;
+    
+    // Also set all environmental layers to invisible on the map
+    const layerController = useLayerController();
+    const environmentalLayers = layerController.getEnvironmentalLayers();
+    if (environmentalLayers) {
+      environmentalLayers.forEach(layer => {
+        layer.setVisible(false);
+      });
+    }
+  }
+
   async function closeDrawer() {
     drawer.value = false;
     selectedCountry.value = null;
@@ -240,6 +260,9 @@ export const useMapStore = defineStore('map', () => {
     layerController.showCountryLayer();
     // Update environmental layers back to Red Sea scope (in place)
     await layerController.updateEnvironmentalLayersForScope();
+    
+    // Reset environmental layers UI state when switching to Red Sea
+    resetEnvironmentalLayersState();
     
     const mapController = useMapController();
     mapController.zoomOutOfCountry();
@@ -257,6 +280,9 @@ export const useMapStore = defineStore('map', () => {
     layerController.hideCountryLayer();
     // Update environmental layers to country-specific scope (in place)
     await layerController.updateEnvironmentalLayersForScope(properties.name);
+    
+    // Reset environmental layers UI state when switching to country
+    resetEnvironmentalLayersState();
     
     drawer.value = true;
   }
@@ -343,6 +369,8 @@ export const useMapStore = defineStore('map', () => {
     rawTooltipContent.value = '';
     tooltipPosition.value = { x: 0, y: 0 };
     _drawer.value = false;
+    // Reset environmental layers state
+    resetEnvironmentalLayersState();
   }
 
   const sampleSet = computed(() => {
@@ -543,6 +571,9 @@ export const useMapStore = defineStore('map', () => {
     drawer,
     leftDrawerOpen,
     leftMiniDrawer,
+    environmentalLayersExpanded,
+    environmentalLayersVisibility,
+    resetEnvironmentalLayersState,
     selectedExpeditions,
     selectedExpeditionsYears,
     selectedExpeditionsDates,

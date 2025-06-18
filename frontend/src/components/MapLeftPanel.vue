@@ -33,7 +33,7 @@
       <q-expansion-item
         v-for="(group, groupIndex) in computedOverlayGroups"
         :key="group.title"
-        v-model="expandedGroups[groupIndex]"
+        :model-value="getGroupExpansionState(groupIndex, group.title)"
         switch-toggle-side
         expand-separator
         :group="`overlays${groupIndex}`"
@@ -299,7 +299,7 @@ const {
 } = useLayerManager();
 
 const mapStore = useMapStore();
-const { selectedCountry, leftDrawerOpen, leftMiniDrawer } =
+const { selectedCountry, leftDrawerOpen, leftMiniDrawer, environmentalLayersExpanded } =
   storeToRefs(mapStore);
 const computedOverlayGroups = computed(() => {
   return overlayGroups?.value?.filter((layerGroup) => {
@@ -413,12 +413,19 @@ const getLayerLegend = (layer: BaseLayer) => {
 
 // Track expansion state of groups
 const expandedGroups = ref<Record<number, boolean>>({});
-const isEnvironmentalLayersExpanded = ref(false);
+
+// Computed property to get the correct expansion state for each group
+const getGroupExpansionState = (groupIndex: number, groupTitle: string) => {
+  if (groupTitle === 'Environmental Layers') {
+    return environmentalLayersExpanded.value;
+  }
+  return expandedGroups.value[groupIndex] || false;
+};
 
 // Computed property for drawer width
 const drawerWidth = computed(() => {
   const screenWidth = window.innerWidth;
-  const baseWidth = isEnvironmentalLayersExpanded.value ? 500 : 300;
+  const baseWidth = environmentalLayersExpanded.value ? 500 : 300;
   
   if (screenWidth <= 500) {
     return Math.min(screenWidth, baseWidth);
@@ -431,7 +438,13 @@ const drawerWidth = computed(() => {
 // Handle group expansion changes
 const onGroupExpansionChange = (groupTitle: string, isExpanded: boolean) => {
   if (groupTitle === 'Environmental Layers') {
-    isEnvironmentalLayersExpanded.value = isExpanded;
+    environmentalLayersExpanded.value = isExpanded;
+  } else {
+    // Handle other group expansions if needed
+    const groupIndex = computedOverlayGroups.value.findIndex(g => g.title === groupTitle);
+    if (groupIndex !== -1) {
+      expandedGroups.value[groupIndex] = isExpanded;
+    }
   }
 };
 
