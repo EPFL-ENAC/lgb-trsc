@@ -335,8 +335,14 @@ const updateMeanOrSD = async (layer: WebGLTileLayer) => {
       // Import the fetchColormap function and generate colormap URL
       const { fetchColormap, generateColormapUrl } = await import('maps/layers/overlay/EnvironmentalLayers/DjiboutiLayer');
       
-      // Fetch the appropriate colormap for the new meanOrSD value
-      const colormapUrl = generateColormapUrl(environmentalSource.key, currentCountry);
+      // Construct the correct key for the new meanOrSD value
+      // Replace the old type (Mean/SD) in the key with the new type
+      const currentKey = layer.get('key') || environmentalSource.key;
+      const baseKey = currentKey.replace(/_Mean$|_SD$/, ''); // Remove existing type suffix
+      const newKey = `${baseKey}_${newMeanOrSD}`;
+      
+      // Fetch the appropriate colormap for the new meanOrSD value using the correct key
+      const colormapUrl = generateColormapUrl(newKey, currentCountry);
       const effectiveColorScale = await fetchColormap(colormapUrl);
       
       // Generate style with the fetched colormap
@@ -345,10 +351,12 @@ const updateMeanOrSD = async (layer: WebGLTileLayer) => {
       // Update layer with new source, style, and properties
       layer.setStyle(newStyle);
       layer.set('meanOrSD', newMeanOrSD);
+      layer.set('key', newKey); // Update the key to reflect the new type
       layer.set('source', createGeoTIFFSource(environmentalSource));
       layer.set('colorScale', effectiveColorScale);
       layer.setProperties({
         ...environmentalSource,
+        key: newKey, // Ensure properties also have the updated key
         colorScale: effectiveColorScale,
       });
     } catch (error) {

@@ -140,6 +140,8 @@ export const SST_monthly_mean_SD: ColorMap = {
   epsilon: 1.0e35,
 };
 
+
+
 // RED SEA
 // export const CHL_monthly_mean_Mean: ColorMap = {
 //   type: 'continuous',

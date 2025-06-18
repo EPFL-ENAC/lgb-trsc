@@ -52,9 +52,29 @@ interface ColormapResponse {
 export function generateColormapUrl(sourceName: string, country?: string): string {
   const baseUrl = 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/processed_data/SG_MANON/colormaps';
   const directory = country ? `env_rasters_cut_64x_${country.toLowerCase()}` : 'env_rasters_cut';
-  return `${baseUrl}/${directory}/${sourceName}_colormap.json`;
+  
+  // Determine the colormap filename based on whether it's SD or Mean
+  const colormapFilename = sourceName.endsWith('_SD') ? 'colormap_colorful.json' : 'colormap.json';
+  
+  console.log(`Generating colormap URL for source: ${sourceName}, country: ${country}, filename: ${colormapFilename}`);
+
+  return `${baseUrl}/${directory}/${sourceName}_${colormapFilename}`;
 }
 
+
+export const colorMapArrayToRecord = (
+  colorMapArray: (number | string)[]
+): Record<string, string> => {
+  const colorMapRecord: Record<string, string> = {};
+  for (let i = 0; i < colorMapArray.length; i += 2) { // Iterate in steps of 2  
+    const value = colorMapArray[i];
+    const color = colorMapArray[i + 1];
+    if (typeof value === 'number' && typeof color === 'string') {
+      colorMapRecord[value.toString()] = color;
+    }
+  }
+  return colorMapRecord;
+};
 /**
  * Fetches colormap from URL and converts it to ColorMap format
  * @param url - URL to fetch colormap JSON from
@@ -69,13 +89,69 @@ export async function fetchColormap(url: string): Promise<ColorMap> {
     
     const colormapData: ColormapResponse = await response.json();
     
+//     const colormapData = {
+//   "type": "continuous",
+//   "variable": "CHL",
+//   "measurementType": "Mean",
+//   "colorScheme": "default",
+//   "distributionType": "statistical",
+//   "colorMap": [
+//     {
+//       "value": 0.131,
+//       "color": "#f7fcf5"
+//     },
+//     {
+//       "value": 0.41,
+//       "color": "#e5f5e0"
+//     },
+//     {
+//       "value": 0.691,
+//       "color": "#c7e9c0"
+//     },
+//     {
+//       "value": 0.977,
+//       "color": "#a1d99b"
+//     },
+//     {
+//       "value": 1.15,
+//       "color": "#74c476"
+//     },
+//     {
+//       "value": 1.29,
+//       "color": "#41ab5d"
+//     },
+//     {
+//       "value": 1.43,
+//       "color": "#238b45"
+//     },
+//     {
+//       "value": 2.88,
+//       "color": "#006d2c"
+//     },
+//     {
+//       "value": 5.2,
+//       "color": "#00441b"
+//     }
+//   ],
+//   "min": 0.13,
+//   "max": 5.2,
+//   "nodata": -3.4e+38,
+//   "epsilon": 1e+35,
+//   "filename": "CHL_monthly_mean_Mean.tif",
+//   "directory": "env_rasters_cut",
+//   "statistics": {
+//     "min": 0.1310852766037,
+//     "max": 5.1965737342834,
+//     "mean": 0.57692993133414,
+//     "stddev": 0.45746119299034
+//   }
+// };
     // Convert the colorMap array to the expected Record<string, string> format
-    const colorMapRecord: Record<string, string> = {};
-    colormapData.colorMap.forEach(item => {
-      colorMapRecord[item.value.toString()] = item.color;
-    });
+    const colorMapRecord = colorMapArrayToRecord(
+      colormapData.colorMap.map((item) => [item.value, item.color]).flat()
+    );
     
-    return {
+    const result: ColorMap = {
       type: 'continuous' as const,
       colorMap: colorMapRecord,
       min: colormapData.min,
@@ -83,6 +159,9 @@ export async function fetchColormap(url: string): Promise<ColorMap> {
       nodata: colormapData.nodata,
       epsilon: colormapData.epsilon,
     };
+
+    debugger;
+    return result; // Cast to ColorMap type
   } catch (error) {
     console.error(`Failed to fetch colormap from ${url}:`, error);
     // Fallback to default colormap
@@ -177,6 +256,9 @@ export const createEnvironmentalLayers = async (country?: string): Promise<WebGL
           const colormapUrl = generateColormapUrl(source.key, country);
           const effectiveColorScale = await fetchColormap(colormapUrl);
 
+          const style = generateDefaultStyle(effectiveColorScale);
+
+          
           const layer = new WebGLTileLayer({
             source: createGeoTIFFSource(source), // Assuming this can throw errors
             title: source.name,
@@ -186,9 +268,7 @@ export const createEnvironmentalLayers = async (country?: string): Promise<WebGL
             preload: 0,
             meanOrSD: source.type,
             key: source.key, // Store the key for colormap URL generation
-            style:
-              source.style || // Use pre-defined style if available
-              generateDefaultStyle(effectiveColorScale),
+            style,
             bands: source.bands || [1], // Use bands from source or default to [1]
             opacity: 1, // Layer's initial opacity
             properties: {
