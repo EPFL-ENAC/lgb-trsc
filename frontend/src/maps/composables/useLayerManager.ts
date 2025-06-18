@@ -3,6 +3,7 @@ import BaseLayer from 'ol/layer/Base';
 import LayerGroup from 'ol/layer/Group';
 import { useMapController } from './useMapController';
 import { BaseLayerOptions } from 'ol-layerswitcher';
+import { setLayerManagerRefreshFunction } from '../MapController';
 
 export interface LayerInfo {
   title: string;
@@ -200,6 +201,8 @@ export function useLayerManager() {
   };
   onMounted(() => {
     initializeLayers();
+    // Register refresh function with MapController for async environmental layer loading
+    setLayerManagerRefreshFunction(initializeLayers);
   });
 
   onUnmounted(() => {

@@ -6,7 +6,10 @@ const mapController = ref<MapController | null>(null);
 export function useMapController() {
   if (!mapController.value || !mapController.value.getMap()) {
     mapController.value = new MapController('map');
-    mapController.value.init();
+    // Initialize asynchronously - the map will work but environmental layers will load when ready
+    mapController.value.init().catch(error => {
+      console.error('Failed to initialize map controller:', error);
+    });
   }
   return mapController.value;
 }

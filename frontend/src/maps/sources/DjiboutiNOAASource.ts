@@ -53,6 +53,7 @@ export interface VariableInfo {
 export interface SourceInfo {
   type: SourceType;
   name: string;
+  key: string; // Added key field for colormap URL generation
   url: string;
   colorScale: ColorMap;
   attribution: string;
@@ -220,6 +221,7 @@ export function generateSources(country?: string): SourceInfo[] {
     // CHL
     {
       type: SourceType.MEAN,
+      key: 'CHL_monthly_mean_Mean',
       ...scopeMetadata.CHL_monthly_mean,
       colorScale: CHL_monthly_mean_Mean,
       attribution: attributions.copernicus,
@@ -227,6 +229,7 @@ export function generateSources(country?: string): SourceInfo[] {
     },
     {
       type: SourceType.SD,
+      key: 'CHL_monthly_mean_SD',
       ...scopeMetadata.CHL_monthly_mean,
       colorScale: CHL_monthly_mean_SD,
       attribution: attributions.copernicus,
@@ -236,6 +239,7 @@ export function generateSources(country?: string): SourceInfo[] {
     // SST max
     {
       type: SourceType.MEAN,
+      key: 'SST_monthly_max_Mean',
       ...scopeMetadata.SST_monthly,
       name: `${scopeMetadata.SST_monthly.name} max`,
       colorScale: SST_monthly_max_Mean,
@@ -244,6 +248,7 @@ export function generateSources(country?: string): SourceInfo[] {
     },
     {
       type: SourceType.SD,
+      key: 'SST_monthly_max_SD',
       ...scopeMetadata.SST_monthly,
       name: `${scopeMetadata.SST_monthly.name} max`,
       colorScale: SST_monthly_max_SD,
@@ -254,6 +259,7 @@ export function generateSources(country?: string): SourceInfo[] {
     // SST mean
     {
       type: SourceType.MEAN,
+      key: 'SST_monthly_mean_Mean',
       ...scopeMetadata.SST_monthly,
       name: `${scopeMetadata.SST_monthly.name} mean`,
       colorScale: SST_monthly_mean_Mean,
@@ -262,6 +268,7 @@ export function generateSources(country?: string): SourceInfo[] {
     },
     {
       type: SourceType.SD,
+      key: 'SST_monthly_mean_SD',
       ...scopeMetadata.SST_monthly,
       name: `${scopeMetadata.SST_monthly.name} mean`,
       colorScale: SST_monthly_mean_SD,
@@ -272,6 +279,7 @@ export function generateSources(country?: string): SourceInfo[] {
     // SST min
     {
       type: SourceType.MEAN,
+      key: 'SST_monthly_min_Mean',
       ...scopeMetadata.SST_monthly,
       name: `${scopeMetadata.SST_monthly.name} min`,
       colorScale: SST_monthly_min_Mean,
@@ -280,6 +288,7 @@ export function generateSources(country?: string): SourceInfo[] {
     },
     {
       type: SourceType.SD,
+      key: 'SST_monthly_min_SD',
       ...scopeMetadata.SST_monthly,
       name: `${scopeMetadata.SST_monthly.name} min`,
       colorScale: SST_monthly_min_SD,
@@ -290,6 +299,7 @@ export function generateSources(country?: string): SourceInfo[] {
     // SPM
     {
       type: SourceType.MEAN,
+      key: 'SPM_monthly_mean_Mean',
       ...scopeMetadata.SPM_monthly_mean,
       colorScale: SPM_monthly_mean_Mean,
       attribution: attributions.copernicus,
@@ -297,6 +307,7 @@ export function generateSources(country?: string): SourceInfo[] {
     },
     {
       type: SourceType.SD,
+      key: 'SPM_monthly_mean_SD',
       ...scopeMetadata.SPM_monthly_mean,
       colorScale: SPM_monthly_mean_SD,
       attribution: attributions.copernicus,
@@ -306,6 +317,7 @@ export function generateSources(country?: string): SourceInfo[] {
     // DHW
     {
       type: SourceType.MEAN,
+      key: 'DHW_annual_max_Mean',
       ...scopeMetadata.DHW_annual_max,
       colorScale: DHW_annual_max_Mean,
       attribution: attributions.copernicus,
@@ -313,6 +325,7 @@ export function generateSources(country?: string): SourceInfo[] {
     },
     {
       type: SourceType.SD,
+      key: 'DHW_annual_max_SD',
       ...scopeMetadata.DHW_annual_max,
       colorScale: DHW_annual_max_SD,
       attribution: attributions.copernicus,
@@ -322,6 +335,7 @@ export function generateSources(country?: string): SourceInfo[] {
     // SWV
     {
       type: SourceType.MEAN,
+      key: 'SWV_monthly_mean_Mean',
       ...scopeMetadata.SWV_monthly_mean,
       colorScale: SWV_monthly_mean_Mean,
       attribution: attributions.copernicus,
@@ -329,6 +343,7 @@ export function generateSources(country?: string): SourceInfo[] {
     },
     {
       type: SourceType.SD,
+      key: 'SWV_monthly_mean_SD',
       ...scopeMetadata.SWV_monthly_mean,
       colorScale: SWV_monthly_mean_SD,
       attribution: attributions.copernicus,
@@ -338,6 +353,7 @@ export function generateSources(country?: string): SourceInfo[] {
     // SWS
     {
       type: SourceType.MEAN,
+      key: 'SWS_monthly_mean_Mean',
       ...scopeMetadata.SWS_monthly_mean,
       colorScale: SWS_monthly_mean_Mean,
       attribution: attributions.noaa,
@@ -345,6 +361,7 @@ export function generateSources(country?: string): SourceInfo[] {
     },
     {
       type: SourceType.SD,
+      key: 'SWS_monthly_mean_SD',
       ...scopeMetadata.SWS_monthly_mean,
       colorScale: SWS_monthly_mean_SD,
       attribution: attributions.noaa,

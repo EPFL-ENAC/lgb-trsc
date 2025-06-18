@@ -47,9 +47,12 @@ export class LayerController {
       'hard coral cover',
       { experiment: '3D' }
     );
-    this.environmentalLayers = createEnvironmentalLayers();
-    // this.CHL_monthlyMeanMeanLayer = env[0];
-    // this.CHL_monthlyMeanSDLayer = env[1];
+    // Initialize environmental layers asynchronously
+    this.initializeEnvironmentalLayers();
+  }
+
+  private async initializeEnvironmentalLayers() {
+    this.environmentalLayers = await createEnvironmentalLayers();
   }
 
   destroy() {
@@ -70,15 +73,15 @@ export class LayerController {
     this.countryLayer.setStyle(style);
   }
 
-  public updateEnvironmentalLayersForScope(country?: string): WebGLTileLayer[] {
+  public async updateEnvironmentalLayersForScope(country?: string): Promise<WebGLTileLayer[]> {
     if (!this.environmentalLayers) {
       // Create initial layers if they don't exist
-      this.environmentalLayers = createEnvironmentalLayers(country);
+      this.environmentalLayers = await createEnvironmentalLayers(country);
       return this.environmentalLayers;
     }
     
     // Update existing layers sources in place to avoid reference issues
-    updateEnvironmentalLayersSourcesInPlace(this.environmentalLayers, country);
+    await updateEnvironmentalLayersSourcesInPlace(this.environmentalLayers, country);
     return this.environmentalLayers;
   }
 
@@ -204,5 +207,23 @@ export class LayerController {
         return layer !== null && layer.getVisible();
       }
     );
+  }
+
+  public async ensureEnvironmentalLayersInitialized(): Promise<WebGLTileLayer[] | null> {
+    // If layers are already initialized, return them
+    if (this.environmentalLayers) {
+      return this.environmentalLayers;
+    }
+    
+    // Otherwise, wait for initialization to complete
+    let attempts = 0;
+    const maxAttempts = 50; // 5 seconds timeout (50 * 100ms)
+    
+    while (!this.environmentalLayers && attempts < maxAttempts) {
+      await new Promise(resolve => setTimeout(resolve, 100));
+      attempts++;
+    }
+    
+    return this.environmentalLayers;
   }
 }

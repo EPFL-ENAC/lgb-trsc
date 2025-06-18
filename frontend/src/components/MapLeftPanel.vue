@@ -314,7 +314,7 @@ const computedActiveBaseMap = computed(() => {
   return baseMaps.value.find((baseMap) => baseMap.layer.get('visible'))?.title;
 });
 
-const updateMeanOrSD = (layer: WebGLTileLayer) => {
+const updateMeanOrSD = async (layer: WebGLTileLayer) => {
   const meanOrSD = layer.get('meanOrSD');
   const newMeanOrSD = meanOrSD === 'Mean' ? 'SD' : 'Mean';
 
@@ -322,18 +322,44 @@ const updateMeanOrSD = (layer: WebGLTileLayer) => {
   const currentCountry = selectedCountry.value?.name;
   const scopeAwareSources = generateSources(currentCountry);
 
-  // find appropriate source
+  // find appropriate source using the key field for proper matching
   const environmentalSource = scopeAwareSources.find(
     (source) =>
-      source.name === layer.get('title') && source.type === newMeanOrSD
+      source.key === layer.get('key') || // Try key first (more reliable)
+      (source.name === layer.get('title') && source.type === newMeanOrSD) // Fallback to name matching
   );
+  
   // Only update if we found a matching source
   if (environmentalSource) {
-    const newStyle = generateDefaultStyle(environmentalSource?.colorScale);
-    layer.setStyle(newStyle);
-    layer.set('meanOrSD', newMeanOrSD);
-    layer.set('source', createGeoTIFFSource(environmentalSource));
-    layer.set('colorScale', environmentalSource?.colorScale);
+    try {
+      // Import the fetchColormap function and generate colormap URL
+      const { fetchColormap, generateColormapUrl } = await import('maps/layers/overlay/EnvironmentalLayers/DjiboutiLayer');
+      
+      // Fetch the appropriate colormap for the new meanOrSD value
+      const colormapUrl = generateColormapUrl(environmentalSource.key, currentCountry);
+      const effectiveColorScale = await fetchColormap(colormapUrl);
+      
+      // Generate style with the fetched colormap
+      const newStyle = generateDefaultStyle(effectiveColorScale);
+      
+      // Update layer with new source, style, and properties
+      layer.setStyle(newStyle);
+      layer.set('meanOrSD', newMeanOrSD);
+      layer.set('source', createGeoTIFFSource(environmentalSource));
+      layer.set('colorScale', effectiveColorScale);
+      layer.setProperties({
+        ...environmentalSource,
+        colorScale: effectiveColorScale,
+      });
+    } catch (error) {
+      console.error('Failed to update colormap for Mean/SD toggle:', error);
+      // Fallback to basic style update without colormap fetch
+      const newStyle = generateDefaultStyle(environmentalSource?.colorScale);
+      layer.setStyle(newStyle);
+      layer.set('meanOrSD', newMeanOrSD);
+      layer.set('source', createGeoTIFFSource(environmentalSource));
+      layer.set('colorScale', environmentalSource?.colorScale);
+    }
   } else {
     // Show notification that this type isn't available
     $q.notify({

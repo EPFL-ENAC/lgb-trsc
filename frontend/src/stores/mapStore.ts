@@ -231,7 +231,7 @@ export const useMapStore = defineStore('map', () => {
     return filteredExpeditions;
   }
 
-  function closeDrawer() {
+  async function closeDrawer() {
     drawer.value = false;
     selectedCountry.value = null;
     selectedExpedition.value = null;
@@ -239,7 +239,7 @@ export const useMapStore = defineStore('map', () => {
     const layerController = useLayerController();
     layerController.showCountryLayer();
     // Update environmental layers back to Red Sea scope (in place)
-    layerController.updateEnvironmentalLayersForScope();
+    await layerController.updateEnvironmentalLayersForScope();
     
     const mapController = useMapController();
     mapController.zoomOutOfCountry();
@@ -251,12 +251,12 @@ export const useMapStore = defineStore('map', () => {
     mapController.zoomToCountry(selectedCountry.value);
   }
 
-  function selectCountry(properties: CountryProperties) {
+  async function selectCountry(properties: CountryProperties) {
     selectedCountry.value = properties;
     const layerController = useLayerController();
     layerController.hideCountryLayer();
     // Update environmental layers to country-specific scope (in place)
-    layerController.updateEnvironmentalLayersForScope(properties.name);
+    await layerController.updateEnvironmentalLayersForScope(properties.name);
     
     drawer.value = true;
   }

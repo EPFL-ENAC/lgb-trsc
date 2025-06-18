@@ -18,6 +18,78 @@ const NODATA_VALUE = -3.4e38;
 // Adjusted EPSILON: Use a smaller tolerance, e.g., 1.0, adjust if needed based on data precision
 const EPSILON = 1.0;
 
+/**
+ * Interface for the colormap JSON structure
+ */
+interface ColormapResponse {
+  type: string;
+  variable: string;
+  measurementType: string;
+  colorMap: Array<{
+    value: number;
+    color: string;
+  }>;
+  min: number;
+  max: number;
+  nodata: number;
+  epsilon: number;
+  filename: string;
+  directory: string;
+  statistics: {
+    min: number;
+    max: number;
+    mean: number;
+    stddev: number;
+  };
+}
+
+/**
+ * Generates colormap URL for a given source and country scope
+ * @param sourceName - Source name (e.g., 'CHL_monthly_mean_Mean')
+ * @param country - Country scope ('djibouti') or undefined for Red Sea scope
+ * @returns URL to fetch the colormap JSON
+ */
+export function generateColormapUrl(sourceName: string, country?: string): string {
+  const baseUrl = 'https://enacit4r-cdn.epfl.ch/lgb-trsc/dev/processed_data/SG_MANON/colormaps';
+  const directory = country ? `env_rasters_cut_64x_${country.toLowerCase()}` : 'env_rasters_cut';
+  return `${baseUrl}/${directory}/${sourceName}_colormap.json`;
+}
+
+/**
+ * Fetches colormap from URL and converts it to ColorMap format
+ * @param url - URL to fetch colormap JSON from
+ * @returns Promise<ColorMap> - Converted colormap
+ */
+export async function fetchColormap(url: string): Promise<ColorMap> {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch colormap: ${response.status} ${response.statusText}`);
+    }
+    
+    const colormapData: ColormapResponse = await response.json();
+    
+    // Convert the colorMap array to the expected Record<string, string> format
+    const colorMapRecord: Record<string, string> = {};
+    colormapData.colorMap.forEach(item => {
+      colorMapRecord[item.value.toString()] = item.color;
+    });
+    
+    return {
+      type: 'continuous' as const,
+      colorMap: colorMapRecord,
+      min: colormapData.min,
+      max: colormapData.max,
+      nodata: colormapData.nodata,
+      epsilon: colormapData.epsilon,
+    };
+  } catch (error) {
+    console.error(`Failed to fetch colormap from ${url}:`, error);
+    // Fallback to default colormap
+    return defaultEnvironmentalColorMap;
+  }
+}
+
 const convertColorMapToArray = (
   colorMap: Record<string, string>
 ): (number | string)[] => {
@@ -92,54 +164,54 @@ export function generateDefaultStyle(colorScale: ColorMap): any {
   };
 }
 
-export const createEnvironmentalLayers = (country?: string): WebGLTileLayer[] => {
+export const createEnvironmentalLayers = async (country?: string): Promise<WebGLTileLayer[]> => {
   // Generate sources based on scope
   const scopedSources = country ? generateSources(country) : sources;
   
-  const layers = scopedSources
-    .filter((source) => source.type === 'Mean') // Filter sources for environmental layers
-    .map((source) => {
-      try {
-        let effectiveColorScale = source.colorScale;
-        if (!effectiveColorScale) {
-          console.warn(
-            `Source "${source.name}" is missing colorScale. Using default.`
+  const layers = await Promise.all(
+    scopedSources
+      .filter((source) => source.type === 'Mean') // Filter sources for environmental layers
+      .map(async (source) => {
+        try {
+          // Fetch dynamic colorScale from JSON using the key field
+          const colormapUrl = generateColormapUrl(source.key, country);
+          const effectiveColorScale = await fetchColormap(colormapUrl);
+
+          const layer = new WebGLTileLayer({
+            source: createGeoTIFFSource(source), // Assuming this can throw errors
+            title: source.name,
+            visible: false,
+            baseLayer: false,
+            // Disable smoothing to preserve pixel boundaries
+            preload: 0,
+            meanOrSD: source.type,
+            key: source.key, // Store the key for colormap URL generation
+            style:
+              source.style || // Use pre-defined style if available
+              generateDefaultStyle(effectiveColorScale),
+            bands: source.bands || [1], // Use bands from source or default to [1]
+            opacity: 1, // Layer's initial opacity
+            properties: {
+              ...source, // Store original source metadata
+              // Ensure colorScale in properties reflects the one used for the style
+              colorScale: effectiveColorScale,
+            },
+          } as BaseLayerOptions); // Type assertion might still be needed depending on BaseLayerOptions definition
+          return layer;
+        } catch (error) {
+          console.error(
+            `Failed to create layer for source "${source?.name || 'unknown'}":`,
+            error
           );
-          effectiveColorScale = defaultEnvironmentalColorMap;
+          return null; // Return null for sources that failed
         }
+      })
+  );
 
-        const layer = new WebGLTileLayer({
-          source: createGeoTIFFSource(source), // Assuming this can throw errors
-          title: source.name,
-          visible: false,
-          baseLayer: false,
-          // Disable smoothing to preserve pixel boundaries
-          preload: 0,
-          meanOrSD: source.type,
-          style:
-            source.style || // Use pre-defined style if available
-            generateDefaultStyle(effectiveColorScale),
-          bands: source.bands || [1], // Use bands from source or default to [1]
-          opacity: 1, // Layer's initial opacity
-          properties: {
-            ...source, // Store original source metadata
-            // Ensure colorScale in properties reflects the one used for the style
-            colorScale: effectiveColorScale,
-          },
-        } as BaseLayerOptions); // Type assertion might still be needed depending on BaseLayerOptions definition
-        return layer;
-      } catch (error) {
-        console.error(
-          `Failed to create layer for source "${source?.name || 'unknown'}":`,
-          error
-        );
-        return null; // Return null for sources that failed
-      }
-    })
-    .filter((layer): layer is WebGLTileLayer => layer !== null); // Filter out nulls (failed layers)
+  const validLayers = layers.filter((layer): layer is WebGLTileLayer => layer !== null); // Filter out nulls (failed layers)
 
-  console.log(`Created ${layers.length} environmental layers for scope: ${country || 'Red Sea'}`);
-  return layers;
+  console.log(`Created ${validLayers.length} environmental layers for scope: ${country || 'Red Sea'}`);
+  return validLayers;
 };
 
 /**
@@ -148,10 +220,10 @@ export const createEnvironmentalLayers = (country?: string): WebGLTileLayer[] =>
  * @param country - Country scope ('djibouti') or undefined for Red Sea scope
  * @returns New array of environmental layers for the specified scope
  */
-export const updateEnvironmentalLayersForScope = (
+export const updateEnvironmentalLayersForScope = async (
   existingLayers: WebGLTileLayer[],
   country?: string
-): WebGLTileLayer[] => {
+): Promise<WebGLTileLayer[]> => {
   // Store visibility state of existing layers
   const layerVisibilityMap = new Map<string, boolean>();
   existingLayers.forEach((layer) => {
@@ -159,7 +231,7 @@ export const updateEnvironmentalLayersForScope = (
   });
 
   // Create new layers for the specified scope
-  const newLayers = createEnvironmentalLayers(country);
+  const newLayers = await createEnvironmentalLayers(country);
   
   // Restore visibility state
   newLayers.forEach((layer) => {
@@ -177,35 +249,41 @@ export const updateEnvironmentalLayersForScope = (
  * @param existingLayers - Current environmental layers to update
  * @param country - Country scope ('djibouti') or undefined for Red Sea scope
  */
-export const updateEnvironmentalLayersSourcesInPlace = (
+export const updateEnvironmentalLayersSourcesInPlace = async (
   existingLayers: WebGLTileLayer[],
   country?: string
-): void => {
+): Promise<void> => {
   // Generate sources based on scope
   const scopedSources = country ? generateSources(country) : sources;
   const meanSources = scopedSources.filter((source) => source.type === 'Mean');
   
   // Update each existing layer with new source
-  existingLayers.forEach((layer, index) => {
-    if (index < meanSources.length) {
-      const newSource = meanSources[index];
-      try {
-        // Update the layer's source
-        layer.setSource(createGeoTIFFSource(newSource));
-        
-        // Update layer properties with new source metadata
-        layer.setProperties({
-          ...newSource,
-          colorScale: newSource.colorScale,
-        });
-        
-        // Update style if needed (optional, depends on if style needs to change)
-        const newStyle = newSource.style || generateDefaultStyle(newSource.colorScale);
-        layer.setStyle(newStyle);
-        
-      } catch (error) {
-        console.error(`Failed to update layer "${layer.get('title')}" with new source:`, error);
+  await Promise.all(
+    existingLayers.map(async (layer, index) => {
+      if (index < meanSources.length) {
+        const newSource = meanSources[index];
+        try {
+          // Fetch dynamic colorScale from JSON using the key field
+          const colormapUrl = generateColormapUrl(newSource.key, country);
+          const effectiveColorScale = await fetchColormap(colormapUrl);
+          
+          // Update the layer's source
+          layer.setSource(createGeoTIFFSource(newSource));
+          
+          // Update layer properties with new source metadata
+          layer.setProperties({
+            ...newSource,
+            colorScale: effectiveColorScale,
+          });
+          
+          // Update style with the fetched colormap
+          const newStyle = newSource.style || generateDefaultStyle(effectiveColorScale);
+          layer.setStyle(newStyle);
+          
+        } catch (error) {
+          console.error(`Failed to update layer "${layer.get('title')}" with new source:`, error);
+        }
       }
-    }
-  });
+    })
+  );
 };

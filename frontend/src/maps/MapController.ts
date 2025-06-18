@@ -54,6 +54,13 @@ export interface CustomBaseLayerOptions extends BaseLayerOptions {
   showForcountryOnly?: boolean;
 }
 
+// Static variable to hold layer manager refresh function
+let layerManagerRefreshFunction: (() => void) | null = null;
+
+export function setLayerManagerRefreshFunction(refreshFn: () => void) {
+  layerManagerRefreshFunction = refreshFn;
+}
+
 function createOverviewMap() {
   // Create base layers for overview map
   const overviewMapLayer = new TileLayer({
@@ -159,7 +166,7 @@ export class MapController {
     }
   }
 
-  public init(): void {
+  public async init(): Promise<void> {
     this.baseMaps = new LayerGroup({
       layers: [createArcGISLayer(), createOSMLayer()],
     });
@@ -216,10 +223,16 @@ export class MapController {
     this.map?.addLayer(this.baseMaps);
     this.map?.addLayer(this.overlayMaps);
 
-    // Initialize environmental layers in the Environmental Layers group
-    const initialEnvironmentalLayers = layerController.getEnvironmentalLayers();
-    if (initialEnvironmentalLayers) {
-      this.updateEnvironmentalLayersGroup(initialEnvironmentalLayers);
+    // Wait for environmental layers to be initialized and add them to the group
+    const environmentalLayers = await layerController.ensureEnvironmentalLayersInitialized();
+    if (environmentalLayers) {
+      this.updateEnvironmentalLayersGroup(environmentalLayers);
+      // Force a refresh of the map to ensure layers are rendered
+      this.map?.renderSync();
+      // Refresh the layer manager to show environmental layers in UI
+      if (layerManagerRefreshFunction) {
+        layerManagerRefreshFunction();
+      }
     }
 
     // Initialize overview map to be visible only in Red Sea scope
@@ -448,6 +461,11 @@ export class MapController {
       
       // Force a refresh of the map
       this.map?.renderSync();
+      
+      // Refresh the layer manager to update UI
+      if (layerManagerRefreshFunction) {
+        layerManagerRefreshFunction();
+      }
     }
   }
 }
