@@ -26,7 +26,7 @@ interface ColormapResponse {
   variable: string;
   measurementType: string;
   colorMap: Array<{
-    value: number;
+    value: number | string; // Can be either number or string
     color: string;
   }>;
   min: number;
@@ -89,67 +89,13 @@ export async function fetchColormap(url: string): Promise<ColorMap> {
     
     const colormapData: ColormapResponse = await response.json();
     
-//     const colormapData = {
-//   "type": "continuous",
-//   "variable": "CHL",
-//   "measurementType": "Mean",
-//   "colorScheme": "default",
-//   "distributionType": "statistical",
-//   "colorMap": [
-//     {
-//       "value": 0.131,
-//       "color": "#f7fcf5"
-//     },
-//     {
-//       "value": 0.41,
-//       "color": "#e5f5e0"
-//     },
-//     {
-//       "value": 0.691,
-//       "color": "#c7e9c0"
-//     },
-//     {
-//       "value": 0.977,
-//       "color": "#a1d99b"
-//     },
-//     {
-//       "value": 1.15,
-//       "color": "#74c476"
-//     },
-//     {
-//       "value": 1.29,
-//       "color": "#41ab5d"
-//     },
-//     {
-//       "value": 1.43,
-//       "color": "#238b45"
-//     },
-//     {
-//       "value": 2.88,
-//       "color": "#006d2c"
-//     },
-//     {
-//       "value": 5.2,
-//       "color": "#00441b"
-//     }
-//   ],
-//   "min": 0.13,
-//   "max": 5.2,
-//   "nodata": -3.4e+38,
-//   "epsilon": 1e+35,
-//   "filename": "CHL_monthly_mean_Mean.tif",
-//   "directory": "env_rasters_cut",
-//   "statistics": {
-//     "min": 0.1310852766037,
-//     "max": 5.1965737342834,
-//     "mean": 0.57692993133414,
-//     "stddev": 0.45746119299034
-//   }
-// };
     // Convert the colorMap array to the expected Record<string, string> format
-    const colorMapRecord = colorMapArrayToRecord(
-      colormapData.colorMap.map((item) => [item.value, item.color]).flat()
-    );
+    const colorMapRecord: Record<string, string> = {};
+    colormapData.colorMap.forEach(item => {
+      // Handle both string and number values
+      const valueKey = typeof item.value === 'string' ? item.value : item.value.toString();
+      colorMapRecord[valueKey] = item.color;
+    });
     
     const result: ColorMap = {
       type: 'continuous' as const,
@@ -160,8 +106,7 @@ export async function fetchColormap(url: string): Promise<ColorMap> {
       epsilon: colormapData.epsilon,
     };
 
-    debugger;
-    return result; // Cast to ColorMap type
+    return result;
   } catch (error) {
     console.error(`Failed to fetch colormap from ${url}:`, error);
     // Fallback to default colormap
