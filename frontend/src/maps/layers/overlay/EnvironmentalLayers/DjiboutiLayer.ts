@@ -249,22 +249,67 @@ export const updateEnvironmentalLayersForScope = async (
   existingLayers: WebGLTileLayer[],
   country?: string
 ): Promise<WebGLTileLayer[]> => {
-  // Store visibility state of existing layers
+  // Store visibility state and meanOrSD state of existing layers
   const layerVisibilityMap = new Map<string, boolean>();
+  const layerMeanOrSDMap = new Map<string, string>();
   existingLayers.forEach((layer) => {
     layerVisibilityMap.set(layer.get('title'), layer.get('visible'));
+    layerMeanOrSDMap.set(layer.get('title'), layer.get('meanOrSD') || 'Mean');
   });
 
-  // Create new layers for the specified scope
+  // Create new layers for the specified scope (always starts with Mean)
   const newLayers = await createEnvironmentalLayers(country);
   
-  // Restore visibility state
-  newLayers.forEach((layer) => {
+  // Restore visibility state and Mean/SD state
+  for (const layer of newLayers) {
     const layerTitle = layer.get('title');
+    
+    // Restore visibility
     if (layerVisibilityMap.has(layerTitle)) {
       layer.setVisible(layerVisibilityMap.get(layerTitle) || false);
     }
-  });
+    
+    // Restore Mean/SD state if it was SD
+    const previousMeanOrSD = layerMeanOrSDMap.get(layerTitle);
+    if (previousMeanOrSD === 'SD') {
+      // Generate sources for the current scope
+      const scopedSources = country ? generateSources(country) : sources;
+      
+      // Construct the correct key for SD
+      const currentKey = layer.get('key');
+      const baseKey = currentKey.replace(/_Mean$|_SD$/, '');
+      const sdKey = `${baseKey}_SD`;
+      
+      // Find the SD source
+      const sdSource = scopedSources.find(source => source.key === sdKey);
+      
+      if (sdSource) {
+        try {
+          // Fetch the SD colormap
+          const colormapUrl = generateColormapUrl(sdKey, country);
+          const effectiveColorScale = await fetchColormap(colormapUrl);
+          
+          // Update layer to use SD source
+          layer.setSource(createGeoTIFFSource(sdSource));
+          layer.set('meanOrSD', 'SD');
+          layer.set('key', sdKey);
+          layer.set('colorScale', effectiveColorScale);
+          layer.setProperties({
+            ...sdSource,
+            key: sdKey,
+            colorScale: effectiveColorScale,
+          });
+          
+          // Update style with SD colormap
+          const newStyle = generateDefaultStyle(effectiveColorScale);
+          layer.setStyle(newStyle);
+        } catch (error) {
+          console.error(`Failed to restore SD state for layer "${layerTitle}":`, error);
+          // If SD fails, keep it as Mean (which it already is)
+        }
+      }
+    }
+  }
 
   return newLayers;
 };
@@ -300,6 +345,10 @@ export const updateEnvironmentalLayersSourcesInPlace = async (
             ...newSource,
             colorScale: effectiveColorScale,
           });
+          
+          // Reset the meanOrSD property to 'Mean' since we're using Mean sources
+          layer.set('meanOrSD', 'Mean');
+          layer.set('key', newSource.key); // Update the key to match the new source
           
           // Update style with the fetched colormap
           const newStyle = newSource.style || generateDefaultStyle(effectiveColorScale);
