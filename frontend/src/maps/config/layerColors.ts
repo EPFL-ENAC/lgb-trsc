@@ -356,8 +356,8 @@ export const defaultEnvironmentalColorMap: ColorMap = {
 export const boundaryColorMap: ColorMap = {
   type: 'categorical',
   colorMap: {
-    'Maritime boundaries': 'rgba(125,201,201, 0.5)',
-    // 'boundary': 'rgba(125,201,201, 0.5)',
+    // 'Maritime boundaries': 'rgba(125,201,201, 0.5)',
+    'polygon_MarineRegions_EEZv12_RedSeaAden': 'rgba(125,201,201, 0.5)',
   },
 };
 

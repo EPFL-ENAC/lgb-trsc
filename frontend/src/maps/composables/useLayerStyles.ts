@@ -181,29 +181,65 @@ export function useLayerStyles() {
     mapController?.getMap()?.renderSync();
   };
 
-  const createGeomorphicStyle = (feature: Feature<Geometry>) =>
-    createFeatureStyle(feature, geomorphicColorMap.colorMap);
-  const createBenthicStyle = (feature: Feature<Geometry>) =>
-    createFeatureStyle(feature, benthicColorMap.colorMap);
+  const createGeomorphicStyle = (feature: Feature<Geometry>) => {
+    const featureClass = feature.get('class') || (feature.get('name') as string);
+    if (!visibleClasses.value[featureClass]) {
+      return new Style({});
+    }
+    return createFeatureStyle(feature, geomorphicColorMap.colorMap);
+  };
+
+  const createBenthicStyle = (feature: Feature<Geometry>) => {
+    const featureClass = feature.get('class') || (feature.get('name') as string);
+    if (!visibleClasses.value[featureClass]) {
+      return new Style({});
+    }
+    return createFeatureStyle(feature, benthicColorMap.colorMap);
+  };
+
   // const createBathymetricStyle = (feature: Feature<Geometry>) => createFeatureStyle(feature, bathymetricColorMap);
-  const createMarineProtectedStyle = (feature: Feature<Geometry>) =>
-    createFeatureStyle(
+  const createMarineProtectedStyle = (feature: Feature<Geometry>) => {
+    const featureClass = feature.get('class') || (feature.get('name') as string);
+    if (!visibleClasses.value[featureClass]) {
+      return new Style({});
+    }
+    return createFeatureStyle(
       feature,
       marineProtectedAreaColorMap.colorMap,
       true,
       'class',
       'dotted'
     );
-  const createBoundaryStyle = (feature: Feature<Geometry>) =>
-    createFeatureStyle(
-      feature,
-      boundaryColorMap.colorMap,
-      true,
-      'class',
-      'dotted'
-    );
-  const createReefExtentStyle = (feature: Feature<Geometry>) =>
-    createFeatureStyle(feature, reefExtentColorMap.colorMap);
+  };
+
+  const createBoundaryStyle = (feature: Feature<Geometry>) => {
+    const featureClass = feature.get('class') || (feature.get('name') || feature.get('layer') as string);
+    if (!visibleClasses.value[featureClass]) {
+      return new Style({});
+    }
+
+  const geometryType = feature.getGeometry().getType();
+  const color = boundaryColorMap.colorMap[featureClass] || 'rgba(0, 0, 0, 0.3)';
+  if (geometryType === 'Polygon' || geometryType === 'MultiPolygon') {
+    return new Style({
+      fill: new Fill({
+        color: 'rgba(128, 128, 128, 0)'
+      }),
+      stroke: new Stroke({
+        color,
+        width: 2
+      })
+    });
+  }
+  };
+    
+  const createReefExtentStyle = (feature: Feature<Geometry>) => {
+    const featureClass = feature.get('class') || (feature.get('name') as string);
+    if (!visibleClasses.value[featureClass]) {
+      return new Style({});
+    }
+    return createFeatureStyle(feature, reefExtentColorMap.colorMap);
+  };
 
   const createEnvironmentalClustersStyle = (
     feature: Feature<Geometry>,

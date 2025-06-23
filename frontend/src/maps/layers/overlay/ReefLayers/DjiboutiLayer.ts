@@ -140,19 +140,42 @@ export const createDjiboutiMarineProtectedAreaLayer = () => {
   return layer;
 };
 
-export const createDjiboutiBoundaryLayer = () =>
-  new VectorTileLayer({
+export const createDjiboutiBoundaryLayer = () => {
+
+  const layer = new VectorTileLayer({
     declutter: true,
     _pmtiles: true,
     source: createBoundarySource(),
     visible: false,
     base: false,
     renderMode: 'vector',
-    title: 'Boundary',
-    // style: boundaryStyle,
+    title: 'Boundaries',
+    style: boundaryStyle,
     updateWhileAnimating: true,
     updateWhileInteracting: true,
   } as BaseLayerOptions);
+
+  // Create a computed style function that will react to store changes
+  const computedStyle = computed(() => {
+    return (feature: Feature<Geometry>) => boundaryStyle(feature);
+  });
+  // Set up watcher for style changes
+  layer.setStyle((feature) =>
+    computedStyle.value(feature as Feature<Geometry>)
+  ); 
+  // Watch for changes in visibleClasses and trigger a redraw
+  const mapStore = useMapStore();
+  watch(
+    () => mapStore.visibleClasses,
+    () => {
+      layer.changed();
+      layer.getSource()?.changed();
+    },
+    { deep: true }
+  );
+
+  return layer;
+};
 
 // export const createDjiboutiReefExtentLayer = () =>
 //   new VectorTileLayer({

@@ -14,7 +14,13 @@
                 :style="{ 'background-color': color }"
               ></span>
               <span v-if="showLegendText" class="legend-text">
-                {{ className }}
+                <span v-if="className ==='polygon_MarineRegions_EEZv12_RedSeaAden'">
+                  Marine boundaries
+                </span>
+                <span v-else-if="metadata[className]">
+                  {{ metadata[className] }}
+                </span>
+                <span v-else>{{ className }}</span>
               </span>
             </span>
           </template>
